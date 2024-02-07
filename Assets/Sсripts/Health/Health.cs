@@ -11,6 +11,7 @@ namespace Sсripts
             if (value <= 0)
                 throw new ArgumentOutOfRangeException(nameof(value), "Health must be greater than zero");
 
+            MaxValue = value;
             Value = value;
         }
 
@@ -19,6 +20,7 @@ namespace Sсripts
         public event Action Died;
 
         public int Value { get; private set; }
+        public int MaxValue { get; private set; }
 
         public bool IsAlive => Value > 0;
 
@@ -36,6 +38,12 @@ namespace Sсripts
 
             if (Value <= 0)
                 Died?.Invoke();
+        }
+
+        public void ReplenishToMax()
+        {
+            Value = MaxValue;
+            HealthChanged?.Invoke(Value);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Sсripts
             _slider.interactable = false;
             _slider.wholeNumbers = true;
             _slider.minValue = 0f;
-            _slider.maxValue = _health.Value;
+            _slider.maxValue = _health.MaxValue;
             _slider.value = _health.Value;
         }
 
