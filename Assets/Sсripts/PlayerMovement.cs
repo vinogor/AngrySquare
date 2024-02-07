@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private int _currentCellIndex;
 
-    // добавляю ячейки вручную чтобы сохранить нужную последовательность ячеек 
+    // добавляю ячейки вручную чтобы сохранить нужную последовательность
     [SerializeField] private List<Cell> _cells = new();
 
     [SerializeField] private DiceRoller _diceRoller;
@@ -24,10 +24,13 @@ public class PlayerMovement : MonoBehaviour
     {
         Move(amountMoves);
     }
+
     private void Move(int amountMoves)
     {
-        if (amountMoves == 0)
+        if (amountMoves == 0) {
+            _cells[_currentCellIndex].ActivateEffect();
             return;
+        }
 
         int nextCellIndex = ++_currentCellIndex % _cells.Count;
         Cell nextCell = _cells[nextCellIndex];
@@ -40,6 +43,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 // анимация нажатия ячейки 
                 nextCell.transform.DOMoveY(nextCell.transform.position.y - 0.1f, 0.2f).SetLoops(2, LoopType.Yoyo);
+
                 // чтобы следующий прыжок начинался только после завершения предыдущего
                 Move(--amountMoves);
             });

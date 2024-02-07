@@ -71,6 +71,6 @@ public class DiceRoller : MonoBehaviour, IPointerDownHandler
             detector.gameObject.SetActive(value);
         }
 
-        Debug.Log("detectors set active = " + value);
+        // Debug.Log("detectors set active = " + value);
     }
 }
