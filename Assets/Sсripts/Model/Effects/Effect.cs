@@ -1,6 +1,7 @@
-using UnityEngine;
-
-public abstract class Effect : MonoBehaviour
+namespace Sсripts.Model.Effects
 {
-    public abstract void Activate();
+    public abstract class Effect
+    {
+        public abstract void Activate();
+    }
 }

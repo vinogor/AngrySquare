@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+namespace Sсripts.Model
 {
+    public class Enemy : MonoBehaviour
+    {
+    }
 }

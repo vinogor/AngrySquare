@@ -1,40 +1,74 @@
 using System.Collections.Generic;
 using System.Linq;
-using Sсripts;
+using Sсripts.Dice;
+using Sсripts.Dmg;
+using Sсripts.Hp;
+using Sсripts.Model;
+using Sсripts.Model.Effects;
+using Sсripts.Scriptable;
+using Sсripts.Utility;
 using UnityEngine;
 
-public class CompositeRoot : MonoBehaviour
+namespace Sсripts
 {
-    private void Start()
+    public class CompositeRoot : MonoBehaviour
     {
-        Debug.Log("CompositeRoot started");
+        private void Start()
+        {
+            Debug.Log("CompositeRoot started");
 
-        List<Cell> cells = FindObjectsByType<Cell>(FindObjectsSortMode.None).ToList();
+            Player player = FindObjectOfType<Player>();
+            Health playerHealth = player.GetComponent<Health>();
+            Damage playerDamage = player.GetComponent<Damage>();
+            
+            Enemy enemy = FindObjectOfType<Enemy>();
+            Health enemyHealth = enemy.GetComponent<Health>();
+            Damage enemyDamage = enemy.GetComponent<Damage>();
+            Vector3 enemyPosition = enemy.GetComponentInChildren<Center>().transform.position;
 
-        List<CellInfo> cellInfos = Resources.LoadAll<CellInfo>("CellsInfo").ToList();
+            DiceRoller diceRoller = FindObjectOfType<DiceRoller>();
 
-        CellInfo cellInfo = cellInfos[0];
+            List<HealthBar> healthBars = FindObjectsByType<HealthBar>(FindObjectsSortMode.None).ToList();
+            List<Cell> cells = FindObjectsByType<Cell>(FindObjectsSortMode.None).ToList();
+            List<CellInfo> cellInfos = Resources.LoadAll<CellInfo>("CellsInfo").ToList();
+            
+            healthBars.ForEach(healthBar => healthBar.Initialize());
+            cells.ForEach(cell => cell.Initialized()); 
+            diceRoller.Initialize();
+            
 
-        Effect attackEffect = cellInfo.Effect;
+            // наполнение эффектами
+            CellInfo cellInfo = cellInfos[0];
 
-        Sprite attackSprite = cellInfo.Sprite;
-        int attackAmount = cellInfo.Amount;
+            Effect effect = null;
 
-        // потом в цикле сделать для каждого эффекта 
-        CellsWithoutEffect(cells)
-            .Shuffle()
-            .Take(attackAmount)
-            .ToList()
-            .ForEach(cell =>
+            if (cellInfo.EffectName == EffectName.Swords)
             {
-                cell.SetEffect(attackEffect);
-                cell.SetSprite(attackSprite);
-            });
+                effect = new Swords(enemyHealth, playerDamage, player.transform, enemyPosition);
+            }
+            
+            Sprite attackSprite = cellInfo.Sprite;
+            int attackAmount = cellInfo.Amount;
 
-    }
+            // потом в цикле сделать для каждого эффекта 
+            CellsWithoutEffect(cells)
+                .Shuffle()
+                .Take(attackAmount)
+                .ToList()
+                .ForEach(cell =>
+                {
+                    cell.SetEffect(effect);
+                    cell.SetSprite(attackSprite);
+                });
+            
+            
+            // в самом конце 
+            diceRoller.MakeAvailable();
+        }
 
-    private static List<Cell> CellsWithoutEffect(List<Cell> cells)
-    {
-        return cells.Where(cell => cell.IsEffectSet() == false).ToList();
+        private static List<Cell> CellsWithoutEffect(List<Cell> cells)
+        {
+            return cells.Where(cell => cell.IsEffectSet() == false).ToList();
+        }
     }
 }

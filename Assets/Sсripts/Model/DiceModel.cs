@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public class DiceModel : MonoBehaviour
+namespace Sсripts.Model
 {
+    public class DiceModel : MonoBehaviour
+    {
+    }
 }

@@ -3,21 +3,24 @@ using Agava.YandexGames;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SdkInitialization : MonoBehaviour
+namespace Sсripts
 {
-    // TODO: добавить какой-то экран загрузки
-
-    private void Awake() => YandexGamesSdk.CallbackLogging = true;
-
-    // TODO: ??? а если не в корутине, то что будет? 
-    private IEnumerator Start()
+    public class SdkInitialization : MonoBehaviour
     {
-        yield return YandexGamesSdk.Initialize(OnInitialized);
-    }
+        // TODO: добавить какой-то экран загрузки
 
-    private void OnInitialized()
-    {
-        Debug.Log("YandexGamesSdk initialized");
-        SceneManager.LoadScene("GameScene");
+        private void Awake() => YandexGamesSdk.CallbackLogging = true;
+
+        // TODO: ??? а если не в корутине, то что будет? 
+        private IEnumerator Start()
+        {
+            yield return YandexGamesSdk.Initialize(OnInitialized);
+        }
+
+        private void OnInitialized()
+        {
+            Debug.Log("YandexGamesSdk initialized");
+            SceneManager.LoadScene("GameScene");
+        }
     }
 }

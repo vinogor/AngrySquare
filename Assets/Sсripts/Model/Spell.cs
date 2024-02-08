@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public class Spell : MonoBehaviour
+namespace Sсripts.Model
 {
+    public class Spell : MonoBehaviour
+    {
+    }
 }

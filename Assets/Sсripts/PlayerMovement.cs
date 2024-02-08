@@ -1,51 +1,59 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using Sсripts.Dice;
+using Sсripts.Model;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+namespace Sсripts
 {
-    [SerializeField] private Player _player;
-    [SerializeField] private int _currentCellIndex;
-
-    // добавляю ячейки вручную чтобы сохранить нужную последовательность
-    [SerializeField] private List<Cell> _cells = new();
-
-    [SerializeField] private DiceRoller _diceRoller;
-
-    [SerializeField] float jumpPower = 1f;
-    [SerializeField] float jumpDuration = 0.5f;
-
-    private void Awake()
+    public class PlayerMovement : MonoBehaviour
     {
-        _diceRoller.PlayerMoveAmountSet += OnPlayerMoveAmountSet;
-    }
+        [SerializeField] private Player _player;
+        [SerializeField] private int _currentCellIndex;
+        [SerializeField] private List<Cell> _cells = new();
+        [SerializeField] private DiceRoller _diceRoller;
 
-    private void OnPlayerMoveAmountSet(int amountMoves)
-    {
-        Move(amountMoves);
-    }
-
-    private void Move(int amountMoves)
-    {
-        if (amountMoves == 0) {
-            _cells[_currentCellIndex].ActivateEffect();
-            return;
+        private void Awake()
+        {
+            _diceRoller.PlayerMoveAmountSet += OnPlayerMoveAmountSet;
         }
 
-        int nextCellIndex = ++_currentCellIndex % _cells.Count;
-        Cell nextCell = _cells[nextCellIndex];
-        Vector3 nextCellCenter = nextCell.Center();
+        private void OnDestroy()
+        {
+            _diceRoller.PlayerMoveAmountSet -= OnPlayerMoveAmountSet;
+        }
 
-        transform
-            .DOJump(nextCellCenter + Vector3.up * transform.lossyScale.y, jumpPower, 1, jumpDuration)
-            .SetEase(Ease.Linear)
-            .OnComplete(() =>
+        private void OnPlayerMoveAmountSet(int amountMoves)
+        {
+            Move(amountMoves);
+        }
+
+        private void Move(int amountMoves)
+        {
+            if (amountMoves == 0)
             {
-                // анимация нажатия ячейки 
-                nextCell.transform.DOMoveY(nextCell.transform.position.y - 0.1f, 0.2f).SetLoops(2, LoopType.Yoyo);
+                _cells[_currentCellIndex].ActivateEffect();
+                return;
+            }
 
-                // чтобы следующий прыжок начинался только после завершения предыдущего
-                Move(--amountMoves);
-            });
+            _currentCellIndex = ++_currentCellIndex % _cells.Count;
+            Cell nextCell = _cells[_currentCellIndex];
+            Vector3 nextCellCenter = nextCell.Center();
+
+            transform
+                .DOJump(nextCellCenter + Vector3.up * transform.lossyScale.y,
+                    Constants.JumpPower, 1, Constants.JumpDuration)
+                .SetEase(Ease.Linear)
+                .OnComplete(() =>
+                {
+                    AnimateCell(nextCell);
+                    Move(--amountMoves);
+                });
+        }
+
+        private void AnimateCell(Cell nextCell)
+        {
+            nextCell.transform.DOMoveY(nextCell.transform.position.y - 0.1f, 0.2f).SetLoops(2, LoopType.Yoyo);
+        }
     }
 }

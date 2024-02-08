@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public class EffectIcon : MonoBehaviour
+namespace Sсripts.Model.Effects
 {
+    public class EffectIcon : MonoBehaviour
+    {
+    }
 }

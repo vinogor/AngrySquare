@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class Dice : MonoBehaviour
+namespace Sсripts.Model
 {
-    public int GetRandomNumber()
+    public class Dice : MonoBehaviour
     {
-        return Random.Range(0, 7);
+ 
     }
 }
