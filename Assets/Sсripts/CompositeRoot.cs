@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Sсripts.Animation;
 using Sсripts.Dice;
 using Sсripts.Dmg;
 using Sсripts.Hp;
@@ -13,13 +14,21 @@ namespace Sсripts
 {
     public class CompositeRoot : MonoBehaviour
     {
-        [SerializeField] private HealthBar _playerHealthBar;
-        [SerializeField] private HealthBar _enemyHealthBar;
+        // TODO: разделить на группы поля
+
         [SerializeField] private Player _player;
         [SerializeField] private Enemy _enemy;
+        
+        [SerializeField] private HealthBar _playerHealthBar;
+        [SerializeField] private HealthBar _enemyHealthBar;
         [SerializeField] private DiceRoller _diceRoller;
         [SerializeField] private List<Cell> _cells = new();
         [SerializeField] private PlayerMovement _playerMovement;
+
+        [SerializeField] private DamageTaker _playerDamageTaker;
+        [SerializeField] private DamageTaker _enemyDamageTaker;
+        [SerializeField] private ParticleSystem _playerDamageParticleSystem;
+        [SerializeField] private ParticleSystem _enemyDamageParticleSystem;
 
         private Dictionary<EffectName, Effect> _playerEffects = new();
         private Dictionary<EffectName, Effect> _enemyEffects = new();
@@ -65,6 +74,9 @@ namespace Sсripts
                     cell.SetEffectName(swordsEffectName);
                     cell.SetSprite(swordsSprite);
                 });
+
+            _playerDamageTaker.Initialize(playerHealth, _playerDamageParticleSystem);
+            _enemyDamageTaker.Initialize(enemyHealth, _enemyDamageParticleSystem);
 
             // в самом конце 
             _diceRoller.MakeAvailable();
