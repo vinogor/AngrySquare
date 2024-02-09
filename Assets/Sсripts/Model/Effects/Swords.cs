@@ -12,24 +12,18 @@ namespace Sсripts.Model.Effects
         private Damage _playerDamage;
 
         private Transform _playerTransform;
-        private Vector3 _enemyPosition;
 
         public Swords(Health enemyHealth, Damage playerDamage, Transform playerTransform, Vector3 enemyPosition)
-        { 
-            if (enemyHealth == null)
-                throw new NullReferenceException("enemyHealth cant be null");
-
-            if (playerDamage == null)
-                throw new NullReferenceException("playerDamage cant be null");
-
+        {
+            _enemyHealth = enemyHealth ?? throw new NullReferenceException("enemyHealth cant be null");
+            _playerDamage = playerDamage ?? throw new NullReferenceException("playerDamage cant be null");
+            _playerTransform = playerTransform;
             if (playerTransform == null)
                 throw new NullReferenceException("playerTransform cant be null");
-
-            _enemyHealth = enemyHealth;
-            _playerDamage = playerDamage;
-            _playerTransform = playerTransform;
             _enemyPosition = enemyPosition;
         }
+
+        private Vector3 _enemyPosition;
 
         public override void Activate()
         {

@@ -17,13 +17,15 @@ namespace Sсripts
         {
             Debug.Log("CompositeRoot started");
 
+            // TODO: вынести числа в константы
+            
             Player player = FindObjectOfType<Player>();
             Health playerHealth = new Health(10, 10);
-            Damage playerDamage = player.GetComponent<Damage>();
+            Damage playerDamage = new Damage(2);
 
             Enemy enemy = FindObjectOfType<Enemy>();
             Health enemyHealth = new Health(5, 5);
-            Damage enemyDamage = enemy.GetComponent<Damage>();
+            Damage enemyDamage = new Damage(1);
             Vector3 enemyPosition = enemy.GetComponentInChildren<Center>().transform.position;
 
             DiceRoller diceRoller = FindObjectOfType<DiceRoller>();

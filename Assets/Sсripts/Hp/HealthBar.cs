@@ -10,11 +10,6 @@ namespace Sсripts.Hp
 
         private Health _health;
 
-        private void OnDestroy()
-        {
-            _health.Changed -= OnHealthChanged;
-        }
-
         public void Initialize(Health health)
         {
             _health = health ?? throw new NullReferenceException("health cant be null");
@@ -28,6 +23,11 @@ namespace Sсripts.Hp
             _slider.minValue = 0f;
             _slider.maxValue = _health.MaxValue;
             _slider.value = _health.Value;
+        }
+
+        private void OnDestroy()
+        {
+            _health.Changed -= OnHealthChanged;
         }
 
         private void OnHealthChanged(int newValue)

@@ -1,17 +1,17 @@
-using UnityEngine;
+using System;
 
 namespace Sсripts.Dmg
 {
-    public class Damage : MonoBehaviour
+    public class Damage
     {
-        [field: SerializeField] public int Value { get; private set; }
-
-        private void OnValidate()
+        public Damage(int value)
         {
-            if (Value < 1)
-            {
-                Value = 1;
-            }
+            if (value < 1)
+                throw new ArgumentOutOfRangeException(nameof(value), "value cant be less then 1");
+
+            Value = value;
         }
+
+        public int Value { get; private set; }
     }
 }
