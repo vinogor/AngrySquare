@@ -3737,7 +3737,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slider: {fileID: 397847406}
-  _health: {fileID: 1117336206}
 --- !u!43 &422641006
 Mesh:
   m_ObjectHideFlags: 0
@@ -7797,7 +7796,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slider: {fileID: 932031751}
-  _health: {fileID: 2120022571}
 --- !u!43 &950539815
 Mesh:
   m_ObjectHideFlags: 0
@@ -7975,6 +7973,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -8072,6 +8071,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_MaxRayIntersections: 0
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ebfe349d00048b5914f8bb8b1ff57dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &980910190
 GameObject:
   m_ObjectHideFlags: 0
@@ -8795,7 +8806,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1117336205}
   - component: {fileID: 1117336208}
-  - component: {fileID: 1117336206}
   - component: {fileID: 1117336207}
   m_Layer: 0
   m_Name: Enemy
@@ -8821,21 +8831,6 @@ Transform:
   - {fileID: 745158935}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1117336206
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1117336204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c59887901fd4af19f60a6768e68867b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Value>k__BackingField: 10
-  <MaxValue>k__BackingField: 10
-  _particleSystem: {fileID: 1951618894}
 --- !u!114 &1117336207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13224,11 +13219,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e13d1497381420f429830acce7a6277c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!198 &1951618894 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 5697685888922524469, guid: d2e33207f3addc9449ec2e9517760310, type: 3}
-  m_PrefabInstance: {fileID: 1993570804}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1951618896 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5603223482728628027, guid: d2e33207f3addc9449ec2e9517760310, type: 3}
@@ -15006,7 +14996,6 @@ GameObject:
   - component: {fileID: 2120022565}
   - component: {fileID: 2120022569}
   - component: {fileID: 2120022570}
-  - component: {fileID: 2120022571}
   - component: {fileID: 2120022572}
   m_Layer: 0
   m_Name: Player
@@ -15147,21 +15136,6 @@ MonoBehaviour:
   - {fileID: 2057675796}
   - {fileID: 1672253161}
   _diceRoller: {fileID: 137139605}
---- !u!114 &2120022571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2120022564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c59887901fd4af19f60a6768e68867b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Value>k__BackingField: 10
-  <MaxValue>k__BackingField: 10
-  _particleSystem: {fileID: 0}
 --- !u!114 &2120022572
 MonoBehaviour:
   m_ObjectHideFlags: 0

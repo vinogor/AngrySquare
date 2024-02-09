@@ -3,29 +3,24 @@ using UnityEngine;
 
 namespace Sсripts.Hp
 {
-    public class Health : MonoBehaviour
+    public class Health
     {
-        public event Action<int> HealthChanged;
+        public event Action<int> Changed;
+        public event Action DamageReceived;
         public event Action Died;
 
-        [field: SerializeField] public int Value { get; private set; }
-        [field: SerializeField] public int MaxValue { get; private set; }
+        public Health(int value, int maxValue)
+        {
+            Validate(value, maxValue);
+            Value = value;
+            MaxValue = maxValue;
+        }
 
-        [SerializeField] private ParticleSystem _particleSystem;
+        public int Value { get; private set; }
+
+        public int MaxValue { get; private set; }
 
         public bool IsAlive => Value > 0;
-
-        private void OnValidate()
-        {
-            if (Value < 0)
-                Value = 0;
-
-            if (Value > MaxValue)
-                Value = MaxValue;
-
-            if (MaxValue <= 1)
-                MaxValue = 1;
-        }
 
         public void TakeDamage(int damage)
         {
@@ -36,12 +31,11 @@ namespace Sсripts.Hp
 
             Value -= damage;
 
-            _particleSystem.Play();
-
             if (Value <= 0)
                 Value = 0;
 
-            HealthChanged?.Invoke(Value);
+            Changed?.Invoke(Value);
+            DamageReceived?.Invoke();
 
             if (Value <= 0)
                 Died?.Invoke();
@@ -50,7 +44,25 @@ namespace Sсripts.Hp
         public void ReplenishToMax()
         {
             Value = MaxValue;
-            HealthChanged?.Invoke(Value);
+            Changed?.Invoke(Value);
+        }
+
+        private void Validate(int value, int maxValue)
+        {
+            if (value <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), "value cant be 0 or less");
+            }
+
+            if (maxValue < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(maxValue), "maxValue cant be less then 1");
+            }
+
+            if (value > maxValue)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), "value cant be bigger then maxValue");
+            }
         }
     }
 }

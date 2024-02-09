@@ -7,25 +7,21 @@ namespace Sсripts.Hp
     public class HealthBar : MonoBehaviour
     {
         [SerializeField] private Slider _slider;
-        [SerializeField] private Health _health;
 
-        private void Awake()
-        {
-            _health.HealthChanged += OnHealthChanged;
-        }
+        private Health _health;
 
         private void OnDestroy()
         {
-            _health.HealthChanged -= OnHealthChanged;
+            _health.Changed -= OnHealthChanged;
         }
 
-        public void Initialize()
+        public void Initialize(Health health)
         {
+            _health = health ?? throw new NullReferenceException("health cant be null");
+            _health.Changed += OnHealthChanged;
+
             if (_slider == null)
                 throw new NullReferenceException("slider cant be null");
-
-            if (_health == null)
-                throw new NullReferenceException("health cant be null");
 
             _slider.interactable = false;
             _slider.wholeNumbers = true;

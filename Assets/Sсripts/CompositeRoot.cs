@@ -18,11 +18,11 @@ namespace Sсripts
             Debug.Log("CompositeRoot started");
 
             Player player = FindObjectOfType<Player>();
-            Health playerHealth = player.GetComponent<Health>();
+            Health playerHealth = new Health(10, 10);
             Damage playerDamage = player.GetComponent<Damage>();
-            
+
             Enemy enemy = FindObjectOfType<Enemy>();
-            Health enemyHealth = enemy.GetComponent<Health>();
+            Health enemyHealth = new Health(5, 5);
             Damage enemyDamage = enemy.GetComponent<Damage>();
             Vector3 enemyPosition = enemy.GetComponentInChildren<Center>().transform.position;
 
@@ -31,11 +31,23 @@ namespace Sсripts
             List<HealthBar> healthBars = FindObjectsByType<HealthBar>(FindObjectsSortMode.None).ToList();
             List<Cell> cells = FindObjectsByType<Cell>(FindObjectsSortMode.None).ToList();
             List<CellInfo> cellInfos = Resources.LoadAll<CellInfo>("CellsInfo").ToList();
+
+            healthBars.ForEach(healthBar =>
+            {
+                switch (healthBar)
+                {
+                    case PlayerHealthBar:
+                        healthBar.Initialize(playerHealth);
+                        break;
+
+                    case EnemyHealthBar:
+                        healthBar.Initialize(enemyHealth);
+                        break;
+                }
+            });
             
-            healthBars.ForEach(healthBar => healthBar.Initialize());
-            cells.ForEach(cell => cell.Initialized()); 
+            cells.ForEach(cell => cell.Initialized());
             diceRoller.Initialize();
-            
 
             // наполнение эффектами
             CellInfo cellInfo = cellInfos[0];
@@ -46,7 +58,7 @@ namespace Sсripts
             {
                 effect = new Swords(enemyHealth, playerDamage, player.transform, enemyPosition);
             }
-            
+
             Sprite attackSprite = cellInfo.Sprite;
             int attackAmount = cellInfo.Amount;
 
@@ -60,8 +72,7 @@ namespace Sсripts
                     cell.SetEffect(effect);
                     cell.SetSprite(attackSprite);
                 });
-            
-            
+
             // в самом конце 
             diceRoller.MakeAvailable();
         }
