@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,7 +18,9 @@ namespace Sсripts.Dice
 
         private List<FaceDetector> _detectors;
         private Rigidbody _rigidbody;
-        private bool _isAvailable = false;
+        private bool _canPlayerThrow = false;
+        private bool _isDiceThrown = false;
+        private int _lastDetectedDiceNumber;
 
         public void Initialize()
         {
@@ -42,19 +45,26 @@ namespace Sсripts.Dice
 
         private void OnDiceNumberDetected(int number)
         {
-            // Debug.Log("OnDiceNumberDetected " + number + ", velocity = " + _rigidbody.velocity);
-            
-            if (_rigidbody.velocity == Vector3.zero)
+            _lastDetectedDiceNumber = number;
+            Debug.Log("lastDetectedDiceNumber " + _lastDetectedDiceNumber);
+        }
+
+        private void Update()
+        {
+            if (_isDiceThrown && _rigidbody.velocity == Vector3.zero)
             {
-                Debug.Log("get dice number " + number);
+                Debug.Log("get dice number " + _lastDetectedDiceNumber);
                 DetectorsSetActive(false);
-                PlayerMoveAmountSet?.Invoke(number);
+                PlayerMoveAmountSet?.Invoke(_lastDetectedDiceNumber);
+                _isDiceThrown = false;
             }
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (_isAvailable == false)
+            // можно кликнуть на кубик пока он в полёте, но возможно это не проблема
+
+            if (_canPlayerThrow == false)
             {
                 return;
             }
@@ -67,13 +77,22 @@ namespace Sсripts.Dice
                 {
                     RollDice();
                     DetectorsSetActive(true);
+                    // пришлось сделать задержку, т.к. в самом начале когда детекторы включаются,
+                    // rb ещё неподвижно, и число уже отправляется
+                    StartCoroutine(SetIsDiceThrownTrueWithDelay());
                 }
             }
         }
 
+        private IEnumerator SetIsDiceThrownTrueWithDelay()
+        {
+            yield return new WaitForSeconds(1f);
+            _isDiceThrown = true;
+        }
+
         public void MakeAvailable()
         {
-            _isAvailable = true;
+            _canPlayerThrow = true;
         }
 
         private void RollDice()

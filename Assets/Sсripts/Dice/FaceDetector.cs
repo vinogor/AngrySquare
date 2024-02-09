@@ -7,10 +7,7 @@ namespace Sсripts.Dice
     {
         public event Action<int> DiceNumberDetected;
 
-        // OnTriggerEnter - в момент срабатывания скорость не нулевая, поэтому OnTriggerStay
-        //                   + отключение детекторов после срабатывания
-
-        private void OnTriggerStay(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
             int number = int.Parse(name);
             DiceNumberDetected?.Invoke(number);
