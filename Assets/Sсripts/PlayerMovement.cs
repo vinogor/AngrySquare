@@ -12,15 +12,16 @@ namespace Sсripts
     {
         [SerializeField] private Player _player;
         [SerializeField] private int _currentCellIndex;
-        [SerializeField] private List<Cell> _cells = new();
         [SerializeField] private DiceRoller _diceRoller;
 
+        private List<Cell> _cells;
         private Dictionary<EffectName, Effect> _playerEffects;
         private Dictionary<EffectName, Effect> _enemyEffects;
 
-        public void Initialize(Dictionary<EffectName, Effect> playerEffects,
+        public void Initialize(List<Cell> cells, Dictionary<EffectName, Effect> playerEffects,
             Dictionary<EffectName, Effect> enemyEffects)
         {
+            _cells = cells;
             _playerEffects = playerEffects;
             _enemyEffects = enemyEffects;
         }

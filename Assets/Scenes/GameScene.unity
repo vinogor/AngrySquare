@@ -2557,6 +2557,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c22425e879ea124d85d2533c5baab9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerHealthBar: {fileID: 932031755}
+  _enemyHealthBar: {fileID: 397847410}
+  _player: {fileID: 2120022569}
+  _enemy: {fileID: 1117336208}
+  _diceRoller: {fileID: 137139605}
+  _cells:
+  - {fileID: 4916563562095251680}
+  - {fileID: 5176959920047206156}
+  - {fileID: 843183416}
+  - {fileID: 620891199}
+  - {fileID: 498335854}
+  - {fileID: 810879951}
+  - {fileID: 1989949715}
+  - {fileID: 268767603}
+  - {fileID: 876814831}
+  - {fileID: 1947616047}
+  - {fileID: 1368849720}
+  - {fileID: 113525971}
+  - {fileID: 26747326}
+  - {fileID: 1135395133}
+  - {fileID: 2057675796}
+  - {fileID: 1672253161}
+  _playerMovement: {fileID: 2120022570}
 --- !u!1001 &268767600
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3701,7 +3724,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2435114361825188922, guid: 6e46ffc6e1d664b6ea12085d0c56480a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 397847407}
+      addedObject: {fileID: 397847410}
   m_SourcePrefab: {fileID: 100100000, guid: 6e46ffc6e1d664b6ea12085d0c56480a, type: 3}
 --- !u!224 &397847404 stripped
 RectTransform:
@@ -3724,7 +3747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &397847407
+--- !u!114 &397847410
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7760,7 +7783,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2435114361825188922, guid: 6e46ffc6e1d664b6ea12085d0c56480a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 932031752}
+      addedObject: {fileID: 932031755}
   m_SourcePrefab: {fileID: 100100000, guid: 6e46ffc6e1d664b6ea12085d0c56480a, type: 3}
 --- !u!224 &932031749 stripped
 RectTransform:
@@ -7783,7 +7806,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &932031752
+--- !u!114 &932031755
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7973,7 +7996,6 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
-  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -8071,18 +8093,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_MaxRayIntersections: 0
---- !u!114 &963194230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ebfe349d00048b5914f8bb8b1ff57dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &980910190
 GameObject:
   m_ObjectHideFlags: 0
@@ -8806,7 +8816,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1117336205}
   - component: {fileID: 1117336208}
-  - component: {fileID: 1117336207}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -8831,19 +8840,6 @@ Transform:
   - {fileID: 745158935}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1117336207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1117336204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 774250d2ac4448ad921cc67c82d6e5d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Value>k__BackingField: 1
 --- !u!114 &1117336208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14996,7 +14992,6 @@ GameObject:
   - component: {fileID: 2120022565}
   - component: {fileID: 2120022569}
   - component: {fileID: 2120022570}
-  - component: {fileID: 2120022572}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -15118,37 +15113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 2120022569}
   _currentCellIndex: 0
-  _cells:
-  - {fileID: 4916563562095251680}
-  - {fileID: 5176959920047206156}
-  - {fileID: 843183416}
-  - {fileID: 620891199}
-  - {fileID: 498335854}
-  - {fileID: 810879951}
-  - {fileID: 1989949715}
-  - {fileID: 268767603}
-  - {fileID: 876814831}
-  - {fileID: 1947616047}
-  - {fileID: 1368849720}
-  - {fileID: 113525971}
-  - {fileID: 26747326}
-  - {fileID: 1135395133}
-  - {fileID: 2057675796}
-  - {fileID: 1672253161}
   _diceRoller: {fileID: 137139605}
---- !u!114 &2120022572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2120022564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 774250d2ac4448ad921cc67c82d6e5d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Value>k__BackingField: 2
 --- !u!1 &2129290953 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1038622409567655100, guid: 70310e52627b1b849bc7ef60122878ff, type: 3}

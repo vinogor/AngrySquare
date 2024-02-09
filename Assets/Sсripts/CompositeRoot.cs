@@ -13,6 +13,14 @@ namespace Sсripts
 {
     public class CompositeRoot : MonoBehaviour
     {
+        [SerializeField] private HealthBar _playerHealthBar;
+        [SerializeField] private HealthBar _enemyHealthBar;
+        [SerializeField] private Player _player;
+        [SerializeField] private Enemy _enemy;
+        [SerializeField] private DiceRoller _diceRoller;
+        [SerializeField] private List<Cell> _cells = new();
+        [SerializeField] private PlayerMovement _playerMovement;
+
         private Dictionary<EffectName, Effect> _playerEffects = new();
         private Dictionary<EffectName, Effect> _enemyEffects = new();
 
@@ -22,53 +30,33 @@ namespace Sсripts
 
             // TODO: вынести числа в константы
 
-            Player player = FindObjectOfType<Player>();
             Health playerHealth = new Health(10, 10);
             Damage playerDamage = new Damage(2);
 
-            Enemy enemy = FindObjectOfType<Enemy>();
             Health enemyHealth = new Health(5, 5);
             Damage enemyDamage = new Damage(1);
-            Vector3 enemyPosition = enemy.GetComponentInChildren<Center>().transform.position;
+            Vector3 enemyPosition = _enemy.GetComponentInChildren<Center>().transform.position;
 
-            DiceRoller diceRoller = FindObjectOfType<DiceRoller>();
+            _playerHealthBar.Initialize(playerHealth);
+            _enemyHealthBar.Initialize(enemyHealth);
 
-            PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
-
-            List<HealthBar> healthBars = FindObjectsByType<HealthBar>(FindObjectsSortMode.None).ToList();
-            List<Cell> cells = FindObjectsByType<Cell>(FindObjectsSortMode.None).ToList();
             List<CellInfo> cellInfos = Resources.LoadAll<CellInfo>("CellsInfo").ToList();
 
-            healthBars.ForEach(healthBar =>
-            {
-                switch (healthBar)
-                {
-                    case PlayerHealthBar:
-                        healthBar.Initialize(playerHealth);
-                        break;
-
-                    case EnemyHealthBar:
-                        healthBar.Initialize(enemyHealth);
-                        break;
-                }
-            });
-
-            cells.ForEach(cell => cell.Initialized());
-            diceRoller.Initialize();
-            
+            _cells.ForEach(cell => cell.Initialized());
+            _diceRoller.Initialize();
 
             // наполнение эффектами
-
             EffectName swordsEffectName = EffectName.Swords;
-            _playerEffects.Add(swordsEffectName, new Swords(enemyHealth, playerDamage, player.transform, enemyPosition));
-            playerMovement.Initialize(_playerEffects, _enemyEffects);
-            
+            _playerEffects.Add(swordsEffectName,
+                new Swords(enemyHealth, playerDamage, _player.transform, enemyPosition));
+            _playerMovement.Initialize(_cells, _playerEffects, _enemyEffects);
+
             CellInfo cellInfo = cellInfos[0];
             Sprite swordsSprite = cellInfo.Sprite;
             int attackAmount = cellInfo.Amount;
 
             // потом в цикле сделать для каждого эффекта 
-            CellsWithoutEffect(cells)
+            CellsWithoutEffect(_cells)
                 .Shuffle()
                 .Take(attackAmount)
                 .ToList()
@@ -79,7 +67,7 @@ namespace Sсripts
                 });
 
             // в самом конце 
-            diceRoller.MakeAvailable();
+            _diceRoller.MakeAvailable();
         }
 
         private static List<Cell> CellsWithoutEffect(List<Cell> cells)
