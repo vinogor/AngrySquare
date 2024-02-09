@@ -13,12 +13,15 @@ namespace Sсripts
 {
     public class CompositeRoot : MonoBehaviour
     {
+        private Dictionary<EffectName, Effect> _playerEffects = new();
+        private Dictionary<EffectName, Effect> _enemyEffects = new();
+
         private void Start()
         {
             Debug.Log("CompositeRoot started");
 
             // TODO: вынести числа в константы
-            
+
             Player player = FindObjectOfType<Player>();
             Health playerHealth = new Health(10, 10);
             Damage playerDamage = new Damage(2);
@@ -29,6 +32,8 @@ namespace Sсripts
             Vector3 enemyPosition = enemy.GetComponentInChildren<Center>().transform.position;
 
             DiceRoller diceRoller = FindObjectOfType<DiceRoller>();
+
+            PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
 
             List<HealthBar> healthBars = FindObjectsByType<HealthBar>(FindObjectsSortMode.None).ToList();
             List<Cell> cells = FindObjectsByType<Cell>(FindObjectsSortMode.None).ToList();
@@ -47,21 +52,19 @@ namespace Sсripts
                         break;
                 }
             });
-            
+
             cells.ForEach(cell => cell.Initialized());
             diceRoller.Initialize();
+            
 
             // наполнение эффектами
+
+            EffectName swordsEffectName = EffectName.Swords;
+            _playerEffects.Add(swordsEffectName, new Swords(enemyHealth, playerDamage, player.transform, enemyPosition));
+            playerMovement.Initialize(_playerEffects, _enemyEffects);
+            
             CellInfo cellInfo = cellInfos[0];
-
-            Effect effect = null;
-
-            if (cellInfo.EffectName == EffectName.Swords)
-            {
-                effect = new Swords(enemyHealth, playerDamage, player.transform, enemyPosition);
-            }
-
-            Sprite attackSprite = cellInfo.Sprite;
+            Sprite swordsSprite = cellInfo.Sprite;
             int attackAmount = cellInfo.Amount;
 
             // потом в цикле сделать для каждого эффекта 
@@ -71,8 +74,8 @@ namespace Sсripts
                 .ToList()
                 .ForEach(cell =>
                 {
-                    cell.SetEffect(effect);
-                    cell.SetSprite(attackSprite);
+                    cell.SetEffectName(swordsEffectName);
+                    cell.SetSprite(swordsSprite);
                 });
 
             // в самом конце 

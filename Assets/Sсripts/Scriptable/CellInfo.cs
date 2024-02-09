@@ -12,10 +12,11 @@ namespace Sсripts.Scriptable
 
     public enum EffectName
     {
+        NotSet,
         Swords,
         Book,
         Portal,
-        Unknown,
+        Question,
         Drop,
         Plus
     }

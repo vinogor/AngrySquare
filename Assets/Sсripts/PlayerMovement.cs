@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using DG.Tweening;
 using Sсripts.Dice;
 using Sсripts.Model;
+using Sсripts.Model.Effects;
+using Sсripts.Scriptable;
 using UnityEngine;
 
 namespace Sсripts
@@ -12,6 +14,16 @@ namespace Sсripts
         [SerializeField] private int _currentCellIndex;
         [SerializeField] private List<Cell> _cells = new();
         [SerializeField] private DiceRoller _diceRoller;
+
+        private Dictionary<EffectName, Effect> _playerEffects;
+        private Dictionary<EffectName, Effect> _enemyEffects;
+
+        public void Initialize(Dictionary<EffectName, Effect> playerEffects,
+            Dictionary<EffectName, Effect> enemyEffects)
+        {
+            _playerEffects = playerEffects;
+            _enemyEffects = enemyEffects;
+        }
 
         private void Awake()
         {
@@ -32,7 +44,8 @@ namespace Sсripts
         {
             if (amountMoves == 0)
             {
-                _cells[_currentCellIndex].ActivateEffect();
+                EffectName effectName = _cells[_currentCellIndex].EffectName;
+                _playerEffects[effectName].Activate();
                 return;
             }
 
