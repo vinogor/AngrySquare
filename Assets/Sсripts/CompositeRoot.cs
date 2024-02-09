@@ -7,6 +7,7 @@ using Sсripts.Hp;
 using Sсripts.Model;
 using Sсripts.Model.Effects;
 using Sсripts.Scriptable;
+using Sсripts.StateMachine;
 using Sсripts.Utility;
 using UnityEngine;
 
@@ -38,6 +39,15 @@ namespace Sсripts
             Debug.Log("CompositeRoot started");
 
             // TODO: вынести числа в константы
+
+            FiniteStateMachine stateMachine = new FiniteStateMachine();
+            stateMachine.AddState(new InitializeFsmState(stateMachine));
+            stateMachine.AddState(new PlayerTurnFsmState(stateMachine));
+            stateMachine.AddState(new EnemyDefeatFsmState(stateMachine));
+            stateMachine.AddState(new EnemyTurnFsmState(stateMachine));
+            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine));
+            stateMachine.AddState(new EndOfGameFsmState(stateMachine));
+            stateMachine.SetState<InitializeFsmState>();
 
             Health playerHealth = new Health(10, 10);
             Damage playerDamage = new Damage(2);
