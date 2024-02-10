@@ -5,13 +5,13 @@ namespace Sсripts.Animation
 {
     public class DamageTaker : MonoBehaviour
     {
+        [SerializeField] private ParticleSystem _damageParticleSystem;
+        
         private Health _health;
-        private ParticleSystem _damageParticleSystem;
 
-        public void Initialize(Health health, ParticleSystem damageParticleSystem)
+        public void Initialize(Health health )
         {
             _health = health;
-            _damageParticleSystem = damageParticleSystem;
             _health.DamageReceived += OnDamageReceived;
         }
 
