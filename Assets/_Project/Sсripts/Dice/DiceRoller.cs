@@ -94,6 +94,11 @@ namespace _Project.Sсripts.Dice
         {
             _canPlayerThrow = true;
         }
+        
+        public void MakeUnavailable()
+        {
+            _canPlayerThrow = false;
+        }
 
         private void RollDice()
         {

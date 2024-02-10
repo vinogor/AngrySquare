@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _Project.Sсripts.Animation
 {
-    public class TargetRotator : MonoBehaviour
+    public class EnemyAimRotator : MonoBehaviour
     {
         // TODO: вынести числа в настройки
         

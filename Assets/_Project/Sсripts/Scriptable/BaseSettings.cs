@@ -9,5 +9,7 @@ namespace _Project.Sсripts.Scriptable
         [field: SerializeField] public float JumpDuration = 0.5f;
         
         [field: SerializeField] public float AnimationCellDuration = 0.2f;
+
+        [field: SerializeField] public float EnemyHeight = 0.5f; // пока это радиус сферы
     }
 }

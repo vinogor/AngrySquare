@@ -2,11 +2,11 @@ namespace _Project.Sсripts.StateMachine
 {
     public abstract class FsmState
     {
-        protected readonly FiniteStateMachine _finiteStateMachine;
+        protected readonly FiniteStateMachine FiniteStateMachine;
 
         protected FsmState(FiniteStateMachine finiteStateMachine)
         {
-            _finiteStateMachine = finiteStateMachine;
+            FiniteStateMachine = finiteStateMachine;
         }
 
         public virtual void Enter()

@@ -11,7 +11,7 @@ namespace _Project.Sсripts.Dice
         {
             int number = int.Parse(name);
             DiceNumberDetected?.Invoke(number);
-            Debug.Log("Invoke DiceNumberDetected = " + number);
+            // Debug.Log("Invoke DiceNumberDetected = " + number);
         }
     }
 }

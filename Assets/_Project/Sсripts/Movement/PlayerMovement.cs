@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
+using _Project.Sсripts.Dice;
+using _Project.Sсripts.Model;
+using _Project.Sсripts.Model.Effects;
+using _Project.Sсripts.Scriptable;
 using DG.Tweening;
-using Sсripts.Dice;
-using Sсripts.Model;
-using Sсripts.Model.Effects;
-using Sсripts.Scriptable;
 using UnityEngine;
 
 namespace _Project.Sсripts.Movement
@@ -16,17 +17,18 @@ namespace _Project.Sсripts.Movement
 
         private List<Cell> _cells;
         private Dictionary<EffectName, Effect> _playerEffects;
-        private Dictionary<EffectName, Effect> _enemyEffects;
         private BaseSettings _baseSettings;
 
         public void Initialize(List<Cell> cells, Dictionary<EffectName, Effect> playerEffects,
-            Dictionary<EffectName, Effect> enemyEffects, BaseSettings baseSettings)
+            BaseSettings baseSettings)
         {
             _cells = cells;
             _playerEffects = playerEffects;
-            _enemyEffects = enemyEffects;
             _baseSettings = baseSettings;
         }
+
+        public event Action TurnCompleted;
+        public event Action<Cell> CurrentCell;
 
         private void Awake()
         {
@@ -40,6 +42,7 @@ namespace _Project.Sсripts.Movement
 
         private void OnPlayerMoveAmountSet(int amountMoves)
         {
+            _diceRoller.MakeUnavailable();
             Move(amountMoves);
         }
 
@@ -48,7 +51,8 @@ namespace _Project.Sсripts.Movement
             if (amountMoves == 0)
             {
                 EffectName effectName = _cells[_currentCellIndex].EffectName;
-                _playerEffects[effectName].Activate();
+                _playerEffects[effectName].Activate(() => TurnCompleted?.Invoke());
+                CurrentCell?.Invoke(_cells[_currentCellIndex]);
                 return;
             }
 

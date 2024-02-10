@@ -1,15 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
-using Sсripts.Animation;
-using Sсripts.Dice;
-using Sсripts.Dmg;
-using Sсripts.Hp;
-using Sсripts.Model;
-using Sсripts.Model.Effects;
-using Sсripts.Scriptable;
-using Sсripts.StateMachine;
-using Sсripts.Utility;
+using _Project.Sсripts.Animation;
+using _Project.Sсripts.Dice;
+using _Project.Sсripts.Dmg;
+using _Project.Sсripts.Hp;
+using _Project.Sсripts.Model;
+using _Project.Sсripts.Model.Effects;
+using _Project.Sсripts.Movement;
+using _Project.Sсripts.Scriptable;
+using _Project.Sсripts.StateMachine;
+using _Project.Sсripts.StateMachine.States;
+using _Project.Sсripts.Utility;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Sсripts
 {
@@ -27,11 +30,12 @@ namespace Sсripts
         [SerializeField] private DiceRoller _diceRoller;
         [SerializeField] private List<Cell> _cells = new();
         [SerializeField] private PlayerMovement _playerMovement;
+        [SerializeField] private EnemyMovement _enemyMovement;
 
         [SerializeField] private DamageTaker _playerDamageTaker;
         [SerializeField] private DamageTaker _enemyDamageTaker;
         
-        [SerializeField] private Target _target;
+        [FormerlySerializedAs("_target")] [SerializeField] private EnemyAim enemyAim;
 
         private Dictionary<EffectName, Effect> _playerEffects = new();
         private Dictionary<EffectName, Effect> _enemyEffects = new();
@@ -43,13 +47,12 @@ namespace Sсripts
             // TODO: вынести числа в константы
 
             FiniteStateMachine stateMachine = new FiniteStateMachine();
-            stateMachine.AddState(new InitializeFsmState(stateMachine));
-            stateMachine.AddState(new PlayerTurnFsmState(stateMachine));
-            stateMachine.AddState(new EnemyDefeatFsmState(stateMachine));
-            stateMachine.AddState(new EnemyTurnFsmState(stateMachine));
-            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine));
+            // stateMachine.AddState(new InitializeFsmState(stateMachine));
+            stateMachine.AddState(new PlayerTurnFsmState(stateMachine, _diceRoller, _playerMovement));
+            // stateMachine.AddState(new EnemyDefeatFsmState(stateMachine));
+            stateMachine.AddState(new EnemyTurnFsmState(stateMachine, _enemyMovement));
+            // stateMachine.AddState(new PlayerDefeatFsmState(stateMachine));
             stateMachine.AddState(new EndOfGameFsmState(stateMachine));
-            stateMachine.SetState<InitializeFsmState>();
 
             Health playerHealth = new Health(10, 10);
             Damage playerDamage = new Damage(2);
@@ -65,11 +68,19 @@ namespace Sсripts
 
             _cells.ForEach(cell => cell.Initialized());
             _diceRoller.Initialize();
+            
+            EnemyAimToCellMover enemyAimToCellMover = new EnemyAimToCellMover(_cells, enemyAim);
+            Cell cellForAim = enemyAimToCellMover.SetToNewRandomCell();
 
             // наполнение эффектами
             EffectName swordsEffectName = EffectName.Swords;
-            _playerEffects.Add(swordsEffectName, new Swords(enemyHealth, playerDamage, _player.transform, enemyPosition, _baseSettings));
-            _playerMovement.Initialize(_cells, _playerEffects, _enemyEffects, _baseSettings);
+            _playerEffects.Add(swordsEffectName, new PlayerSwords(enemyHealth, playerDamage, _player.transform, enemyPosition, _baseSettings));
+            _playerMovement.Initialize(_cells, _playerEffects, _baseSettings);
+
+            EnemySwords enemySwords = new EnemySwords(_enemy.transform, cellForAim, playerHealth, enemyDamage, _playerMovement, _baseSettings);
+            enemySwords.Initialize();
+            _enemyEffects.Add(swordsEffectName, enemySwords);
+            _enemyMovement.Initialize(cellForAim, _enemyEffects, enemyAimToCellMover);
 
             CellInfo cellInfo = cellInfos[0];
             Sprite swordsSprite = cellInfo.Sprite;
@@ -89,13 +100,11 @@ namespace Sсripts
             _playerDamageTaker.Initialize(playerHealth);
             _enemyDamageTaker.Initialize(enemyHealth);
 
-            // установим прицел врага
-            Cell cellForTarget = _cells.Shuffle().Take(1).ToList()[0];
-            _target.transform.position = cellForTarget.Center() + Vector3.up * 0.03f;
-            _target.SetActive();
+
 
             // в самом конце 
-            _diceRoller.MakeAvailable();
+            
+            stateMachine.SetState<PlayerTurnFsmState>();
         }
 
         private static List<Cell> CellsWithoutEffect(List<Cell> cells)

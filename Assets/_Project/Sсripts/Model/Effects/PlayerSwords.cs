@@ -7,15 +7,17 @@ using UnityEngine;
 
 namespace _Project.Sсripts.Model.Effects
 {
-    public class Swords : Effect
+    public class PlayerSwords : Effect
     {
         private Health _enemyHealth;
         private Damage _playerDamage;
 
         private Transform _playerTransform;
         private BaseSettings _baseSettings;
+        private Vector3 _enemyPosition;
 
-        public Swords(Health enemyHealth, Damage playerDamage, Transform playerTransform, Vector3 enemyPosition, BaseSettings baseSettings)
+        public PlayerSwords(Health enemyHealth, Damage playerDamage, Transform playerTransform, Vector3 enemyPosition,
+            BaseSettings baseSettings)
         {
             _enemyHealth = enemyHealth ?? throw new NullReferenceException("enemyHealth cant be null");
             _playerDamage = playerDamage ?? throw new NullReferenceException("playerDamage cant be null");
@@ -26,9 +28,7 @@ namespace _Project.Sсripts.Model.Effects
             _baseSettings = baseSettings;
         }
 
-        private Vector3 _enemyPosition;
-
-        public override void Activate()
+        public override void Activate(Action callNextTurn)
         {
             Debug.Log("Effect - Swords - Activate");
 
@@ -43,7 +43,8 @@ namespace _Project.Sсripts.Model.Effects
                     _enemyHealth.TakeDamage(playerDamage);
                     _playerTransform
                         .DOJump(startPlayerPosition, _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
-                        .SetEase(Ease.Linear);
+                        .SetEase(Ease.Linear)
+                        .OnComplete(callNextTurn.Invoke);
                 });
         }
     }
