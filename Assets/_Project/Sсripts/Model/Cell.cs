@@ -1,9 +1,9 @@
 using System;
-using Sсripts.Model.Effects;
-using Sсripts.Scriptable;
+using _Project.Sсripts.Model.Effects;
+using _Project.Sсripts.Scriptable;
 using UnityEngine;
 
-namespace Sсripts.Model
+namespace _Project.Sсripts.Model
 {
     public class Cell : MonoBehaviour
     {

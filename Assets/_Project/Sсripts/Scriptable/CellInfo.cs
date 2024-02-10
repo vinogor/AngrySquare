@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Sсripts.Scriptable
+namespace _Project.Sсripts.Scriptable
 {
     [CreateAssetMenu(fileName = "CellInfo", menuName = "Gameplay/CellInfo")]
     public class CellInfo : ScriptableObject

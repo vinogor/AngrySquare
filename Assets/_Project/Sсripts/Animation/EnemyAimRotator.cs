@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace Sсripts.Animation
+namespace _Project.Sсripts.Animation
 {
     public class TargetRotator : MonoBehaviour
     {

@@ -1,11 +1,11 @@
 using System;
 using DG.Tweening;
-using Sсripts.Dmg;
-using Sсripts.Hp;
-using Sсripts.Scriptable;
+using _Project.Sсripts.Dmg;
+using _Project.Sсripts.Hp;
+using _Project.Sсripts.Scriptable;
 using UnityEngine;
 
-namespace Sсripts.Model.Effects
+namespace _Project.Sсripts.Model.Effects
 {
     public class Swords : Effect
     {

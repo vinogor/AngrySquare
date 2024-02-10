@@ -1,4 +1,4 @@
-namespace Sсripts.StateMachine
+namespace _Project.Sсripts.StateMachine
 {
     public abstract class FsmState
     {

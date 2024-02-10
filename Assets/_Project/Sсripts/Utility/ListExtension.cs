@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Sсripts.Utility
+namespace _Project.Sсripts.Utility
 {
     public static class ListExtension
     {

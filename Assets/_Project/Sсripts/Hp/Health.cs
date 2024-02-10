@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Sсripts.Hp
+namespace _Project.Sсripts.Hp
 {
     public class Health
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Sсripts.Model
+namespace _Project.Sсripts.Model
 {
     public class Spell : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Sсripts.Dmg
+namespace _Project.Sсripts.Dmg
 {
     public class Damage
     {

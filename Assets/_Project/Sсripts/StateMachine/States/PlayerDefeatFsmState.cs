@@ -1,4 +1,4 @@
-namespace Sсripts.StateMachine
+namespace _Project.Sсripts.StateMachine.States
 {
     public class PlayerDefeatFsmState : FsmState
     {

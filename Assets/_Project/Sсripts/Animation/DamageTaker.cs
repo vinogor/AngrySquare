@@ -1,7 +1,7 @@
-using Sсripts.Hp;
+using _Project.Sсripts.Hp;
 using UnityEngine;
 
-namespace Sсripts.Animation
+namespace _Project.Sсripts.Animation
 {
     public class DamageTaker : MonoBehaviour
     {

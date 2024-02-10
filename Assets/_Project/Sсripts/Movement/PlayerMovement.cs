@@ -6,7 +6,7 @@ using Sсripts.Model.Effects;
 using Sсripts.Scriptable;
 using UnityEngine;
 
-namespace Sсripts
+namespace _Project.Sсripts.Movement
 {
     public class PlayerMovement : MonoBehaviour
     {

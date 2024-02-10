@@ -1,4 +1,6 @@
-namespace Sсripts.Model.Effects
+using System;
+
+namespace _Project.Sсripts.Model.Effects
 {
     public abstract class Effect
     {

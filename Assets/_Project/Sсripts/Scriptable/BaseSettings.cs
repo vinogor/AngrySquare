@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Sсripts.Scriptable
+namespace _Project.Sсripts.Scriptable
 {
     [CreateAssetMenu(fileName = "BaseSettings", menuName = "Gameplay/BaseSettings")]
     public class BaseSettings : ScriptableObject
