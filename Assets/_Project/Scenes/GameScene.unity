@@ -2557,6 +2557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c22425e879ea124d85d2533c5baab9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _baseSettings: {fileID: 11400000, guid: ce89b7df50407fc489fedae7da58a9a9, type: 2}
   _player: {fileID: 2120022569}
   _enemy: {fileID: 1117336208}
   _playerHealthBar: {fileID: 932031755}
@@ -2582,8 +2583,6 @@ MonoBehaviour:
   _playerMovement: {fileID: 2120022570}
   _playerDamageTaker: {fileID: 2120022571}
   _enemyDamageTaker: {fileID: 1117336209}
-  _playerDamageParticleSystem: {fileID: 2135155825}
-  _enemyDamageParticleSystem: {fileID: 1951618898}
 --- !u!1001 &268767600
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8869,6 +8868,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af733c728fbc43999b444796d0d04aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _damageParticleSystem: {fileID: 1951618898}
 --- !u!1 &1131101866 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1038622409567655100, guid: 70310e52627b1b849bc7ef60122878ff, type: 3}
@@ -15260,6 +15260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af733c728fbc43999b444796d0d04aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _damageParticleSystem: {fileID: 2135155825}
 --- !u!1 &2129290953 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1038622409567655100, guid: 70310e52627b1b849bc7ef60122878ff, type: 3}

@@ -17,13 +17,15 @@ namespace Sсripts
         private List<Cell> _cells;
         private Dictionary<EffectName, Effect> _playerEffects;
         private Dictionary<EffectName, Effect> _enemyEffects;
+        private BaseSettings _baseSettings;
 
         public void Initialize(List<Cell> cells, Dictionary<EffectName, Effect> playerEffects,
-            Dictionary<EffectName, Effect> enemyEffects)
+            Dictionary<EffectName, Effect> enemyEffects, BaseSettings baseSettings)
         {
             _cells = cells;
             _playerEffects = playerEffects;
             _enemyEffects = enemyEffects;
+            _baseSettings = baseSettings;
         }
 
         private void Awake()
@@ -56,7 +58,7 @@ namespace Sсripts
 
             transform
                 .DOJump(nextCellCenter + Vector3.up * transform.lossyScale.y,
-                    Constants.JumpPower, 1, Constants.JumpDuration)
+                    _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
                 .SetEase(Ease.Linear)
                 .OnComplete(() =>
                 {
@@ -67,7 +69,8 @@ namespace Sсripts
 
         private void AnimateCell(Cell nextCell)
         {
-            nextCell.transform.DOMoveY(nextCell.transform.position.y - 0.1f, 0.2f).SetLoops(2, LoopType.Yoyo);
+            nextCell.transform.DOMoveY(nextCell.transform.position.y - 0.1f, _baseSettings.AnimationCellDuration)
+                .SetLoops(2, LoopType.Yoyo);
         }
     }
 }

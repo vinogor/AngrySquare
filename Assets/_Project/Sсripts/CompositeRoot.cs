@@ -17,6 +17,8 @@ namespace Sсripts
     {
         // TODO: разделить на группы поля
 
+        [SerializeField] private BaseSettings _baseSettings;
+
         [SerializeField] private Player _player;
         [SerializeField] private Enemy _enemy;
 
@@ -64,9 +66,8 @@ namespace Sсripts
 
             // наполнение эффектами
             EffectName swordsEffectName = EffectName.Swords;
-            _playerEffects.Add(swordsEffectName,
-                new Swords(enemyHealth, playerDamage, _player.transform, enemyPosition));
-            _playerMovement.Initialize(_cells, _playerEffects, _enemyEffects);
+            _playerEffects.Add(swordsEffectName, new Swords(enemyHealth, playerDamage, _player.transform, enemyPosition, _baseSettings));
+            _playerMovement.Initialize(_cells, _playerEffects, _enemyEffects, _baseSettings);
 
             CellInfo cellInfo = cellInfos[0];
             Sprite swordsSprite = cellInfo.Sprite;

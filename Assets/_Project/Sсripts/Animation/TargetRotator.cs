@@ -5,6 +5,8 @@ namespace Sсripts.Animation
 {
     public class TargetRotator : MonoBehaviour
     {
+        // TODO: вынести числа в настройки
+        
         private void Start()
         {
             float duration = 1f;
