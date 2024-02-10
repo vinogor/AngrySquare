@@ -30,6 +30,8 @@ namespace Sсripts
 
         [SerializeField] private DamageTaker _playerDamageTaker;
         [SerializeField] private DamageTaker _enemyDamageTaker;
+        
+        [SerializeField] private Target _target;
 
         private Dictionary<EffectName, Effect> _playerEffects = new();
         private Dictionary<EffectName, Effect> _enemyEffects = new();
@@ -86,6 +88,11 @@ namespace Sсripts
 
             _playerDamageTaker.Initialize(playerHealth);
             _enemyDamageTaker.Initialize(enemyHealth);
+
+            // установим прицел врага
+            Cell cellForTarget = _cells.Shuffle().Take(1).ToList()[0];
+            _target.transform.position = cellForTarget.Center() + Vector3.up * 0.03f;
+            _target.SetActive();
 
             // в самом конце 
             _diceRoller.MakeAvailable();
