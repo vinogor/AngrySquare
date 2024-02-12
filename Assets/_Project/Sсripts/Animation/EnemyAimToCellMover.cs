@@ -23,7 +23,7 @@ namespace _Project.Sсripts.Animation
 
         public Cell SetToNewRandomCell()
         {
-            Cell targetCell = _cells.Shuffle().Take(1).ToList()[0];
+            Cell targetCell = _cells.Shuffle().First();
             _enemyAim.transform.position = targetCell.Center() + Vector3.up * 0.03f;
             return targetCell;
         }
