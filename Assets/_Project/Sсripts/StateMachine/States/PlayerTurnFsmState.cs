@@ -1,4 +1,5 @@
 using _Project.Sсripts.Dice;
+using _Project.Sсripts.Hp;
 using _Project.Sсripts.Movement;
 using UnityEngine.Assertions;
 
@@ -8,17 +9,20 @@ namespace _Project.Sсripts.StateMachine.States
     {
         private readonly DiceRoller _diceRoller;
         private readonly PlayerMovement _playerMovement;
+        private readonly Health _enemyHealth;
 
         public PlayerTurnFsmState(
-            FiniteStateMachine finiteStateMachine, DiceRoller diceRoller, PlayerMovement playerMovement)
+            FiniteStateMachine finiteStateMachine, DiceRoller diceRoller, PlayerMovement playerMovement, Health enemyHealth)
             : base(finiteStateMachine)
         {
             Assert.IsNotNull(finiteStateMachine);
             Assert.IsNotNull(diceRoller);
             Assert.IsNotNull(playerMovement);
+            Assert.IsNotNull(enemyHealth);
 
             _diceRoller = diceRoller;
             _playerMovement = playerMovement;
+            _enemyHealth = enemyHealth;
         }
 
         public override void Enter()
@@ -36,7 +40,10 @@ namespace _Project.Sсripts.StateMachine.States
 
         private void GoToNextState()
         {
-            FiniteStateMachine.SetState<EnemyTurnFsmState>();
+            if (_enemyHealth.IsAlive)
+                FiniteStateMachine.SetState<EnemyTurnFsmState>();
+            else
+                FiniteStateMachine.SetState<EnemyDefeatFsmState>();
         }
     }
 }

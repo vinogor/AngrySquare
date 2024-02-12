@@ -1,3 +1,4 @@
+using _Project.Sсripts.Hp;
 using _Project.Sсripts.Movement;
 using UnityEngine.Assertions;
 
@@ -6,13 +7,17 @@ namespace _Project.Sсripts.StateMachine.States
     public class EnemyTurnFsmState : FsmState
     {
         private readonly EnemyMovement _enemyMovement;
+        private readonly Health _playerHealth;
 
-        public EnemyTurnFsmState(FiniteStateMachine finiteStateMachine, EnemyMovement enemyMovement) : base(
+        public EnemyTurnFsmState(FiniteStateMachine finiteStateMachine, EnemyMovement enemyMovement,
+            Health playerHealth) : base(
             finiteStateMachine)
         {
             Assert.IsNotNull(finiteStateMachine);
             Assert.IsNotNull(enemyMovement);
+            Assert.IsNotNull(playerHealth);
             _enemyMovement = enemyMovement;
+            _playerHealth = playerHealth;
         }
 
         public override void Enter()
@@ -30,7 +35,10 @@ namespace _Project.Sсripts.StateMachine.States
 
         private void GoToNextState()
         {
-            FiniteStateMachine.SetState<PlayerTurnFsmState>();
+            if (_playerHealth.IsAlive)
+                FiniteStateMachine.SetState<PlayerTurnFsmState>();
+            else
+                FiniteStateMachine.SetState<PlayerDefeatFsmState>();
         }
     }
 }

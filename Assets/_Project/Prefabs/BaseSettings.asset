@@ -16,3 +16,9 @@ MonoBehaviour:
   JumpDuration: 0.5
   AnimationCellDuration: 0.2
   EnemyHeight: 0.2
+  PlayerStartHealth: 10
+  PlayerMaxHealth: 10
+  PlayerDamageValue: 2
+  EnemyStartHealth: 5
+  EnemyMaxHealth: 5
+  EnemyDamageValue: 5
