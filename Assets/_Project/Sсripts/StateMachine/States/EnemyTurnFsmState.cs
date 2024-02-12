@@ -1,4 +1,5 @@
 using _Project.Sсripts.Movement;
+using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.StateMachine.States
 {
@@ -9,6 +10,8 @@ namespace _Project.Sсripts.StateMachine.States
         public EnemyTurnFsmState(FiniteStateMachine finiteStateMachine, EnemyMovement enemyMovement) : base(
             finiteStateMachine)
         {
+            Assert.IsNotNull(finiteStateMachine);
+            Assert.IsNotNull(enemyMovement);
             _enemyMovement = enemyMovement;
         }
 

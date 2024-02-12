@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.StateMachine
 {
@@ -8,6 +9,7 @@ namespace _Project.Sсripts.StateMachine
 
         protected FsmState(FiniteStateMachine finiteStateMachine)
         {
+            Assert.IsNotNull(finiteStateMachine);
             FiniteStateMachine = finiteStateMachine;
         }
 

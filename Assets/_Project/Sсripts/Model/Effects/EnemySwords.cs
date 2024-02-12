@@ -5,6 +5,7 @@ using _Project.Sсripts.Movement;
 using _Project.Sсripts.Scriptable;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.Model.Effects
 {
@@ -16,12 +17,18 @@ namespace _Project.Sсripts.Model.Effects
         private Damage _enemyDamage;
         private PlayerMovement _playerMovement;
         private BaseSettings _baseSettings;
-
         private Cell _playerCell;
 
         public EnemySwords(Transform enemyTransform, Cell targetCell, Health playerHealth,
             Damage enemyDamage, PlayerMovement playerMovement, BaseSettings baseSettings)
         {
+            Assert.IsNotNull(enemyTransform);
+            Assert.IsNotNull(targetCell);
+            Assert.IsNotNull(playerHealth);
+            Assert.IsNotNull(enemyDamage);
+            Assert.IsNotNull(playerMovement);
+            Assert.IsNotNull(baseSettings);
+            
             _enemyTransform = enemyTransform;
             _targetCell = targetCell;
             _playerHealth = playerHealth;
@@ -42,10 +49,10 @@ namespace _Project.Sсripts.Model.Effects
             _playerCell = playerCell;
         }
 
-        public override void Activate(Action callNextTurn)
+        public override void Activate(Action onComplete)
         {
-            Debug.Log("Effect - Swords - Activate");
-
+            base.Activate(null);
+            
             Vector3 startEnemyPosition = _enemyTransform.position;
 
             _enemyTransform
@@ -60,11 +67,11 @@ namespace _Project.Sсripts.Model.Effects
                     {
                         // TODO: тройной урон - как то выделить анимацией по особенному
                         _playerHealth.TakeDamage(enemyDamage * 3);
-                        JumpToBase(callNextTurn, startEnemyPosition);
+                        JumpToBase(onComplete, startEnemyPosition);
                     }
                     else
                     {
-                        JumpOnPlayer(callNextTurn, enemyDamage, startEnemyPosition);
+                        JumpOnPlayer(onComplete, enemyDamage, startEnemyPosition);
                     }
                 });
         }

@@ -5,6 +5,7 @@ using _Project.Sсripts.Model;
 using _Project.Sсripts.Model.Effects;
 using _Project.Sсripts.Scriptable;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.Movement
 {
@@ -14,12 +15,16 @@ namespace _Project.Sсripts.Movement
         private Dictionary<EffectName, Effect> _enemyEffects;
         private EnemyAimToCellMover _aimMover;
 
-        public void Initialize(Cell targetCell, Dictionary<EffectName, Effect> enemyEffects, EnemyAimToCellMover aimMover)
+        public void Initialize(Cell targetCell, Dictionary<EffectName, Effect> enemyEffects,
+            EnemyAimToCellMover aimMover)
         {
+            Assert.IsNotNull(targetCell);
+            Assert.IsNotNull(enemyEffects);
+            Assert.IsNotNull(aimMover);
+
             _targetCell = targetCell;
             _enemyEffects = enemyEffects;
             _aimMover = aimMover;
-
         }
 
         public event Action TurnCompleted;

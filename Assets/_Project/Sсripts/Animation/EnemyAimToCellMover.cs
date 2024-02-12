@@ -3,6 +3,7 @@ using System.Linq;
 using _Project.Sсripts.Model;
 using _Project.Sсripts.Utility;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.Animation
 {
@@ -13,6 +14,9 @@ namespace _Project.Sсripts.Animation
 
         public EnemyAimToCellMover(List<Cell> cells, EnemyAim enemyAim)
         {
+            Assert.IsNotNull(cells);
+            Assert.IsNotNull(enemyAim);
+            
             _cells = cells;
             _enemyAim = enemyAim;
         }

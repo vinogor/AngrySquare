@@ -6,12 +6,12 @@ using _Project.Sсripts.Model.Effects;
 using _Project.Sсripts.Scriptable;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.Movement
 {
     public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField] private Player _player;
         [SerializeField] private int _currentCellIndex;
         [SerializeField] private DiceRoller _diceRoller;
 
@@ -22,6 +22,11 @@ namespace _Project.Sсripts.Movement
         public void Initialize(List<Cell> cells, Dictionary<EffectName, Effect> playerEffects,
             BaseSettings baseSettings)
         {
+            Assert.IsNotNull(_diceRoller);
+            Assert.IsNotNull(cells);
+            Assert.IsNotNull(playerEffects);
+            Assert.IsNotNull(_baseSettings);
+
             _cells = cells;
             _playerEffects = playerEffects;
             _baseSettings = baseSettings;

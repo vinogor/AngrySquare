@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using Random = UnityEngine.Random;
 
@@ -24,11 +25,17 @@ namespace _Project.Sсripts.Dice
 
         public void Initialize()
         {
+            Assert.IsNotNull(_camera);
+           
             _rigidbody = GetComponent<Rigidbody>();
             _detectors = GetComponentsInChildren<FaceDetector>().ToList();
+            
+            Assert.IsNotNull(_rigidbody);
+            Assert.IsNotNull(_detectors);
 
             foreach (FaceDetector detector in _detectors)
             {
+                Assert.IsNotNull(detector);
                 detector.DiceNumberDetected += OnDiceNumberDetected;
             }
 

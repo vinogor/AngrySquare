@@ -1,6 +1,6 @@
 using _Project.Sсripts.Dice;
 using _Project.Sсripts.Movement;
-using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.StateMachine.States
 {
@@ -13,6 +13,10 @@ namespace _Project.Sсripts.StateMachine.States
             FiniteStateMachine finiteStateMachine, DiceRoller diceRoller, PlayerMovement playerMovement)
             : base(finiteStateMachine)
         {
+            Assert.IsNotNull(finiteStateMachine);
+            Assert.IsNotNull(diceRoller);
+            Assert.IsNotNull(playerMovement);
+
             _diceRoller = diceRoller;
             _playerMovement = playerMovement;
         }

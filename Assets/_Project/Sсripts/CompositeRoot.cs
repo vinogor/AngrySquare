@@ -12,9 +12,9 @@ using _Project.Sсripts.StateMachine;
 using _Project.Sсripts.StateMachine.States;
 using _Project.Sсripts.Utility;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Assertions;
 
-namespace Sсripts
+namespace _Project.Sсripts
 {
     public class CompositeRoot : MonoBehaviour
     {
@@ -34,8 +34,8 @@ namespace Sсripts
 
         [SerializeField] private DamageTaker _playerDamageTaker;
         [SerializeField] private DamageTaker _enemyDamageTaker;
-        
-        [FormerlySerializedAs("_target")] [SerializeField] private EnemyAim enemyAim;
+
+        [SerializeField] private EnemyAim enemyAim;
 
         private Dictionary<EffectName, Effect> _playerEffects = new();
         private Dictionary<EffectName, Effect> _enemyEffects = new();
@@ -43,6 +43,18 @@ namespace Sсripts
         private void Start()
         {
             Debug.Log("CompositeRoot started");
+
+            Assert.IsNotNull(_baseSettings);
+            Assert.IsNotNull(_player);
+            Assert.IsNotNull(_enemy);
+            Assert.IsNotNull(_playerHealthBar);
+            Assert.IsNotNull(_enemyHealthBar);
+            Assert.IsNotNull(_diceRoller);
+            Assert.IsNotNull(_playerMovement);
+            Assert.IsNotNull(_enemyMovement);
+            Assert.IsNotNull(_playerDamageTaker);
+            Assert.IsNotNull(_enemyDamageTaker);
+            Assert.IsNotNull(enemyAim);
 
             // TODO: вынести числа в константы
 
@@ -68,16 +80,18 @@ namespace Sсripts
 
             _cells.ForEach(cell => cell.Initialized());
             _diceRoller.Initialize();
-            
+
             EnemyAimToCellMover enemyAimToCellMover = new EnemyAimToCellMover(_cells, enemyAim);
             Cell cellForAim = enemyAimToCellMover.SetToNewRandomCell();
 
             // наполнение эффектами
             EffectName swordsEffectName = EffectName.Swords;
-            _playerEffects.Add(swordsEffectName, new PlayerSwords(enemyHealth, playerDamage, _player.transform, enemyPosition, _baseSettings));
+            _playerEffects.Add(swordsEffectName,
+                new PlayerSwords(enemyHealth, playerDamage, _player.transform, enemyPosition, _baseSettings));
             _playerMovement.Initialize(_cells, _playerEffects, _baseSettings);
 
-            EnemySwords enemySwords = new EnemySwords(_enemy.transform, cellForAim, playerHealth, enemyDamage, _playerMovement, _baseSettings);
+            EnemySwords enemySwords = new EnemySwords(_enemy.transform, cellForAim, playerHealth, enemyDamage,
+                _playerMovement, _baseSettings);
             enemySwords.Initialize();
             _enemyEffects.Add(swordsEffectName, enemySwords);
             _enemyMovement.Initialize(cellForAim, _enemyEffects, enemyAimToCellMover);
@@ -100,10 +114,8 @@ namespace Sсripts
             _playerDamageTaker.Initialize(playerHealth);
             _enemyDamageTaker.Initialize(enemyHealth);
 
-
-
             // в самом конце 
-            
+
             stateMachine.SetState<PlayerTurnFsmState>();
         }
 

@@ -2,6 +2,7 @@ using System;
 using _Project.Sсripts.Model.Effects;
 using _Project.Sсripts.Scriptable;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.Model
 {
@@ -14,7 +15,9 @@ namespace _Project.Sсripts.Model
         public void Initialized()
         {
             _center = GetComponentInChildren<Center>();
+            Assert.IsNotNull(_center);
             _spriteRenderer = _center.GetComponentInChildren<EffectIcon>().GetComponentInChildren<SpriteRenderer>();
+            Assert.IsNotNull(_spriteRenderer);
         }
 
         public EffectName EffectName { get; private set; }
@@ -31,17 +34,13 @@ namespace _Project.Sсripts.Model
 
         public void SetEffectName(EffectName effectName)
         {
-            // if (effect == null)
-            //     throw new NullReferenceException();
-
             if (IsEffectSet() == false)
                 EffectName = effectName;
         }
 
         public void SetSprite(Sprite sprite)
         {
-            if (sprite == null)
-                throw new NullReferenceException();
+            Assert.IsNotNull(sprite);
 
             _spriteRenderer.sprite = sprite;
         }

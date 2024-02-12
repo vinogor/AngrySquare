@@ -1,9 +1,10 @@
 using System;
-using DG.Tweening;
 using _Project.Sсripts.Dmg;
 using _Project.Sсripts.Hp;
 using _Project.Sсripts.Scriptable;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.Model.Effects
 {
@@ -19,18 +20,21 @@ namespace _Project.Sсripts.Model.Effects
         public PlayerSwords(Health enemyHealth, Damage playerDamage, Transform playerTransform, Vector3 enemyPosition,
             BaseSettings baseSettings)
         {
-            _enemyHealth = enemyHealth ?? throw new NullReferenceException("enemyHealth cant be null");
-            _playerDamage = playerDamage ?? throw new NullReferenceException("playerDamage cant be null");
+            Assert.IsNotNull(enemyHealth);
+            Assert.IsNotNull(playerDamage);
+            Assert.IsNotNull(playerTransform);
+            Assert.IsNotNull(baseSettings);
+
+            _enemyHealth = enemyHealth;
+            _playerDamage = playerDamage;
             _playerTransform = playerTransform;
-            if (playerTransform == null)
-                throw new NullReferenceException("playerTransform cant be null");
             _enemyPosition = enemyPosition;
             _baseSettings = baseSettings;
         }
 
-        public override void Activate(Action callNextTurn)
+        public override void Activate(Action onComplete)
         {
-            Debug.Log("Effect - Swords - Activate");
+            base.Activate(null);
 
             Vector3 startPlayerPosition = _playerTransform.position;
 
@@ -44,7 +48,7 @@ namespace _Project.Sсripts.Model.Effects
                     _playerTransform
                         .DOJump(startPlayerPosition, _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
                         .SetEase(Ease.Linear)
-                        .OnComplete(callNextTurn.Invoke);
+                        .OnComplete(onComplete.Invoke);
                 });
         }
     }

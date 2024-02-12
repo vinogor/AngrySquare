@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 namespace _Project.Sсripts.Hp
@@ -12,11 +13,11 @@ namespace _Project.Sсripts.Hp
 
         public void Initialize(Health health)
         {
-            _health = health ?? throw new NullReferenceException("health cant be null");
-            _health.Changed += OnHealthChanged;
+            Assert.IsNotNull(health);
+            Assert.IsNotNull(_slider);
 
-            if (_slider == null)
-                throw new NullReferenceException("slider cant be null");
+            _health = health; 
+            _health.Changed += OnHealthChanged;
 
             _slider.interactable = false;
             _slider.wholeNumbers = true;
