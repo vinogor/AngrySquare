@@ -92,7 +92,7 @@ namespace _Project.Sсripts
 
             EnemySwords enemySwords = new EnemySwords(_enemy.transform, cellForAim, playerHealth, enemyDamage,
                 _playerMovement, _baseSettings);
-            enemySwords.Initialize();
+
             _enemyEffects.Add(swordsEffectName, enemySwords);
             _enemyMovement.Initialize(cellForAim, _enemyEffects, enemyAimToCellMover);
 

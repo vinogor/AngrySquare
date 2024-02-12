@@ -17,7 +17,6 @@ namespace _Project.Sсripts.Model.Effects
         private Damage _enemyDamage;
         private PlayerMovement _playerMovement;
         private BaseSettings _baseSettings;
-        private Cell _playerCell;
 
         public EnemySwords(Transform enemyTransform, Cell targetCell, Health playerHealth,
             Damage enemyDamage, PlayerMovement playerMovement, BaseSettings baseSettings)
@@ -28,7 +27,7 @@ namespace _Project.Sсripts.Model.Effects
             Assert.IsNotNull(enemyDamage);
             Assert.IsNotNull(playerMovement);
             Assert.IsNotNull(baseSettings);
-            
+
             _enemyTransform = enemyTransform;
             _targetCell = targetCell;
             _playerHealth = playerHealth;
@@ -37,22 +36,10 @@ namespace _Project.Sсripts.Model.Effects
             _baseSettings = baseSettings;
         }
 
-        public void Initialize()
-        {
-            // TODO: надо как то отписываться? в какой момент лучше? когда кончится стейт хода игрока? 
-            //       а подписываться когда начнётся ход игрока? 
-            _playerMovement.CurrentCell += OnPlayerCurrentCell;
-        }
-
-        private void OnPlayerCurrentCell(Cell playerCell)
-        {
-            _playerCell = playerCell;
-        }
-
         public override void Activate(Action onComplete)
         {
             base.Activate(null);
-            
+
             Vector3 startEnemyPosition = _enemyTransform.position;
 
             _enemyTransform
@@ -63,7 +50,7 @@ namespace _Project.Sсripts.Model.Effects
                 {
                     int enemyDamage = _enemyDamage.Value;
 
-                    if (_targetCell == _playerCell)
+                    if (_targetCell == _playerMovement.PlayerStayCell)
                     {
                         // TODO: тройной урон - как то выделить анимацией по особенному
                         _playerHealth.TakeDamage(enemyDamage * 3);
@@ -79,7 +66,7 @@ namespace _Project.Sсripts.Model.Effects
         private void JumpOnPlayer(Action callNextTurn, int enemyDamage, Vector3 startEnemyPosition)
         {
             _enemyTransform
-                .DOJump(_playerCell.Center() + Vector3.up * _baseSettings.EnemyHeight,
+                .DOJump(_playerMovement.PlayerStayCell.Center() + Vector3.up * _baseSettings.EnemyHeight,
                     _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
                 .SetEase(Ease.Linear)
                 .OnComplete(() =>
@@ -94,12 +81,7 @@ namespace _Project.Sсripts.Model.Effects
             _enemyTransform
                 .DOJump(startEnemyPosition, _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
                 .SetEase(Ease.Linear)
-                .OnComplete(() =>
-                {
-                    // задать новую target !!
-
-                    callNextTurn.Invoke();
-                });
+                .OnComplete(() => { callNextTurn.Invoke(); });
         }
     }
 }

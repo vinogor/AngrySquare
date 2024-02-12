@@ -25,7 +25,7 @@ namespace _Project.Sсripts.Movement
             Assert.IsNotNull(_diceRoller);
             Assert.IsNotNull(cells);
             Assert.IsNotNull(playerEffects);
-            Assert.IsNotNull(_baseSettings);
+            Assert.IsNotNull(baseSettings);
 
             _cells = cells;
             _playerEffects = playerEffects;
@@ -33,7 +33,8 @@ namespace _Project.Sсripts.Movement
         }
 
         public event Action TurnCompleted;
-        public event Action<Cell> CurrentCell;
+        
+        public Cell PlayerStayCell => _cells[_currentCellIndex];
 
         private void Awake()
         {
@@ -57,7 +58,6 @@ namespace _Project.Sсripts.Movement
             {
                 EffectName effectName = _cells[_currentCellIndex].EffectName;
                 _playerEffects[effectName].Activate(() => TurnCompleted?.Invoke());
-                CurrentCell?.Invoke(_cells[_currentCellIndex]);
                 return;
             }
 
