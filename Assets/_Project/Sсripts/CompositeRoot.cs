@@ -10,9 +10,11 @@ using _Project.Sсripts.Movement;
 using _Project.Sсripts.Scriptable;
 using _Project.Sсripts.StateMachine;
 using _Project.Sсripts.StateMachine.States;
+using _Project.Sсripts.UI;
 using _Project.Sсripts.Utility;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Serialization;
 
 namespace _Project.Sсripts
 {
@@ -35,7 +37,9 @@ namespace _Project.Sсripts
         [SerializeField] private DamageTaker _playerDamageTaker;
         [SerializeField] private DamageTaker _enemyDamageTaker;
 
-        [SerializeField] private EnemyAim enemyAim;
+        [SerializeField] private EnemyAim _enemyAim;
+
+        [SerializeField] private PopUp _popUp;
 
         private Dictionary<EffectName, Effect> _playerEffects = new();
         private Dictionary<EffectName, Effect> _enemyEffects = new();
@@ -54,7 +58,8 @@ namespace _Project.Sсripts
             Assert.IsNotNull(_enemyMovement);
             Assert.IsNotNull(_playerDamageTaker);
             Assert.IsNotNull(_enemyDamageTaker);
-            Assert.IsNotNull(enemyAim);
+            Assert.IsNotNull(_enemyAim);
+            Assert.IsNotNull(_popUp);
 
             Health playerHealth = new Health(_baseSettings.PlayerStartHealth, _baseSettings.PlayerMaxHealth);
             Damage playerDamage = new Damage(_baseSettings.PlayerDamageValue);
@@ -66,9 +71,9 @@ namespace _Project.Sсripts
             FiniteStateMachine stateMachine = new FiniteStateMachine();
             // stateMachine.AddState(new InitializeFsmState(stateMachine));
             stateMachine.AddState(new PlayerTurnFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth));
-            stateMachine.AddState(new EnemyDefeatFsmState(stateMachine));
+            stateMachine.AddState(new EnemyDefeatFsmState(stateMachine, _popUp));
             stateMachine.AddState(new EnemyTurnFsmState(stateMachine, _enemyMovement, playerHealth));
-            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine));
+            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, _popUp));
             stateMachine.AddState(new EndOfGameFsmState(stateMachine));
 
             _playerHealthBar.Initialize(playerHealth);
@@ -79,7 +84,7 @@ namespace _Project.Sсripts
             _cells.ForEach(cell => cell.Initialized());
             _diceRoller.Initialize();
 
-            EnemyTargetController enemyTargetController = new EnemyTargetController(_cells, enemyAim);
+            EnemyTargetController enemyTargetController = new EnemyTargetController(_cells, _enemyAim);
             enemyTargetController.SetAimToNewRandomTargetCell();
             Cell enemyTargetCell = enemyTargetController.GetCurrentTargetCell();
 
