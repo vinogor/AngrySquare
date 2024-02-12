@@ -53,14 +53,14 @@ namespace _Project.Sсripts.Dice
         private void OnDiceNumberDetected(int number)
         {
             _lastDetectedDiceNumber = number;
-            Debug.Log("lastDetectedDiceNumber " + _lastDetectedDiceNumber);
+            // Debug.Log("lastDetectedDiceNumber " + _lastDetectedDiceNumber);
         }
 
         private void Update()
         {
             if (_isDiceThrown && _rigidbody.velocity == Vector3.zero)
             {
-                Debug.Log("get dice number " + _lastDetectedDiceNumber);
+                // Debug.Log("get dice number " + _lastDetectedDiceNumber);
                 DetectorsSetActive(false);
                 PlayerMoveAmountSet?.Invoke(_lastDetectedDiceNumber);
                 _isDiceThrown = false;

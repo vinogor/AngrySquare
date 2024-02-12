@@ -81,20 +81,22 @@ namespace _Project.Sсripts
             _cells.ForEach(cell => cell.Initialized());
             _diceRoller.Initialize();
 
-            EnemyAimToCellMover enemyAimToCellMover = new EnemyAimToCellMover(_cells, enemyAim);
-            Cell cellForAim = enemyAimToCellMover.SetToNewRandomCell();
+            EnemyTargetController enemyTargetController = new EnemyTargetController(_cells, enemyAim);
+            enemyTargetController.SetAimToNewRandomTargetCell();
+            Cell enemyTargetCell = enemyTargetController.GetCurrentTargetCell();
 
             // наполнение эффектами
             EffectName swordsEffectName = EffectName.Swords;
             _playerEffects.Add(swordsEffectName,
-                new PlayerSwords(enemyHealth, playerDamage, _player.transform, enemyPosition, _baseSettings));
+                new PlayerSwords(_enemy.transform, _baseSettings, enemyHealth, _playerMovement, playerHealth,
+                    enemyTargetController, enemyDamage, _player.transform, playerDamage));
             _playerMovement.Initialize(_cells, _playerEffects, _baseSettings);
 
-            EnemySwords enemySwords = new EnemySwords(_enemy.transform, cellForAim, playerHealth, enemyDamage,
-                _playerMovement, _baseSettings);
+            EnemySwords enemySwords = new EnemySwords(_enemy.transform, _baseSettings, enemyHealth, _playerMovement, playerHealth,
+                enemyTargetController, enemyDamage, _player.transform, playerDamage);
 
             _enemyEffects.Add(swordsEffectName, enemySwords);
-            _enemyMovement.Initialize(cellForAim, _enemyEffects, enemyAimToCellMover);
+            _enemyMovement.Initialize(enemyTargetCell, _enemyEffects, enemyTargetController);
 
             CellInfo cellInfo = cellInfos[0];
             Sprite swordsSprite = cellInfo.Sprite;

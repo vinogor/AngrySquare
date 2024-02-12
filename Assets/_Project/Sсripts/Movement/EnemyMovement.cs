@@ -13,10 +13,11 @@ namespace _Project.Sсripts.Movement
     {
         private Cell _targetCell;
         private Dictionary<EffectName, Effect> _enemyEffects;
-        private EnemyAimToCellMover _aimMover;
+        private EnemyTargetController _aimMover;
+        
 
         public void Initialize(Cell targetCell, Dictionary<EffectName, Effect> enemyEffects,
-            EnemyAimToCellMover aimMover)
+            EnemyTargetController aimMover )
         {
             Assert.IsNotNull(targetCell);
             Assert.IsNotNull(enemyEffects);
@@ -34,9 +35,10 @@ namespace _Project.Sсripts.Movement
             EffectName effectName = _targetCell.EffectName;
             _enemyEffects[effectName].Activate(() =>
             {
-                _aimMover.SetToNewRandomCell();
+                _aimMover.SetAimToNewRandomTargetCell();
                 TurnCompleted?.Invoke();
             });
         }
+        
     }
 }

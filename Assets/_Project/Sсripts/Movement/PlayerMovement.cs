@@ -33,7 +33,7 @@ namespace _Project.Sсripts.Movement
         }
 
         public event Action TurnCompleted;
-        
+
         public Cell PlayerStayCell => _cells[_currentCellIndex];
 
         private void Awake()
@@ -54,6 +54,7 @@ namespace _Project.Sсripts.Movement
 
         private void Move(int amountMoves)
         {
+
             if (amountMoves == 0)
             {
                 EffectName effectName = _cells[_currentCellIndex].EffectName;
@@ -63,17 +64,21 @@ namespace _Project.Sсripts.Movement
 
             _currentCellIndex = ++_currentCellIndex % _cells.Count;
             Cell nextCell = _cells[_currentCellIndex];
-            Vector3 nextCellCenter = nextCell.Center();
 
+            JumpToNextCell(amountMoves, nextCell, () =>
+            {
+                AnimateCell(nextCell);
+                Move(--amountMoves);
+            });
+        }
+
+        private void JumpToNextCell(int amountMoves, Cell nextCell, Action onJumpComplete)
+        {
             transform
-                .DOJump(nextCellCenter + Vector3.up * transform.lossyScale.y,
+                .DOJump(nextCell.Center() + Vector3.up * transform.lossyScale.y,
                     _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
                 .SetEase(Ease.Linear)
-                .OnComplete(() =>
-                {
-                    AnimateCell(nextCell);
-                    Move(--amountMoves);
-                });
+                .OnComplete(onJumpComplete.Invoke);
         }
 
         private void AnimateCell(Cell nextCell)

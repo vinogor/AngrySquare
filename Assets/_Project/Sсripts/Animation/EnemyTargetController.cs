@@ -7,25 +7,30 @@ using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.Animation
 {
-    public class EnemyAimToCellMover
+    public class EnemyTargetController
     {
         private readonly List<Cell> _cells;
         private readonly EnemyAim _enemyAim;
+        private Cell _targetCell;
 
-        public EnemyAimToCellMover(List<Cell> cells, EnemyAim enemyAim)
+        public EnemyTargetController(List<Cell> cells, EnemyAim enemyAim)
         {
             Assert.IsNotNull(cells);
             Assert.IsNotNull(enemyAim);
-            
+
             _cells = cells;
             _enemyAim = enemyAim;
         }
 
-        public Cell SetToNewRandomCell()
+        public void SetAimToNewRandomTargetCell()
         {
-            Cell targetCell = _cells.Shuffle().First();
-            _enemyAim.transform.position = targetCell.Center() + Vector3.up * 0.03f;
-            return targetCell;
+            _targetCell = _cells.Shuffle().First();
+            _enemyAim.transform.position = _targetCell.Center() + Vector3.up * 0.03f;
+        }
+
+        public Cell GetCurrentTargetCell()
+        {
+            return _targetCell;
         }
     }
 }
