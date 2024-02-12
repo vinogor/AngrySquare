@@ -19,14 +19,14 @@ namespace _Project.Sсripts.StateMachine.States
 
         public override void Enter()
         {
-            Debug.Log("PlayerTurnFsmState ENTERED");
+            base.Enter();
             _diceRoller.MakeAvailable();
             _playerMovement.TurnCompleted += GoToNextState;
         }
 
         public override void Exit()
         {
-            Debug.Log("PlayerTurnFsmState EXITED");
+            base.Exit();
             _playerMovement.TurnCompleted -= GoToNextState;
         }
 

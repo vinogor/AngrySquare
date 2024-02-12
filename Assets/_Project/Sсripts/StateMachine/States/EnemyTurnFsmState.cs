@@ -1,5 +1,4 @@
 using _Project.Sсripts.Movement;
-using UnityEngine;
 
 namespace _Project.Sсripts.StateMachine.States
 {
@@ -15,20 +14,19 @@ namespace _Project.Sсripts.StateMachine.States
 
         public override void Enter()
         {
-            Debug.Log("EnemyTurnFsmState ENTERED");
+            base.Enter();
             _enemyMovement.Move();
             _enemyMovement.TurnCompleted += GoToNextState;
         }
 
         public override void Exit()
         {
-            Debug.Log("EnemyTurnFsmState EXITED");
+            base.Exit();
             _enemyMovement.TurnCompleted -= GoToNextState;
         }
 
         private void GoToNextState()
         {
-            
             FiniteStateMachine.SetState<PlayerTurnFsmState>();
         }
     }
