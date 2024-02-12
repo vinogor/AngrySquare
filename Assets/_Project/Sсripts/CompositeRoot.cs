@@ -56,22 +56,20 @@ namespace _Project.Sсripts
             Assert.IsNotNull(_enemyDamageTaker);
             Assert.IsNotNull(enemyAim);
 
-            // TODO: вынести числа в константы
+            Health playerHealth = new Health(_baseSettings.PlayerStartHealth, _baseSettings.PlayerMaxHealth);
+            Damage playerDamage = new Damage(_baseSettings.PlayerDamageValue);
+
+            Health enemyHealth = new Health(_baseSettings.EnemyStartHealth, _baseSettings.EnemyMaxHealth);
+            Damage enemyDamage = new Damage(_baseSettings.EnemyDamageValue);
+            Vector3 enemyPosition = _enemy.GetComponentInChildren<Center>().transform.position;
 
             FiniteStateMachine stateMachine = new FiniteStateMachine();
             // stateMachine.AddState(new InitializeFsmState(stateMachine));
-            stateMachine.AddState(new PlayerTurnFsmState(stateMachine, _diceRoller, _playerMovement));
-            // stateMachine.AddState(new EnemyDefeatFsmState(stateMachine));
-            stateMachine.AddState(new EnemyTurnFsmState(stateMachine, _enemyMovement));
-            // stateMachine.AddState(new PlayerDefeatFsmState(stateMachine));
+            stateMachine.AddState(new PlayerTurnFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth));
+            stateMachine.AddState(new EnemyDefeatFsmState(stateMachine));
+            stateMachine.AddState(new EnemyTurnFsmState(stateMachine, _enemyMovement, playerHealth));
+            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine));
             stateMachine.AddState(new EndOfGameFsmState(stateMachine));
-
-            Health playerHealth = new Health(10, 10);
-            Damage playerDamage = new Damage(2);
-
-            Health enemyHealth = new Health(5, 5);
-            Damage enemyDamage = new Damage(1);
-            Vector3 enemyPosition = _enemy.GetComponentInChildren<Center>().transform.position;
 
             _playerHealthBar.Initialize(playerHealth);
             _enemyHealthBar.Initialize(enemyHealth);
@@ -92,7 +90,8 @@ namespace _Project.Sсripts
                     enemyTargetController, enemyDamage, _player.transform, playerDamage));
             _playerMovement.Initialize(_cells, _playerEffects, _baseSettings);
 
-            EnemySwords enemySwords = new EnemySwords(_enemy.transform, _baseSettings, enemyHealth, _playerMovement, playerHealth,
+            EnemySwords enemySwords = new EnemySwords(_enemy.transform, _baseSettings, enemyHealth, _playerMovement,
+                playerHealth,
                 enemyTargetController, enemyDamage, _player.transform, playerDamage);
 
             _enemyEffects.Add(swordsEffectName, enemySwords);
