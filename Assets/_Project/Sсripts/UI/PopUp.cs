@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -27,16 +26,23 @@ namespace _Project.Sсripts.UI
         {
             gameObject.SetActive(false);
         }
+
         public void SetPlayerLoseInfo()
         {
-             _title.text = "Player Lose";
-             _info.text = "You lost the game!";
+            _title.text = "Player Lose";
+            _info.text = "You lost the game!";
         }
-        
+
         public void SetPlayerWinInfo()
         {
             _title.text = "Player Win";
             _info.text = "It's time to fight a new opponent!";
+        }
+
+        public void OnButtonClick()
+        {
+            SetNotActive();
+            // TODO: переход в новый стейт ?
         }
 
         private void OnDestroy()
