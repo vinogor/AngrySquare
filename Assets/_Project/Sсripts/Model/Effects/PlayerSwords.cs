@@ -1,28 +1,30 @@
 using System;
-using _Project.Sсripts.Animation;
 using _Project.Sсripts.Dmg;
 using _Project.Sсripts.Hp;
 using _Project.Sсripts.Movement;
-using _Project.Sсripts.Scriptable;
-using UnityEngine;
 
 namespace _Project.Sсripts.Model.Effects
 {
     public class PlayerSwords : Effect
     {
-        public PlayerSwords(Transform enemyTransform, BaseSettings baseSettings, Health enemyHealth,
-            PlayerMovement playerMovement, Health playerHealth, EnemyTargetController enemyTargetController,
-            Damage enemyDamage, Transform playerTransform, Damage playerDamage) : base(enemyTransform, baseSettings,
-            enemyHealth, playerMovement, playerHealth, enemyTargetController, enemyDamage, playerTransform, playerDamage)
+        private PlayerJumper _playerJumper;
+        private Health _enemyHealth;
+        private Damage _playerDamage;
+
+        public PlayerSwords(PlayerJumper playerJumper, Health enemyHealth, Damage playerDamage)
         {
+            _playerJumper = playerJumper;
+            _enemyHealth = enemyHealth;
+            _playerDamage = playerDamage;
         }
 
-        protected override void ActivateSpecial(Action onComplete)
+        public override void Activate(Action onComplete)
         {
-            PlayerJumpOnEnemy(() =>
+            base.Activate(onComplete);
+            _playerJumper.PlayerJumpOnEnemy(() =>
             {
-                EnemyHealth.TakeDamage(PlayerDamageValue);
-                PlayerJumpBackToCell(onComplete);
+                _enemyHealth.TakeDamage(_playerDamage.Value);
+                _playerJumper.PlayerJumpBackToCell(onComplete);
             });
         }
     }

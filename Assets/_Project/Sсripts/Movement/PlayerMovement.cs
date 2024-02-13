@@ -18,9 +18,10 @@ namespace _Project.Sсripts.Movement
         private List<Cell> _cells;
         private Dictionary<EffectName, Effect> _playerEffects;
         private BaseSettings _baseSettings;
+        private PlayerJumper _playerJumper;
 
         public void Initialize(List<Cell> cells, Dictionary<EffectName, Effect> playerEffects,
-            BaseSettings baseSettings)
+            BaseSettings baseSettings, PlayerJumper playerJumper)
         {
             Assert.IsNotNull(_diceRoller);
             Assert.IsNotNull(cells);
@@ -30,6 +31,7 @@ namespace _Project.Sсripts.Movement
             _cells = cells;
             _playerEffects = playerEffects;
             _baseSettings = baseSettings;
+            _playerJumper = playerJumper;
         }
 
         public event Action TurnCompleted;
@@ -54,7 +56,6 @@ namespace _Project.Sсripts.Movement
 
         private void Move(int amountMoves)
         {
-
             if (amountMoves == 0)
             {
                 EffectName effectName = _cells[_currentCellIndex].EffectName;
@@ -65,20 +66,11 @@ namespace _Project.Sсripts.Movement
             _currentCellIndex = ++_currentCellIndex % _cells.Count;
             Cell nextCell = _cells[_currentCellIndex];
 
-            JumpToNextCell(amountMoves, nextCell, () =>
+            _playerJumper.JumpToNextCell(nextCell, () =>
             {
                 AnimateCell(nextCell);
                 Move(--amountMoves);
             });
-        }
-
-        private void JumpToNextCell(int amountMoves, Cell nextCell, Action onJumpComplete)
-        {
-            transform
-                .DOJump(nextCell.Center() + Vector3.up * transform.lossyScale.y,
-                    _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
-                .SetEase(Ease.Linear)
-                .OnComplete(onJumpComplete.Invoke);
         }
 
         private void AnimateCell(Cell nextCell)

@@ -14,7 +14,6 @@ using _Project.Sсripts.UI;
 using _Project.Sсripts.Utility;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Serialization;
 
 namespace _Project.Sсripts
 {
@@ -89,18 +88,21 @@ namespace _Project.Sсripts
             Cell enemyTargetCell = enemyTargetController.GetCurrentTargetCell();
 
             // наполнение эффектами
+
+            PlayerJumper playerJumper = new PlayerJumper(_player.transform, _enemy.transform, _baseSettings);
+            EnemyJumper enemyJumper =
+                new EnemyJumper(_enemy.transform, _playerMovement, _baseSettings, enemyTargetController);
+
             EffectName swordsEffectName = EffectName.Swords;
-            _playerEffects.Add(swordsEffectName,
-                new PlayerSwords(_enemy.transform, _baseSettings, enemyHealth, _playerMovement, playerHealth,
-                    enemyTargetController, enemyDamage, _player.transform, playerDamage));
-            _playerMovement.Initialize(_cells, _playerEffects, _baseSettings);
 
-            EnemySwords enemySwords = new EnemySwords(_enemy.transform, _baseSettings, enemyHealth, _playerMovement,
-                playerHealth,
-                enemyTargetController, enemyDamage, _player.transform, playerDamage);
+            PlayerSwords playerSwords = new PlayerSwords(playerJumper, enemyHealth, playerDamage);
+            _playerEffects.Add(swordsEffectName, playerSwords);
+            _playerMovement.Initialize(_cells, _playerEffects, _baseSettings, playerJumper);
 
+            EnemySwords enemySwords = new EnemySwords(enemyJumper, playerHealth, enemyDamage);
             _enemyEffects.Add(swordsEffectName, enemySwords);
-            _enemyMovement.Initialize(enemyTargetCell, _enemyEffects, enemyTargetController);
+            _enemyMovement.Initialize(enemyTargetCell, _enemyEffects, enemyTargetController,
+                enemyJumper, _playerMovement, playerHealth, enemyDamage);
 
             CellInfo cellInfo = cellInfos[0];
             Sprite swordsSprite = cellInfo.Sprite;

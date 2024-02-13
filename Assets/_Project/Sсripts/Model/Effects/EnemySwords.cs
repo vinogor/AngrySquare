@@ -1,30 +1,31 @@
 using System;
-using _Project.Sсripts.Animation;
 using _Project.Sсripts.Dmg;
 using _Project.Sсripts.Hp;
 using _Project.Sсripts.Movement;
-using _Project.Sсripts.Scriptable;
-using UnityEngine;
 
 namespace _Project.Sсripts.Model.Effects
 {
     public class EnemySwords : Effect
     {
-        public EnemySwords(Transform enemyTransform, BaseSettings baseSettings, Health enemyHealth,
-            PlayerMovement playerMovement, Health playerHealth, EnemyTargetController enemyTargetController,
-            Damage enemyDamage, Transform playerTransform, Damage playerDamage) : base(enemyTransform, baseSettings,
-            enemyHealth, playerMovement, playerHealth, enemyTargetController, enemyDamage, playerTransform,
-            playerDamage)
+        private EnemyJumper _enemyJumper;
+        private Health _playerHealth;
+        private Damage _enemyDamage;
+
+        public EnemySwords(EnemyJumper enemyJumper, Health playerHealth, Damage enemyDamage)
         {
+            _enemyJumper = enemyJumper;
+            _playerHealth = playerHealth;
+            _enemyDamage = enemyDamage;
         }
 
-        protected override void ActivateSpecial(Action onComplete)
+        public override void Activate(Action onComplete)
         {
-            EnemyJumpToTargetCell(
-                () => EnemyJumpOnPlayer(() =>
+            base.Activate(onComplete);
+            _enemyJumper.EnemyJumpToTargetCell(
+                () => _enemyJumper.EnemyJumpOnPlayer(() =>
                 {
-                    PlayerHealth.TakeDamage(EnemyDamageValue);
-                    EnemyJumpBackToBase(() => onComplete.Invoke());
+                    _playerHealth.TakeDamage(_enemyDamage.Value);
+                    _enemyJumper.EnemyJumpBackToBase(onComplete.Invoke);
                 }));
         }
     }
