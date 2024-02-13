@@ -6,7 +6,7 @@ namespace _Project.Sсripts.HealthAndMana
     public class Mana
     {
         public event Action<int> Changed;
-        public event Action ManaReplenished;
+        public event Action Replenished;
 
         public Mana(int value, int maxValue)
         {
@@ -47,7 +47,7 @@ namespace _Project.Sсripts.HealthAndMana
 
             Value = MaxValue;
 
-            ManaReplenished?.Invoke();
+            Replenished?.Invoke();
             Changed?.Invoke(Value);
         }
 

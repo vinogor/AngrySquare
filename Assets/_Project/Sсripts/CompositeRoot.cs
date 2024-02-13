@@ -14,7 +14,6 @@ using _Project.Sсripts.UI;
 using _Project.Sсripts.Utility;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Serialization;
 
 namespace _Project.Sсripts
 {
@@ -36,6 +35,7 @@ namespace _Project.Sсripts
         [SerializeField] private EnemyMovement _enemyMovement;
 
         [SerializeField] private DamageEffect playerDamageEffect;
+        [SerializeField] private ManaEffect playerManaEffect;
         [SerializeField] private DamageEffect enemyDamageEffect;
         [SerializeField] private HealthReplenishEffect playerHealthReplenishEffect;
 
@@ -62,6 +62,7 @@ namespace _Project.Sсripts
             Assert.IsNotNull(_playerMovement);
             Assert.IsNotNull(_enemyMovement);
             Assert.IsNotNull(playerDamageEffect);
+            Assert.IsNotNull(playerManaEffect);
             Assert.IsNotNull(enemyDamageEffect);
             Assert.IsNotNull(_enemyAim);
             Assert.IsNotNull(_popUp);
@@ -104,12 +105,14 @@ namespace _Project.Sсripts
 
             _playerEffects.Add(EffectName.Swords, new PlayerSwords(playerJumper, enemyHealth, playerDamage));
             _playerEffects.Add(EffectName.Health, new PlayerHealth(playerHealth, playerJumper));
-            
+            _playerEffects.Add(EffectName.Mana, new PlayerMana(playerMana, playerJumper));
+
             _playerMovement.Initialize(_cells, _playerEffects, _baseSettings, playerJumper);
 
             _enemyEffects.Add(EffectName.Swords, new EnemySwords(enemyJumper, playerHealth, enemyDamage));
             _enemyEffects.Add(EffectName.Health, new EnemyHealth(enemyJumper));
-            
+            _enemyEffects.Add(EffectName.Mana, new EnemyMana(enemyJumper));
+
             _enemyMovement.Initialize(_enemyEffects, enemyTargetController, enemyJumper,
                 _playerMovement, playerHealth, enemyDamage);
 
@@ -118,9 +121,10 @@ namespace _Project.Sсripts
             // TODO: добавить проверку что кол-во ячеек с эффектами равно общему кол-ву ячеек
 
             FillCellsWithEffects();
-           
 
+            // визуальные эффекты
             playerDamageEffect.Initialize(playerHealth);
+            playerManaEffect.Initialize(playerMana);
             enemyDamageEffect.Initialize(enemyHealth);
             playerHealthReplenishEffect.Initialize(playerHealth);
 
@@ -141,7 +145,7 @@ namespace _Project.Sсripts
             int amount = cellInfo.Amount;
 
             var cellsWithoutEffect = CellsWithoutEffect(_cells);
-            
+
             cellsWithoutEffect
                 .Shuffle()
                 .Take(amount)

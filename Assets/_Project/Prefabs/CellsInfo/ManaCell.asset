@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3487c32300f244aaaa6433dc7c3e9bb9, type: 3}
-  m_Name: AttackCell
+  m_Name: ManaCell
   m_EditorClassIdentifier: 
-  <EffectName>k__BackingField: 1
-  <Sprite>k__BackingField: {fileID: 21300000, guid: d775d4c05ce15ce48912563ee9fcb909, type: 3}
-  <Amount>k__BackingField: 2
+  <EffectName>k__BackingField: 5
+  <Sprite>k__BackingField: {fileID: 21300000, guid: 5489055328f9abb48adbabd49eb7c0c5, type: 3}
+  <Amount>k__BackingField: 10

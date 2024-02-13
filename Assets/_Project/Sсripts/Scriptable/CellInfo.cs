@@ -17,7 +17,7 @@ namespace _Project.Sсripts.Scriptable
         Book,
         Portal,
         Question,
-        Drop,
+        Mana,
         Health
     }
 }
