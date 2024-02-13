@@ -14,6 +14,7 @@ using _Project.Sсripts.UI;
 using _Project.Sсripts.Utility;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Serialization;
 
 namespace _Project.Sсripts
 {
@@ -39,6 +40,8 @@ namespace _Project.Sсripts
         [SerializeField] private EnemyAim _enemyAim;
 
         [SerializeField] private PopUp _popUp;
+
+        [SerializeField] private List<CellInfo> _cellInfos;
 
         private Dictionary<EffectName, Effect> _playerEffects = new();
         private Dictionary<EffectName, Effect> _enemyEffects = new();
@@ -78,8 +81,6 @@ namespace _Project.Sсripts
             _playerHealthBar.Initialize(playerHealth);
             _enemyHealthBar.Initialize(enemyHealth);
 
-            List<CellInfo> cellInfos = Resources.LoadAll<CellInfo>("CellsInfo").ToList();
-
             _cells.ForEach(cell => cell.Initialized());
             _diceRoller.Initialize();
 
@@ -104,7 +105,7 @@ namespace _Project.Sсripts
             _enemyMovement.Initialize(enemyTargetCell, _enemyEffects, enemyTargetController,
                 enemyJumper, _playerMovement, playerHealth, enemyDamage);
 
-            CellInfo cellInfo = cellInfos[0];
+            CellInfo cellInfo = _cellInfos[0];
             Sprite swordsSprite = cellInfo.Sprite;
             int attackAmount = cellInfo.Amount;
 

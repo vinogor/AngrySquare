@@ -18,7 +18,7 @@ MonoBehaviour:
   EnemyHeight: 0.2
   PlayerStartHealth: 10
   PlayerMaxHealth: 10
-  PlayerDamageValue: 3
+  PlayerDamageValue: 2
   EnemyStartHealth: 5
   EnemyMaxHealth: 5
   EnemyDamageValue: 1
