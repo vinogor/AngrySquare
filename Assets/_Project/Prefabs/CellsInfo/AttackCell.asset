@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: AttackCell
   m_EditorClassIdentifier: 
   <EffectName>k__BackingField: 1
-  <Sprite>k__BackingField: {fileID: 21300000, guid: e45326d902fc2c44b80497869b90e08c, type: 3}
-  <Amount>k__BackingField: 16
+  <Sprite>k__BackingField: {fileID: 21300000, guid: d775d4c05ce15ce48912563ee9fcb909, type: 3}
+  <Amount>k__BackingField: 10

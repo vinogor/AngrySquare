@@ -13,7 +13,6 @@ namespace _Project.Sсripts.Movement
 {
     public class EnemyMovement : MonoBehaviour
     {
-        private Cell _targetCell;
         private Dictionary<EffectName, Effect> _enemyEffects;
         private EnemyTargetController _enemyTargetController;
         private EnemyJumper _enemyJumper;
@@ -21,11 +20,10 @@ namespace _Project.Sсripts.Movement
         private Health _playerHealth;
         private Damage _enemyDamage;
 
-        public void Initialize(Cell targetCell, Dictionary<EffectName, Effect> enemyEffects,
+        public void Initialize(Dictionary<EffectName, Effect> enemyEffects,
             EnemyTargetController enemyTargetController, EnemyJumper enemyJumper, PlayerMovement playerMovement,
             Health playerHealth, Damage enemyDamage)
         {
-            Assert.IsNotNull(targetCell);
             Assert.IsNotNull(enemyEffects);
             Assert.IsNotNull(enemyTargetController);
             Assert.IsNotNull(enemyJumper);
@@ -33,7 +31,6 @@ namespace _Project.Sсripts.Movement
             Assert.IsNotNull(playerHealth);
             Assert.IsNotNull(enemyDamage);
 
-            _targetCell = targetCell;
             _enemyEffects = enemyEffects;
             _enemyTargetController = enemyTargetController;
             _enemyJumper = enemyJumper;
@@ -46,19 +43,27 @@ namespace _Project.Sсripts.Movement
 
         public void Move()
         {
-            if (_enemyTargetController.GetCurrentTargetCell() == _playerMovement.PlayerStayCell)
+            Cell currentTargetCell = _enemyTargetController.GetCurrentTargetCell();
+
+            if (currentTargetCell == _playerMovement.PlayerStayCell)
             {
                 _enemyJumper.EnemyJumpToTargetCell(() =>
                 {
-                    // TODO: обыграть визуал по особенному 
-                    // TODO: почему-то прыгает 2 раза
-                    _playerHealth.TakeDamage(_enemyDamage.Value * 3);
-                    _enemyJumper.EnemyJumpBackToBase(() => TurnCompleted?.Invoke());
+                    _playerHealth.TakeDamage(_enemyDamage.Value);
+                    _enemyJumper.EnemyJumpInPlace(() =>
+                    {
+                        _playerHealth.TakeDamage(_enemyDamage.Value);
+                        _enemyJumper.EnemyJumpInPlace(() =>
+                        {
+                            _playerHealth.TakeDamage(_enemyDamage.Value);
+                            _enemyJumper.EnemyJumpBackToBase(() => TurnCompleted?.Invoke());
+                        });
+                    });
                 });
             }
             else
             {
-                EffectName effectName = _targetCell.EffectName;
+                EffectName effectName = currentTargetCell.EffectName;
                 _enemyEffects[effectName].Activate(() =>
                 {
                     _enemyTargetController.SetAimToNewRandomTargetCell();

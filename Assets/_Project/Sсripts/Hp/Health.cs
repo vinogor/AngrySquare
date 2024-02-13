@@ -7,6 +7,7 @@ namespace _Project.Sсripts.Hp
     {
         public event Action<int> Changed;
         public event Action DamageReceived;
+        public event Action HealthReplenished;
         public event Action Died;
 
         public Health(int value, int maxValue)
@@ -43,7 +44,12 @@ namespace _Project.Sсripts.Hp
 
         public void ReplenishToMax()
         {
+            if (Value == MaxValue) 
+                return;
+            
             Value = MaxValue;
+            
+            HealthReplenished?.Invoke();
             Changed?.Invoke(Value);
         }
 

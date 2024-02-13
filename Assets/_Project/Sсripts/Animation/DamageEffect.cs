@@ -4,15 +4,15 @@ using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.Animation
 {
-    public class DamageTaker : MonoBehaviour
+    public class DamageEffect : MonoBehaviour
     {
-        [SerializeField] private ParticleSystem _damageParticleSystem;
+        [SerializeField] private ParticleSystem _particleSystem;
 
         private Health _health;
 
         public void Initialize(Health health)
         {
-            Assert.IsNotNull(_damageParticleSystem);
+            Assert.IsNotNull(_particleSystem);
             Assert.IsNotNull(health);
             _health = health;
             _health.DamageReceived += OnDamageReceived;
@@ -25,7 +25,7 @@ namespace _Project.Sсripts.Animation
 
         private void OnDamageReceived()
         {
-            _damageParticleSystem.Play();
+            _particleSystem.Play();
         }
     }
 }

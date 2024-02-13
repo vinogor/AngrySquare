@@ -18,6 +18,6 @@ namespace _Project.Sсripts.Scriptable
         Portal,
         Question,
         Drop,
-        Plus
+        Health
     }
 }

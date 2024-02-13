@@ -45,6 +45,11 @@ namespace _Project.Sсripts.Movement
                 .OnComplete(onJumpComplete.Invoke);
         }
 
+        public void PlayerJumpInPlace(Action onJumpComplete)
+        {
+            Jump(_playerTransform, _playerTransform.position, onJumpComplete);
+        }
+
         // TODO: общий метод
         public void Jump(Transform transform, Vector3 target, Action onJumpComplete)
         {
@@ -53,7 +58,5 @@ namespace _Project.Sсripts.Movement
                 .SetEase(Ease.Linear)
                 .OnComplete(onJumpComplete.Invoke);
         }
-        
-        
     }
 }

@@ -30,12 +30,13 @@ namespace _Project.Sсripts
         [SerializeField] private HealthBar _playerHealthBar;
         [SerializeField] private HealthBar _enemyHealthBar;
         [SerializeField] private DiceRoller _diceRoller;
-        [SerializeField] private List<Cell> _cells = new();
+        [SerializeField] private List<Cell> _cells;
         [SerializeField] private PlayerMovement _playerMovement;
         [SerializeField] private EnemyMovement _enemyMovement;
 
-        [SerializeField] private DamageTaker _playerDamageTaker;
-        [SerializeField] private DamageTaker _enemyDamageTaker;
+        [SerializeField] private DamageEffect playerDamageEffect;
+        [SerializeField] private DamageEffect enemyDamageEffect;
+        [SerializeField] private HealthReplenishEffect playerHealthReplenishEffect;
 
         [SerializeField] private EnemyAim _enemyAim;
 
@@ -58,10 +59,11 @@ namespace _Project.Sсripts
             Assert.IsNotNull(_diceRoller);
             Assert.IsNotNull(_playerMovement);
             Assert.IsNotNull(_enemyMovement);
-            Assert.IsNotNull(_playerDamageTaker);
-            Assert.IsNotNull(_enemyDamageTaker);
+            Assert.IsNotNull(playerDamageEffect);
+            Assert.IsNotNull(enemyDamageEffect);
             Assert.IsNotNull(_enemyAim);
             Assert.IsNotNull(_popUp);
+            Assert.IsNotNull(_cellInfos);
 
             Health playerHealth = new Health(_baseSettings.PlayerStartHealth, _baseSettings.PlayerMaxHealth);
             Damage playerDamage = new Damage(_baseSettings.PlayerDamageValue);
@@ -88,47 +90,66 @@ namespace _Project.Sсripts
             enemyTargetController.SetAimToNewRandomTargetCell();
             Cell enemyTargetCell = enemyTargetController.GetCurrentTargetCell();
 
-            // наполнение эффектами
-
             PlayerJumper playerJumper = new PlayerJumper(_player.transform, _enemy.transform, _baseSettings);
             EnemyJumper enemyJumper =
                 new EnemyJumper(_enemy.transform, _playerMovement, _baseSettings, enemyTargetController);
 
-            EffectName swordsEffectName = EffectName.Swords;
+            // === ЭФФЕКТЫ ===
 
-            PlayerSwords playerSwords = new PlayerSwords(playerJumper, enemyHealth, playerDamage);
-            _playerEffects.Add(swordsEffectName, playerSwords);
+            // наполнение словарей с эффектами 
+
+            _playerEffects.Add(EffectName.Swords, new PlayerSwords(playerJumper, enemyHealth, playerDamage));
+            _playerEffects.Add(EffectName.Health, new PlayerHealth(playerHealth, playerJumper));
+            
             _playerMovement.Initialize(_cells, _playerEffects, _baseSettings, playerJumper);
 
-            EnemySwords enemySwords = new EnemySwords(enemyJumper, playerHealth, enemyDamage);
-            _enemyEffects.Add(swordsEffectName, enemySwords);
-            _enemyMovement.Initialize(enemyTargetCell, _enemyEffects, enemyTargetController,
-                enemyJumper, _playerMovement, playerHealth, enemyDamage);
+            _enemyEffects.Add(EffectName.Swords, new EnemySwords(enemyJumper, playerHealth, enemyDamage));
+            _enemyEffects.Add(EffectName.Health, new EnemyHealth(enemyJumper));
+            
+            _enemyMovement.Initialize(_enemyEffects, enemyTargetController, enemyJumper,
+                _playerMovement, playerHealth, enemyDamage);
 
-            CellInfo cellInfo = _cellInfos[0];
-            Sprite swordsSprite = cellInfo.Sprite;
-            int attackAmount = cellInfo.Amount;
+            // наполнение ячеек эффектами
 
-            // потом в цикле сделать для каждого эффекта 
-            CellsWithoutEffect(_cells)
-                .Shuffle()
-                .Take(attackAmount)
-                .ToList()
-                .ForEach(cell =>
-                {
-                    cell.SetEffectName(swordsEffectName);
-                    cell.SetSprite(swordsSprite);
-                });
+            // TODO: добавить проверку что кол-во ячеек с эффектами равно общему кол-ву ячеек
 
-            _playerDamageTaker.Initialize(playerHealth);
-            _enemyDamageTaker.Initialize(enemyHealth);
+            FillCellsWithEffects();
+           
+
+            playerDamageEffect.Initialize(playerHealth);
+            enemyDamageEffect.Initialize(enemyHealth);
+            playerHealthReplenishEffect.Initialize(playerHealth);
 
             // в самом конце 
 
             stateMachine.SetState<PlayerTurnFsmState>();
         }
 
-        private static List<Cell> CellsWithoutEffect(List<Cell> cells)
+        private void FillCellsWithEffects()
+        {
+            _cellInfos.ForEach(FillCells);
+        }
+
+        private void FillCells(CellInfo cellInfo)
+        {
+            EffectName effectName = cellInfo.EffectName;
+            Sprite sprite = cellInfo.Sprite;
+            int amount = cellInfo.Amount;
+
+            var cellsWithoutEffect = CellsWithoutEffect(_cells);
+            
+            cellsWithoutEffect
+                .Shuffle()
+                .Take(amount)
+                .ToList()
+                .ForEach(cell =>
+                {
+                    cell.SetEffectName(effectName);
+                    cell.SetSprite(sprite);
+                });
+        }
+
+        private List<Cell> CellsWithoutEffect(List<Cell> cells)
         {
             return cells.Where(cell => cell.IsEffectSet() == false).ToList();
         }

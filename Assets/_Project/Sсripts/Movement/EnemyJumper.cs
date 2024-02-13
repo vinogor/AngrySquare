@@ -1,5 +1,6 @@
 using System;
 using _Project.Sсripts.Animation;
+using _Project.Sсripts.Model;
 using _Project.Sсripts.Scriptable;
 using DG.Tweening;
 using UnityEngine;
@@ -30,8 +31,11 @@ namespace _Project.Sсripts.Movement
 
            _baseEnemyPosition = _enemyTransform.position;
 
-            Jump(_enemyTransform,
-                _enemyTargetController.GetCurrentTargetCell().Center() + Vector3.up * _baseSettings.EnemyHeight,
+           Cell targetCell = _enemyTargetController.GetCurrentTargetCell();
+           Debug.Log($"EnemyJumpToTargetCell name = {targetCell.name}, effect = {targetCell.EffectName}");
+
+           Jump(_enemyTransform,
+                targetCell.Center() + Vector3.up * _baseSettings.EnemyHeight,
                 onJumpComplete);
         }
 
@@ -48,6 +52,11 @@ namespace _Project.Sсripts.Movement
             Debug.Log("Enemy - JumpToBase");
 
             Jump(_enemyTransform, _baseEnemyPosition, onJumpComplete);
+        }
+        
+        public void EnemyJumpInPlace(Action onJumpComplete)
+        {
+            Jump(_enemyTransform, _enemyTransform.position, onJumpComplete);
         }
 
         private void Jump(Transform transform, Vector3 target, Action onJumpComplete)
