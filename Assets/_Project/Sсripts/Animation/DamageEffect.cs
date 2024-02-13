@@ -1,4 +1,4 @@
-using _Project.Sсripts.Hp;
+using _Project.Sсripts.HealthAndMana;
 using UnityEngine;
 using UnityEngine.Assertions;
 

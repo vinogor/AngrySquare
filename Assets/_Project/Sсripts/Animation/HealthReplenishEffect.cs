@@ -1,4 +1,4 @@
-using _Project.Sсripts.Hp;
+using _Project.Sсripts.HealthAndMana;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -15,15 +15,15 @@ namespace _Project.Sсripts.Animation
             Assert.IsNotNull(_particleSystem);
             Assert.IsNotNull(health);
             _health = health;
-            _health.HealthReplenished += OnHealthReplenished;
+            _health.Replenished += OnReplenished;
         }
 
         private void OnDestroy()
         {
-            _health.HealthReplenished -= OnHealthReplenished;
+            _health.Replenished -= OnReplenished;
         }
 
-        private void OnHealthReplenished()
+        private void OnReplenished()
         {
             _particleSystem.Play();
         }

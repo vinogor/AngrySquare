@@ -3,7 +3,7 @@ using System.Linq;
 using _Project.Sсripts.Animation;
 using _Project.Sсripts.Dice;
 using _Project.Sсripts.Dmg;
-using _Project.Sсripts.Hp;
+using _Project.Sсripts.HealthAndMana;
 using _Project.Sсripts.Model;
 using _Project.Sсripts.Model.Effects;
 using _Project.Sсripts.Movement;
@@ -28,6 +28,7 @@ namespace _Project.Sсripts
         [SerializeField] private Enemy _enemy;
 
         [SerializeField] private HealthBar _playerHealthBar;
+        [SerializeField] private ManaBar _playerManaBar;
         [SerializeField] private HealthBar _enemyHealthBar;
         [SerializeField] private DiceRoller _diceRoller;
         [SerializeField] private List<Cell> _cells;
@@ -55,6 +56,7 @@ namespace _Project.Sсripts
             Assert.IsNotNull(_player);
             Assert.IsNotNull(_enemy);
             Assert.IsNotNull(_playerHealthBar);
+            Assert.IsNotNull(_playerManaBar);
             Assert.IsNotNull(_enemyHealthBar);
             Assert.IsNotNull(_diceRoller);
             Assert.IsNotNull(_playerMovement);
@@ -67,6 +69,7 @@ namespace _Project.Sсripts
 
             Health playerHealth = new Health(_baseSettings.PlayerStartHealth, _baseSettings.PlayerMaxHealth);
             Damage playerDamage = new Damage(_baseSettings.PlayerDamageValue);
+            Mana playerMana = new Mana(_baseSettings.PlayerStartMana, _baseSettings.PlayerMaxMana);
 
             Health enemyHealth = new Health(_baseSettings.EnemyStartHealth, _baseSettings.EnemyMaxHealth);
             Damage enemyDamage = new Damage(_baseSettings.EnemyDamageValue);
@@ -81,6 +84,7 @@ namespace _Project.Sсripts
             stateMachine.AddState(new EndOfGameFsmState(stateMachine));
 
             _playerHealthBar.Initialize(playerHealth);
+            _playerManaBar.Initialize(playerMana);
             _enemyHealthBar.Initialize(enemyHealth);
 
             _cells.ForEach(cell => cell.Initialized());

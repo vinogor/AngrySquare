@@ -14,6 +14,8 @@ namespace _Project.Sсripts.Scriptable
         // player
         [field: SerializeField] public int PlayerStartHealth = 10;
         [field: SerializeField] public int PlayerMaxHealth = 10;
+        [field: SerializeField] public int PlayerStartMana = 2;
+        [field: SerializeField] public int PlayerMaxMana = 10;
         [field: SerializeField] public int PlayerDamageValue = 2;
         
         // enemy

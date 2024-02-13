@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using _Project.Sсripts.Animation;
 using _Project.Sсripts.Dmg;
-using _Project.Sсripts.Hp;
+using _Project.Sсripts.HealthAndMana;
 using _Project.Sсripts.Model;
 using _Project.Sсripts.Model.Effects;
 using _Project.Sсripts.Scriptable;

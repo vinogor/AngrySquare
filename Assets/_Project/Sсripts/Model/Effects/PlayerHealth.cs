@@ -1,5 +1,5 @@
 using System;
-using _Project.Sсripts.Hp;
+using _Project.Sсripts.HealthAndMana;
 using _Project.Sсripts.Movement;
 
 namespace _Project.Sсripts.Model.Effects

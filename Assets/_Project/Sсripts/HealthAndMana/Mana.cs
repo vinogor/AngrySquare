@@ -1,16 +1,14 @@
 using System;
 using UnityEngine;
 
-namespace _Project.Sсripts.Hp
+namespace _Project.Sсripts.HealthAndMana
 {
-    public class Health
+    public class Mana
     {
         public event Action<int> Changed;
-        public event Action DamageReceived;
-        public event Action HealthReplenished;
-        public event Action Died;
+        public event Action ManaReplenished;
 
-        public Health(int value, int maxValue)
+        public Mana(int value, int maxValue)
         {
             Validate(value, maxValue);
             Value = value;
@@ -21,35 +19,35 @@ namespace _Project.Sсripts.Hp
 
         public int MaxValue { get; private set; }
 
-        public bool IsAlive => Value > 0;
-
-        public void TakeDamage(int damage)
+        public bool IsEnough(int spellCost)
         {
-            Debug.Log("TakeDamage " + damage);
+            return Value >= spellCost;
+        }
 
-            if (damage <= 0)
-                throw new ArgumentOutOfRangeException(nameof(damage), "Damage must be greater than zero");
+        public void Spend(int spellCost)
+        {
+            Debug.Log("Spend mana " + spellCost);
 
-            Value -= damage;
+            if (spellCost <= 0)
+                throw new ArgumentOutOfRangeException(nameof(spellCost), "SpellCost must be greater than zero");
 
-            if (Value <= 0)
-                Value = 0;
+            if (IsEnough(spellCost) == false)
+            {
+                throw new ArgumentOutOfRangeException(nameof(spellCost), "Not enough mana to spend");
+            }
 
+            Value -= spellCost;
             Changed?.Invoke(Value);
-            DamageReceived?.Invoke();
-
-            if (Value <= 0)
-                Died?.Invoke();
         }
 
         public void ReplenishToMax()
         {
-            if (Value == MaxValue) 
+            if (Value == MaxValue)
                 return;
-            
+
             Value = MaxValue;
-            
-            HealthReplenished?.Invoke();
+
+            ManaReplenished?.Invoke();
             Changed?.Invoke(Value);
         }
 

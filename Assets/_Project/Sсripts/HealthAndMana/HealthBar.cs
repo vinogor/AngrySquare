@@ -1,9 +1,8 @@
-using System;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-namespace _Project.Sсripts.Hp
+namespace _Project.Sсripts.HealthAndMana
 {
     public class HealthBar : MonoBehaviour
     {
