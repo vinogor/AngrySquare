@@ -17,7 +17,7 @@ namespace _Project.Sсripts.Model.Effects
 
         public override void Activate(Action onComplete)
         {
-            base.Activate(onComplete);
+            Log();
 
             _playerHealth.ReplenishToMax();
             _playerJumper.PlayerJumpInPlace(onComplete.Invoke);

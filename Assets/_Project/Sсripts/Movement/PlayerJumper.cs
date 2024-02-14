@@ -66,7 +66,7 @@ namespace _Project.Sсripts.Movement
                 });
         }
 
-        // TODO: общий метод
+        // TODO: вынести в абстрактный класс общий метод
         private void Jump(Transform transform, Vector3 target, Action onJumpComplete)
         {
             transform
