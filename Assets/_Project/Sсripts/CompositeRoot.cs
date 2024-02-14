@@ -106,12 +106,14 @@ namespace _Project.Sсripts
             _playerEffects.Add(EffectName.Swords, new PlayerSwords(playerJumper, enemyHealth, playerDamage));
             _playerEffects.Add(EffectName.Health, new PlayerHealth(playerHealth, playerJumper));
             _playerEffects.Add(EffectName.Mana, new PlayerMana(playerMana, playerJumper));
+            _playerEffects.Add(EffectName.Portal, new PlayerPortal());
 
             _playerMovement.Initialize(_cells, _playerEffects, _baseSettings, playerJumper);
 
             _enemyEffects.Add(EffectName.Swords, new EnemySwords(enemyJumper, playerHealth, enemyDamage));
             _enemyEffects.Add(EffectName.Health, new EnemyHealth(enemyJumper));
             _enemyEffects.Add(EffectName.Mana, new EnemyMana(enemyJumper));
+            _enemyEffects.Add(EffectName.Portal, new EnemyPortal());
 
             _enemyMovement.Initialize(_enemyEffects, enemyTargetController, enemyJumper,
                 _playerMovement, playerHealth, enemyDamage);
@@ -125,6 +127,7 @@ namespace _Project.Sсripts
             // визуальные эффекты
             playerDamageEffect.Initialize(playerHealth);
             playerManaEffect.Initialize(playerMana);
+            // TODO: init for Portal
             enemyDamageEffect.Initialize(enemyHealth);
             playerHealthReplenishEffect.Initialize(playerHealth);
 
