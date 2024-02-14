@@ -56,11 +56,27 @@ namespace _Project.Sсripts.Movement
             Jump(_enemyTransform, _enemyTransform.position, onJumpComplete);
         }
 
+        public void EnemyJumpInPlaceLooped(int amount, Action onEveryLoop, Action onJumpComplete)
+        {
+            JumpLooped(_enemyTransform, _enemyTransform.position, amount, onEveryLoop, onJumpComplete);
+        }
+
         private void Jump(Transform transform, Vector3 target, Action onJumpComplete)
         {
             transform
                 .DOJump(target, _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
                 .SetEase(Ease.Linear)
+                .OnComplete(onJumpComplete.Invoke);
+        }
+
+        private void JumpLooped(
+            Transform transform, Vector3 target, int amount, Action onEveryLoop, Action onJumpComplete)
+        {
+            transform
+                .DOJump(target, _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
+                .SetEase(Ease.Linear)
+                .SetLoops(amount)
+                .OnStepComplete(onEveryLoop.Invoke)
                 .OnComplete(onJumpComplete.Invoke);
         }
     }

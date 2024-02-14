@@ -50,15 +50,13 @@ namespace _Project.Sсripts.Movement
                 _enemyJumper.EnemyJumpToTargetCell(() =>
                 {
                     _playerHealth.TakeDamage(_enemyDamage.Value);
-                    _enemyJumper.EnemyJumpInPlace(() =>
-                    {
-                        _playerHealth.TakeDamage(_enemyDamage.Value);
-                        _enemyJumper.EnemyJumpInPlace(() =>
+                    _enemyJumper.EnemyJumpInPlaceLooped(
+                        2,
+                        () => _playerHealth.TakeDamage(_enemyDamage.Value),
+                        () =>
                         {
-                            _playerHealth.TakeDamage(_enemyDamage.Value);
                             _enemyJumper.EnemyJumpBackToBase(() => TurnCompleted?.Invoke());
                         });
-                    });
                 });
             }
             else
