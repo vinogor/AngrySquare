@@ -78,5 +78,10 @@ namespace _Project.Sсripts.Movement
             nextCell.transform.DOMoveY(nextCell.transform.position.y - 0.1f, _baseSettings.AnimationCellDuration)
                 .SetLoops(2, LoopType.Yoyo);
         }
+
+        public void SetNewStayCell(Cell newStayCell)
+        {
+            _currentCellIndex = _cells.IndexOf(newStayCell);
+        }
     }
 }

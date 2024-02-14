@@ -11,7 +11,7 @@ namespace _Project.Sсripts.Movement
         private Transform _playerTransform;
         private Transform _enemyTransform;
         private BaseSettings _baseSettings;
-        
+
         private Vector3 _playerCellPosition;
 
         public PlayerJumper(Transform playerTransform, Transform enemyTransform, BaseSettings baseSettings)
@@ -35,14 +35,10 @@ namespace _Project.Sсripts.Movement
 
             Jump(_playerTransform, _playerCellPosition, onJumpComplete);
         }
-        
+
         public void JumpToNextCell(Cell nextCell, Action onJumpComplete)
         {
-            _playerTransform
-                .DOJump(nextCell.Center() + Vector3.up * _playerTransform.lossyScale.y,
-                    _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
-                .SetEase(Ease.Linear)
-                .OnComplete(onJumpComplete.Invoke);
+            Jump(_playerTransform, nextCell.Center() + Vector3.up * _playerTransform.lossyScale.y, onJumpComplete);
         }
 
         public void PlayerJumpInPlace(Action onJumpComplete)
@@ -50,8 +46,28 @@ namespace _Project.Sсripts.Movement
             Jump(_playerTransform, _playerTransform.position, onJumpComplete);
         }
 
+        public void PlayerTeleport(Cell teleportationCell, Action onComplete)
+        {
+            float offset = 2.1f;
+            _playerTransform.DOMoveY(
+                    _playerTransform.position.y - _playerTransform.lossyScale.y * offset, _baseSettings.JumpDuration)
+                .OnComplete(() =>
+                {
+                    _playerTransform
+                        .DOMove(teleportationCell.Center() - Vector3.up * (_playerTransform.lossyScale.y * offset),
+                            _baseSettings.JumpDuration)
+                        .OnComplete(() =>
+                        {
+                            _playerTransform
+                                .DOMove(teleportationCell.Center() + Vector3.up * (_playerTransform.lossyScale.y),
+                                    _baseSettings.JumpDuration)
+                                .OnComplete(onComplete.Invoke);
+                        });
+                });
+        }
+
         // TODO: общий метод
-        public void Jump(Transform transform, Vector3 target, Action onJumpComplete)
+        private void Jump(Transform transform, Vector3 target, Action onJumpComplete)
         {
             transform
                 .DOJump(target, _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)

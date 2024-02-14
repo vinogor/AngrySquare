@@ -19,52 +19,62 @@ namespace _Project.Sсripts
 {
     public class CompositeRoot : MonoBehaviour
     {
-        // TODO: разделить на группы поля
-
-        [SerializeField] private BaseSettings _baseSettings;
-
+        [Header("Player")]
         [SerializeField] private Player _player;
-        [SerializeField] private Enemy _enemy;
-
+        [SerializeField] private PlayerMovement _playerMovement;
+        [SerializeField] private MeshRenderer _playerMeshRenderer;
         [SerializeField] private HealthBar _playerHealthBar;
         [SerializeField] private ManaBar _playerManaBar;
+        [SerializeField] private DamageEffect _playerDamageEffect;
+        [SerializeField] private ManaEffect _playerManaEffect;
+        [SerializeField] private TeleportEffect _teleportEffect;
+        [SerializeField] private HealthReplenishEffect _playerHealthReplenishEffect;
+        [Space(10)]
+        
+        [Header("Enemy")]
+        [SerializeField] private Enemy _enemy;
+        [SerializeField] private EnemyMovement _enemyMovement;
         [SerializeField] private HealthBar _enemyHealthBar;
+        [SerializeField] private DamageEffect _enemyDamageEffect;
+        [SerializeField] private EnemyAim _enemyAim;
+        [Space(10)]
+
+        [Header("Common")]
+        [SerializeField] private BaseSettings _baseSettings;
         [SerializeField] private DiceRoller _diceRoller;
         [SerializeField] private List<Cell> _cells;
-        [SerializeField] private PlayerMovement _playerMovement;
-        [SerializeField] private EnemyMovement _enemyMovement;
-
-        [SerializeField] private DamageEffect playerDamageEffect;
-        [SerializeField] private ManaEffect playerManaEffect;
-        [SerializeField] private DamageEffect enemyDamageEffect;
-        [SerializeField] private HealthReplenishEffect playerHealthReplenishEffect;
-
-        [SerializeField] private EnemyAim _enemyAim;
-
         [SerializeField] private PopUp _popUp;
-
         [SerializeField] private List<CellInfo> _cellInfos;
 
-        private Dictionary<EffectName, Effect> _playerEffects = new();
-        private Dictionary<EffectName, Effect> _enemyEffects = new();
+        private readonly Dictionary<EffectName, Effect> _playerEffects = new();
+        private readonly Dictionary<EffectName, Effect> _enemyEffects = new();
 
         private void Start()
         {
             Debug.Log("CompositeRoot started");
 
-            Assert.IsNotNull(_baseSettings);
+            // player
             Assert.IsNotNull(_player);
-            Assert.IsNotNull(_enemy);
+            Assert.IsNotNull(_playerMovement);
+            Assert.IsNotNull(_playerMeshRenderer);
             Assert.IsNotNull(_playerHealthBar);
             Assert.IsNotNull(_playerManaBar);
-            Assert.IsNotNull(_enemyHealthBar);
-            Assert.IsNotNull(_diceRoller);
-            Assert.IsNotNull(_playerMovement);
+            Assert.IsNotNull(_playerDamageEffect);
+            Assert.IsNotNull(_playerManaEffect);
+            Assert.IsNotNull(_teleportEffect);
+            Assert.IsNotNull(_playerHealthReplenishEffect);
+
+            // enemy
+            Assert.IsNotNull(_enemy);
             Assert.IsNotNull(_enemyMovement);
-            Assert.IsNotNull(playerDamageEffect);
-            Assert.IsNotNull(playerManaEffect);
-            Assert.IsNotNull(enemyDamageEffect);
+            Assert.IsNotNull(_enemyHealthBar);
+            Assert.IsNotNull(_enemyDamageEffect);
             Assert.IsNotNull(_enemyAim);
+
+            // common
+            Assert.IsNotNull(_baseSettings);
+            Assert.IsNotNull(_diceRoller);
+            Assert.IsNotNull(_cells);
             Assert.IsNotNull(_popUp);
             Assert.IsNotNull(_cellInfos);
 
@@ -101,44 +111,58 @@ namespace _Project.Sсripts
 
             // === ЭФФЕКТЫ ===
 
+            // наполнение ячеек эффектами
+
+            ValidateCellsInfo();
+            FillCellsWithEffects();
+
+            List<Cell> portalCells = FindCellsByEffectName(EffectName.Portal);
+            PlayerPortal playerPortal = new PlayerPortal(playerJumper, portalCells, _playerMovement);
+            
+            // визуальные эффекты
+            _playerDamageEffect.Initialize(playerHealth);
+            _playerManaEffect.Initialize(playerMana);
+            _teleportEffect.Initialize(playerPortal);
+            _enemyDamageEffect.Initialize(enemyHealth);
+            _playerHealthReplenishEffect.Initialize(playerHealth);
+
             // наполнение словарей с эффектами 
 
             _playerEffects.Add(EffectName.Swords, new PlayerSwords(playerJumper, enemyHealth, playerDamage));
             _playerEffects.Add(EffectName.Health, new PlayerHealth(playerHealth, playerJumper));
             _playerEffects.Add(EffectName.Mana, new PlayerMana(playerMana, playerJumper));
-            _playerEffects.Add(EffectName.Portal, new PlayerPortal());
+            _playerEffects.Add(EffectName.Portal, playerPortal);
 
             _playerMovement.Initialize(_cells, _playerEffects, _baseSettings, playerJumper);
 
             _enemyEffects.Add(EffectName.Swords, new EnemySwords(enemyJumper, playerHealth, enemyDamage));
             _enemyEffects.Add(EffectName.Health, new EnemyHealth(enemyJumper));
             _enemyEffects.Add(EffectName.Mana, new EnemyMana(enemyJumper));
-            _enemyEffects.Add(EffectName.Portal, new EnemyPortal());
+            _enemyEffects.Add(EffectName.Portal, new EnemyPortal(enemyJumper));
 
             _enemyMovement.Initialize(_enemyEffects, enemyTargetController, enemyJumper,
                 _playerMovement, playerHealth, enemyDamage);
-
-            // наполнение ячеек эффектами
-
-            // TODO: добавить проверку что кол-во ячеек с эффектами равно общему кол-ву ячеек
-
-            FillCellsWithEffects();
-
-            // визуальные эффекты
-            playerDamageEffect.Initialize(playerHealth);
-            playerManaEffect.Initialize(playerMana);
-            // TODO: init for Portal
-            enemyDamageEffect.Initialize(enemyHealth);
-            playerHealthReplenishEffect.Initialize(playerHealth);
 
             // в самом конце 
 
             stateMachine.SetState<PlayerTurnFsmState>();
         }
 
+        private void ValidateCellsInfo()
+        {
+            int counter = 0;
+            _cellInfos.ForEach(cellInfo => counter += cellInfo.Amount);
+            Assert.AreEqual(16, counter, "Wrong amount, expected 16 cells");
+        }
+
         private void FillCellsWithEffects()
         {
             _cellInfos.ForEach(FillCells);
+        }
+
+        private List<Cell> FindCellsByEffectName(EffectName effectName)
+        {
+            return _cells.Where(cell => cell.EffectName == effectName).ToList();
         }
 
         private void FillCells(CellInfo cellInfo)

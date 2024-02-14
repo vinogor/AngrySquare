@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <EffectName>k__BackingField: 5
   <Sprite>k__BackingField: {fileID: 21300000, guid: 5489055328f9abb48adbabd49eb7c0c5, type: 3}
-  <Amount>k__BackingField: 10
+  <Amount>k__BackingField: 1

@@ -29,14 +29,11 @@ namespace _Project.Sсripts.Movement
         {
             Debug.Log("Enemy - JumpToCell");
 
-           _baseEnemyPosition = _enemyTransform.position;
+            _baseEnemyPosition = _enemyTransform.position;
 
-           Cell targetCell = _enemyTargetController.GetCurrentTargetCell();
-           Debug.Log($"EnemyJumpToTargetCell name = {targetCell.name}, effect = {targetCell.EffectName}");
+            Cell targetCell = _enemyTargetController.GetCurrentTargetCell();
 
-           Jump(_enemyTransform,
-                targetCell.Center() + Vector3.up * _baseSettings.EnemyHeight,
-                onJumpComplete);
+            Jump(_enemyTransform, targetCell.Center() + Vector3.up * _baseSettings.EnemyHeight, onJumpComplete);
         }
 
         public void EnemyJumpOnPlayer(Action onJumpComplete)
@@ -53,7 +50,7 @@ namespace _Project.Sсripts.Movement
 
             Jump(_enemyTransform, _baseEnemyPosition, onJumpComplete);
         }
-        
+
         public void EnemyJumpInPlace(Action onJumpComplete)
         {
             Jump(_enemyTransform, _enemyTransform.position, onJumpComplete);
