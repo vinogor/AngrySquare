@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using _Project.Sсripts.Animation;
+using _Project.Sсripts.DamageAndDefence;
 using _Project.Sсripts.Dice;
-using _Project.Sсripts.Dmg;
 using _Project.Sсripts.HealthAndMana;
 using _Project.Sсripts.Model;
 using _Project.Sсripts.Model.Effects;
@@ -19,33 +19,37 @@ namespace _Project.Sсripts
 {
     public class CompositeRoot : MonoBehaviour
     {
-        [Header("Player")]
-        [SerializeField] private Player _player;
-        [SerializeField] private PlayerMovement _playerMovement;
-        [SerializeField] private MeshRenderer _playerMeshRenderer;
-        [SerializeField] private HealthBar _playerHealthBar;
-        [SerializeField] private ManaBar _playerManaBar;
-        [SerializeField] private DamageEffect _playerDamageEffect;
-        [SerializeField] private ManaEffect _playerManaEffect;
-        [SerializeField] private TeleportEffect _teleportEffect;
-        [SerializeField] private HealthReplenishEffect _playerHealthReplenishEffect;
-        [Space(10)]
-        
-        [Header("Enemy")]
-        [SerializeField] private Enemy _enemy;
-        [SerializeField] private EnemyMovement _enemyMovement;
-        [SerializeField] private HealthBar _enemyHealthBar;
-        [SerializeField] private DamageEffect _enemyDamageEffect;
-        [SerializeField] private EnemyAim _enemyAim;
-        [Space(10)]
-
         [Header("Common")]
         [SerializeField] private BaseSettings _baseSettings;
         [SerializeField] private DiceRoller _diceRoller;
         [SerializeField] private List<Cell> _cells;
         [SerializeField] private PopUp _popUp;
         [SerializeField] private List<CellInfo> _cellInfos;
+        
+        [Space(10)]
+        [Header("Player")] 
+        [SerializeField] private Player _player;
+        [SerializeField] private PlayerMovement _playerMovement;
+        [SerializeField] private HealthBar _playerHealthBar;
+        [SerializeField] private ManaBar _playerManaBar;
+        [SerializeField] private DamageEffect _playerDamageEffect;
+        [SerializeField] private DamageText _playerDamageText;
+        [SerializeField] private DefenceText _playerDefenceText;
+        [SerializeField] private ManaEffect _playerManaEffect;
+        [SerializeField] private TeleportEffect _teleportEffect;
+        [SerializeField] private HealthReplenishEffect _playerHealthReplenishEffect;
 
+        [Space(10)] 
+        [Header("Enemy")] 
+        [SerializeField] private Enemy _enemy;
+        [SerializeField] private EnemyMovement _enemyMovement;
+        [SerializeField] private HealthBar _enemyHealthBar;
+        [SerializeField] private DamageEffect _enemyDamageEffect;
+        [SerializeField] private DamageText _enemyDamageText;
+        [SerializeField] private DefenceText _enemyDefenceText;
+        [SerializeField] private EnemyAim _enemyAim;
+         
+        
         private readonly Dictionary<EffectName, Effect> _playerEffects = new();
         private readonly Dictionary<EffectName, Effect> _enemyEffects = new();
 
@@ -56,10 +60,10 @@ namespace _Project.Sсripts
             // player
             Assert.IsNotNull(_player);
             Assert.IsNotNull(_playerMovement);
-            Assert.IsNotNull(_playerMeshRenderer);
             Assert.IsNotNull(_playerHealthBar);
             Assert.IsNotNull(_playerManaBar);
             Assert.IsNotNull(_playerDamageEffect);
+            Assert.IsNotNull(_playerDamageText);
             Assert.IsNotNull(_playerManaEffect);
             Assert.IsNotNull(_teleportEffect);
             Assert.IsNotNull(_playerHealthReplenishEffect);
@@ -69,6 +73,7 @@ namespace _Project.Sсripts
             Assert.IsNotNull(_enemyMovement);
             Assert.IsNotNull(_enemyHealthBar);
             Assert.IsNotNull(_enemyDamageEffect);
+            Assert.IsNotNull(_enemyDamageText);
             Assert.IsNotNull(_enemyAim);
 
             // common
@@ -78,12 +83,15 @@ namespace _Project.Sсripts
             Assert.IsNotNull(_popUp);
             Assert.IsNotNull(_cellInfos);
 
-            Health playerHealth = new Health(_baseSettings.PlayerStartHealth, _baseSettings.PlayerMaxHealth);
-            Damage playerDamage = new Damage(_baseSettings.PlayerDamageValue);
+
+            Defence playerDefence = new Defence(_baseSettings.PlayerStartDefence);
+            Health playerHealth = new Health(_baseSettings.PlayerStartHealth, _baseSettings.PlayerMaxHealth, playerDefence);
+            Damage playerDamage = new Damage(_baseSettings.PlayerStartDamage);
             Mana playerMana = new Mana(_baseSettings.PlayerStartMana, _baseSettings.PlayerMaxMana);
 
-            Health enemyHealth = new Health(_baseSettings.EnemyStartHealth, _baseSettings.EnemyMaxHealth);
-            Damage enemyDamage = new Damage(_baseSettings.EnemyDamageValue);
+            Defence enemyDefence = new Defence(_baseSettings.EnemyStartDefence);
+            Health enemyHealth = new Health(_baseSettings.EnemyStartHealth, _baseSettings.EnemyMaxHealth, enemyDefence);
+            Damage enemyDamage = new Damage(_baseSettings.EnemyStartDamage);
             Vector3 enemyPosition = _enemy.GetComponentInChildren<Center>().transform.position;
 
             FiniteStateMachine stateMachine = new FiniteStateMachine();
@@ -109,16 +117,22 @@ namespace _Project.Sсripts
             EnemyJumper enemyJumper =
                 new EnemyJumper(_enemy.transform, _playerMovement, _baseSettings, enemyTargetController);
 
+            // === UI ===
+
+            _playerDamageText.Initialize(playerDamage);
+            _enemyDamageText.Initialize(enemyDamage);
+            _playerDefenceText.Initialize(playerDefence);
+            _enemyDefenceText.Initialize(enemyDefence);
+
             // === ЭФФЕКТЫ ===
 
             // наполнение ячеек эффектами
-
             ValidateCellsInfo();
             FillCellsWithEffects();
 
             List<Cell> portalCells = FindCellsByEffectName(EffectName.Portal);
             PlayerPortal playerPortal = new PlayerPortal(playerJumper, portalCells, _playerMovement);
-            
+
             // визуальные эффекты
             _playerDamageEffect.Initialize(playerHealth);
             _playerManaEffect.Initialize(playerMana);

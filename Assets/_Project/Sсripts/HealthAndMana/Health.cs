@@ -1,21 +1,27 @@
 using System;
+using _Project.Sсripts.DamageAndDefence;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.HealthAndMana
 {
     public class Health
     {
+        private readonly Defence _defence;
+
+        public Health(int value, int maxValue, Defence defence)
+        {
+            Validate(value, maxValue);
+            Assert.IsNotNull(defence);
+            Value = value;
+            MaxValue = maxValue;
+            _defence = defence;
+        }
+
         public event Action<int> Changed;
         public event Action DamageReceived;
         public event Action Replenished;
         public event Action Died;
-
-        public Health(int value, int maxValue)
-        {
-            Validate(value, maxValue);
-            Value = value;
-            MaxValue = maxValue;
-        }
 
         public int Value { get; private set; }
 
@@ -30,7 +36,12 @@ namespace _Project.Sсripts.HealthAndMana
             if (damage <= 0)
                 throw new ArgumentOutOfRangeException(nameof(damage), "Damage must be greater than zero");
 
-            Value -= damage;
+            int passedDamage = damage - _defence.Value;
+
+            if (passedDamage <= 0)
+                return;
+
+            Value -= passedDamage;
 
             if (Value <= 0)
                 Value = 0;
@@ -44,11 +55,11 @@ namespace _Project.Sсripts.HealthAndMana
 
         public void ReplenishToMax()
         {
-            if (Value == MaxValue) 
+            if (Value == MaxValue)
                 return;
-            
+
             Value = MaxValue;
-            
+
             Replenished?.Invoke();
             Changed?.Invoke(Value);
         }
