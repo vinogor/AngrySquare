@@ -6,6 +6,7 @@ using _Project.Sсripts.HealthAndMana;
 using _Project.Sсripts.Model;
 using _Project.Sсripts.Model.Effects;
 using _Project.Sсripts.Scriptable;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -45,8 +46,26 @@ namespace _Project.Sсripts.Movement
         {
             Cell currentTargetCell = _enemyTargetController.GetCurrentTargetCell();
 
-            if (currentTargetCell == _playerMovement.PlayerStayCell)
+            // if (currentTargetCell == _playerMovement.PlayerStayCell)
+            if (true)
             {
+                // _enemyJumper.ForcedAttack(
+                //     () => _playerHealth.TakeDamage(_enemyDamage.Value),
+                //     () => TurnCompleted?.Invoke());
+
+                // Sequence sequence = DOTween.Sequence();
+                // sequence.Append(_enemyJumper.EnemyJumpToTargetCell());
+                // sequence.AppendCallback(() => _playerHealth.TakeDamage(_enemyDamage.Value));
+                //
+                // sequence.Append(_enemyJumper.EnemyJumpInPlaceLooped(
+                //     2, () => _playerHealth.TakeDamage(_enemyDamage.Value)));
+                //
+                // sequence.Append(_enemyJumper.EnemyJumpBackToBase());
+                //
+                // sequence.AppendCallback(() => TurnCompleted?.Invoke());
+                // sequence.Play();
+                
+
                 _enemyJumper.EnemyJumpToTargetCell(() =>
                 {
                     _playerHealth.TakeDamage(_enemyDamage.Value);
@@ -58,6 +77,7 @@ namespace _Project.Sсripts.Movement
                             _enemyJumper.EnemyJumpBackToBase(() => TurnCompleted?.Invoke());
                         });
                 });
+                
             }
             else
             {
