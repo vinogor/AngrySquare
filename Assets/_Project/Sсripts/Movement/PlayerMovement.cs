@@ -17,20 +17,20 @@ namespace _Project.Sсripts.Movement
 
         private List<Cell> _cells;
         private Dictionary<EffectName, Effect> _playerEffects;
-        private BaseSettings _baseSettings;
+        private Coefficients _coefficients;
         private PlayerJumper _playerJumper;
 
         public void Initialize(List<Cell> cells, Dictionary<EffectName, Effect> playerEffects,
-            BaseSettings baseSettings, PlayerJumper playerJumper)
+            Coefficients coefficients, PlayerJumper playerJumper)
         {
             Assert.IsNotNull(_diceRoller);
             Assert.IsNotNull(cells);
             Assert.IsNotNull(playerEffects);
-            Assert.IsNotNull(baseSettings);
+            Assert.IsNotNull(coefficients);
 
             _cells = cells;
             _playerEffects = playerEffects;
-            _baseSettings = baseSettings;
+            _coefficients = coefficients;
             _playerJumper = playerJumper;
         }
 
@@ -75,7 +75,7 @@ namespace _Project.Sсripts.Movement
 
         private void AnimateCell(Cell nextCell)
         {
-            nextCell.transform.DOMoveY(nextCell.transform.position.y - 0.1f, _baseSettings.AnimationCellDuration)
+            nextCell.transform.DOMoveY(nextCell.transform.position.y - 0.1f, _coefficients.AnimationCellDuration)
                 .SetLoops(2, LoopType.Yoyo);
         }
 

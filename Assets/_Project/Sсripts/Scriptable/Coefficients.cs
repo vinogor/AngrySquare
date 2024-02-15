@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace _Project.Sсripts.Scriptable
 {
-    [CreateAssetMenu(fileName = "BaseSettings", menuName = "Gameplay/BaseSettings")]
-    public class BaseSettings : ScriptableObject
+    [CreateAssetMenu(fileName = "Coefficients", menuName = "Gameplay/Coefficients")]
+    public class Coefficients : ScriptableObject
     {
         [Header("Common")]
         [field: SerializeField] public float JumpPower = 1f;

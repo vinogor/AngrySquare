@@ -20,11 +20,11 @@ namespace _Project.Sсripts
     public class CompositeRoot : MonoBehaviour
     {
         [Header("Common")]
-        [SerializeField] private BaseSettings _baseSettings;
+        [SerializeField] private Coefficients coefficients;
         [SerializeField] private DiceRoller _diceRoller;
         [SerializeField] private List<Cell> _cells;
         [SerializeField] private PopUp _popUp;
-        [SerializeField] private List<CellInfo> _cellInfos;
+        [SerializeField] private CellsSettings _cellsSettings;
         
         [Space(10)]
         [Header("Player")] 
@@ -57,6 +57,13 @@ namespace _Project.Sсripts
         {
             Debug.Log("CompositeRoot started");
 
+            // common
+            Assert.IsNotNull(coefficients);
+            Assert.IsNotNull(_diceRoller);
+            Assert.IsNotNull(_cells);
+            Assert.IsNotNull(_popUp);
+            Assert.IsNotNull(_cellsSettings);
+            
             // player
             Assert.IsNotNull(_player);
             Assert.IsNotNull(_playerMovement);
@@ -76,22 +83,14 @@ namespace _Project.Sсripts
             Assert.IsNotNull(_enemyDamageText);
             Assert.IsNotNull(_enemyAim);
 
-            // common
-            Assert.IsNotNull(_baseSettings);
-            Assert.IsNotNull(_diceRoller);
-            Assert.IsNotNull(_cells);
-            Assert.IsNotNull(_popUp);
-            Assert.IsNotNull(_cellInfos);
+            Defence playerDefence = new Defence(coefficients.PlayerStartDefence);
+            Health playerHealth = new Health(coefficients.PlayerStartHealth, coefficients.PlayerMaxHealth, playerDefence);
+            Damage playerDamage = new Damage(coefficients.PlayerStartDamage);
+            Mana playerMana = new Mana(coefficients.PlayerStartMana, coefficients.PlayerMaxMana);
 
-
-            Defence playerDefence = new Defence(_baseSettings.PlayerStartDefence);
-            Health playerHealth = new Health(_baseSettings.PlayerStartHealth, _baseSettings.PlayerMaxHealth, playerDefence);
-            Damage playerDamage = new Damage(_baseSettings.PlayerStartDamage);
-            Mana playerMana = new Mana(_baseSettings.PlayerStartMana, _baseSettings.PlayerMaxMana);
-
-            Defence enemyDefence = new Defence(_baseSettings.EnemyStartDefence);
-            Health enemyHealth = new Health(_baseSettings.EnemyStartHealth, _baseSettings.EnemyMaxHealth, enemyDefence);
-            Damage enemyDamage = new Damage(_baseSettings.EnemyStartDamage);
+            Defence enemyDefence = new Defence(coefficients.EnemyStartDefence);
+            Health enemyHealth = new Health(coefficients.EnemyStartHealth, coefficients.EnemyMaxHealth, enemyDefence);
+            Damage enemyDamage = new Damage(coefficients.EnemyStartDamage);
             Vector3 enemyPosition = _enemy.GetComponentInChildren<Center>().transform.position;
 
             FiniteStateMachine stateMachine = new FiniteStateMachine();
@@ -113,9 +112,9 @@ namespace _Project.Sсripts
             enemyTargetController.SetAimToNewRandomTargetCell();
             Cell enemyTargetCell = enemyTargetController.GetCurrentTargetCell();
 
-            PlayerJumper playerJumper = new PlayerJumper(_player.transform, _enemy.transform, _baseSettings);
+            PlayerJumper playerJumper = new PlayerJumper(_player.transform, _enemy.transform, coefficients);
             EnemyJumper enemyJumper =
-                new EnemyJumper(_enemy.transform, _playerMovement, _baseSettings, enemyTargetController);
+                new EnemyJumper(_enemy.transform, _playerMovement, coefficients, enemyTargetController);
 
             // === UI ===
 
@@ -127,7 +126,6 @@ namespace _Project.Sсripts
             // === ЭФФЕКТЫ ===
 
             // наполнение ячеек эффектами
-            ValidateCellsInfo();
             FillCellsWithEffects();
 
             List<Cell> portalCells = FindCellsByEffectName(EffectName.Portal);
@@ -147,7 +145,7 @@ namespace _Project.Sсripts
             _playerEffects.Add(EffectName.Mana, new PlayerMana(playerMana, playerJumper));
             _playerEffects.Add(EffectName.Portal, playerPortal);
 
-            _playerMovement.Initialize(_cells, _playerEffects, _baseSettings, playerJumper);
+            _playerMovement.Initialize(_cells, _playerEffects, coefficients, playerJumper);
 
             _enemyEffects.Add(EffectName.Swords, new EnemySwords(enemyJumper, playerHealth, enemyDamage));
             _enemyEffects.Add(EffectName.Health, new EnemyHealth(enemyJumper));
@@ -162,16 +160,9 @@ namespace _Project.Sсripts
             stateMachine.SetState<PlayerTurnFsmState>();
         }
 
-        private void ValidateCellsInfo()
-        {
-            int counter = 0;
-            _cellInfos.ForEach(cellInfo => counter += cellInfo.Amount);
-            Assert.AreEqual(16, counter, "Wrong amount, expected 16 cells");
-        }
-
         private void FillCellsWithEffects()
         {
-            _cellInfos.ForEach(FillCells);
+            _cellsSettings.CellInfos.ForEach(FillCells);
         }
 
         private List<Cell> FindCellsByEffectName(EffectName effectName)

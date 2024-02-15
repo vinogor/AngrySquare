@@ -1,9 +1,10 @@
+using System;
 using UnityEngine;
 
 namespace _Project.Sсripts.Scriptable
 {
-    [CreateAssetMenu(fileName = "CellInfo", menuName = "Gameplay/CellInfo")]
-    public class CellInfo : ScriptableObject
+    [Serializable]
+    public class CellInfo
     {
         [field: SerializeField] public EffectName EffectName { get; private set; }
         [field: SerializeField] public Sprite Sprite { get; private set; }

@@ -46,8 +46,8 @@ namespace _Project.Sсripts.Movement
         {
             Cell currentTargetCell = _enemyTargetController.GetCurrentTargetCell();
 
-            // if (currentTargetCell == _playerMovement.PlayerStayCell)
-            if (true)
+            if (currentTargetCell == _playerMovement.PlayerStayCell)
+            // if (true)
             {
                 // _enemyJumper.ForcedAttack(
                 //     () => _playerHealth.TakeDamage(_enemyDamage.Value),

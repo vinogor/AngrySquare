@@ -11,17 +11,17 @@ namespace _Project.Sсripts.Movement
     {
         private Transform _enemyTransform;
         private PlayerMovement _playerMovement;
-        private BaseSettings _baseSettings;
+        private Coefficients _coefficients;
         private EnemyTargetController _enemyTargetController;
 
         private Vector3 _baseEnemyPosition;
 
-        public EnemyJumper(Transform enemyTransform, PlayerMovement playerMovement, BaseSettings baseSettings,
+        public EnemyJumper(Transform enemyTransform, PlayerMovement playerMovement, Coefficients coefficients,
             EnemyTargetController enemyTargetController)
         {
             _enemyTransform = enemyTransform;
             _playerMovement = playerMovement;
-            _baseSettings = baseSettings;
+            _coefficients = coefficients;
             _enemyTargetController = enemyTargetController;
         }
 
@@ -33,7 +33,7 @@ namespace _Project.Sсripts.Movement
 
             Cell targetCell = _enemyTargetController.GetCurrentTargetCell();
 
-            Jump(_enemyTransform, targetCell.Center() + Vector3.up * _baseSettings.EnemyHeight, onJumpComplete);
+            Jump(_enemyTransform, targetCell.Center() + Vector3.up * _coefficients.EnemyHeight, onJumpComplete);
         }
 
         public Sequence EnemyJumpToTargetCell()
@@ -44,14 +44,14 @@ namespace _Project.Sсripts.Movement
 
             Cell targetCell = _enemyTargetController.GetCurrentTargetCell();
 
-            return Jump(_enemyTransform, targetCell.Center() + Vector3.up * _baseSettings.EnemyHeight);
+            return Jump(_enemyTransform, targetCell.Center() + Vector3.up * _coefficients.EnemyHeight);
         }
 
         public void EnemyJumpOnPlayer(Action onJumpComplete)
         {
             Debug.Log("Enemy - JumpOnPlayer");
 
-            Jump(_enemyTransform, _playerMovement.PlayerStayCell.Center() + Vector3.up * _baseSettings.EnemyHeight,
+            Jump(_enemyTransform, _playerMovement.PlayerStayCell.Center() + Vector3.up * _coefficients.EnemyHeight,
                 onJumpComplete);
         }
 
@@ -87,7 +87,7 @@ namespace _Project.Sсripts.Movement
         private void Jump(Transform transform, Vector3 target, Action onJumpComplete)
         {
             transform
-                .DOJump(target, _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
+                .DOJump(target, _coefficients.JumpPower, 1, _coefficients.JumpDuration)
                 .SetEase(Ease.Linear)
                 .OnComplete(onJumpComplete.Invoke);
         }
@@ -96,7 +96,7 @@ namespace _Project.Sсripts.Movement
         {
             Debug.Log($"Enemy - Jump - from {transform.position} - to {target}");
             return transform
-                .DOJump(target, _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
+                .DOJump(target, _coefficients.JumpPower, 1, _coefficients.JumpDuration)
                 .SetEase(Ease.Linear);
         }
 
@@ -104,7 +104,7 @@ namespace _Project.Sсripts.Movement
             Transform transform, Vector3 target, int amount, Action onEveryLoop, Action onJumpComplete)
         {
             transform
-                .DOJump(target, _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
+                .DOJump(target, _coefficients.JumpPower, 1, _coefficients.JumpDuration)
                 .SetEase(Ease.Linear)
                 .SetLoops(amount)
                 .OnStepComplete(onEveryLoop.Invoke)
@@ -115,7 +115,7 @@ namespace _Project.Sсripts.Movement
             Transform transform, Vector3 target, int amount, Action onEveryLoop)
         {
             return transform
-                .DOJump(target, _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
+                .DOJump(target, _coefficients.JumpPower, 1, _coefficients.JumpDuration)
                 .SetEase(Ease.Linear)
                 .SetLoops(amount)
                 .OnStepComplete(onEveryLoop.Invoke);

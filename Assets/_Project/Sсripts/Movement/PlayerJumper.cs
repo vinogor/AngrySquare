@@ -10,15 +10,15 @@ namespace _Project.Sсripts.Movement
     {
         private Transform _playerTransform;
         private Transform _enemyTransform;
-        private BaseSettings _baseSettings;
+        private Coefficients _coefficients;
 
         private Vector3 _playerCellPosition;
 
-        public PlayerJumper(Transform playerTransform, Transform enemyTransform, BaseSettings baseSettings)
+        public PlayerJumper(Transform playerTransform, Transform enemyTransform, Coefficients coefficients)
         {
             _playerTransform = playerTransform;
             _enemyTransform = enemyTransform;
-            _baseSettings = baseSettings;
+            _coefficients = coefficients;
         }
 
         public void PlayerJumpOnEnemy(Action onJumpComplete)
@@ -56,7 +56,7 @@ namespace _Project.Sсripts.Movement
             float offset = 2.1f;
             float lossyScaleY = _playerTransform.lossyScale.y;
             Vector3 cellCenter = targetCell.Center();
-            float jumpDuration = _baseSettings.JumpDuration;
+            float jumpDuration = _coefficients.JumpDuration;
 
             Sequence sequence = DOTween.Sequence();
             sequence.Append(_playerTransform.DOMoveY(_playerTransform.position.y - lossyScaleY * offset, jumpDuration));
@@ -69,7 +69,7 @@ namespace _Project.Sсripts.Movement
         private Sequence Jump(Transform transform, Vector3 target, Action onJumpComplete)
         {
             return transform
-                .DOJump(target, _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
+                .DOJump(target, _coefficients.JumpPower, 1, _coefficients.JumpDuration)
                 .SetEase(Ease.Linear)
                 .OnComplete(onJumpComplete.Invoke);
         }
@@ -78,7 +78,7 @@ namespace _Project.Sсripts.Movement
         {
             Debug.Log($"Player - Jump - from {transform.position} - to {target}");
             return transform
-                .DOJump(target, _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
+                .DOJump(target, _coefficients.JumpPower, 1, _coefficients.JumpDuration)
                 .SetEase(Ease.Linear);
         }
     }
