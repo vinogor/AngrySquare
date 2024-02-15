@@ -10,7 +10,6 @@ using _Project.Sсripts.Movement;
 using _Project.Sсripts.Scriptable;
 using _Project.Sсripts.StateMachine;
 using _Project.Sсripts.StateMachine.States;
-using _Project.Sсripts.UI;
 using _Project.Sсripts.Utility;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -20,36 +19,28 @@ namespace _Project.Sсripts
     public class CompositeRoot : MonoBehaviour
     {
         [Header("Common")]
-        [SerializeField] private Coefficients coefficients;
+        [SerializeField] private Coefficients _coefficients;
         [SerializeField] private DiceRoller _diceRoller;
         [SerializeField] private List<Cell> _cells;
-        [SerializeField] private PopUp _popUp;
         [SerializeField] private CellsSettings _cellsSettings;
-        
+        [SerializeField] private UiRoot _uiRoot;
+
         [Space(10)]
-        [Header("Player")] 
+        [Header("Player")]
         [SerializeField] private Player _player;
         [SerializeField] private PlayerMovement _playerMovement;
-        [SerializeField] private HealthBar _playerHealthBar;
-        [SerializeField] private ManaBar _playerManaBar;
         [SerializeField] private DamageEffect _playerDamageEffect;
-        [SerializeField] private DamageText _playerDamageText;
-        [SerializeField] private DefenceText _playerDefenceText;
         [SerializeField] private ManaEffect _playerManaEffect;
         [SerializeField] private TeleportEffect _teleportEffect;
         [SerializeField] private HealthReplenishEffect _playerHealthReplenishEffect;
 
-        [Space(10)] 
-        [Header("Enemy")] 
+        [Space(10)]
+        [Header("Enemy")]
         [SerializeField] private Enemy _enemy;
         [SerializeField] private EnemyMovement _enemyMovement;
-        [SerializeField] private HealthBar _enemyHealthBar;
         [SerializeField] private DamageEffect _enemyDamageEffect;
-        [SerializeField] private DamageText _enemyDamageText;
-        [SerializeField] private DefenceText _enemyDefenceText;
         [SerializeField] private EnemyAim _enemyAim;
-         
-        
+
         private readonly Dictionary<EffectName, Effect> _playerEffects = new();
         private readonly Dictionary<EffectName, Effect> _enemyEffects = new();
 
@@ -58,19 +49,16 @@ namespace _Project.Sсripts
             Debug.Log("CompositeRoot started");
 
             // common
-            Assert.IsNotNull(coefficients);
+            Assert.IsNotNull(_coefficients);
             Assert.IsNotNull(_diceRoller);
             Assert.IsNotNull(_cells);
-            Assert.IsNotNull(_popUp);
             Assert.IsNotNull(_cellsSettings);
-            
+            Assert.IsNotNull(_uiRoot);
+
             // player
             Assert.IsNotNull(_player);
             Assert.IsNotNull(_playerMovement);
-            Assert.IsNotNull(_playerHealthBar);
-            Assert.IsNotNull(_playerManaBar);
             Assert.IsNotNull(_playerDamageEffect);
-            Assert.IsNotNull(_playerDamageText);
             Assert.IsNotNull(_playerManaEffect);
             Assert.IsNotNull(_teleportEffect);
             Assert.IsNotNull(_playerHealthReplenishEffect);
@@ -78,74 +66,67 @@ namespace _Project.Sсripts
             // enemy
             Assert.IsNotNull(_enemy);
             Assert.IsNotNull(_enemyMovement);
-            Assert.IsNotNull(_enemyHealthBar);
             Assert.IsNotNull(_enemyDamageEffect);
-            Assert.IsNotNull(_enemyDamageText);
             Assert.IsNotNull(_enemyAim);
 
-            Defence playerDefence = new Defence(coefficients.PlayerStartDefence);
-            Health playerHealth = new Health(coefficients.PlayerStartHealth, coefficients.PlayerMaxHealth, playerDefence);
-            Damage playerDamage = new Damage(coefficients.PlayerStartDamage);
-            Mana playerMana = new Mana(coefficients.PlayerStartMana, coefficients.PlayerMaxMana);
+            Defence playerDefence = new Defence(_coefficients.PlayerStartDefence);
+            Health playerHealth = new Health(_coefficients.PlayerStartHealth, _coefficients.PlayerMaxHealth,
+                playerDefence);
+            Damage playerDamage = new Damage(_coefficients.PlayerStartDamage);
+            Mana playerMana = new Mana(_coefficients.PlayerStartMana, _coefficients.PlayerMaxMana);
 
-            Defence enemyDefence = new Defence(coefficients.EnemyStartDefence);
-            Health enemyHealth = new Health(coefficients.EnemyStartHealth, coefficients.EnemyMaxHealth, enemyDefence);
-            Damage enemyDamage = new Damage(coefficients.EnemyStartDamage);
-            Vector3 enemyPosition = _enemy.GetComponentInChildren<Center>().transform.position;
+            Defence enemyDefence = new Defence(_coefficients.EnemyStartDefence);
+            Health enemyHealth = new Health(_coefficients.EnemyStartHealth, _coefficients.EnemyMaxHealth, enemyDefence);
+            Damage enemyDamage = new Damage(_coefficients.EnemyStartDamage);
 
             FiniteStateMachine stateMachine = new FiniteStateMachine();
             // stateMachine.AddState(new InitializeFsmState(stateMachine));
             stateMachine.AddState(new PlayerTurnFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth));
-            stateMachine.AddState(new EnemyDefeatFsmState(stateMachine, _popUp));
+            stateMachine.AddState(new EnemyDefeatFsmState(stateMachine, _uiRoot.PopUp));
             stateMachine.AddState(new EnemyTurnFsmState(stateMachine, _enemyMovement, playerHealth));
-            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, _popUp));
+            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, _uiRoot.PopUp));
             stateMachine.AddState(new EndOfGameFsmState(stateMachine));
-
-            _playerHealthBar.Initialize(playerHealth);
-            _playerManaBar.Initialize(playerMana);
-            _enemyHealthBar.Initialize(enemyHealth);
 
             _cells.ForEach(cell => cell.Initialized());
             _diceRoller.Initialize();
 
             EnemyTargetController enemyTargetController = new EnemyTargetController(_cells, _enemyAim);
             enemyTargetController.SetAimToNewRandomTargetCell();
-            Cell enemyTargetCell = enemyTargetController.GetCurrentTargetCell();
 
-            PlayerJumper playerJumper = new PlayerJumper(_player.transform, _enemy.transform, coefficients);
+            PlayerJumper playerJumper = new PlayerJumper(_player.transform, _enemy.transform, _coefficients);
             EnemyJumper enemyJumper =
-                new EnemyJumper(_enemy.transform, _playerMovement, coefficients, enemyTargetController);
+                new EnemyJumper(_enemy.transform, _playerMovement, _coefficients, enemyTargetController);
 
             // === UI ===
-
-            _playerDamageText.Initialize(playerDamage);
-            _enemyDamageText.Initialize(enemyDamage);
-            _playerDefenceText.Initialize(playerDefence);
-            _enemyDefenceText.Initialize(enemyDefence);
+            _uiRoot.Initialize(playerHealth, playerMana, enemyHealth, playerDamage, enemyDamage, playerDefence,
+                enemyDefence);
 
             // === ЭФФЕКТЫ ===
 
-            // наполнение ячеек эффектами
             FillCellsWithEffects();
 
             List<Cell> portalCells = FindCellsByEffectName(EffectName.Portal);
             PlayerPortal playerPortal = new PlayerPortal(playerJumper, portalCells, _playerMovement);
 
-            // визуальные эффекты
-            _playerDamageEffect.Initialize(playerHealth);
-            _playerManaEffect.Initialize(playerMana);
-            _teleportEffect.Initialize(playerPortal);
-            _enemyDamageEffect.Initialize(enemyHealth);
-            _playerHealthReplenishEffect.Initialize(playerHealth);
+            VfxInitialize(playerHealth, playerMana, playerPortal, enemyHealth);
+            CellEffectsInitialize(playerJumper, enemyHealth, playerDamage, playerHealth, playerMana, playerPortal,
+                enemyJumper, enemyDamage, enemyTargetController);
 
-            // наполнение словарей с эффектами 
+            // в самом конце 
+            stateMachine.SetState<PlayerTurnFsmState>();
+        }
 
+        private void CellEffectsInitialize(PlayerJumper playerJumper, Health enemyHealth, Damage playerDamage,
+            Health playerHealth, Mana playerMana, PlayerPortal playerPortal, EnemyJumper enemyJumper,
+            Damage enemyDamage,
+            EnemyTargetController enemyTargetController)
+        {
             _playerEffects.Add(EffectName.Swords, new PlayerSwords(playerJumper, enemyHealth, playerDamage));
             _playerEffects.Add(EffectName.Health, new PlayerHealth(playerHealth, playerJumper));
             _playerEffects.Add(EffectName.Mana, new PlayerMana(playerMana, playerJumper));
             _playerEffects.Add(EffectName.Portal, playerPortal);
 
-            _playerMovement.Initialize(_cells, _playerEffects, coefficients, playerJumper);
+            _playerMovement.Initialize(_cells, _playerEffects, _coefficients, playerJumper);
 
             _enemyEffects.Add(EffectName.Swords, new EnemySwords(enemyJumper, playerHealth, enemyDamage));
             _enemyEffects.Add(EffectName.Health, new EnemyHealth(enemyJumper));
@@ -154,10 +135,15 @@ namespace _Project.Sсripts
 
             _enemyMovement.Initialize(_enemyEffects, enemyTargetController, enemyJumper,
                 _playerMovement, playerHealth, enemyDamage);
+        }
 
-            // в самом конце 
-
-            stateMachine.SetState<PlayerTurnFsmState>();
+        private void VfxInitialize(Health playerHealth, Mana playerMana, PlayerPortal playerPortal, Health enemyHealth)
+        {
+            _playerDamageEffect.Initialize(playerHealth);
+            _playerManaEffect.Initialize(playerMana);
+            _teleportEffect.Initialize(playerPortal);
+            _enemyDamageEffect.Initialize(enemyHealth);
+            _playerHealthReplenishEffect.Initialize(playerHealth);
         }
 
         private void FillCellsWithEffects()

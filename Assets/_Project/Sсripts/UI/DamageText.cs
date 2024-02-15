@@ -22,14 +22,14 @@ namespace _Project.Sсripts.UI
             _textMeshPro.SetText($"{_damage.Value}");
         }
 
-        private void OnDamageChanged()
-        {
-            _textMeshPro.SetText($"{_damage.Value}");
-        }
-
         private void OnDestroy()
         {
             _damage.Changed -= OnDamageChanged;
+        }
+
+        private void OnDamageChanged()
+        {
+            _textMeshPro.SetText($"{_damage.Value}");
         }
     }
 }

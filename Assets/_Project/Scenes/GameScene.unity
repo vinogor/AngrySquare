@@ -3244,7 +3244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c22425e879ea124d85d2533c5baab9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseSettings: {fileID: 11400000, guid: ce89b7df50407fc489fedae7da58a9a9, type: 2}
+  _coefficients: {fileID: 11400000, guid: ce89b7df50407fc489fedae7da58a9a9, type: 2}
   _diceRoller: {fileID: 137139605}
   _cells:
   - {fileID: 4916563562095251680}
@@ -3263,24 +3263,17 @@ MonoBehaviour:
   - {fileID: 1135395133}
   - {fileID: 2057675796}
   - {fileID: 1672253161}
-  _popUp: {fileID: 1551639101}
   _cellsSettings: {fileID: 11400000, guid: c90c7ae6589b2d9468b844b4a2f38542, type: 2}
+  _uiRoot: {fileID: 1518102252}
   _player: {fileID: 2120022569}
   _playerMovement: {fileID: 2120022570}
-  _playerHealthBar: {fileID: 932031755}
-  _playerManaBar: {fileID: 1770213333}
   _playerDamageEffect: {fileID: 2120022571}
-  _playerDamageText: {fileID: 1827672292}
-  _playerDefenceText: {fileID: 111687090}
   _playerManaEffect: {fileID: 2120022573}
   _teleportEffect: {fileID: 2120022574}
   _playerHealthReplenishEffect: {fileID: 2120022572}
   _enemy: {fileID: 112534803}
   _enemyMovement: {fileID: 112534801}
-  _enemyHealthBar: {fileID: 397847410}
   _enemyDamageEffect: {fileID: 112534802}
-  _enemyDamageText: {fileID: 910892544}
-  _enemyDefenceText: {fileID: 719523893}
   _enemyAim: {fileID: 1235454408}
 --- !u!1001 &268767600
 PrefabInstance:
@@ -13319,6 +13312,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1518102251
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1518102253}
+  - component: {fileID: 1518102252}
+  m_Layer: 0
+  m_Name: UiRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1518102252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1518102251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c7e2aa5d924417483242f2ccbc4d039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <PopUp>k__BackingField: {fileID: 1551639101}
+  <PlayerHealthBar>k__BackingField: {fileID: 932031755}
+  <PlayerManaBar>k__BackingField: {fileID: 1770213333}
+  <PlayerDamageText>k__BackingField: {fileID: 1827672292}
+  <PlayerDefenceText>k__BackingField: {fileID: 111687090}
+  <EnemyHealthBar>k__BackingField: {fileID: 397847410}
+  <EnemyDamageText>k__BackingField: {fileID: 910892544}
+  <EnemyDefenceText>k__BackingField: {fileID: 719523893}
+--- !u!4 &1518102253
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1518102251}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.75499, y: 4.220727, z: -3.3333097}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1518490010
 GameObject:
   m_ObjectHideFlags: 0
@@ -19178,6 +19223,7 @@ SceneRoots:
   - {fileID: 963194228}
   - {fileID: 705507995}
   - {fileID: 261696865}
+  - {fileID: 1518102253}
   - {fileID: 1235454405}
   - {fileID: 718439387}
   - {fileID: 1733145118}
