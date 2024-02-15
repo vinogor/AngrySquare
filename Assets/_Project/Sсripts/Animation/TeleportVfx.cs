@@ -4,7 +4,7 @@ using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.Animation
 {
-    public class TeleportEffect : MonoBehaviour
+    public class TeleportVfx : MonoBehaviour
     {
         [SerializeField] private ParticleSystem _particleSystem;
 

@@ -24,21 +24,17 @@ namespace _Project.Sсripts
         [SerializeField] private List<Cell> _cells;
         [SerializeField] [Required] private CellsSettings _cellsSettings;
         [SerializeField] [Required] private UiRoot _uiRoot;
+        [SerializeField] [Required] private VfxRoot _vfxRoot;
 
         [Space(10)]
         [Header("Player")]
         [SerializeField] [Required] private Player _player;
         [SerializeField] [Required] private PlayerMovement _playerMovement;
-        [SerializeField] [Required] private DamageEffect _playerDamageEffect;
-        [SerializeField] [Required] private ManaEffect _playerManaEffect;
-        [SerializeField] [Required] private TeleportEffect _teleportEffect;
-        [SerializeField] [Required] private HealthReplenishEffect _playerHealthReplenishEffect;
 
         [Space(10)]
         [Header("Enemy")]
         [SerializeField] [Required] private Enemy _enemy;
         [SerializeField] [Required] private EnemyMovement _enemyMovement;
-        [SerializeField] [Required] private DamageEffect _enemyDamageEffect;
         [SerializeField] [Required] private EnemyAim _enemyAim;
 
         private readonly Dictionary<EffectName, Effect> _playerEffects = new();
@@ -87,7 +83,8 @@ namespace _Project.Sсripts
             List<Cell> portalCells = FindCellsByEffectName(EffectName.Portal);
             PlayerPortal playerPortal = new PlayerPortal(playerJumper, portalCells, _playerMovement);
 
-            VfxInitialize(playerHealth, playerMana, playerPortal, enemyHealth);
+            _vfxRoot.Initialize(playerHealth, playerMana, playerPortal, enemyHealth);
+
             CellEffectsInitialize(playerJumper, enemyHealth, playerDamage, playerHealth, playerMana, playerPortal,
                 enemyJumper, enemyDamage, enemyTargetController);
 
@@ -114,15 +111,6 @@ namespace _Project.Sсripts
 
             _enemyMovement.Initialize(_enemyEffects, enemyTargetController, enemyJumper,
                 _playerMovement, playerHealth, enemyDamage);
-        }
-
-        private void VfxInitialize(Health playerHealth, Mana playerMana, PlayerPortal playerPortal, Health enemyHealth)
-        {
-            _playerDamageEffect.Initialize(playerHealth);
-            _playerManaEffect.Initialize(playerMana);
-            _teleportEffect.Initialize(playerPortal);
-            _enemyDamageEffect.Initialize(enemyHealth);
-            _playerHealthReplenishEffect.Initialize(playerHealth);
         }
 
         private void FillCellsWithEffects()

@@ -25,7 +25,7 @@ namespace _Project.Sсripts
         [field: SerializeField] public HealthBar EnemyHealthBar { get; private set; }
 
         [field: SerializeField] public DamageText EnemyDamageText { get; private set; }
-        [field: SerializeField] public DefenceText _enemyDefenceText { get; private set; }
+        [field: SerializeField] public DefenceText EnemyDefenceText { get; private set; }
 
         private void Awake()
         {
@@ -38,7 +38,7 @@ namespace _Project.Sсripts
 
             Assert.IsNotNull(EnemyHealthBar);
             Assert.IsNotNull(EnemyDamageText);
-            Assert.IsNotNull(_enemyDefenceText);
+            Assert.IsNotNull(EnemyDefenceText);
         }
 
         public void Initialize(Health playerHealth, Mana playerMana, Health enemyHealth, Damage playerDamage,
@@ -50,7 +50,7 @@ namespace _Project.Sсripts
             PlayerDamageText.Initialize(playerDamage);
             EnemyDamageText.Initialize(enemyDamage);
             PlayerDefenceText.Initialize(playerDefence);
-            _enemyDefenceText.Initialize(enemyDefence);
+            EnemyDefenceText.Initialize(enemyDefence);
         }
     }
 }

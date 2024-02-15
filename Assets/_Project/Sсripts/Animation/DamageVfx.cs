@@ -4,26 +4,26 @@ using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.Animation
 {
-    public class ManaEffect : MonoBehaviour
+    public class DamageVfx : MonoBehaviour
     {
         [SerializeField] private ParticleSystem _particleSystem;
 
-        private Mana _mana;
+        private Health _health;
 
-        public void Initialize(Mana mana)
+        public void Initialize(Health health)
         {
             Assert.IsNotNull(_particleSystem);
-            Assert.IsNotNull(mana);
-            _mana = mana;
-            _mana.Replenished += OnReplenished;
+            Assert.IsNotNull(health);
+            _health = health;
+            _health.DamageReceived += OnDamageReceived;
         }
 
         private void OnDestroy()
         {
-            _mana.Replenished -= OnReplenished;
+            _health.DamageReceived -= OnDamageReceived;
         }
 
-        private void OnReplenished()
+        private void OnDamageReceived()
         {
             _particleSystem.Play();
         }
