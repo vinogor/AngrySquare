@@ -41,38 +41,45 @@ namespace _Project.Sсripts.Movement
             Jump(_playerTransform, nextCell.Center() + Vector3.up * _playerTransform.lossyScale.y, onJumpComplete);
         }
 
-        public void PlayerJumpInPlace(Action onJumpComplete)
+        public Sequence PlayerJumpInPlace(Action onJumpComplete)
         {
-            Jump(_playerTransform, _playerTransform.position, onJumpComplete);
+            return Jump(_playerTransform, _playerTransform.position, onJumpComplete);
         }
 
-        public void PlayerTeleport(Cell teleportationCell, Action onComplete)
+        public Sequence PlayerJumpInPlace()
+        {
+            return Jump(_playerTransform, _playerTransform.position);
+        }
+
+        public Sequence PlayerTeleport(Cell targetCell)
         {
             float offset = 2.1f;
-            _playerTransform.DOMoveY(
-                    _playerTransform.position.y - _playerTransform.lossyScale.y * offset, _baseSettings.JumpDuration)
-                .OnComplete(() =>
-                {
-                    _playerTransform
-                        .DOMove(teleportationCell.Center() - Vector3.up * (_playerTransform.lossyScale.y * offset),
-                            _baseSettings.JumpDuration)
-                        .OnComplete(() =>
-                        {
-                            _playerTransform
-                                .DOMove(teleportationCell.Center() + Vector3.up * (_playerTransform.lossyScale.y),
-                                    _baseSettings.JumpDuration)
-                                .OnComplete(onComplete.Invoke);
-                        });
-                });
+            float lossyScaleY = _playerTransform.lossyScale.y;
+            Vector3 cellCenter = targetCell.Center();
+            float jumpDuration = _baseSettings.JumpDuration;
+
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(_playerTransform.DOMoveY(_playerTransform.position.y - lossyScaleY * offset, jumpDuration));
+            sequence.Append(_playerTransform.DOMove(cellCenter - Vector3.up * (lossyScaleY * offset), jumpDuration));
+            sequence.Append(_playerTransform.DOMove(cellCenter + Vector3.up * lossyScaleY, jumpDuration));
+            return sequence;
         }
 
         // TODO: вынести в абстрактный класс общий метод
-        private void Jump(Transform transform, Vector3 target, Action onJumpComplete)
+        private Sequence Jump(Transform transform, Vector3 target, Action onJumpComplete)
         {
-            transform
+            return transform
                 .DOJump(target, _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
                 .SetEase(Ease.Linear)
                 .OnComplete(onJumpComplete.Invoke);
+        }
+
+        private Sequence Jump(Transform transform, Vector3 target)
+        {
+            Debug.Log($"Player - Jump - from {transform.position} - to {target}");
+            return transform
+                .DOJump(target, _baseSettings.JumpPower, 1, _baseSettings.JumpDuration)
+                .SetEase(Ease.Linear);
         }
     }
 }

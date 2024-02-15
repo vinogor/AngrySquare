@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Project.Sсripts.Movement;
 using _Project.Sсripts.Utility;
+using DG.Tweening;
 
 namespace _Project.Sсripts.Model.Effects
 {
@@ -28,16 +29,15 @@ namespace _Project.Sсripts.Model.Effects
             Cell currentCell = _playerMovement.PlayerStayCell;
             Cell targetCell = _portalCells.Where(cell => cell != currentCell).ToList().Shuffle().First();
 
-            _playerJumper.PlayerJumpInPlace(() =>
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(_playerJumper.PlayerJumpInPlace());
+            sequence.Append(_playerJumper.PlayerTeleport(targetCell));
+            sequence.AppendCallback(() =>
             {
-                _playerJumper.PlayerTeleport(targetCell, () =>
-                {
-                    _playerMovement.SetNewStayCell(targetCell);
-                    onComplete.Invoke();
-                });
+                _playerMovement.SetNewStayCell(targetCell);
+                onComplete.Invoke();
             });
-
-
+            sequence.Play();
         }
     }
 }
