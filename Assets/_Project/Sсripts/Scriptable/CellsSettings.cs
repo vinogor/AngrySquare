@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using com.cyborgAssets.inspectorButtonPro;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -10,7 +10,7 @@ namespace _Project.Sсripts.Scriptable
     {
         [field: SerializeField] public List<CellInfo> CellInfos { get; private set; }
 
-        [ProButton]
+        [Button]
         private void Validate()
         {
             int counter = 0;

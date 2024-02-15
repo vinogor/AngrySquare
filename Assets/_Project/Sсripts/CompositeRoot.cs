@@ -11,35 +11,35 @@ using _Project.Sсripts.Scriptable;
 using _Project.Sсripts.StateMachine;
 using _Project.Sсripts.StateMachine.States;
 using _Project.Sсripts.Utility;
+using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace _Project.Sсripts
 {
     public class CompositeRoot : MonoBehaviour
     {
         [Header("Common")]
-        [SerializeField] private Coefficients _coefficients;
-        [SerializeField] private DiceRoller _diceRoller;
+        [SerializeField] [Required] private Coefficients _coefficients;
+        [SerializeField] [Required] private DiceRoller _diceRoller;
         [SerializeField] private List<Cell> _cells;
-        [SerializeField] private CellsSettings _cellsSettings;
-        [SerializeField] private UiRoot _uiRoot;
+        [SerializeField] [Required] private CellsSettings _cellsSettings;
+        [SerializeField] [Required] private UiRoot _uiRoot;
 
         [Space(10)]
         [Header("Player")]
-        [SerializeField] private Player _player;
-        [SerializeField] private PlayerMovement _playerMovement;
-        [SerializeField] private DamageEffect _playerDamageEffect;
-        [SerializeField] private ManaEffect _playerManaEffect;
-        [SerializeField] private TeleportEffect _teleportEffect;
-        [SerializeField] private HealthReplenishEffect _playerHealthReplenishEffect;
+        [SerializeField] [Required] private Player _player;
+        [SerializeField] [Required] private PlayerMovement _playerMovement;
+        [SerializeField] [Required] private DamageEffect _playerDamageEffect;
+        [SerializeField] [Required] private ManaEffect _playerManaEffect;
+        [SerializeField] [Required] private TeleportEffect _teleportEffect;
+        [SerializeField] [Required] private HealthReplenishEffect _playerHealthReplenishEffect;
 
         [Space(10)]
         [Header("Enemy")]
-        [SerializeField] private Enemy _enemy;
-        [SerializeField] private EnemyMovement _enemyMovement;
-        [SerializeField] private DamageEffect _enemyDamageEffect;
-        [SerializeField] private EnemyAim _enemyAim;
+        [SerializeField] [Required] private Enemy _enemy;
+        [SerializeField] [Required] private EnemyMovement _enemyMovement;
+        [SerializeField] [Required] private DamageEffect _enemyDamageEffect;
+        [SerializeField] [Required] private EnemyAim _enemyAim;
 
         private readonly Dictionary<EffectName, Effect> _playerEffects = new();
         private readonly Dictionary<EffectName, Effect> _enemyEffects = new();
@@ -47,27 +47,6 @@ namespace _Project.Sсripts
         private void Start()
         {
             Debug.Log("CompositeRoot started");
-
-            // common
-            Assert.IsNotNull(_coefficients);
-            Assert.IsNotNull(_diceRoller);
-            Assert.IsNotNull(_cells);
-            Assert.IsNotNull(_cellsSettings);
-            Assert.IsNotNull(_uiRoot);
-
-            // player
-            Assert.IsNotNull(_player);
-            Assert.IsNotNull(_playerMovement);
-            Assert.IsNotNull(_playerDamageEffect);
-            Assert.IsNotNull(_playerManaEffect);
-            Assert.IsNotNull(_teleportEffect);
-            Assert.IsNotNull(_playerHealthReplenishEffect);
-
-            // enemy
-            Assert.IsNotNull(_enemy);
-            Assert.IsNotNull(_enemyMovement);
-            Assert.IsNotNull(_enemyDamageEffect);
-            Assert.IsNotNull(_enemyAim);
 
             Defence playerDefence = new Defence(_coefficients.PlayerStartDefence);
             Health playerHealth = new Health(_coefficients.PlayerStartHealth, _coefficients.PlayerMaxHealth,

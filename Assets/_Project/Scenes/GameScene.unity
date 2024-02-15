@@ -3211,7 +3211,7 @@ GameObject:
   - component: {fileID: 261696865}
   - component: {fileID: 261696866}
   m_Layer: 0
-  m_Name: CompositeRoot
+  m_Name: _CompositeRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3244,6 +3244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c22425e879ea124d85d2533c5baab9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _123coefficients: {fileID: 0}
   _coefficients: {fileID: 11400000, guid: ce89b7df50407fc489fedae7da58a9a9, type: 2}
   _diceRoller: {fileID: 137139605}
   _cells:
@@ -13323,7 +13324,7 @@ GameObject:
   - component: {fileID: 1518102253}
   - component: {fileID: 1518102252}
   m_Layer: 0
-  m_Name: UiRoot
+  m_Name: _UiRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19220,10 +19221,10 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 963194228}
-  - {fileID: 705507995}
   - {fileID: 261696865}
   - {fileID: 1518102253}
+  - {fileID: 963194228}
+  - {fileID: 705507995}
   - {fileID: 1235454405}
   - {fileID: 718439387}
   - {fileID: 1733145118}

@@ -9,6 +9,8 @@ namespace _Project.Sсripts
     public class UiRoot : MonoBehaviour
     {
         // [Header("Common")]
+        // [Required]
+        // [ValidateInput("IsNotNull")]
         [field: SerializeField] public PopUp PopUp { get; private set; }
 
         // [Space(10)]
@@ -23,7 +25,7 @@ namespace _Project.Sсripts
         [field: SerializeField] public HealthBar EnemyHealthBar { get; private set; }
 
         [field: SerializeField] public DamageText EnemyDamageText { get; private set; }
-        [field: SerializeField] public DefenceText EnemyDefenceText { get; private set; }
+        [field: SerializeField] public DefenceText _enemyDefenceText { get; private set; }
 
         private void Awake()
         {
@@ -36,7 +38,7 @@ namespace _Project.Sсripts
 
             Assert.IsNotNull(EnemyHealthBar);
             Assert.IsNotNull(EnemyDamageText);
-            Assert.IsNotNull(EnemyDefenceText);
+            Assert.IsNotNull(_enemyDefenceText);
         }
 
         public void Initialize(Health playerHealth, Mana playerMana, Health enemyHealth, Damage playerDamage,
@@ -48,7 +50,7 @@ namespace _Project.Sсripts
             PlayerDamageText.Initialize(playerDamage);
             EnemyDamageText.Initialize(enemyDamage);
             PlayerDefenceText.Initialize(playerDefence);
-            EnemyDefenceText.Initialize(enemyDefence);
+            _enemyDefenceText.Initialize(enemyDefence);
         }
     }
 }
