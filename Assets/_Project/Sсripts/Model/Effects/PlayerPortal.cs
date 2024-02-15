@@ -21,10 +21,8 @@ namespace _Project.Sсripts.Model.Effects
 
         public event Action Teleporting;
 
-        public override void Activate(Action onComplete)
+        protected override void Execute(Action onComplete)
         {
-            Log();
-
             Teleporting?.Invoke();
             
             Cell currentCell = _playerMovement.PlayerStayCell;

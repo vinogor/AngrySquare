@@ -18,10 +18,8 @@ namespace _Project.Sсripts.Model.Effects
             _playerDamage = playerDamage;
         }
 
-        public override void Activate(Action onComplete)
+        protected override void Execute(Action onComplete)
         {
-            Log();
-
             _playerJumper.PlayerJumpOnEnemy(() =>
             {
                 _enemyHealth.TakeDamage(_playerDamage.Value);

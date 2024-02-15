@@ -12,10 +12,8 @@ namespace _Project.Sсripts.Model.Effects
             _enemyJumper = enemyJumper;
         }
 
-        public override void Activate(Action onComplete)
+        protected override void Execute(Action onComplete)
         {
-            Log();
-
             _enemyJumper.EnemyJumpToTargetCell(
                 () => _enemyJumper.EnemyJumpBackToBase(onComplete.Invoke));
         }

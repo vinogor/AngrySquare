@@ -15,10 +15,8 @@ namespace _Project.Sсripts.Model.Effects
             _playerJumper = playerJumper;
         }
 
-        public override void Activate(Action onComplete)
+        protected override void Execute(Action onComplete)
         {
-            Log();
-
             _playerMana.ReplenishToMax();
             _playerJumper.PlayerJumpInPlace(onComplete.Invoke);
         }

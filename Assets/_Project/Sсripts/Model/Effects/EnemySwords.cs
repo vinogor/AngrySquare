@@ -18,10 +18,8 @@ namespace _Project.Sсripts.Model.Effects
             _enemyDamage = enemyDamage;
         }
 
-        public override void Activate(Action onComplete)
+        protected override void Execute(Action onComplete)
         {
-            Log();
-            
             _enemyJumper.EnemyJumpToTargetCell(
                 () => _enemyJumper.EnemyJumpOnPlayer(() =>
                 {
