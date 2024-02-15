@@ -11,7 +11,7 @@ namespace _Project.Sсripts
         // [Header("Common")]
         // [Required]
         // [ValidateInput("IsNotNull")]
-        [field: SerializeField] public PopUp PopUp { get; private set; }
+        [field: SerializeField] public PopUpWinDefeat PopUpWinDefeat { get; private set; }
 
         // [Space(10)]
         // [Header("Player")]
@@ -19,6 +19,7 @@ namespace _Project.Sсripts
         [field: SerializeField] public ManaBar PlayerManaBar { get; private set; }
         [field: SerializeField] public DamageText PlayerDamageText { get; private set; }
         [field: SerializeField] public DefenceText PlayerDefenceText { get; private set; }
+        [field: SerializeField] public PopUpQuestion PopUpQuestion { get; private set; }
 
         // [Space(10)]
         // [Header("Enemy")]
@@ -29,12 +30,13 @@ namespace _Project.Sсripts
 
         private void Awake()
         {
-            Assert.IsNotNull(PopUp);
+            Assert.IsNotNull(PopUpWinDefeat);
 
             Assert.IsNotNull(PlayerHealthBar);
             Assert.IsNotNull(PlayerManaBar);
             Assert.IsNotNull(PlayerDamageText);
             Assert.IsNotNull(PlayerDefenceText);
+            Assert.IsNotNull(PopUpQuestion);
 
             Assert.IsNotNull(EnemyHealthBar);
             Assert.IsNotNull(EnemyDamageText);

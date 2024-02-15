@@ -57,9 +57,9 @@ namespace _Project.Sсripts
             FiniteStateMachine stateMachine = new FiniteStateMachine();
             // stateMachine.AddState(new InitializeFsmState(stateMachine));
             stateMachine.AddState(new PlayerTurnFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth));
-            stateMachine.AddState(new EnemyDefeatFsmState(stateMachine, _uiRoot.PopUp));
+            stateMachine.AddState(new EnemyDefeatFsmState(stateMachine, _uiRoot.PopUpWinDefeat));
             stateMachine.AddState(new EnemyTurnFsmState(stateMachine, _enemyMovement, playerHealth));
-            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, _uiRoot.PopUp));
+            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, _uiRoot.PopUpWinDefeat));
             stateMachine.AddState(new EndOfGameFsmState(stateMachine));
 
             _cells.ForEach(cell => cell.Initialized());
@@ -101,6 +101,7 @@ namespace _Project.Sсripts
             _playerEffects.Add(EffectName.Health, new PlayerHealth(playerHealth, playerJumper));
             _playerEffects.Add(EffectName.Mana, new PlayerMana(playerMana, playerJumper));
             _playerEffects.Add(EffectName.Portal, playerPortal);
+            _playerEffects.Add(EffectName.Question, new PlayerQuestion(playerJumper, _uiRoot.PopUpQuestion));
 
             _playerMovement.Initialize(_cells, _playerEffects, _coefficients, playerJumper);
 
@@ -108,6 +109,7 @@ namespace _Project.Sсripts
             _enemyEffects.Add(EffectName.Health, new EnemyHealth(enemyJumper));
             _enemyEffects.Add(EffectName.Mana, new EnemyMana(enemyJumper));
             _enemyEffects.Add(EffectName.Portal, new EnemyPortal(enemyJumper));
+            _enemyEffects.Add(EffectName.Question, new EnemyQuestion(enemyJumper));
 
             _enemyMovement.Initialize(_enemyEffects, enemyTargetController, enemyJumper,
                 _playerMovement, playerHealth, enemyDamage);

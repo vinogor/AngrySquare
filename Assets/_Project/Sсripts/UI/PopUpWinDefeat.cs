@@ -4,7 +4,7 @@ using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.UI
 {
-    public class PopUp : MonoBehaviour
+    public class PopUpWinDefeat : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _title;
         [SerializeField] private TextMeshProUGUI _info;

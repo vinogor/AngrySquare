@@ -14,7 +14,6 @@ namespace _Project.Sсripts.Model.Effects
 
         protected override void Execute(Action onComplete)
         {
-            // TODO: какой будет эффект для Противника? (пока просто прыгает)
             _enemyJumper.EnemyJumpToTargetCell(
                 () => _enemyJumper.EnemyJumpBackToBase(onComplete.Invoke));
         }

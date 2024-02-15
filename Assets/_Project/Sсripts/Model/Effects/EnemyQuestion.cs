@@ -3,11 +3,11 @@ using _Project.Sсripts.Movement;
 
 namespace _Project.Sсripts.Model.Effects
 {
-    public class EnemyHealth : Effect
+    public class EnemyQuestion : Effect
     {
         private EnemyJumper _enemyJumper;
 
-        public EnemyHealth(EnemyJumper enemyJumper)
+        public EnemyQuestion(EnemyJumper enemyJumper)
         {
             _enemyJumper = enemyJumper;
         }
