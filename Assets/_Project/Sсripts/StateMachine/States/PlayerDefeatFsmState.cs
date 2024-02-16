@@ -5,28 +5,26 @@ namespace _Project.Sсripts.StateMachine.States
 {
     public class PlayerDefeatFsmState : FsmState
     {
-        private PopUpWinDefeat _popUpWinDefeat;
+        private readonly PopUpWinDefeatController _popUpController;
 
-        public PlayerDefeatFsmState(FiniteStateMachine finiteStateMachine, PopUpWinDefeat popUpWinDefeat) : base(finiteStateMachine)
+        public PlayerDefeatFsmState(FiniteStateMachine finiteStateMachine, PopUpWinDefeatController popUpController) :
+            base(finiteStateMachine)
         {
-            Assert.IsNotNull(popUpWinDefeat);
-            _popUpWinDefeat = popUpWinDefeat;
+            Assert.IsNotNull(popUpController);
+            _popUpController = popUpController;
         }
 
         public override void Enter()
         {
             base.Enter();
 
-            _popUpWinDefeat.SetPlayerLoseInfo();
-            _popUpWinDefeat.SetActive();
-            
-            // TODO: по клику - закрыть попап 
+            _popUpController.ShowDefeat();
         }
 
         public override void Exit()
         {
             base.Exit();
-            _popUpWinDefeat.SetNotActive();
+            _popUpController.Hide();
         }
     }
 }

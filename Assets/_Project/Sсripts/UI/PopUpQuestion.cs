@@ -1,39 +1,37 @@
+using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _Project.Sсripts.UI
 {
-    public class PopUpQuestion : MonoBehaviour
+    public class PopUpQuestionController
     {
         
+        
+        
+        private PopUpQuestion _popUpQuestion;
+        
+        
+    }
+
+    public class PopUpQuestion : MonoBehaviour
+    {
+        [SerializeField] [Required] private Button _button1;
+        [SerializeField] [Required] private Button _button2;
+        [SerializeField] [Required] private Button _button3;
         private void Awake()
         {
-            SetNotActive();
+            Hide();
         }
 
-        public void SetActive()
+        public void Show()
         {
             gameObject.SetActive(true);
         }
 
-        public void SetNotActive()
+        public void Hide()
         {
             gameObject.SetActive(false);
         }
-
-        public void OnClickFirstButton()
-        {
-            
-        }
-        
-        public void OnClickSecondButton()
-        {
-            
-        }
-        
-        public void OnClickThirdButton()
-        {
-            
-        }
-        
     }
 }

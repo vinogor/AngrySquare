@@ -1,53 +1,37 @@
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Assertions;
+using UnityEngine.UI;
 
 namespace _Project.Sсripts.UI
 {
     public class PopUpWinDefeat : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI _title;
-        [SerializeField] private TextMeshProUGUI _info;
+        [SerializeField] [Required] private Button _button;
+        [SerializeField] [Required] private TextMeshProUGUI _title;
+        [SerializeField] [Required] private TextMeshProUGUI _info;
+
+        public Button Button => _button;
 
         private void Awake()
         {
-            Assert.IsNotNull(_title);
-            Assert.IsNotNull(_info);
-
-            SetNotActive();
+            Hide();
         }
 
-        public void SetActive()
+        public void Show()
         {
             gameObject.SetActive(true);
         }
 
-        public void SetNotActive()
+        public void Hide()
         {
             gameObject.SetActive(false);
         }
 
-        public void SetPlayerLoseInfo()
+        public void SetContent(string title, string info)
         {
-            _title.text = "Player Lose";
-            _info.text = "You lost the game!";
-        }
-
-        public void SetPlayerWinInfo()
-        {
-            _title.text = "Player Win";
-            _info.text = "It's time to fight a new opponent!";
-        }
-
-        public void OnButtonClick()
-        {
-            SetNotActive();
-            // TODO: переход в новый стейт ?
-        }
-
-        private void OnDestroy()
-        {
-            SetNotActive();
+            _title.SetText(title);
+            _info.SetText(info);
         }
     }
 }

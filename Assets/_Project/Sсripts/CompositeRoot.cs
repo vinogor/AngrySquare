@@ -12,6 +12,7 @@ using _Project.Sсripts.Movement;
 using _Project.Sсripts.Scriptable;
 using _Project.Sсripts.StateMachine;
 using _Project.Sсripts.StateMachine.States;
+using _Project.Sсripts.UI;
 using _Project.Sсripts.Utility;
 using NaughtyAttributes;
 using UnityEngine;
@@ -46,6 +47,7 @@ namespace _Project.Sсripts
         {
             Debug.Log("CompositeRoot started");
 
+
             Defence playerDefence = new Defence(_coefficients.PlayerStartDefence);
             Health playerHealth = new Health(_coefficients.PlayerStartHealth, _coefficients.PlayerMaxHealth,
                 playerDefence);
@@ -57,11 +59,15 @@ namespace _Project.Sсripts
             Damage enemyDamage = new Damage(_coefficients.EnemyStartDamage);
 
             FiniteStateMachine stateMachine = new FiniteStateMachine();
+            
+            // TODO: перекрёстная ссылка!
+            PopUpWinDefeatController popUpWinDefeatController = new PopUpWinDefeatController(_uiRoot.PopUpWinDefeat, stateMachine);
+
             // stateMachine.AddState(new InitializeFsmState(stateMachine));
             stateMachine.AddState(new PlayerTurnFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth));
-            stateMachine.AddState(new EnemyDefeatFsmState(stateMachine, _uiRoot.PopUpWinDefeat));
+            stateMachine.AddState(new EnemyDefeatFsmState(stateMachine, popUpWinDefeatController));
             stateMachine.AddState(new EnemyTurnFsmState(stateMachine, _enemyMovement, playerHealth));
-            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, _uiRoot.PopUpWinDefeat));
+            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine,popUpWinDefeatController));
             stateMachine.AddState(new EndOfGameFsmState(stateMachine));
 
             _cells.ForEach(cell => cell.Initialized());

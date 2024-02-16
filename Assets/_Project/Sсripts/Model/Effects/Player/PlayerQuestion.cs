@@ -19,7 +19,7 @@ namespace _Project.Sсripts.Model.Effects.Player
         {
             _playerJumper.PlayerJumpInPlace(() =>
             {
-                _popUpQuestion.SetActive();
+                _popUpQuestion.Show();
             });
             
             
