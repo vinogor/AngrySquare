@@ -4213,6 +4213,7 @@ GameObject:
   - component: {fileID: 278870567}
   - component: {fileID: 278870569}
   - component: {fileID: 278870568}
+  - component: {fileID: 278870570}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -4277,6 +4278,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 278870566}
   m_CullTransparentMesh: 1
+--- !u!114 &278870570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278870566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e7f3edfaad34ed28c888418c44e9cc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &326987319
 Mesh:
   m_ObjectHideFlags: 0
@@ -9591,19 +9604,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 891383610}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1551639101}
-        m_TargetAssemblyTypeName: "_Project.S\u0441ripts.UI.PopUp, Assembly-CSharp"
-        m_MethodName: OnButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &891383610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13438,6 +13439,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f4d7947365844d2a74af8a3012333d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttons:
+  - {fileID: 605240732}
+  - {fileID: 971924313}
+  - {fileID: 1041105761}
 --- !u!1 &1287484153
 GameObject:
   m_ObjectHideFlags: 0
@@ -14350,6 +14355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebedc67465324107aab146a486fd16cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _button: {fileID: 891383609}
   _title: {fileID: 864377756}
   _info: {fileID: 1074241278}
 --- !u!114 &1551639102
@@ -17275,6 +17281,7 @@ GameObject:
   - component: {fileID: 1919302171}
   - component: {fileID: 1919302173}
   - component: {fileID: 1919302172}
+  - component: {fileID: 1919302174}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -17339,6 +17346,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1919302170}
   m_CullTransparentMesh: 1
+--- !u!114 &1919302174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919302170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e7f3edfaad34ed28c888418c44e9cc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1930327087 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1112854388204813773, guid: 8190731960d43ef48bcbf1e40374320f, type: 3}
@@ -18324,6 +18343,7 @@ GameObject:
   - component: {fileID: 2008320975}
   - component: {fileID: 2008320977}
   - component: {fileID: 2008320976}
+  - component: {fileID: 2008320978}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -18388,6 +18408,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2008320974}
   m_CullTransparentMesh: 1
+--- !u!114 &2008320978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008320974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e7f3edfaad34ed28c888418c44e9cc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2030679812
 GameObject:
   m_ObjectHideFlags: 0
