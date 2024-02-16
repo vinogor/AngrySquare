@@ -13,22 +13,22 @@ namespace _Project.Sсripts.UI
     public class PopUpQuestionController
     {
         private readonly PopUpQuestion _popUpQuestion;
-        private readonly CellsSettings _cellsSettings;
+        private readonly CellsAndSpellsSettings _cellsAndSpellsSettings;
         private readonly List<EffectName> _availableEffectNames;
         private readonly PlayerMovement _playerMovement;
 
         private List<EffectName> _activeEffects;
 
-        public PopUpQuestionController(PopUpQuestion popUpQuestion, CellsSettings cellsSettings,
+        public PopUpQuestionController(PopUpQuestion popUpQuestion, CellsAndSpellsSettings cellsAndSpellsSettings,
             List<EffectName> availableEffectNames, PlayerMovement playerMovement)
         {
             Assert.IsNotNull(popUpQuestion);
-            Assert.IsNotNull(cellsSettings);
+            Assert.IsNotNull(cellsAndSpellsSettings);
             Assert.IsNotNull(availableEffectNames);
             Assert.IsNotNull(playerMovement);
 
             _popUpQuestion = popUpQuestion;
-            _cellsSettings = cellsSettings;
+            _cellsAndSpellsSettings = cellsAndSpellsSettings;
             _availableEffectNames = availableEffectNames;
             _playerMovement = playerMovement;
         }
@@ -49,7 +49,7 @@ namespace _Project.Sсripts.UI
                 Button button = buttons[i];
                 EffectName effectName = effects[i];
                 button.GetComponentInChildren<QuestionImage>().GetComponent<Image>().sprite =
-                    _cellsSettings.GetSprite(effectName);
+                    _cellsAndSpellsSettings.GetCellSprite(effectName);
 
                 button.onClick.RemoveAllListeners();
                 button.onClick.AddListener(() => PlayEffect(effectName));

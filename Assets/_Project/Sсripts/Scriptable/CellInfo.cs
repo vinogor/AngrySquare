@@ -15,7 +15,7 @@ namespace _Project.Sсripts.Scriptable
     {
         NotSet,
         Swords,
-        Book,
+        SpellBook,
         Portal,
         Question,
         Mana,

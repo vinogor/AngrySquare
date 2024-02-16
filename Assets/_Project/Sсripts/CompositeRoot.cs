@@ -25,7 +25,7 @@ namespace _Project.Sсripts
         [SerializeField] [Required] private Coefficients _coefficients;
         [SerializeField] [Required] private DiceRoller _diceRoller;
         [SerializeField] private List<Cell> _cells;
-        [SerializeField] [Required] private CellsSettings _cellsSettings;
+        [SerializeField] [Required] private CellsAndSpellsSettings _cellsAndSpellsSettings;
         [SerializeField] [Required] private UiRoot _uiRoot;
         [SerializeField] [Required] private VfxRoot _vfxRoot;
 
@@ -67,10 +67,10 @@ namespace _Project.Sсripts
             {
                 EffectName.Swords,
                 EffectName.Health,
-                EffectName.Mana 
+                EffectName.Mana
             };
             PopUpQuestionController popUpQuestionController =
-                new PopUpQuestionController(_uiRoot.PopUpQuestion, _cellsSettings, availableEffectNames,
+                new PopUpQuestionController(_uiRoot.PopUpQuestion, _cellsAndSpellsSettings, availableEffectNames,
                     _playerMovement);
 
             // stateMachine.AddState(new InitializeFsmState(stateMachine));
@@ -120,6 +120,7 @@ namespace _Project.Sсripts
             _playerEffects.Add(EffectName.Mana, new PlayerMana(playerMana, playerJumper));
             _playerEffects.Add(EffectName.Portal, playerPortal);
             _playerEffects.Add(EffectName.Question, new PlayerQuestion(playerJumper, popUpQuestionController));
+            _playerEffects.Add(EffectName.SpellBook, new PlayerSpellBook(playerJumper));
 
             _playerMovement.Initialize(_cells, _playerEffects, _coefficients, playerJumper);
 
@@ -128,6 +129,7 @@ namespace _Project.Sсripts
             _enemyEffects.Add(EffectName.Mana, new EnemyMana(enemyJumper));
             _enemyEffects.Add(EffectName.Portal, new EnemyPortal(enemyJumper));
             _enemyEffects.Add(EffectName.Question, new EnemyQuestion(enemyJumper));
+            _enemyEffects.Add(EffectName.SpellBook, new EnemySpellBook(enemyJumper));
 
             _enemyMovement.Initialize(_enemyEffects, enemyTargetController, enemyJumper,
                 _playerMovement, playerHealth, enemyDamage);
@@ -135,7 +137,7 @@ namespace _Project.Sсripts
 
         private void FillCellsWithEffects()
         {
-            _cellsSettings.CellInfos.ForEach(FillCells);
+            _cellsAndSpellsSettings.CellInfos.ForEach(FillCells);
         }
 
         private List<Cell> FindCellsByEffectName(EffectName effectName)
