@@ -1,24 +1,15 @@
-using NaughtyAttributes;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace _Project.Sсripts.UI
 {
-    public class PopUpQuestionController
-    {
-        
-        
-        
-        private PopUpQuestion _popUpQuestion;
-        
-        
-    }
-
     public class PopUpQuestion : MonoBehaviour
     {
-        [SerializeField] [Required] private Button _button1;
-        [SerializeField] [Required] private Button _button2;
-        [SerializeField] [Required] private Button _button3;
+        [SerializeField] private List<Button> _buttons;
+
+        public List<Button> Buttons => _buttons;
+
         private void Awake()
         {
             Hide();

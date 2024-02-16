@@ -47,7 +47,6 @@ namespace _Project.Sсripts
         {
             Debug.Log("CompositeRoot started");
 
-
             Defence playerDefence = new Defence(_coefficients.PlayerStartDefence);
             Health playerHealth = new Health(_coefficients.PlayerStartHealth, _coefficients.PlayerMaxHealth,
                 playerDefence);
@@ -59,15 +58,26 @@ namespace _Project.Sсripts
             Damage enemyDamage = new Damage(_coefficients.EnemyStartDamage);
 
             FiniteStateMachine stateMachine = new FiniteStateMachine();
-            
+
             // TODO: перекрёстная ссылка!
-            PopUpWinDefeatController popUpWinDefeatController = new PopUpWinDefeatController(_uiRoot.PopUpWinDefeat, stateMachine);
+            PopUpWinDefeatController popUpWinDefeatController =
+                new PopUpWinDefeatController(_uiRoot.PopUpWinDefeat, stateMachine);
+
+            List<EffectName> availableEffectNames = new()
+            {
+                EffectName.Swords,
+                EffectName.Health,
+                EffectName.Mana 
+            };
+            PopUpQuestionController popUpQuestionController =
+                new PopUpQuestionController(_uiRoot.PopUpQuestion, _cellsSettings, availableEffectNames,
+                    _playerMovement);
 
             // stateMachine.AddState(new InitializeFsmState(stateMachine));
             stateMachine.AddState(new PlayerTurnFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth));
             stateMachine.AddState(new EnemyDefeatFsmState(stateMachine, popUpWinDefeatController));
             stateMachine.AddState(new EnemyTurnFsmState(stateMachine, _enemyMovement, playerHealth));
-            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine,popUpWinDefeatController));
+            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, popUpWinDefeatController));
             stateMachine.AddState(new EndOfGameFsmState(stateMachine));
 
             _cells.ForEach(cell => cell.Initialized());
@@ -94,7 +104,7 @@ namespace _Project.Sсripts
             _vfxRoot.Initialize(playerHealth, playerMana, playerPortal, enemyHealth);
 
             CellEffectsInitialize(playerJumper, enemyHealth, playerDamage, playerHealth, playerMana, playerPortal,
-                enemyJumper, enemyDamage, enemyTargetController);
+                enemyJumper, enemyDamage, enemyTargetController, popUpQuestionController);
 
             // в самом конце 
             stateMachine.SetState<PlayerTurnFsmState>();
@@ -102,14 +112,14 @@ namespace _Project.Sсripts
 
         private void CellEffectsInitialize(PlayerJumper playerJumper, Health enemyHealth, Damage playerDamage,
             Health playerHealth, Mana playerMana, PlayerPortal playerPortal, EnemyJumper enemyJumper,
-            Damage enemyDamage,
-            EnemyTargetController enemyTargetController)
+            Damage enemyDamage, EnemyTargetController enemyTargetController,
+            PopUpQuestionController popUpQuestionController)
         {
             _playerEffects.Add(EffectName.Swords, new PlayerSwords(playerJumper, enemyHealth, playerDamage));
             _playerEffects.Add(EffectName.Health, new PlayerHealth(playerHealth, playerJumper));
             _playerEffects.Add(EffectName.Mana, new PlayerMana(playerMana, playerJumper));
             _playerEffects.Add(EffectName.Portal, playerPortal);
-            _playerEffects.Add(EffectName.Question, new PlayerQuestion(playerJumper, _uiRoot.PopUpQuestion));
+            _playerEffects.Add(EffectName.Question, new PlayerQuestion(playerJumper, popUpQuestionController));
 
             _playerMovement.Initialize(_cells, _playerEffects, _coefficients, playerJumper);
 

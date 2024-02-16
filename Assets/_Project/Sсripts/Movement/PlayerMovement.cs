@@ -59,7 +59,8 @@ namespace _Project.Sсripts.Movement
             if (amountMoves == 0)
             {
                 EffectName effectName = _cells[_currentCellIndex].EffectName;
-                _playerEffects[effectName].Activate(() => TurnCompleted?.Invoke());
+                Debug.Log("Activating effect: " + effectName);
+                ActivateEffect(effectName);
                 return;
             }
 
@@ -74,6 +75,11 @@ namespace _Project.Sсripts.Movement
                 Move(--amountMoves);
             });
             sequence.Play();
+        }
+
+        public void ActivateEffect(EffectName effectName)
+        {
+            _playerEffects[effectName].Activate(() => TurnCompleted?.Invoke());
         }
 
         private void AnimateCell(Cell nextCell)

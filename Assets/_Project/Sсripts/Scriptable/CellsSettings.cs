@@ -10,6 +10,11 @@ namespace _Project.Sсripts.Scriptable
     {
         [field: SerializeField] public List<CellInfo> CellInfos { get; private set; }
 
+        public Sprite GetSprite(EffectName effectName)
+        {
+            return CellInfos.Find(cellInfo => cellInfo.EffectName == effectName).Sprite;
+        }
+        
         [Button]
         private void Validate()
         {
