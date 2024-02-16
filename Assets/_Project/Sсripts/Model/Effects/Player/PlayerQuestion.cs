@@ -2,7 +2,7 @@ using System;
 using _Project.Sсripts.Movement;
 using _Project.Sсripts.UI;
 
-namespace _Project.Sсripts.Model.Effects
+namespace _Project.Sсripts.Model.Effects.Player
 {
     public class PlayerQuestion : Effect
     {
@@ -27,7 +27,7 @@ namespace _Project.Sсripts.Model.Effects
             // применить выбранный эффект
             // и после этого завершающий коллбэк
             
-            onComplete.Invoke();
+            // onComplete.Invoke();
         }
     }
 }

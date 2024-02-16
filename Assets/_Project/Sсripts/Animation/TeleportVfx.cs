@@ -1,4 +1,5 @@
 using _Project.Sсripts.Model.Effects;
+using _Project.Sсripts.Model.Effects.Player;
 using UnityEngine;
 using UnityEngine.Assertions;
 

@@ -6,6 +6,8 @@ using _Project.Sсripts.Dice;
 using _Project.Sсripts.HealthAndMana;
 using _Project.Sсripts.Model;
 using _Project.Sсripts.Model.Effects;
+using _Project.Sсripts.Model.Effects.Enemy;
+using _Project.Sсripts.Model.Effects.Player;
 using _Project.Sсripts.Movement;
 using _Project.Sсripts.Scriptable;
 using _Project.Sсripts.StateMachine;

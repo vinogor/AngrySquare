@@ -1519,11 +1519,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db3bff6afaf44f62a53d7613d1999232, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <PlayerDamageVfx>k__BackingField: {fileID: 2120022571}
-  <PlayerManaVfx>k__BackingField: {fileID: 2120022573}
-  <TeleportVfx>k__BackingField: {fileID: 2120022574}
-  <PlayerHealthReplenishVfx>k__BackingField: {fileID: 2120022572}
-  <EnemyDamageVfx>k__BackingField: {fileID: 112534802}
+  _playerDamageVfx: {fileID: 2120022571}
+  _playerManaVfx: {fileID: 2120022573}
+  _teleportVfx: {fileID: 2120022574}
+  _playerHealthReplenishVfx: {fileID: 2120022572}
+  _enemyDamageVfx: {fileID: 112534802}
 --- !u!4 &60840388
 Transform:
   m_ObjectHideFlags: 0
@@ -14215,15 +14215,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c7e2aa5d924417483242f2ccbc4d039, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <PopUpWinDefeat>k__BackingField: {fileID: 1551639101}
-  <PlayerHealthBar>k__BackingField: {fileID: 932031755}
-  <PlayerManaBar>k__BackingField: {fileID: 1770213333}
-  <PlayerDamageText>k__BackingField: {fileID: 1827672292}
-  <PlayerDefenceText>k__BackingField: {fileID: 111687090}
-  <PopUpQuestion>k__BackingField: {fileID: 1271853864}
-  <EnemyHealthBar>k__BackingField: {fileID: 397847410}
-  <EnemyDamageText>k__BackingField: {fileID: 910892544}
-  <EnemyDefenceText>k__BackingField: {fileID: 719523893}
+  _popUpWinDefeat: {fileID: 1551639101}
+  _playerHealthBar: {fileID: 932031755}
+  _playerManaBar: {fileID: 1770213333}
+  _playerDamageText: {fileID: 1827672292}
+  _playerDefenceText: {fileID: 111687090}
+  _popUpQuestion: {fileID: 1271853864}
+  _enemyHealthBar: {fileID: 397847410}
+  _enemyDamageText: {fileID: 910892544}
+  _enemyDefenceText: {fileID: 719523893}
 --- !u!4 &1518102253
 Transform:
   m_ObjectHideFlags: 0

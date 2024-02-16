@@ -1,13 +1,13 @@
 using System;
 using _Project.Sсripts.Movement;
 
-namespace _Project.Sсripts.Model.Effects
+namespace _Project.Sсripts.Model.Effects.Enemy
 {
-    public class EnemyMana : Effect
+    public class EnemyQuestion : Effect
     {
-        private EnemyJumper _enemyJumper;
+        private readonly EnemyJumper _enemyJumper;
 
-        public EnemyMana(EnemyJumper enemyJumper)
+        public EnemyQuestion(EnemyJumper enemyJumper)
         {
             _enemyJumper = enemyJumper;
         }

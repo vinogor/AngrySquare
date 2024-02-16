@@ -3,13 +3,13 @@ using _Project.Sсripts.DamageAndDefence;
 using _Project.Sсripts.HealthAndMana;
 using _Project.Sсripts.Movement;
 
-namespace _Project.Sсripts.Model.Effects
+namespace _Project.Sсripts.Model.Effects.Enemy
 {
     public class EnemySwords : Effect
     {
-        private EnemyJumper _enemyJumper;
-        private Health _playerHealth;
-        private Damage _enemyDamage;
+        private readonly EnemyJumper _enemyJumper;
+        private readonly Health _playerHealth;
+        private readonly Damage _enemyDamage;
 
         public EnemySwords(EnemyJumper enemyJumper, Health playerHealth, Damage enemyDamage)
         {

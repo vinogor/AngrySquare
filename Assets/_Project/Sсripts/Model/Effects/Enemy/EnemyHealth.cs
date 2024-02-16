@@ -1,11 +1,11 @@
 using System;
 using _Project.Sсripts.Movement;
 
-namespace _Project.Sсripts.Model.Effects
+namespace _Project.Sсripts.Model.Effects.Enemy
 {
     public class EnemyHealth : Effect
     {
-        private EnemyJumper _enemyJumper;
+        private readonly EnemyJumper _enemyJumper;
 
         public EnemyHealth(EnemyJumper enemyJumper)
         {

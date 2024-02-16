@@ -1,6 +1,6 @@
 using _Project.Sсripts.Animation;
 using _Project.Sсripts.HealthAndMana;
-using _Project.Sсripts.Model.Effects;
+using _Project.Sсripts.Model.Effects.Player;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -8,32 +8,33 @@ namespace _Project.Sсripts
 {
     public class VfxRoot : MonoBehaviour
     {
-        // player
-        [field: SerializeField] public DamageVfx PlayerDamageVfx { get; private set; }
-        [field: SerializeField] public ManaVfx PlayerManaVfx { get; private set; }
-        [field: SerializeField] public TeleportVfx TeleportVfx { get; private set; }
-        [field: SerializeField] public HealthReplenishVfx PlayerHealthReplenishVfx { get; private set; }
+        [Header("Player")]
+        [SerializeField] private DamageVfx _playerDamageVfx ;
+        [SerializeField] private ManaVfx _playerManaVfx ;
+        [SerializeField] private TeleportVfx _teleportVfx ;
+        [SerializeField] private HealthReplenishVfx _playerHealthReplenishVfx ;
 
-        // enemy
-        [field: SerializeField] public DamageVfx EnemyDamageVfx { get; private set; }
+        [Space(10)]
+        [Header("Enemy")]
+        [SerializeField] private DamageVfx _enemyDamageVfx ;
 
         private void Awake()
         {
-            Assert.IsNotNull(PlayerDamageVfx);
-            Assert.IsNotNull(PlayerManaVfx);
-            Assert.IsNotNull(TeleportVfx);
-            Assert.IsNotNull(PlayerHealthReplenishVfx);
+            Assert.IsNotNull(_playerDamageVfx);
+            Assert.IsNotNull(_playerManaVfx);
+            Assert.IsNotNull(_teleportVfx);
+            Assert.IsNotNull(_playerHealthReplenishVfx);
 
-            Assert.IsNotNull(EnemyDamageVfx);
+            Assert.IsNotNull(_enemyDamageVfx);
         }
 
         public void Initialize(Health playerHealth, Mana playerMana, PlayerPortal playerPortal, Health enemyHealth)
         {
-            PlayerDamageVfx.Initialize(playerHealth);
-            PlayerManaVfx.Initialize(playerMana);
-            TeleportVfx.Initialize(playerPortal);
-            EnemyDamageVfx.Initialize(enemyHealth);
-            PlayerHealthReplenishVfx.Initialize(playerHealth);
+            _playerDamageVfx.Initialize(playerHealth);
+            _playerManaVfx.Initialize(playerMana);
+            _teleportVfx.Initialize(playerPortal);
+            _enemyDamageVfx.Initialize(enemyHealth);
+            _playerHealthReplenishVfx.Initialize(playerHealth);
         }
     }
 }

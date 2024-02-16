@@ -5,7 +5,7 @@ using _Project.Sсripts.Movement;
 using _Project.Sсripts.Utility;
 using DG.Tweening;
 
-namespace _Project.Sсripts.Model.Effects
+namespace _Project.Sсripts.Model.Effects.Player
 {
     public class PlayerPortal : Effect
     {

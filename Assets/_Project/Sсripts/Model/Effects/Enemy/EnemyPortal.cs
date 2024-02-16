@@ -1,7 +1,7 @@
 using System;
 using _Project.Sсripts.Movement;
 
-namespace _Project.Sсripts.Model.Effects
+namespace _Project.Sсripts.Model.Effects.Enemy
 {
     public class EnemyPortal : Effect
     {
