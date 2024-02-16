@@ -66,11 +66,14 @@ namespace _Project.Sсripts.Movement
             _currentCellIndex = ++_currentCellIndex % _cells.Count;
             Cell nextCell = _cells[_currentCellIndex];
 
-            _playerJumper.JumpToNextCell(nextCell, () =>
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(_playerJumper.JumpToNextCell(nextCell));
+            sequence.AppendCallback(() =>
             {
                 AnimateCell(nextCell);
                 Move(--amountMoves);
             });
+            sequence.Play();
         }
 
         private void AnimateCell(Cell nextCell)

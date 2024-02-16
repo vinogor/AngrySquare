@@ -1,6 +1,7 @@
 using System;
 using _Project.Sсripts.HealthAndMana;
 using _Project.Sсripts.Movement;
+using DG.Tweening;
 
 namespace _Project.Sсripts.Model.Effects.Player
 {
@@ -18,7 +19,11 @@ namespace _Project.Sсripts.Model.Effects.Player
         protected override void Execute(Action onComplete)
         {
             _playerMana.ReplenishToMax();
-            _playerJumper.PlayerJumpInPlace(onComplete.Invoke);
+
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(_playerJumper.PlayerJumpInPlace());
+            sequence.AppendCallback(onComplete.Invoke);
+            sequence.Play();
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using _Project.Sсripts.Model;
 using _Project.Sсripts.Scriptable;
 using DG.Tweening;
@@ -21,29 +20,24 @@ namespace _Project.Sсripts.Movement
             _coefficients = coefficients;
         }
 
-        public void PlayerJumpOnEnemy(Action onJumpComplete)
+        public Sequence PlayerJumpOnEnemy()
         {
             Debug.Log("Player - JumpOnEnemy");
 
             _playerCellPosition = _playerTransform.position;
-            Jump(_playerTransform, _enemyTransform.position, onJumpComplete);
+            return Jump(_playerTransform, _enemyTransform.position);
         }
 
-        public void PlayerJumpBackToCell(Action onJumpComplete)
+        public Sequence PlayerJumpBackToCell()
         {
             Debug.Log("Player - JumpBackToCell");
 
-            Jump(_playerTransform, _playerCellPosition, onJumpComplete);
+            return Jump(_playerTransform, _playerCellPosition);
         }
 
-        public void JumpToNextCell(Cell nextCell, Action onJumpComplete)
+        public Sequence JumpToNextCell(Cell nextCell)
         {
-            Jump(_playerTransform, nextCell.Center() + Vector3.up * _playerTransform.lossyScale.y, onJumpComplete);
-        }
-
-        public Sequence PlayerJumpInPlace(Action onJumpComplete)
-        {
-            return Jump(_playerTransform, _playerTransform.position, onJumpComplete);
+            return Jump(_playerTransform, nextCell.Center() + Vector3.up * _playerTransform.lossyScale.y);
         }
 
         public Sequence PlayerJumpInPlace()
@@ -63,15 +57,6 @@ namespace _Project.Sсripts.Movement
             sequence.Append(_playerTransform.DOMove(cellCenter - Vector3.up * (lossyScaleY * offset), jumpDuration));
             sequence.Append(_playerTransform.DOMove(cellCenter + Vector3.up * lossyScaleY, jumpDuration));
             return sequence;
-        }
-
-        // TODO: вынести в абстрактный класс общий метод
-        private Sequence Jump(Transform transform, Vector3 target, Action onJumpComplete)
-        {
-            return transform
-                .DOJump(target, _coefficients.JumpPower, 1, _coefficients.JumpDuration)
-                .SetEase(Ease.Linear)
-                .OnComplete(onJumpComplete.Invoke);
         }
 
         private Sequence Jump(Transform transform, Vector3 target)

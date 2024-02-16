@@ -2,6 +2,7 @@ using System;
 using _Project.Sсripts.DamageAndDefence;
 using _Project.Sсripts.HealthAndMana;
 using _Project.Sсripts.Movement;
+using DG.Tweening;
 
 namespace _Project.Sсripts.Model.Effects.Enemy
 {
@@ -20,12 +21,13 @@ namespace _Project.Sсripts.Model.Effects.Enemy
 
         protected override void Execute(Action onComplete)
         {
-            _enemyJumper.EnemyJumpToTargetCell(
-                () => _enemyJumper.EnemyJumpOnPlayer(() =>
-                {
-                    _playerHealth.TakeDamage(_enemyDamage.Value);
-                    _enemyJumper.EnemyJumpBackToBase(onComplete.Invoke);
-                }));
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(_enemyJumper.EnemyJumpToTargetCell());
+            sequence.Append(_enemyJumper.EnemyJumpOnPlayer());
+            sequence.AppendCallback(() => _playerHealth.TakeDamage(_enemyDamage.Value));
+            sequence.Append(_enemyJumper.EnemyJumpBackToBase());
+            sequence.AppendCallback(onComplete.Invoke);
+            sequence.Play();
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using _Project.Sсripts.Movement;
 using _Project.Sсripts.UI;
+using DG.Tweening;
 
 namespace _Project.Sсripts.Model.Effects.Player
 {
@@ -17,17 +18,16 @@ namespace _Project.Sсripts.Model.Effects.Player
 
         protected override void Execute(Action onComplete)
         {
-            _playerJumper.PlayerJumpInPlace(() =>
-            {
-                _popUpQuestion.Show();
-            });
-            
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(_playerJumper.PlayerJumpInPlace());
+            sequence.AppendCallback(_popUpQuestion.Show);
+            // sequence.AppendCallback(onComplete.Invoke);
+            sequence.Play();
             
             // считать какой эффект был выбран (пока они всегда одинаковые)
             // применить выбранный эффект
             // и после этого завершающий коллбэк
             
-            // onComplete.Invoke();
         }
     }
 }
