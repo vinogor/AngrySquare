@@ -47,9 +47,7 @@ namespace _Project.Sсripts.UI
             {
                 Button button = buttons[i];
                 EffectName effectName = effects[i];
-                button.GetComponentInChildren<QuestionImage>().GetComponent<Image>().sprite =
-                    _cellsAndSpellsSettings.GetCellSprite(effectName);
-
+                _popUpQuestion.SetSprite(i, _cellsAndSpellsSettings.GetCellSprite(effectName));
                 button.onClick.RemoveAllListeners();
                 button.onClick.AddListener(() => PlayEffect(effectName));
             }

@@ -1,3 +1,4 @@
+using _Project.Sсripts.Model.Effects;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,11 @@ namespace _Project.Sсripts.UI
         public void Hide()
         {
             gameObject.SetActive(false);
+        }
+
+        public void SetSprite(int index, Sprite sprite)
+        {
+            _buttons[index].GetComponentInChildren<QuestionImage>().GetComponent<Image>().sprite = sprite;
         }
     }
 }
