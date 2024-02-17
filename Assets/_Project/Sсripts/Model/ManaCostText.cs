@@ -2,7 +2,8 @@ using UnityEngine;
 
 namespace _Project.Sсripts.Model
 {
-    public class Spell : MonoBehaviour
+    public class ManaCostText : MonoBehaviour
     {
+        
     }
 }

@@ -17,6 +17,7 @@ namespace _Project.Sсripts.Movement
 
         private Cell[] _cells;
         private Dictionary<EffectName, Effect> _playerEffects;
+        private Dictionary<SpellName, Spell> _playerSpells;
         private Coefficients _coefficients;
         private PlayerJumper _playerJumper;
 

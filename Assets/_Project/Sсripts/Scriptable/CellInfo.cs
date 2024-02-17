@@ -10,15 +10,4 @@ namespace _Project.Sсripts.Scriptable
         [field: SerializeField] public Sprite Sprite { get; private set; }
         [field: SerializeField] public int Amount { get; private set; }
     }
-
-    public enum EffectName
-    {
-        NotSet,
-        Swords,
-        SpellBook,
-        Portal,
-        Question,
-        Mana,
-        Health
-    }
 }

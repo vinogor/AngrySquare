@@ -9,22 +9,22 @@ namespace _Project.Sсripts.Model.Effects.Player
     public class PlayerQuestion : Effect
     {
         private readonly PlayerJumper _playerJumper;
-        private readonly PopUpQuestionController _popUpQuestionController;
+        private readonly PopUpChoiceOfThreeController _popUpChoiceOfThreeController;
 
-        public PlayerQuestion(PlayerJumper playerJumper, PopUpQuestionController popUpQuestionController)
+        public PlayerQuestion(PlayerJumper playerJumper, PopUpChoiceOfThreeController popUpChoiceOfThreeController)
         {
             Assert.IsNotNull(playerJumper);
-            Assert.IsNotNull(popUpQuestionController);
+            Assert.IsNotNull(popUpChoiceOfThreeController);
             
             _playerJumper = playerJumper;
-            _popUpQuestionController = popUpQuestionController;
+            _popUpChoiceOfThreeController = popUpChoiceOfThreeController;
         }
 
         protected override void Execute(Action onComplete)
         {
             Sequence sequence = DOTween.Sequence();
             sequence.Append(_playerJumper.JumpInPlace());
-            sequence.AppendCallback(_popUpQuestionController.Show);
+            sequence.AppendCallback(_popUpChoiceOfThreeController.ShowEffects);
             sequence.Play();
 
             // onComplete - никуда не передаём, т.к. он будет вызван с выбраннного в попапе эффекта

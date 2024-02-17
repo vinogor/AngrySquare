@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace _Project.Sсripts.UI
 {
-    public class PopUpQuestion : MonoBehaviour
+    public class PopUpChoiceOfThree : MonoBehaviour
     {
         [SerializeField] private Button[] _buttons;
 
@@ -27,7 +27,7 @@ namespace _Project.Sсripts.UI
 
         public void SetSprite(int index, Sprite sprite)
         {
-            _buttons[index].GetComponentInChildren<QuestionImage>().GetComponent<Image>().sprite = sprite;
+            _buttons[index].GetComponentInChildren<ButtonImage>().GetComponent<Image>().sprite = sprite;
         }
     }
 }

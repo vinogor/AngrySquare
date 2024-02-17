@@ -1,5 +1,6 @@
 using _Project.Sсripts.DamageAndDefence;
 using _Project.Sсripts.HealthAndMana;
+using _Project.Sсripts.Scriptable;
 using _Project.Sсripts.UI;
 using NaughtyAttributes;
 using UnityEngine;
@@ -17,7 +18,8 @@ namespace _Project.Sсripts
         [SerializeField] [Required] private ManaBar _playerManaBar;
         [SerializeField] [Required] private DamageText _playerDamageText;
         [SerializeField] [Required] private DefenceText _playerDefenceText;
-        [SerializeField] [Required] private PopUpQuestion _popUpQuestion;
+        [SerializeField] [Required] private PopUpChoiceOfThree _popUpChoiceOfThree;
+        [SerializeField] [Required] private SpellBar _spellBar;
 
         [Space(10)]
         [Header("Enemy")]
@@ -26,12 +28,13 @@ namespace _Project.Sсripts
         [SerializeField] [Required] private DefenceText _enemyDefenceText;
 
         public PopUpWinDefeat PopUpWinDefeat => _popUpWinDefeat;
-        public PopUpQuestion PopUpQuestion => _popUpQuestion;
+        public PopUpChoiceOfThree PopUpChoiceOfThree => _popUpChoiceOfThree;
 
         public PopUpWinDefeatController PopUpWinDefeatController { get; private set; }
+        public SpellBarController SpellBarController { get; private set; }
 
         public void Initialize(Health playerHealth, Mana playerMana, Health enemyHealth, Damage playerDamage,
-            Damage enemyDamage, Defence playerDefence, Defence enemyDefence)
+            Damage enemyDamage, Defence playerDefence, Defence enemyDefence, CellsAndSpellsSettings cellsAndSpellsSettings)
         {
             _playerHealthBar.Initialize(playerHealth);
             _playerManaBar.Initialize(playerMana);
@@ -42,6 +45,7 @@ namespace _Project.Sсripts
             _enemyDefenceText.Initialize(enemyDefence);
 
             PopUpWinDefeatController = new PopUpWinDefeatController(_popUpWinDefeat);
+            SpellBarController = new SpellBarController(_spellBar, cellsAndSpellsSettings);
         }
     }
 }

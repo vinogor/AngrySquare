@@ -25,7 +25,7 @@ namespace _Project.Sсripts
         [Header("Common")]
         [SerializeField] [Required] private Coefficients _coefficients;
         [SerializeField] [Required] private DiceRoller _diceRoller;
-        [SerializeField] [Required] private Cell[] _cells;
+        [SerializeField] private Cell[] _cells;
         [SerializeField] [Required] private CellsAndSpellsSettings _cellsAndSpellsSettings;
         [SerializeField] [Required] private UiRoot _uiRoot;
         [SerializeField] [Required] private VfxRoot _vfxRoot;
@@ -60,15 +60,16 @@ namespace _Project.Sсripts
 
             // === UI ===
             _uiRoot.Initialize(playerHealth, playerMana, enemyHealth, playerDamage, enemyDamage, playerDefence,
-                enemyDefence);
-
-            FiniteStateMachine stateMachine = new FiniteStateMachine();
-
+                enemyDefence, _cellsAndSpellsSettings);
             EffectName[] availableEffectNames = { EffectName.Swords, EffectName.Health, EffectName.Mana };
-            PopUpQuestionController popUpQuestionController =
-                new PopUpQuestionController(_uiRoot.PopUpQuestion, _cellsAndSpellsSettings, availableEffectNames,
-                    _playerMovement);
+            SpellName[] availableSpellNames =
+                { SpellName.FullHealth, SpellName.UpDamage, SpellName.UpDefence, SpellName.UpMaxHealth };
+            PopUpChoiceOfThreeController popUpChoiceOfThreeController =
+                new PopUpChoiceOfThreeController(_uiRoot.PopUpChoiceOfThree, _cellsAndSpellsSettings,
+                    availableEffectNames, availableSpellNames, _playerMovement, _uiRoot.SpellBarController);
 
+            // === STATE MACHINE ===
+            FiniteStateMachine stateMachine = new FiniteStateMachine();
             // stateMachine.AddState(new InitializeFsmState(stateMachine));
             stateMachine.AddState(new PlayerTurnFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth));
             stateMachine.AddState(new EnemyDefeatFsmState(stateMachine, _uiRoot.PopUpWinDefeatController));
@@ -96,7 +97,7 @@ namespace _Project.Sсripts
             _vfxRoot.Initialize(playerHealth, playerMana, playerPortal, enemyHealth);
 
             CellEffectsInitialize(playerJumper, enemyHealth, playerDamage, playerHealth, playerMana, playerPortal,
-                enemyJumper, enemyDamage, enemyTargetController, popUpQuestionController);
+                enemyJumper, enemyDamage, enemyTargetController, popUpChoiceOfThreeController);
 
             // в самом конце 
             stateMachine.SetState<PlayerTurnFsmState>();
@@ -105,14 +106,15 @@ namespace _Project.Sсripts
         private void CellEffectsInitialize(PlayerJumper playerJumper, Health enemyHealth, Damage playerDamage,
             Health playerHealth, Mana playerMana, PlayerPortal playerPortal, EnemyJumper enemyJumper,
             Damage enemyDamage, EnemyTargetController enemyTargetController,
-            PopUpQuestionController popUpQuestionController)
+            PopUpChoiceOfThreeController popUpChoiceOfThreeController)
         {
             _playerEffects.Add(EffectName.Swords, new PlayerSwords(playerJumper, enemyHealth, playerDamage));
             _playerEffects.Add(EffectName.Health, new PlayerHealth(playerHealth, playerJumper));
             _playerEffects.Add(EffectName.Mana, new PlayerMana(playerMana, playerJumper));
             _playerEffects.Add(EffectName.Portal, playerPortal);
-            _playerEffects.Add(EffectName.Question, new PlayerQuestion(playerJumper, popUpQuestionController));
-            _playerEffects.Add(EffectName.SpellBook, new PlayerSpellBook(playerJumper));
+            _playerEffects.Add(EffectName.Question, new PlayerQuestion(playerJumper, popUpChoiceOfThreeController));
+            _playerEffects.Add(EffectName.SpellBook,
+                new PlayerSpellBook(playerJumper, popUpChoiceOfThreeController, _uiRoot.SpellBarController));
 
             _playerMovement.Initialize(_cells, _playerEffects, _coefficients, playerJumper);
 
