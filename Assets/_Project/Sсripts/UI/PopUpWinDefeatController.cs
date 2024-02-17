@@ -29,8 +29,9 @@ namespace _Project.Sсripts.UI
 
         public void Hide()
         {
+            _popUp.Button.onClick.RemoveListener(Hide);
             _popUp.Hide();
-            // TODO: set ne state
+            // TODO: set new state
             // _stateMachine.SetState<...>();
         }
 
