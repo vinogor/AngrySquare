@@ -1,20 +1,24 @@
-using _Project.Sсripts.StateMachine;
+using System;
 
 namespace _Project.Sсripts.UI
 {
     public class PopUpWinDefeatController
     {
         private readonly PopUpWinDefeat _popUp;
-        private readonly FiniteStateMachine _stateMachine;
+        
+        private bool _IsPlayerWin;
 
-        public PopUpWinDefeatController(PopUpWinDefeat popUp, FiniteStateMachine stateMachine)
+        public PopUpWinDefeatController(PopUpWinDefeat popUp)
         {
             _popUp = popUp;
-            _stateMachine = stateMachine;
         }
+
+        public event Action OnSpawnNewEnemySelected;
+        public event Action OnRestartGameSelected;
 
         public void ShowWin()
         {
+            _IsPlayerWin = true;
             SetPlayerWinInfo();
             _popUp.Button.onClick.AddListener(Hide);
             _popUp.Show();
@@ -22,6 +26,7 @@ namespace _Project.Sсripts.UI
 
         public void ShowDefeat()
         {
+            _IsPlayerWin = false;
             SetPlayerLoseInfo();
             _popUp.Button.onClick.AddListener(Hide);
             _popUp.Show();
@@ -31,8 +36,11 @@ namespace _Project.Sсripts.UI
         {
             _popUp.Button.onClick.RemoveListener(Hide);
             _popUp.Hide();
-            // TODO: set new state
-            // _stateMachine.SetState<...>();
+
+            if (_IsPlayerWin)
+                OnSpawnNewEnemySelected?.Invoke();
+            else
+                OnRestartGameSelected?.Invoke();
         }
 
         private void SetPlayerLoseInfo()

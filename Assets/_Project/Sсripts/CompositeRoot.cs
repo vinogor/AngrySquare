@@ -58,11 +58,11 @@ namespace _Project.Sсripts
             Health enemyHealth = new Health(_coefficients.EnemyStartHealth, _coefficients.EnemyMaxHealth, enemyDefence);
             Damage enemyDamage = new Damage(_coefficients.EnemyStartDamage);
 
-            FiniteStateMachine stateMachine = new FiniteStateMachine();
+            // === UI ===
+            _uiRoot.Initialize(playerHealth, playerMana, enemyHealth, playerDamage, enemyDamage, playerDefence,
+                enemyDefence);
 
-            // TODO: перекрёстная ссылка!
-            PopUpWinDefeatController popUpWinDefeatController =
-                new PopUpWinDefeatController(_uiRoot.PopUpWinDefeat, stateMachine);
+            FiniteStateMachine stateMachine = new FiniteStateMachine();
 
             EffectName[] availableEffectNames = { EffectName.Swords, EffectName.Health, EffectName.Mana };
             PopUpQuestionController popUpQuestionController =
@@ -71,9 +71,9 @@ namespace _Project.Sсripts
 
             // stateMachine.AddState(new InitializeFsmState(stateMachine));
             stateMachine.AddState(new PlayerTurnFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth));
-            stateMachine.AddState(new EnemyDefeatFsmState(stateMachine, popUpWinDefeatController));
+            stateMachine.AddState(new EnemyDefeatFsmState(stateMachine, _uiRoot.PopUpWinDefeatController));
             stateMachine.AddState(new EnemyTurnFsmState(stateMachine, _enemyMovement, playerHealth));
-            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, popUpWinDefeatController));
+            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, _uiRoot.PopUpWinDefeatController));
             stateMachine.AddState(new EndOfGameFsmState(stateMachine));
 
             Array.ForEach(_cells, cell => cell.Initialized());
@@ -85,10 +85,6 @@ namespace _Project.Sсripts
             PlayerJumper playerJumper = new PlayerJumper(_player.transform, _enemy.transform, _coefficients);
             EnemyJumper enemyJumper =
                 new EnemyJumper(_enemy.transform, _playerMovement, _coefficients, enemyTargetController);
-
-            // === UI ===
-            _uiRoot.Initialize(playerHealth, playerMana, enemyHealth, playerDamage, enemyDamage, playerDefence,
-                enemyDefence);
 
             // === ЭФФЕКТЫ ===
 

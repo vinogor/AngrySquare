@@ -17,6 +17,8 @@ namespace _Project.Sсripts.StateMachine.States
         {
             base.Enter();
 
+            // TODO: set new state - spawn new enemy
+            // _popUpController.OnSpawnNewEnemySelected += () => FiniteStateMachine.SetState<>();
             _popUpController.ShowWin();
         }
 

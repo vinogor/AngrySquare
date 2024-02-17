@@ -18,6 +18,8 @@ namespace _Project.Sсripts.StateMachine.States
         {
             base.Enter();
 
+            // TODO: set new state - game over
+            // _popUpController.OnRestartGameSelected += () => FiniteStateMachine.SetState<>();
             _popUpController.ShowDefeat();
         }
 

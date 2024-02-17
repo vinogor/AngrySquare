@@ -28,6 +28,8 @@ namespace _Project.Sсripts
         public PopUpWinDefeat PopUpWinDefeat => _popUpWinDefeat;
         public PopUpQuestion PopUpQuestion => _popUpQuestion;
 
+        public PopUpWinDefeatController PopUpWinDefeatController { get; private set; }
+
         public void Initialize(Health playerHealth, Mana playerMana, Health enemyHealth, Damage playerDamage,
             Damage enemyDamage, Defence playerDefence, Defence enemyDefence)
         {
@@ -38,6 +40,8 @@ namespace _Project.Sсripts
             _enemyDamageText.Initialize(enemyDamage);
             _playerDefenceText.Initialize(playerDefence);
             _enemyDefenceText.Initialize(enemyDefence);
+
+            PopUpWinDefeatController = new PopUpWinDefeatController(_popUpWinDefeat);
         }
     }
 }
