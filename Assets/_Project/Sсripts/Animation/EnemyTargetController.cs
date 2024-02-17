@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using System.Linq;
 using _Project.Sсripts.Model;
 using _Project.Sсripts.Utility;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -9,11 +9,11 @@ namespace _Project.Sсripts.Animation
 {
     public class EnemyTargetController
     {
-        private readonly List<Cell> _cells;
+        private readonly Cell[] _cells;
         private readonly EnemyAim _enemyAim;
         private Cell _targetCell;
 
-        public EnemyTargetController(List<Cell> cells, EnemyAim enemyAim)
+        public EnemyTargetController(Cell[] cells, EnemyAim enemyAim)
         {
             Assert.IsNotNull(cells);
             Assert.IsNotNull(enemyAim);

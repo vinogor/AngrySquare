@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using _Project.Sсripts.Animation;
@@ -24,7 +25,7 @@ namespace _Project.Sсripts
         [Header("Common")]
         [SerializeField] [Required] private Coefficients _coefficients;
         [SerializeField] [Required] private DiceRoller _diceRoller;
-        [SerializeField] private List<Cell> _cells;
+        [SerializeField] [Required] private Cell[] _cells;
         [SerializeField] [Required] private CellsAndSpellsSettings _cellsAndSpellsSettings;
         [SerializeField] [Required] private UiRoot _uiRoot;
         [SerializeField] [Required] private VfxRoot _vfxRoot;
@@ -63,12 +64,7 @@ namespace _Project.Sсripts
             PopUpWinDefeatController popUpWinDefeatController =
                 new PopUpWinDefeatController(_uiRoot.PopUpWinDefeat, stateMachine);
 
-            List<EffectName> availableEffectNames = new()
-            {
-                EffectName.Swords,
-                EffectName.Health,
-                EffectName.Mana
-            };
+            EffectName[] availableEffectNames = { EffectName.Swords, EffectName.Health, EffectName.Mana };
             PopUpQuestionController popUpQuestionController =
                 new PopUpQuestionController(_uiRoot.PopUpQuestion, _cellsAndSpellsSettings, availableEffectNames,
                     _playerMovement);
@@ -80,7 +76,7 @@ namespace _Project.Sсripts
             stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, popUpWinDefeatController));
             stateMachine.AddState(new EndOfGameFsmState(stateMachine));
 
-            _cells.ForEach(cell => cell.Initialized());
+            Array.ForEach(_cells, cell => cell.Initialized());
             _diceRoller.Initialize();
 
             EnemyTargetController enemyTargetController = new EnemyTargetController(_cells, _enemyAim);
@@ -98,7 +94,7 @@ namespace _Project.Sсripts
 
             FillCellsWithEffects();
 
-            List<Cell> portalCells = FindCellsByEffectName(EffectName.Portal);
+            Cell[] portalCells = FindCellsByEffectName(EffectName.Portal);
             PlayerPortal playerPortal = new PlayerPortal(playerJumper, portalCells, _playerMovement);
 
             _vfxRoot.Initialize(playerHealth, playerMana, playerPortal, enemyHealth);
@@ -137,12 +133,12 @@ namespace _Project.Sсripts
 
         private void FillCellsWithEffects()
         {
-            _cellsAndSpellsSettings.CellInfos.ForEach(FillCells);
+            Array.ForEach(_cellsAndSpellsSettings.CellInfos, FillCells);
         }
 
-        private List<Cell> FindCellsByEffectName(EffectName effectName)
+        private Cell[] FindCellsByEffectName(EffectName effectName)
         {
-            return _cells.Where(cell => cell.EffectName == effectName).ToList();
+            return _cells.Where(cell => cell.EffectName == effectName).ToArray();
         }
 
         private void FillCells(CellInfo cellInfo)
@@ -164,9 +160,9 @@ namespace _Project.Sсripts
                 });
         }
 
-        private List<Cell> CellsWithoutEffect(List<Cell> cells)
+        private Cell[] CellsWithoutEffect(Cell[] cells)
         {
-            return cells.Where(cell => cell.IsEffectSet() == false).ToList();
+            return cells.Where(cell => cell.IsEffectSet() == false).ToArray();
         }
     }
 }

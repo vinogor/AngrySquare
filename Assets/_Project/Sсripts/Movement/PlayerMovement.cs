@@ -15,12 +15,12 @@ namespace _Project.Sсripts.Movement
         [SerializeField] private int _currentCellIndex;
         [SerializeField] private DiceRoller _diceRoller;
 
-        private List<Cell> _cells;
+        private Cell[] _cells;
         private Dictionary<EffectName, Effect> _playerEffects;
         private Coefficients _coefficients;
         private PlayerJumper _playerJumper;
 
-        public void Initialize(List<Cell> cells, Dictionary<EffectName, Effect> playerEffects,
+        public void Initialize(Cell[] cells, Dictionary<EffectName, Effect> playerEffects,
             Coefficients coefficients, PlayerJumper playerJumper)
         {
             Assert.IsNotNull(_diceRoller);
@@ -64,7 +64,7 @@ namespace _Project.Sсripts.Movement
                 return;
             }
 
-            _currentCellIndex = ++_currentCellIndex % _cells.Count;
+            _currentCellIndex = ++_currentCellIndex % _cells.Length;
             Cell nextCell = _cells[_currentCellIndex];
 
             Sequence sequence = DOTween.Sequence();
@@ -90,7 +90,7 @@ namespace _Project.Sсripts.Movement
 
         public void SetNewStayCell(Cell newStayCell)
         {
-            _currentCellIndex = _cells.IndexOf(newStayCell);
+            _currentCellIndex = Array.IndexOf(_cells, newStayCell);
         }
     }
 }

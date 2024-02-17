@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using _Project.Sсripts.Model.Effects;
 using _Project.Sсripts.Movement;
@@ -14,13 +13,13 @@ namespace _Project.Sсripts.UI
     {
         private readonly PopUpQuestion _popUpQuestion;
         private readonly CellsAndSpellsSettings _cellsAndSpellsSettings;
-        private readonly List<EffectName> _availableEffectNames;
+        private readonly EffectName[] _availableEffectNames;
         private readonly PlayerMovement _playerMovement;
 
-        private List<EffectName> _activeEffects;
+        private EffectName[] _activeEffects;
 
         public PopUpQuestionController(PopUpQuestion popUpQuestion, CellsAndSpellsSettings cellsAndSpellsSettings,
-            List<EffectName> availableEffectNames, PlayerMovement playerMovement)
+            EffectName[] availableEffectNames, PlayerMovement playerMovement)
         {
             Assert.IsNotNull(popUpQuestion);
             Assert.IsNotNull(cellsAndSpellsSettings);
@@ -41,10 +40,10 @@ namespace _Project.Sсripts.UI
 
         private void PrepareButtons()
         {
-            List<EffectName> effects = SelectRandomEffects();
-            List<Button> buttons = _popUpQuestion.Buttons;
+            EffectName[] effects = SelectRandomEffects();
+            Button[] buttons = _popUpQuestion.Buttons;
 
-            for (var i = 0; i < buttons.Count; i++)
+            for (var i = 0; i < buttons.Length; i++)
             {
                 Button button = buttons[i];
                 EffectName effectName = effects[i];
@@ -63,9 +62,9 @@ namespace _Project.Sсripts.UI
             _playerMovement.ActivateEffect(effectName);
         }
 
-        private List<EffectName> SelectRandomEffects()
+        private EffectName[] SelectRandomEffects()
         {
-            return _availableEffectNames.Shuffle().Take(3).ToList();
+            return _availableEffectNames.Shuffle().Take(3).ToArray();
         }
     }
 }

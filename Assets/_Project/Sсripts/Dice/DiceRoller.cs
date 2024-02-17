@@ -17,7 +17,7 @@ namespace _Project.Sсripts.Dice
         [SerializeField] private float _upForce = 300f;
         [SerializeField] private Camera _camera;
 
-        private List<FaceDetector> _detectors;
+        private FaceDetector[] _detectors;
         private Rigidbody _rigidbody;
         private bool _canPlayerThrow = false;
         private bool _isDiceThrown = false;
@@ -28,7 +28,7 @@ namespace _Project.Sсripts.Dice
             Assert.IsNotNull(_camera);
            
             _rigidbody = GetComponent<Rigidbody>();
-            _detectors = GetComponentsInChildren<FaceDetector>().ToList();
+            _detectors = GetComponentsInChildren<FaceDetector>();
             
             Assert.IsNotNull(_rigidbody);
             Assert.IsNotNull(_detectors);

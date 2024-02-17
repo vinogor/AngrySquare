@@ -10,10 +10,10 @@ namespace _Project.Sсripts.Model.Effects.Player
     public class PlayerPortal : Effect
     {
         private readonly PlayerJumper _playerJumper;
-        private readonly List<Cell> _portalCells;
+        private readonly Cell[] _portalCells;
         private readonly PlayerMovement _playerMovement;
 
-        public PlayerPortal(PlayerJumper playerJumper, List<Cell> portalCells, PlayerMovement playerMovement)
+        public PlayerPortal(PlayerJumper playerJumper, Cell[] portalCells, PlayerMovement playerMovement)
         {
             _playerJumper = playerJumper;
             _portalCells = portalCells;
