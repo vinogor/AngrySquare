@@ -25,7 +25,7 @@ namespace _Project.Sсripts.Movement
             _enemyTargetController = enemyTargetController;
         }
 
-        public Sequence EnemyJumpToTargetCell()
+        public Sequence JumpToTargetCell()
         {
             Debug.Log("Enemy - JumpToCell");
 
@@ -36,7 +36,7 @@ namespace _Project.Sсripts.Movement
             return Jump(_enemyTransform, targetCell.Center() + Vector3.up * _coefficients.EnemyHeight);
         }
 
-        public Sequence EnemyJumpOnPlayer()
+        public Sequence JumpOnPlayer()
         {
             Debug.Log("Enemy - JumpOnPlayer");
 
@@ -44,7 +44,7 @@ namespace _Project.Sсripts.Movement
                 _playerMovement.PlayerStayCell.Center() + Vector3.up * _coefficients.EnemyHeight);
         }
 
-        public Sequence EnemyJumpBackToBase()
+        public Sequence JumpBackToBase()
         {
             Debug.Log("Enemy - JumpToBase");
 
@@ -62,15 +62,15 @@ namespace _Project.Sсripts.Movement
         public void ForcedAttack(Action everyAttackAction, Action onJumpComplete)
         {
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(EnemyJumpToTargetCell());
+            sequence.Append(JumpToTargetCell());
             sequence.AppendCallback(everyAttackAction.Invoke);
-            sequence.Append(EnemyJumpLooped(2, everyAttackAction.Invoke));
-            sequence.Append(EnemyJumpBackToBase());
+            sequence.Append(JumpLooped(2, everyAttackAction.Invoke));
+            sequence.Append(JumpBackToBase());
             sequence.AppendCallback(onJumpComplete.Invoke);
             sequence.Play();
         }
 
-        public Sequence EnemyJumpLooped(int amount, Action onEveryLoop)
+        public Sequence JumpLooped(int amount, Action onEveryLoop)
         {
             Cell targetCell = _enemyTargetController.GetCurrentTargetCell();
 

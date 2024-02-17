@@ -23,7 +23,7 @@ namespace _Project.Sсripts.Model.Effects.Player
         protected override void Execute(Action onComplete)
         {
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(_playerJumper.PlayerJumpInPlace());
+            sequence.Append(_playerJumper.JumpInPlace());
             sequence.AppendCallback(_popUpQuestionController.Show);
             sequence.Play();
 

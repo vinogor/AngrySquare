@@ -21,7 +21,7 @@ namespace _Project.Sсripts.Model.Effects.Player
             _playerMana.ReplenishToMax();
 
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(_playerJumper.PlayerJumpInPlace());
+            sequence.Append(_playerJumper.JumpInPlace());
             sequence.AppendCallback(onComplete.Invoke);
             sequence.Play();
         }

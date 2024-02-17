@@ -20,7 +20,7 @@ namespace _Project.Sсripts.Movement
             _coefficients = coefficients;
         }
 
-        public Sequence PlayerJumpOnEnemy()
+        public Sequence JumpOnEnemy()
         {
             Debug.Log("Player - JumpOnEnemy");
 
@@ -28,7 +28,7 @@ namespace _Project.Sсripts.Movement
             return Jump(_playerTransform, _enemyTransform.position);
         }
 
-        public Sequence PlayerJumpBackToCell()
+        public Sequence JumpBackToCell()
         {
             Debug.Log("Player - JumpBackToCell");
 
@@ -40,12 +40,12 @@ namespace _Project.Sсripts.Movement
             return Jump(_playerTransform, nextCell.Center() + Vector3.up * _playerTransform.lossyScale.y);
         }
 
-        public Sequence PlayerJumpInPlace()
+        public Sequence JumpInPlace()
         {
             return Jump(_playerTransform, _playerTransform.position);
         }
 
-        public Sequence PlayerTeleport(Cell targetCell)
+        public Sequence Teleport(Cell targetCell)
         {
             float offset = 2.1f;
             float lossyScaleY = _playerTransform.lossyScale.y;

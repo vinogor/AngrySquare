@@ -30,8 +30,8 @@ namespace _Project.Sсripts.Model.Effects.Player
             Cell targetCell = _portalCells.Where(cell => cell != currentCell).ToList().Shuffle().First();
 
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(_playerJumper.PlayerJumpInPlace());
-            sequence.Append(_playerJumper.PlayerTeleport(targetCell));
+            sequence.Append(_playerJumper.JumpInPlace());
+            sequence.Append(_playerJumper.Teleport(targetCell));
             sequence.AppendCallback(() =>
             {
                 _playerMovement.SetNewStayCell(targetCell);

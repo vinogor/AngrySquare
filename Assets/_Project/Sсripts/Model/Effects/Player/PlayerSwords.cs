@@ -22,9 +22,9 @@ namespace _Project.Sсripts.Model.Effects.Player
         protected override void Execute(Action onComplete)
         {
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(_playerJumper.PlayerJumpOnEnemy());
+            sequence.Append(_playerJumper.JumpOnEnemy());
             sequence.AppendCallback(() => _enemyHealth.TakeDamage(_playerDamage.Value));
-            sequence.Append(_playerJumper.PlayerJumpBackToCell());
+            sequence.Append(_playerJumper.JumpBackToCell());
             sequence.AppendCallback(onComplete.Invoke);
             sequence.Play();
         }
