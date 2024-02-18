@@ -1,15 +1,16 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using _Project.Sсripts.Utility;
 using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.UI.PopupChoice
 {
     public abstract class PopUpChoiceAbstractController
     {
-        // TODO: вынести сюда общее из наследников
-        
         protected readonly PopUpChoice PopUpChoice;
 
-        protected const int AmountItems = 3;
+        private const int AmountItems = 3;
 
         protected PopUpChoiceAbstractController(PopUpChoice popUpChoice)
         {
@@ -17,11 +18,16 @@ namespace _Project.Sсripts.UI.PopupChoice
 
             PopUpChoice = popUpChoice;
         }
-        
+
         protected void HidePopup()
         {
-            Array.ForEach(PopUpChoice.Buttons, button => button.onClick.RemoveAllListeners());
+            Array.ForEach(PopUpChoice.ButtonsOnClick, onClick => onClick.RemoveAllListeners());
             PopUpChoice.Hide();
+        }
+        
+        protected List<T> SelectRandomItems<T>(List<T> collection)
+        {
+            return collection.Shuffle().Take(AmountItems).ToList();
         }
     }
 }

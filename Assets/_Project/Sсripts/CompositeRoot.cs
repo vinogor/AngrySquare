@@ -49,6 +49,8 @@ namespace _Project.Sсripts
         {
             Debug.Log("CompositeRoot started");
 
+            Validator.ValidateAmount(_cells, 16);
+
             Defence playerDefence = new Defence(_coefficients.PlayerStartDefence);
             Health playerHealth = new Health(_coefficients.PlayerStartHealth, _coefficients.PlayerMaxHealth,
                 playerDefence);
@@ -62,8 +64,9 @@ namespace _Project.Sсripts
             // === UI ===
             _uiRoot.Initialize(playerHealth, playerMana, enemyHealth, playerDamage, enemyDamage, playerDefence,
                 enemyDefence, _spellsSettings);
-            EffectName[] availableEffectNames = { EffectName.Swords, EffectName.Health, EffectName.Mana };
-            SpellName[] availableSpellNames =
+            List<EffectName> availableEffectNames = new List<EffectName>
+                { EffectName.Swords, EffectName.Health, EffectName.Mana };
+            List<SpellName> availableSpellNames = new List<SpellName>
                 { SpellName.FullHealth, SpellName.UpDamage, SpellName.UpDefence, SpellName.UpMaxHealth };
 
             // PopUpChoiceOfThreeController popUpChoiceOfThreeController =

@@ -1,20 +1,19 @@
+using System.Collections.Generic;
 using System.Linq;
 using _Project.Sсripts.Movement;
 using _Project.Sсripts.Scriptable;
-using _Project.Sсripts.Utility;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.UI;
 
 namespace _Project.Sсripts.UI.PopupChoice
 {
     public class PopUpChoiceEffectController : PopUpChoiceAbstractController
     {
-        private readonly EffectName[] _availableEffectNames;
+        private readonly List<EffectName> _availableEffectNames;
         private readonly PlayerMovement _playerMovement;
         private readonly CellsSettings _cellsSettings;
 
-        public PopUpChoiceEffectController(PopUpChoice popUpChoice, EffectName[] availableEffectNames,
+        public PopUpChoiceEffectController(PopUpChoice popUpChoice, List<EffectName> availableEffectNames,
             PlayerMovement playerMovement, CellsSettings cellsSettings) : base(popUpChoice)
         {
             Assert.IsNotNull(availableEffectNames);
@@ -34,17 +33,15 @@ namespace _Project.Sсripts.UI.PopupChoice
 
         private void PrepareEffectButtons()
         {
-            EffectName[] effectNames = SelectRandomEffects();
-            Button[] buttons = PopUpChoice.Buttons;
+            List<EffectName> effectNames = SelectRandomItems(_availableEffectNames);
             Sprite[] sprites = effectNames.Select(name => _cellsSettings.GetCellSprite(name)).ToArray();
 
             PopUpChoice.SetSprites(sprites);
 
-            for (var i = 0; i < buttons.Length; i++)
+            for (var i = 0; i < PopUpChoice.ButtonsOnClick.Length; i++)
             {
-                Button button = buttons[i];
                 EffectName effectName = effectNames[i];
-                button.onClick.AddListener(() => PlayEffect(effectName));
+                PopUpChoice.ButtonsOnClick[i].AddListener(() => PlayEffect(effectName));
             }
         }
 
@@ -52,11 +49,6 @@ namespace _Project.Sсripts.UI.PopupChoice
         {
             HidePopup();
             _playerMovement.ActivateEffect(effectName);
-        }
-
-        private EffectName[] SelectRandomEffects()
-        {
-            return _availableEffectNames.Shuffle().Take(AmountItems).ToArray();
         }
     }
 }

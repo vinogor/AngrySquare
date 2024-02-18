@@ -1,3 +1,4 @@
+using System.Linq;
 using _Project.Sсripts.Utility;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ namespace _Project.Sсripts.UI.PopupChoice
         [SerializeField] private Button[] _buttons;
         [SerializeField] private Image[] _images;
 
-        public Button[] Buttons => _buttons;
+        public Button.ButtonClickedEvent[] ButtonsOnClick => _buttons.Select(button => button.onClick).ToArray();
 
         private void Awake()
         {

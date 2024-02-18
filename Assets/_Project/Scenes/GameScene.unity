@@ -16345,7 +16345,7 @@ MonoBehaviour:
   _playerManaBar: {fileID: 1770213333}
   _playerDamageText: {fileID: 1827672292}
   _playerDefenceText: {fileID: 111687090}
-  _popUpChoiceOfThree: {fileID: 1271853864}
+  _popUpChoice: {fileID: 1271853864}
   _spellBar: {fileID: 1944268875}
   _enemyHealthBar: {fileID: 397847410}
   _enemyDamageText: {fileID: 910892544}
