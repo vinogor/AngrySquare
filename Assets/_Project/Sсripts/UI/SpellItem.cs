@@ -1,0 +1,48 @@
+using System;
+using NaughtyAttributes;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace _Project.Sсripts.UI
+{
+    public class SpellItem : MonoBehaviour
+    {
+        [SerializeField] [Required] private TextMeshProUGUI _text;
+        [SerializeField] [Required] private Image _image;
+        [SerializeField] [Required] private Button _button;
+
+        public void Disable()
+        {
+            _button.enabled = false;
+        }
+
+        public void SetContent(SpellItem item)
+        {
+            SetSprite(item._image.sprite);
+            SetText(item._text.text);
+        }
+
+        public void SetContent(Sprite sprite, int manaCost)
+        {
+            SetSprite(sprite);
+            SetText("cost: " + manaCost);
+        }
+
+        public void SetContent(Sprite sprite)
+        {
+            SetSprite(sprite);
+            SetText(String.Empty);
+        }
+
+        private void SetSprite(Sprite sprite)
+        {
+            _image.sprite = sprite;
+        }
+
+        private void SetText(string text)
+        {
+            _text.SetText(text);
+        }
+    }
+}
