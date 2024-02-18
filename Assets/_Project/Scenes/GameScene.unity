@@ -160,9 +160,9 @@ RectTransform:
   - {fileID: 564939357}
   m_Father: {fileID: 1944268874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -414, y: -290}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 104}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &10104463
@@ -16340,7 +16340,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c7e2aa5d924417483242f2ccbc4d039, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _popUpWinDefeat: {fileID: 1551639101}
+  _popUpNotification: {fileID: 1551639101}
   _playerHealthBar: {fileID: 932031755}
   _playerManaBar: {fileID: 1770213333}
   _playerDamageText: {fileID: 1827672292}
@@ -16643,9 +16643,9 @@ RectTransform:
   - {fileID: 573667486}
   m_Father: {fileID: 1944268874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 878.31494, y: -442.315}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -121, y: 0}
   m_SizeDelta: {x: 359, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1635851318
@@ -19872,10 +19872,10 @@ RectTransform:
   - {fileID: 10104462}
   m_Father: {fileID: 199465713}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -10}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -676.9988, y: 126.899994}
+  m_SizeDelta: {x: 1353.9976, y: 253.79999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1944268875
 MonoBehaviour:

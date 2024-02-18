@@ -3,6 +3,7 @@ using _Project.Sсripts.HealthAndMana;
 using _Project.Sсripts.Scriptable;
 using _Project.Sсripts.UI;
 using _Project.Sсripts.UI.PopupChoice;
+using _Project.Sсripts.UI.PopUpNotification;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace _Project.Sсripts
     public class UiRoot : MonoBehaviour
     {
         [Header("Common")]
-        [SerializeField] [Required] private PopUpWinDefeat _popUpWinDefeat;
+        [SerializeField] [Required] private PopUpNotification _popUpNotification;
 
         [Space(10)]
         [Header("Player")]
@@ -28,10 +29,11 @@ namespace _Project.Sсripts
         [SerializeField] [Required] private DamageText _enemyDamageText;
         [SerializeField] [Required] private DefenceText _enemyDefenceText;
 
-        public PopUpWinDefeat PopUpWinDefeat => _popUpWinDefeat;
+        public PopUpNotification PopUpNotification => _popUpNotification;
         public PopUpChoice PopUpChoice => _popUpChoice;
 
-        public PopUpWinDefeatController PopUpWinDefeatController { get; private set; }
+        public PopUpDefeatNotificationController PopUpDefeatNotificationController { get; private set; }
+        public PopUpWinNotificationController PopUpWinNotificationController { get; private set; }
         public SpellBarController SpellBarController { get; private set; }
 
         public void Initialize(Health playerHealth, Mana playerMana, Health enemyHealth, Damage playerDamage,
@@ -45,7 +47,8 @@ namespace _Project.Sсripts
             _playerDefenceText.Initialize(playerDefence);
             _enemyDefenceText.Initialize(enemyDefence);
 
-            PopUpWinDefeatController = new PopUpWinDefeatController(_popUpWinDefeat);
+            PopUpDefeatNotificationController = new PopUpDefeatNotificationController(_popUpNotification);
+            PopUpWinNotificationController = new PopUpWinNotificationController(_popUpNotification);
             SpellBarController = new SpellBarController(_spellBar, spellsSettings);
         }
     }

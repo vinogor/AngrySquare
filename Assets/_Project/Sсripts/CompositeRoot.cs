@@ -85,9 +85,9 @@ namespace _Project.Sсripts
             FiniteStateMachine stateMachine = new FiniteStateMachine();
             // stateMachine.AddState(new InitializeFsmState(stateMachine));
             stateMachine.AddState(new PlayerTurnFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth));
-            stateMachine.AddState(new EnemyDefeatFsmState(stateMachine, _uiRoot.PopUpWinDefeatController));
+            stateMachine.AddState(new EnemyDefeatFsmState(stateMachine, _uiRoot.PopUpWinNotificationController));
             stateMachine.AddState(new EnemyTurnFsmState(stateMachine, _enemyMovement, playerHealth));
-            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, _uiRoot.PopUpWinDefeatController));
+            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, _uiRoot.PopUpDefeatNotificationController));
             stateMachine.AddState(new EndOfGameFsmState(stateMachine));
 
             Array.ForEach(_cells, cell => cell.Initialized());
@@ -126,8 +126,7 @@ namespace _Project.Sсripts
             _playerEffects.Add(EffectName.Mana, new PlayerMana(playerMana, playerJumper));
             _playerEffects.Add(EffectName.Portal, playerPortal);
             _playerEffects.Add(EffectName.Question, new PlayerQuestion(playerJumper, choiceEffectController));
-            _playerEffects.Add(EffectName.SpellBook,
-                new PlayerSpellBook(playerJumper, choiceSpellController, _uiRoot.SpellBarController));
+            _playerEffects.Add(EffectName.SpellBook, new PlayerSpellBook(playerJumper, choiceSpellController));
 
             _playerMovement.Initialize(_cells, _playerEffects, _coefficients, playerJumper);
 

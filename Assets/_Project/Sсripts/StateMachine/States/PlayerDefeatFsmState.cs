@@ -1,13 +1,15 @@
 using _Project.Sсripts.UI;
+using _Project.Sсripts.UI.PopUpNotification;
 using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.StateMachine.States
 {
     public class PlayerDefeatFsmState : FsmState
     {
-        private readonly PopUpWinDefeatController _popUpController;
+        private readonly PopUpDefeatNotificationController _popUpController;
 
-        public PlayerDefeatFsmState(FiniteStateMachine finiteStateMachine, PopUpWinDefeatController popUpController) :
+        public PlayerDefeatFsmState(FiniteStateMachine finiteStateMachine,
+            PopUpDefeatNotificationController popUpController) :
             base(finiteStateMachine)
         {
             Assert.IsNotNull(popUpController);
@@ -20,7 +22,7 @@ namespace _Project.Sсripts.StateMachine.States
 
             // TODO: set new state - game over
             // _popUpController.OnRestartGameSelected += () => FiniteStateMachine.SetState<>();
-            _popUpController.ShowDefeat();
+            _popUpController.Show();
         }
 
         public override void Exit()

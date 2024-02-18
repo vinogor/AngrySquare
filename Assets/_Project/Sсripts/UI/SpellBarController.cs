@@ -1,4 +1,3 @@
-using System;
 using _Project.Sсripts.Scriptable;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -14,15 +13,13 @@ namespace _Project.Sсripts.UI
         {
             Assert.IsNotNull(spellBar);
             Assert.IsNotNull(spellsSettings);
-            
+
             _spellBar = spellBar;
             _spellsSettings = spellsSettings;
-            
+
             _spellBar.Clean(_spellsSettings.GetSprite(SpellName.Empty));
             _spellBar.Disable();
         }
-
-        public event Action Took;
 
         public void TakeSpell(SpellName spellName)
         {
@@ -30,9 +27,6 @@ namespace _Project.Sсripts.UI
             int manaCost = _spellsSettings.GetManaCost(spellName);
 
             _spellBar.AddSpell(spellName, sprite, manaCost);
-            
-            // TODO: возможно как то можно красивее завершить ход 
-            Took?.Invoke();
         }
     }
 }

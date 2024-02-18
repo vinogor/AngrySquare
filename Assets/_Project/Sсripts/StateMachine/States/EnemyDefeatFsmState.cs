@@ -1,13 +1,15 @@
 using _Project.Sсripts.UI;
+using _Project.Sсripts.UI.PopUpNotification;
 using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.StateMachine.States
 {
     public class EnemyDefeatFsmState : FsmState
     {
-        private readonly PopUpWinDefeatController _popUpController;
+        private readonly PopUpWinNotificationController _popUpController;
 
-        public EnemyDefeatFsmState(FiniteStateMachine finiteStateMachine, PopUpWinDefeatController popUpController) : base(finiteStateMachine)
+        public EnemyDefeatFsmState(FiniteStateMachine finiteStateMachine,
+            PopUpWinNotificationController popUpController) : base(finiteStateMachine)
         {
             Assert.IsNotNull(popUpController);
             _popUpController = popUpController;
@@ -19,7 +21,7 @@ namespace _Project.Sсripts.StateMachine.States
 
             // TODO: set new state - spawn new enemy
             // _popUpController.OnSpawnNewEnemySelected += () => FiniteStateMachine.SetState<>();
-            _popUpController.ShowWin();
+            _popUpController.Show();
         }
 
         public override void Exit()

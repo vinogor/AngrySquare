@@ -3,9 +3,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Project.Sсripts.UI
+namespace _Project.Sсripts.UI.PopUpNotification
 {
-    public class PopUpWinDefeat : MonoBehaviour
+    public class PopUpNotification : MonoBehaviour
     {
         [SerializeField] [Required] private Button _button;
         [SerializeField] [Required] private TextMeshProUGUI _title;

@@ -1,47 +1,72 @@
 using System;
+using System.Collections;
+using System.Threading.Tasks;
 using _Project.Sсripts.Movement;
-using _Project.Sсripts.UI;
 using _Project.Sсripts.UI.PopupChoice;
+using _Project.Sсripts.Utility;
 using DG.Tweening;
 using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.Model.Effects.Player
 {
+    public static class TaskUtils
+    {
+        public static async Task WaitUntil(Func<bool> predicate)
+        {
+            while (!predicate())
+            {
+                await Task.Delay(50);
+            }
+        }
+    }
+
     public class PlayerSpellBook : Effect
     {
         private readonly PlayerJumper _playerJumper;
         private readonly PopUpChoiceSpellController _popUpController;
-        private readonly SpellBarController _spellBarController;
 
-        private Action _onComplete;
-
-        public PlayerSpellBook(PlayerJumper playerJumper,  PopUpChoiceSpellController popUpController,
-            SpellBarController spellBarController)
+        public PlayerSpellBook(PlayerJumper playerJumper, PopUpChoiceSpellController popUpController)
         {
             Assert.IsNotNull(playerJumper);
             Assert.IsNotNull(popUpController);
-            Assert.IsNotNull(spellBarController);
 
             _playerJumper = playerJumper;
             _popUpController = popUpController;
-            _spellBarController = spellBarController;
         }
 
         protected override void Execute(Action onComplete)
         {
-            _onComplete = onComplete;
-            _spellBarController.Took += OnSpellTook;
-
-            Sequence sequence = DOTween.Sequence();
-            sequence.Append(_playerJumper.JumpInPlace());
-            sequence.AppendCallback(() => _popUpController.ShowSpells());
-            sequence.Play();
+            // т.к. класс не монобех 
+            Coroutines.StartRoutine(ExecuteCo(onComplete));
         }
 
-        private void OnSpellTook()
+        private IEnumerator ExecuteCo(Action onComplete)
         {
-            _spellBarController.Took -= OnSpellTook;
-            _onComplete.Invoke();
+            yield return Jump();
+            yield return _popUpController.ShowSpells();
+            onComplete.Invoke();
+        }
+
+        private async Task Execute1()
+        {
+            await Jump1();
+            await _popUpController.ShowSpells1();
+        }
+
+        private IEnumerator Jump()
+        {
+            Sequence sequence = DOTween.Sequence();
+            yield return sequence.Append(_playerJumper.JumpInPlace())
+                .WaitForCompletion();
+        }
+
+        private async Task Jump1()
+        {
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(_playerJumper.JumpInPlace());
+            sequence.Play();
+
+            await TaskUtils.WaitUntil(() => sequence.IsComplete());
         }
     }
 }
