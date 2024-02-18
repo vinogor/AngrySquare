@@ -3752,7 +3752,8 @@ MonoBehaviour:
   - {fileID: 1135395133}
   - {fileID: 2057675796}
   - {fileID: 1672253161}
-  _cellsAndSpellsSettings: {fileID: 11400000, guid: c90c7ae6589b2d9468b844b4a2f38542, type: 2}
+  _cellsSettings: {fileID: 11400000, guid: ef7e568403d49024f9e6d2e3c80dc6b1, type: 2}
+  _spellsSettings: {fileID: 11400000, guid: 1aaac2dac6dd14349b971399d8fb0bf8, type: 2}
   _uiRoot: {fileID: 1518102252}
   _vfxRoot: {fileID: 60840387}
   _player: {fileID: 2120022569}
@@ -14943,6 +14944,10 @@ MonoBehaviour:
   - {fileID: 605240732}
   - {fileID: 971924313}
   - {fileID: 1041105761}
+  _images:
+  - {fileID: 2008320976}
+  - {fileID: 1919302172}
+  - {fileID: 278870568}
 --- !u!1 &1278601737
 GameObject:
   m_ObjectHideFlags: 0

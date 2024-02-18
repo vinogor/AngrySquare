@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using _Project.Sсripts.Model;
 using _Project.Sсripts.Model.Effects;
 using _Project.Sсripts.Scriptable;
+using _Project.Sсripts.Utility;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
@@ -14,6 +15,11 @@ namespace _Project.Sсripts.UI
     {
         [SerializeField] private List<Button> _buttons;
         [SerializeField] [Required] private Button _skipButton;
+
+        private void Awake()
+        {
+            Validator.ValidateAmount(_buttons, 5);
+        }
 
         public void Clean(Sprite emptySprite)
         {

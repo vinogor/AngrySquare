@@ -8,17 +8,17 @@ namespace _Project.Sсripts.UI
     public class SpellBarController
     {
         private readonly SpellBar _spellBar;
-        private readonly CellsAndSpellsSettings _cellsAndSpellsSettings;
+        private readonly SpellsSettings _spellsSettings;
 
-        public SpellBarController(SpellBar spellBar, CellsAndSpellsSettings cellsAndSpellsSettings)
+        public SpellBarController(SpellBar spellBar, SpellsSettings spellsSettings)
         {
             Assert.IsNotNull(spellBar);
-            Assert.IsNotNull(cellsAndSpellsSettings);
+            Assert.IsNotNull(spellsSettings);
             
             _spellBar = spellBar;
-            _cellsAndSpellsSettings = cellsAndSpellsSettings;
+            _spellsSettings = spellsSettings;
             
-            _spellBar.Clean(_cellsAndSpellsSettings.GetSpellSprite(SpellName.Empty));
+            _spellBar.Clean(_spellsSettings.GetSprite(SpellName.Empty));
             _spellBar.Disable();
         }
 
@@ -26,8 +26,8 @@ namespace _Project.Sсripts.UI
 
         public void TakeSpell(SpellName spellName)
         {
-            Sprite sprite = _cellsAndSpellsSettings.GetSpellSprite(spellName);
-            int manaCost = _cellsAndSpellsSettings.GetSpellManaCost(spellName);
+            Sprite sprite = _spellsSettings.GetSprite(spellName);
+            int manaCost = _spellsSettings.GetManaCost(spellName);
 
             _spellBar.AddSpell(spellName, sprite, manaCost);
             

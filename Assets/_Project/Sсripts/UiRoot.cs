@@ -2,6 +2,7 @@ using _Project.Sсripts.DamageAndDefence;
 using _Project.Sсripts.HealthAndMana;
 using _Project.Sсripts.Scriptable;
 using _Project.Sсripts.UI;
+using _Project.Sсripts.UI.PopupChoice;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ namespace _Project.Sсripts
         [SerializeField] [Required] private ManaBar _playerManaBar;
         [SerializeField] [Required] private DamageText _playerDamageText;
         [SerializeField] [Required] private DefenceText _playerDefenceText;
-        [SerializeField] [Required] private PopUpChoiceOfThree _popUpChoiceOfThree;
+        [SerializeField] [Required] private PopUpChoice _popUpChoice;
         [SerializeField] [Required] private SpellBar _spellBar;
 
         [Space(10)]
@@ -28,13 +29,13 @@ namespace _Project.Sсripts
         [SerializeField] [Required] private DefenceText _enemyDefenceText;
 
         public PopUpWinDefeat PopUpWinDefeat => _popUpWinDefeat;
-        public PopUpChoiceOfThree PopUpChoiceOfThree => _popUpChoiceOfThree;
+        public PopUpChoice PopUpChoice => _popUpChoice;
 
         public PopUpWinDefeatController PopUpWinDefeatController { get; private set; }
         public SpellBarController SpellBarController { get; private set; }
 
         public void Initialize(Health playerHealth, Mana playerMana, Health enemyHealth, Damage playerDamage,
-            Damage enemyDamage, Defence playerDefence, Defence enemyDefence, CellsAndSpellsSettings cellsAndSpellsSettings)
+            Damage enemyDamage, Defence playerDefence, Defence enemyDefence, SpellsSettings spellsSettings)
         {
             _playerHealthBar.Initialize(playerHealth);
             _playerManaBar.Initialize(playerMana);
@@ -45,7 +46,7 @@ namespace _Project.Sсripts
             _enemyDefenceText.Initialize(enemyDefence);
 
             PopUpWinDefeatController = new PopUpWinDefeatController(_popUpWinDefeat);
-            SpellBarController = new SpellBarController(_spellBar, cellsAndSpellsSettings);
+            SpellBarController = new SpellBarController(_spellBar, spellsSettings);
         }
     }
 }

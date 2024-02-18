@@ -13,7 +13,7 @@ using _Project.Sсripts.Movement;
 using _Project.Sсripts.Scriptable;
 using _Project.Sсripts.StateMachine;
 using _Project.Sсripts.StateMachine.States;
-using _Project.Sсripts.UI;
+using _Project.Sсripts.UI.PopupChoice;
 using _Project.Sсripts.Utility;
 using NaughtyAttributes;
 using UnityEngine;
@@ -26,7 +26,8 @@ namespace _Project.Sсripts
         [SerializeField] [Required] private Coefficients _coefficients;
         [SerializeField] [Required] private DiceRoller _diceRoller;
         [SerializeField] private Cell[] _cells;
-        [SerializeField] [Required] private CellsAndSpellsSettings _cellsAndSpellsSettings;
+        [SerializeField] [Required] private CellsSettings _cellsSettings;
+        [SerializeField] [Required] private SpellsSettings _spellsSettings;
         [SerializeField] [Required] private UiRoot _uiRoot;
         [SerializeField] [Required] private VfxRoot _vfxRoot;
 
@@ -60,13 +61,22 @@ namespace _Project.Sсripts
 
             // === UI ===
             _uiRoot.Initialize(playerHealth, playerMana, enemyHealth, playerDamage, enemyDamage, playerDefence,
-                enemyDefence, _cellsAndSpellsSettings);
+                enemyDefence, _spellsSettings);
             EffectName[] availableEffectNames = { EffectName.Swords, EffectName.Health, EffectName.Mana };
             SpellName[] availableSpellNames =
                 { SpellName.FullHealth, SpellName.UpDamage, SpellName.UpDefence, SpellName.UpMaxHealth };
-            PopUpChoiceOfThreeController popUpChoiceOfThreeController =
-                new PopUpChoiceOfThreeController(_uiRoot.PopUpChoiceOfThree, _cellsAndSpellsSettings,
-                    availableEffectNames, availableSpellNames, _playerMovement, _uiRoot.SpellBarController);
+
+            // PopUpChoiceOfThreeController popUpChoiceOfThreeController =
+            //     new PopUpChoiceOfThreeController(_uiRoot.PopUpChoiceOfThree, _cellsAndSpellsSettings,
+            //         availableEffectNames, availableSpellNames, _playerMovement, _uiRoot.SpellBarController);
+
+            PopUpChoiceEffectController choiceEffectController =
+                new PopUpChoiceEffectController(_uiRoot.PopUpChoice, availableEffectNames, _playerMovement,
+                    _cellsSettings);
+
+            PopUpChoiceSpellController choiceSpellController =
+                new PopUpChoiceSpellController(_uiRoot.PopUpChoice, availableSpellNames,
+                    _uiRoot.SpellBarController, _spellsSettings);
 
             // === STATE MACHINE ===
             FiniteStateMachine stateMachine = new FiniteStateMachine();
@@ -97,7 +107,7 @@ namespace _Project.Sсripts
             _vfxRoot.Initialize(playerHealth, playerMana, playerPortal, enemyHealth);
 
             CellEffectsInitialize(playerJumper, enemyHealth, playerDamage, playerHealth, playerMana, playerPortal,
-                enemyJumper, enemyDamage, enemyTargetController, popUpChoiceOfThreeController);
+                enemyJumper, enemyDamage, enemyTargetController, choiceEffectController, choiceSpellController);
 
             // в самом конце 
             stateMachine.SetState<PlayerTurnFsmState>();
@@ -106,15 +116,15 @@ namespace _Project.Sсripts
         private void CellEffectsInitialize(PlayerJumper playerJumper, Health enemyHealth, Damage playerDamage,
             Health playerHealth, Mana playerMana, PlayerPortal playerPortal, EnemyJumper enemyJumper,
             Damage enemyDamage, EnemyTargetController enemyTargetController,
-            PopUpChoiceOfThreeController popUpChoiceOfThreeController)
+            PopUpChoiceEffectController choiceEffectController, PopUpChoiceSpellController choiceSpellController)
         {
             _playerEffects.Add(EffectName.Swords, new PlayerSwords(playerJumper, enemyHealth, playerDamage));
             _playerEffects.Add(EffectName.Health, new PlayerHealth(playerHealth, playerJumper));
             _playerEffects.Add(EffectName.Mana, new PlayerMana(playerMana, playerJumper));
             _playerEffects.Add(EffectName.Portal, playerPortal);
-            _playerEffects.Add(EffectName.Question, new PlayerQuestion(playerJumper, popUpChoiceOfThreeController));
+            _playerEffects.Add(EffectName.Question, new PlayerQuestion(playerJumper, choiceEffectController));
             _playerEffects.Add(EffectName.SpellBook,
-                new PlayerSpellBook(playerJumper, popUpChoiceOfThreeController, _uiRoot.SpellBarController));
+                new PlayerSpellBook(playerJumper, choiceSpellController, _uiRoot.SpellBarController));
 
             _playerMovement.Initialize(_cells, _playerEffects, _coefficients, playerJumper);
 
@@ -131,7 +141,7 @@ namespace _Project.Sсripts
 
         private void FillCellsWithEffects()
         {
-            Array.ForEach(_cellsAndSpellsSettings.CellInfos, FillCells);
+            Array.ForEach(_cellsSettings.CellInfos, FillCells);
         }
 
         private Cell[] FindCellsByEffectName(EffectName effectName)
