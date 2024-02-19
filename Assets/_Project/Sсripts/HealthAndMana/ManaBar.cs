@@ -19,25 +19,32 @@ namespace _Project.Sсripts.HealthAndMana
             Assert.IsNotNull(_textMeshPro);
 
             _mana = mana;
-            _mana.Changed += OnManaChanged;
+            _mana.ValueChanged += OnManaValueChanged;
+            _mana.MaxValueChanged += OnManaMaxValueChanged;
 
             _slider.interactable = false;
             _slider.wholeNumbers = true;
             _slider.minValue = 0f;
             _slider.maxValue = _mana.MaxValue;
             _slider.value = _mana.Value;
-            
+
             _textMeshPro.SetText($"{_slider.value}/{_slider.maxValue}");
         }
 
         private void OnDestroy()
         {
-            _mana.Changed -= OnManaChanged;
+            _mana.ValueChanged -= OnManaValueChanged;
         }
 
-        private void OnManaChanged(int newValue)
+        private void OnManaValueChanged(int newValue)
         {
             _slider.value = newValue;
+            _textMeshPro.SetText($"{_slider.value}/{_slider.maxValue}");
+        }
+
+        private void OnManaMaxValueChanged(int newValue)
+        {
+            _slider.maxValue = newValue;
             _textMeshPro.SetText($"{_slider.value}/{_slider.maxValue}");
         }
     }

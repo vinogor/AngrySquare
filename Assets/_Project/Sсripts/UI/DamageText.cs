@@ -29,6 +29,7 @@ namespace _Project.Sсripts.UI
 
         private void OnDamageChanged()
         {
+            // TODO: добавить анимацию 
             _textMeshPro.SetText($"{_damage.Value}");
         }
     }

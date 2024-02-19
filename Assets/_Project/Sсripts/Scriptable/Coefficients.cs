@@ -21,6 +21,13 @@ namespace _Project.Sсripts.Scriptable
         [field: SerializeField] public int PlayerStartDefence = 0;
         
         [Space(10)]
+        [Header("Players Spells")] 
+        [field: SerializeField] public int DamageIncreaseValue = 1;
+        [field: SerializeField] public int DefenceIncreaseValue  = 1;
+        [field: SerializeField] public int MaxHealthIncreaseValue  = 1;
+        [field: SerializeField] public int MaxManaIncreaseValue  = 1;
+
+        [Space(10)]
         [Header("Enemy")] 
         [field: SerializeField] public int EnemyStartHealth = 5;
         [field: SerializeField] public int EnemyMaxHealth = 5;

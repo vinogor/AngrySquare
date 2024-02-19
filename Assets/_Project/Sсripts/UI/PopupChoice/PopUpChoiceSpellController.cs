@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using _Project.Sсripts.Scriptable;
+using _Project.Sсripts.UI.SpellCast;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -28,7 +29,7 @@ namespace _Project.Sсripts.UI.PopupChoice
             _spellsSettings = spellsSettings;
         }
 
-        public async Task ShowSpells1()
+        public async Task ShowSpells()
         {
             PrepareSpellButtons();
             PopUpChoice.Show();

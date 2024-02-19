@@ -18,7 +18,8 @@ namespace _Project.Sсripts.HealthAndMana
             _defence = defence;
         }
 
-        public event Action<int> Changed;
+        public event Action<int> ValueChanged;
+        public event Action<int> MaxValueChanged;
         public event Action DamageReceived;
         public event Action Replenished;
         public event Action Died;
@@ -46,7 +47,7 @@ namespace _Project.Sсripts.HealthAndMana
             if (Value <= 0)
                 Value = 0;
 
-            Changed?.Invoke(Value);
+            ValueChanged?.Invoke(Value);
             DamageReceived?.Invoke();
 
             if (Value <= 0)
@@ -61,7 +62,17 @@ namespace _Project.Sсripts.HealthAndMana
             Value = MaxValue;
 
             Replenished?.Invoke();
-            Changed?.Invoke(Value);
+            ValueChanged?.Invoke(Value);
+        }
+        
+        public void IncreaseMaxValue(int increaseValue)
+        {
+            if (increaseValue < 1)
+                throw new ArgumentOutOfRangeException(nameof(increaseValue), "value cant be less then 1");
+
+            MaxValue += increaseValue;
+
+            MaxValueChanged?.Invoke(MaxValue);
         }
 
         private void Validate(int value, int maxValue)

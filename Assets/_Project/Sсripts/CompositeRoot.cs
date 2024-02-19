@@ -9,11 +9,13 @@ using _Project.Sсripts.Model;
 using _Project.Sсripts.Model.Effects;
 using _Project.Sсripts.Model.Effects.Enemy;
 using _Project.Sсripts.Model.Effects.Player;
+using _Project.Sсripts.Model.Spells;
 using _Project.Sсripts.Movement;
 using _Project.Sсripts.Scriptable;
 using _Project.Sсripts.StateMachine;
 using _Project.Sсripts.StateMachine.States;
 using _Project.Sсripts.UI.PopupChoice;
+using _Project.Sсripts.UI.SpellCast;
 using _Project.Sсripts.Utility;
 using NaughtyAttributes;
 using UnityEngine;
@@ -56,32 +58,47 @@ namespace _Project.Sсripts
             Health playerHealth = new Health(_coefficients.PlayerStartHealth, _coefficients.PlayerMaxHealth,
                 playerDefence);
             Damage playerDamage = new Damage(_coefficients.PlayerStartDamage);
-            Mana playerMana = new Mana(_coefficients.PlayerStartMana, _coefficients.PlayerMaxMana);
+            Mana playerMana = new Mana(_coefficients.PlayerStartMana, _coefficients.PlayerMaxMana, _spellsSettings);
 
             Defence enemyDefence = new Defence(_coefficients.EnemyStartDefence);
             Health enemyHealth = new Health(_coefficients.EnemyStartHealth, _coefficients.EnemyMaxHealth, enemyDefence);
             Damage enemyDamage = new Damage(_coefficients.EnemyStartDamage);
 
+            Spells spells = new Spells();
+
+            Dictionary<SpellName, Spell> playerSpells = new Dictionary<SpellName, Spell>();
+            playerSpells.Add(SpellName.FullHealth, new FullHealthSpell(playerHealth));
+            playerSpells.Add(SpellName.UpDamage, new UpDamageSpell(playerDamage, _coefficients));
+            playerSpells.Add(SpellName.UpMaxHealth, new UpMaxHealthSpell(playerHealth, _coefficients));
+            playerSpells.Add(SpellName.UpDefence, new UpDefenceSpell(playerDefence, _coefficients));
+            playerSpells.Add(SpellName.UpMaxMana, new UpMaxManaSpell(playerMana, _coefficients));
+
+            SpellActivator spellActivator = new SpellActivator(playerSpells);
+
             // === UI ===
             _uiRoot.Initialize(playerHealth, playerMana, enemyHealth, playerDamage, enemyDamage, playerDefence,
-                enemyDefence, _spellsSettings);
+                enemyDefence, spells);
             List<EffectName> availableEffectNames = new List<EffectName>
                 { EffectName.Swords, EffectName.Health, EffectName.Mana };
             List<SpellName> availableSpellNames = new List<SpellName>
-                { SpellName.FullHealth, SpellName.UpDamage, SpellName.UpDefence, SpellName.UpMaxHealth };
+                { SpellName.FullHealth, SpellName.UpDamage, SpellName.UpDefence, SpellName.UpMaxHealth, SpellName.UpMaxMana };
 
             PopUpChoiceEffectController choiceEffectController =
                 new PopUpChoiceEffectController(_uiRoot.PopUpChoice, availableEffectNames, _playerMovement,
                     _cellsSettings);
 
+            SpellBarController spellBarController =
+                new SpellBarController(spells, _uiRoot.SpellBarView, playerMana, spellActivator);
+
             PopUpChoiceSpellController choiceSpellController =
                 new PopUpChoiceSpellController(_uiRoot.PopUpChoice, availableSpellNames,
-                    _uiRoot.SpellBarController, _spellsSettings);
+                    spellBarController, _spellsSettings);
 
             // === STATE MACHINE ===
             FiniteStateMachine stateMachine = new FiniteStateMachine();
             // stateMachine.AddState(new InitializeFsmState(stateMachine));
-            stateMachine.AddState(new PlayerTurnFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth));
+            stateMachine.AddState(new PlayerTurnMoveFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth));
+            stateMachine.AddState(new PlayerTurnSpellFsmState(stateMachine, spellBarController));
             stateMachine.AddState(new PlayerWinFsmState(stateMachine, _uiRoot.PopUpPlayerWinNotificationController));
             stateMachine.AddState(new EnemyTurnFsmState(stateMachine, _enemyMovement, playerHealth));
             stateMachine.AddState(new PlayerDefeatFsmState(stateMachine,
@@ -111,7 +128,7 @@ namespace _Project.Sсripts
                 enemyJumper, enemyDamage, enemyTargetController, choiceEffectController, choiceSpellController);
 
             // в самом конце 
-            stateMachine.SetState<PlayerTurnFsmState>();
+            stateMachine.SetState<PlayerTurnSpellFsmState>();
         }
 
         private void CellEffectsInitialize(PlayerJumper playerJumper, Health enemyHealth, Damage playerDamage,

@@ -36,7 +36,7 @@ namespace _Project.Sсripts.StateMachine.States
         private void GoToNextState()
         {
             if (_playerHealth.IsAlive)
-                FiniteStateMachine.SetState<PlayerTurnFsmState>();
+                FiniteStateMachine.SetState<PlayerTurnSpellFsmState>();
             else
                 FiniteStateMachine.SetState<PlayerDefeatFsmState>();
         }

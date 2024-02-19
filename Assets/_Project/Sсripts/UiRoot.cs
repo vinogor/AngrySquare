@@ -1,9 +1,9 @@
 using _Project.Sсripts.DamageAndDefence;
 using _Project.Sсripts.HealthAndMana;
-using _Project.Sсripts.Scriptable;
 using _Project.Sсripts.UI;
 using _Project.Sсripts.UI.PopupChoice;
 using _Project.Sсripts.UI.PopUpNotification;
+using _Project.Sсripts.UI.SpellCast;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -21,7 +21,7 @@ namespace _Project.Sсripts
         [SerializeField] [Required] private DamageText _playerDamageText;
         [SerializeField] [Required] private DefenceText _playerDefenceText;
         [SerializeField] [Required] private PopUpChoice _popUpChoice;
-        [SerializeField] [Required] private SpellBar _spellBar;
+        [SerializeField] [Required] private SpellBarView _spellBarView;
 
         [Space(10)]
         [Header("Enemy")]
@@ -29,15 +29,14 @@ namespace _Project.Sсripts
         [SerializeField] [Required] private DamageText _enemyDamageText;
         [SerializeField] [Required] private DefenceText _enemyDefenceText;
 
-        public PopUpNotification PopUpNotification => _popUpNotification;
         public PopUpChoice PopUpChoice => _popUpChoice;
+        public SpellBarView SpellBarView => _spellBarView;
 
         public PopUpNotificationController PopUpPlayerWinNotificationController { get; private set; }
         public PopUpNotificationController PopPlayerDefeatNotificationController { get; private set; }
-        public SpellBarController SpellBarController { get; private set; }
 
         public void Initialize(Health playerHealth, Mana playerMana, Health enemyHealth, Damage playerDamage,
-            Damage enemyDamage, Defence playerDefence, Defence enemyDefence, SpellsSettings spellsSettings)
+            Damage enemyDamage, Defence playerDefence, Defence enemyDefence, Spells spells)
         {
             _playerHealthBar.Initialize(playerHealth);
             _playerManaBar.Initialize(playerMana);
@@ -46,12 +45,14 @@ namespace _Project.Sсripts
             _enemyDamageText.Initialize(enemyDamage);
             _playerDefenceText.Initialize(playerDefence);
             _enemyDefenceText.Initialize(enemyDefence);
+            _spellBarView.Initialize(spells);
 
-            PopUpPlayerWinNotificationController = new PopUpNotificationController(_popUpNotification, 
+            // TODO: вынести в композит рут? 
+            
+            PopUpPlayerWinNotificationController = new PopUpNotificationController(_popUpNotification,
                 new PopUpNotificationModel("Player Win", "It's time to fight a new opponent!"));
             PopPlayerDefeatNotificationController = new PopUpNotificationController(_popUpNotification,
                 new PopUpNotificationModel("Player Lose", "You lost the game!"));
-            SpellBarController = new SpellBarController(_spellBar, spellsSettings);
         }
     }
 }

@@ -1,7 +1,8 @@
 using System;
+using _Project.Sсripts.Model.Effects;
 using UnityEngine;
 
-namespace _Project.Sсripts.Model.Effects
+namespace _Project.Sсripts.Model.Spells
 {
     public abstract class Spell : Effect
     {

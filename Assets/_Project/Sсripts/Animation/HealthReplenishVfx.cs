@@ -4,12 +4,12 @@ using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.Animation
 {
-    public class HealthReplenishVfx: MonoBehaviour
+    public class HealthReplenishVfx : MonoBehaviour
     {
         [SerializeField] private ParticleSystem _particleSystem;
-        
+
         private Health _health;
-        
+
         public void Initialize(Health health)
         {
             Assert.IsNotNull(_particleSystem);

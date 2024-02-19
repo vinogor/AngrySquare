@@ -7,6 +7,7 @@ namespace _Project.Sсripts.Scriptable
         UpDamage,
         UpDefence,
         UpMaxHealth,
-        FullHealth
+        FullHealth,
+        UpMaxMana
     }
 }

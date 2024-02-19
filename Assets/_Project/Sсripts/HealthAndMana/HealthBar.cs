@@ -19,7 +19,8 @@ namespace _Project.Sсripts.HealthAndMana
             Assert.IsNotNull(_textMeshPro);
 
             _health = health; 
-            _health.Changed += OnHealthChanged;
+            _health.ValueChanged += OnHealthValueChanged;
+            _health.MaxValueChanged += OnHealthMaxValueChanged;
 
             _slider.interactable = false;
             _slider.wholeNumbers = true;
@@ -32,12 +33,18 @@ namespace _Project.Sсripts.HealthAndMana
 
         private void OnDestroy()
         {
-            _health.Changed -= OnHealthChanged;
+            _health.ValueChanged -= OnHealthValueChanged;
         }
 
-        private void OnHealthChanged(int newValue)
+        private void OnHealthValueChanged(int newValue)
         {
             _slider.value = newValue;
+            _textMeshPro.SetText($"{_slider.value}/{_slider.maxValue}");
+        }
+
+        private void OnHealthMaxValueChanged(int newValue)
+        {
+            _slider.maxValue = newValue;
             _textMeshPro.SetText($"{_slider.value}/{_slider.maxValue}");
         }
     }

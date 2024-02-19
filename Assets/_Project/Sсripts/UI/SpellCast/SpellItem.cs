@@ -2,9 +2,10 @@ using System;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace _Project.Sсripts.UI
+namespace _Project.Sсripts.UI.SpellCast
 {
     public class SpellItem : MonoBehaviour
     {
@@ -18,22 +19,23 @@ namespace _Project.Sсripts.UI
             _button.enabled = false;
         }
 
-        public void SetContent(SpellItem item)
+        public void Enable()
         {
-            SetSprite(item._image.sprite);
-            SetText(item._text.text);
+            _button.enabled = true;
         }
 
-        public void SetContent(Sprite sprite, int manaCost)
+        public void SetContent(Sprite sprite, int manaCost,  UnityAction unityAction)
         {
             SetSprite(sprite);
             SetText("cost: " + manaCost);
+            _button.onClick.AddListener(unityAction);
         }
 
         public void SetEmptyContent()
         {
             SetSprite(_emptySprite);
             SetText(String.Empty);
+            _button.onClick.RemoveAllListeners();
         }
 
         private void SetSprite(Sprite sprite)

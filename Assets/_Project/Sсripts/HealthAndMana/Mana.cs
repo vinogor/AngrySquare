@@ -1,16 +1,22 @@
 using System;
+using _Project.Sсripts.Scriptable;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.HealthAndMana
 {
     public class Mana
     {
-        public event Action<int> Changed;
+        private readonly SpellsSettings _spellsSettings;
+        public event Action<int> ValueChanged;
+        public event Action<int> MaxValueChanged;
         public event Action Replenished;
 
-        public Mana(int value, int maxValue)
+        public Mana(int value, int maxValue, SpellsSettings spellsSettings)
         {
             Validate(value, maxValue);
+            Assert.IsNotNull(spellsSettings);
+            _spellsSettings = spellsSettings;
             Value = value;
             MaxValue = maxValue;
         }
@@ -19,25 +25,28 @@ namespace _Project.Sсripts.HealthAndMana
 
         public int MaxValue { get; private set; }
 
-        public bool IsEnough(int spellCost)
+        public bool IsEnough(SpellName spellName)
         {
+            int spellCost = _spellsSettings.GetManaCost(spellName);
             return Value >= spellCost;
         }
 
-        public void Spend(int spellCost)
+        public void Spend(SpellName spellName)
         {
+            int spellCost = _spellsSettings.GetManaCost(spellName);
+            
             Debug.Log("Spend mana " + spellCost);
 
             if (spellCost <= 0)
                 throw new ArgumentOutOfRangeException(nameof(spellCost), "SpellCost must be greater than zero");
 
-            if (IsEnough(spellCost) == false)
+            if (IsEnough(spellName) == false)
             {
                 throw new ArgumentOutOfRangeException(nameof(spellCost), "Not enough mana to spend");
             }
 
             Value -= spellCost;
-            Changed?.Invoke(Value);
+            ValueChanged?.Invoke(Value);
         }
 
         public void ReplenishToMax()
@@ -48,7 +57,17 @@ namespace _Project.Sсripts.HealthAndMana
             Value = MaxValue;
 
             Replenished?.Invoke();
-            Changed?.Invoke(Value);
+            ValueChanged?.Invoke(Value);
+        }
+
+        public void IncreaseMaxValue(int increaseValue)
+        {
+            if (increaseValue < 1)
+                throw new ArgumentOutOfRangeException(nameof(increaseValue), "value cant be less then 1");
+
+            MaxValue += increaseValue;
+
+            MaxValueChanged?.Invoke(MaxValue);
         }
 
         private void Validate(int value, int maxValue)

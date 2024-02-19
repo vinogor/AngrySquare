@@ -5,14 +5,15 @@ using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.StateMachine.States
 {
-    public class PlayerTurnFsmState : FsmState
+    public class PlayerTurnMoveFsmState : FsmState
     {
         private readonly DiceRoller _diceRoller;
         private readonly PlayerMovement _playerMovement;
         private readonly Health _enemyHealth;
 
-        public PlayerTurnFsmState(
-            FiniteStateMachine finiteStateMachine, DiceRoller diceRoller, PlayerMovement playerMovement, Health enemyHealth)
+        public PlayerTurnMoveFsmState(
+            FiniteStateMachine finiteStateMachine, DiceRoller diceRoller, PlayerMovement playerMovement,
+            Health enemyHealth)
             : base(finiteStateMachine)
         {
             Assert.IsNotNull(finiteStateMachine);
@@ -28,7 +29,7 @@ namespace _Project.Sсripts.StateMachine.States
         public override void Enter()
         {
             base.Enter();
-            _diceRoller.MakeAvailable();
+            _diceRoller.MakeAvailable(); // TODO: добавить эффект 
             _playerMovement.TurnCompleted += GoToNextState;
         }
 

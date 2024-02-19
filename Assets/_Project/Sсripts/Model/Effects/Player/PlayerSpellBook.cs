@@ -30,7 +30,7 @@ namespace _Project.Sсripts.Model.Effects.Player
         private async Task Execute()
         {
             await Jump();
-            await _popUpController.ShowSpells1();
+            await _popUpController.ShowSpells();
         }
 
         private async Task Jump()
