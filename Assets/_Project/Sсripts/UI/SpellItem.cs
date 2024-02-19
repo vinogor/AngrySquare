@@ -11,6 +11,7 @@ namespace _Project.Sсripts.UI
         [SerializeField] [Required] private TextMeshProUGUI _text;
         [SerializeField] [Required] private Image _image;
         [SerializeField] [Required] private Button _button;
+        [SerializeField] [Required] private Sprite _emptySprite;
 
         public void Disable()
         {
@@ -29,9 +30,9 @@ namespace _Project.Sсripts.UI
             SetText("cost: " + manaCost);
         }
 
-        public void SetContent(Sprite sprite)
+        public void SetEmptyContent()
         {
-            SetSprite(sprite);
+            SetSprite(_emptySprite);
             SetText(String.Empty);
         }
 

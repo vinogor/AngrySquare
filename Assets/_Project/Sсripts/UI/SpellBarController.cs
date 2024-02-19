@@ -17,7 +17,7 @@ namespace _Project.Sсripts.UI
             _spellBar = spellBar;
             _spellsSettings = spellsSettings;
 
-            _spellBar.Clean(_spellsSettings.GetSprite(SpellName.Empty));
+            _spellBar.Clean();
             _spellBar.Disable();
         }
 

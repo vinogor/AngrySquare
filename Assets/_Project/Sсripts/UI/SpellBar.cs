@@ -19,9 +19,9 @@ namespace _Project.Sсripts.UI
             Validator.ValidateAmount(_items, 5); 
         }
 
-        public void Clean(Sprite emptySprite)
+        public void Clean()
         {
-            _items.ForEach(item => item.SetContent(emptySprite));
+            _items.ForEach(item => item.SetEmptyContent());
             // TODO: отписки от кнопок 
         }
 
