@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using _Project.Sсripts.Model.Effects.Player;
 using _Project.Sсripts.Scriptable;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -14,7 +13,7 @@ namespace _Project.Sсripts.UI.PopupChoice
         private readonly List<SpellName> _availableSpellNames;
         private readonly SpellBarController _spellBarController;
         private readonly SpellsSettings _spellsSettings;
-        
+
         private bool _isSpellSelected;
 
         public PopUpChoiceSpellController(PopUpChoice popUpChoice, List<SpellName> availableSpellNames,
@@ -29,20 +28,12 @@ namespace _Project.Sсripts.UI.PopupChoice
             _spellsSettings = spellsSettings;
         }
 
-        public IEnumerator ShowSpells()
+        public async Task ShowSpells1()
         {
             PrepareSpellButtons();
             PopUpChoice.Show();
-            
-            yield return new WaitUntil(() => _isSpellSelected);
-        }
-        
-        public async Task ShowSpells1()
-        {
-            PrepareSpellButtons();  
-            PopUpChoice.Show();
-            
-            await TaskUtils.WaitUntil(() => _isSpellSelected);
+
+            await UniTask.WaitUntil(() => _isSpellSelected);
         }
 
         private void PrepareSpellButtons()

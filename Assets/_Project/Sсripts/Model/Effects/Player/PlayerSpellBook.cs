@@ -1,25 +1,12 @@
 using System;
-using System.Collections;
 using System.Threading.Tasks;
 using _Project.Sсripts.Movement;
 using _Project.Sсripts.UI.PopupChoice;
-using _Project.Sсripts.Utility;
 using DG.Tweening;
 using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.Model.Effects.Player
 {
-    public static class TaskUtils
-    {
-        public static async Task WaitUntil(Func<bool> predicate)
-        {
-            while (!predicate())
-            {
-                await Task.Delay(50);
-            }
-        }
-    }
-
     public class PlayerSpellBook : Effect
     {
         private readonly PlayerJumper _playerJumper;
@@ -34,39 +21,23 @@ namespace _Project.Sсripts.Model.Effects.Player
             _popUpController = popUpController;
         }
 
-        protected override void Execute(Action onComplete)
+        protected override async void Execute(Action onComplete)
         {
-            // т.к. класс не монобех 
-            Coroutines.StartRoutine(ExecuteCo(onComplete));
-        }
-
-        private IEnumerator ExecuteCo(Action onComplete)
-        {
-            yield return Jump();
-            yield return _popUpController.ShowSpells();
+            await Execute();
             onComplete.Invoke();
         }
 
-        private async Task Execute1()
+        private async Task Execute()
         {
-            await Jump1();
+            await Jump();
             await _popUpController.ShowSpells1();
         }
 
-        private IEnumerator Jump()
-        {
-            Sequence sequence = DOTween.Sequence();
-            yield return sequence.Append(_playerJumper.JumpInPlace())
-                .WaitForCompletion();
-        }
-
-        private async Task Jump1()
+        private async Task Jump()
         {
             Sequence sequence = DOTween.Sequence();
             sequence.Append(_playerJumper.JumpInPlace());
-            sequence.Play();
-
-            await TaskUtils.WaitUntil(() => sequence.IsComplete());
+            await sequence.AsyncWaitForCompletion();
         }
     }
 }
