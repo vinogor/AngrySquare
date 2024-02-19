@@ -1,26 +1,12 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace _Project.Sсripts.Utility
 {
     public static class ListExtension
     {
-        private static Random s_random = new();
-
-        public static IList<T> Shuffle<T>(this IList<T> list)
-        {
-            List<T> newList = new List<T>(list);
-
-            int counter = newList.Count;
-
-            while (counter > 1)
-            {
-                counter--;
-                int k = s_random.Next(counter + 1);
-                (newList[k], newList[counter]) = (newList[counter], newList[k]);
-            }
-
-            return newList;
-        }
+        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> origin)
+            => origin.OrderBy(_ => Random.value);
     }
 }

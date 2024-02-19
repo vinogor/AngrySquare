@@ -25,9 +25,9 @@ namespace _Project.Sсripts.UI.PopupChoice
             PopUpChoice.Hide();
         }
         
-        protected List<T> SelectRandomItems<T>(List<T> collection)
+        protected T[] SelectRandomItems<T>(IEnumerable<T> collection)
         {
-            return collection.Shuffle().Take(AmountItems).ToList();
+            return collection.Shuffle().Take(AmountItems).ToArray();
         }
     }
 }

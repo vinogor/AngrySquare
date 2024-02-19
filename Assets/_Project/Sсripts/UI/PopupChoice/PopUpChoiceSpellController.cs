@@ -39,7 +39,7 @@ namespace _Project.Sсripts.UI.PopupChoice
         private void PrepareSpellButtons()
         {
             _isSpellSelected = false;
-            List<SpellName> spellNames = SelectRandomItems(_availableSpellNames);
+            SpellName[] spellNames = SelectRandomItems(_availableSpellNames);
             Sprite[] sprites = spellNames.Select(name => _spellsSettings.GetSprite(name)).ToArray();
             PopUpChoice.SetSprites(sprites);
 

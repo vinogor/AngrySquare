@@ -33,7 +33,7 @@ namespace _Project.Sсripts.UI.PopupChoice
 
         private void PrepareEffectButtons()
         {
-            List<EffectName> effectNames = SelectRandomItems(_availableEffectNames);
+            EffectName[] effectNames = SelectRandomItems(_availableEffectNames);
             Sprite[] sprites = effectNames.Select(name => _cellsSettings.GetCellSprite(name)).ToArray();
 
             PopUpChoice.SetSprites(sprites);
