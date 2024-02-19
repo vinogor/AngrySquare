@@ -1,17 +1,23 @@
 using System;
+using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.UI.PopUpNotification
 {
-    public class PopUpWinNotificationController
+    public class PopUpNotificationController
     {
         private readonly PopUpNotification _popUp;
+        private readonly PopUpNotificationModel _model;
 
-        public PopUpWinNotificationController(PopUpNotification popUp)
+        public PopUpNotificationController(PopUpNotification popUp, PopUpNotificationModel model)
         {
+            Assert.IsNotNull(popUp);
+            Assert.IsNotNull(model);
+
             _popUp = popUp;
+            _model = model;
         }
 
-        public event Action OnSpawnNewEnemySelected;
+        public event Action OnClose;
 
         public void Show()
         {
@@ -25,12 +31,12 @@ namespace _Project.Sсripts.UI.PopUpNotification
             _popUp.Button.onClick.RemoveListener(Hide);
             _popUp.Hide();
 
-            OnSpawnNewEnemySelected?.Invoke();
+            OnClose?.Invoke();
         }
 
         private void SetInfo()
         {
-            _popUp.SetContent("Player Win", "It's time to fight a new opponent!");
+            _popUp.SetContent(_model.Title, _model.Info);
         }
     }
 }

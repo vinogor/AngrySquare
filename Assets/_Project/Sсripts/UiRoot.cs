@@ -32,8 +32,8 @@ namespace _Project.Sсripts
         public PopUpNotification PopUpNotification => _popUpNotification;
         public PopUpChoice PopUpChoice => _popUpChoice;
 
-        public PopUpDefeatNotificationController PopUpDefeatNotificationController { get; private set; }
-        public PopUpWinNotificationController PopUpWinNotificationController { get; private set; }
+        public PopUpNotificationController PopUpPlayerWinNotificationController { get; private set; }
+        public PopUpNotificationController PopPlayerDefeatNotificationController { get; private set; }
         public SpellBarController SpellBarController { get; private set; }
 
         public void Initialize(Health playerHealth, Mana playerMana, Health enemyHealth, Damage playerDamage,
@@ -47,8 +47,10 @@ namespace _Project.Sсripts
             _playerDefenceText.Initialize(playerDefence);
             _enemyDefenceText.Initialize(enemyDefence);
 
-            PopUpDefeatNotificationController = new PopUpDefeatNotificationController(_popUpNotification);
-            PopUpWinNotificationController = new PopUpWinNotificationController(_popUpNotification);
+            PopUpPlayerWinNotificationController = new PopUpNotificationController(_popUpNotification, 
+                new PopUpNotificationModel("Player Win", "It's time to fight a new opponent!"));
+            PopPlayerDefeatNotificationController = new PopUpNotificationController(_popUpNotification,
+                new PopUpNotificationModel("Player Lose", "You lost the game!"));
             SpellBarController = new SpellBarController(_spellBar, spellsSettings);
         }
     }

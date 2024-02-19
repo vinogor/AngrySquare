@@ -6,10 +6,10 @@ namespace _Project.Sсripts.StateMachine.States
 {
     public class PlayerDefeatFsmState : FsmState
     {
-        private readonly PopUpDefeatNotificationController _popUpController;
+        private readonly PopUpNotificationController _popUpController;
 
         public PlayerDefeatFsmState(FiniteStateMachine finiteStateMachine,
-            PopUpDefeatNotificationController popUpController) :
+            PopUpNotificationController popUpController) :
             base(finiteStateMachine)
         {
             Assert.IsNotNull(popUpController);

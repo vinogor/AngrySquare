@@ -69,10 +69,6 @@ namespace _Project.Sсripts
             List<SpellName> availableSpellNames = new List<SpellName>
                 { SpellName.FullHealth, SpellName.UpDamage, SpellName.UpDefence, SpellName.UpMaxHealth };
 
-            // PopUpChoiceOfThreeController popUpChoiceOfThreeController =
-            //     new PopUpChoiceOfThreeController(_uiRoot.PopUpChoiceOfThree, _cellsAndSpellsSettings,
-            //         availableEffectNames, availableSpellNames, _playerMovement, _uiRoot.SpellBarController);
-
             PopUpChoiceEffectController choiceEffectController =
                 new PopUpChoiceEffectController(_uiRoot.PopUpChoice, availableEffectNames, _playerMovement,
                     _cellsSettings);
@@ -85,9 +81,10 @@ namespace _Project.Sсripts
             FiniteStateMachine stateMachine = new FiniteStateMachine();
             // stateMachine.AddState(new InitializeFsmState(stateMachine));
             stateMachine.AddState(new PlayerTurnFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth));
-            stateMachine.AddState(new EnemyDefeatFsmState(stateMachine, _uiRoot.PopUpWinNotificationController));
+            stateMachine.AddState(new PlayerWinFsmState(stateMachine, _uiRoot.PopUpPlayerWinNotificationController));
             stateMachine.AddState(new EnemyTurnFsmState(stateMachine, _enemyMovement, playerHealth));
-            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, _uiRoot.PopUpDefeatNotificationController));
+            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine,
+                _uiRoot.PopPlayerDefeatNotificationController));
             stateMachine.AddState(new EndOfGameFsmState(stateMachine));
 
             Array.ForEach(_cells, cell => cell.Initialized());

@@ -1,15 +1,14 @@
-using _Project.Sсripts.UI;
 using _Project.Sсripts.UI.PopUpNotification;
 using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.StateMachine.States
 {
-    public class EnemyDefeatFsmState : FsmState
+    public class PlayerWinFsmState : FsmState
     {
-        private readonly PopUpWinNotificationController _popUpController;
+        private readonly PopUpNotificationController _popUpController;
 
-        public EnemyDefeatFsmState(FiniteStateMachine finiteStateMachine,
-            PopUpWinNotificationController popUpController) : base(finiteStateMachine)
+        public PlayerWinFsmState(FiniteStateMachine finiteStateMachine,
+            PopUpNotificationController popUpController) : base(finiteStateMachine)
         {
             Assert.IsNotNull(popUpController);
             _popUpController = popUpController;

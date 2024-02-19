@@ -43,7 +43,7 @@ namespace _Project.Sсripts.StateMachine.States
             if (_enemyHealth.IsAlive)
                 FiniteStateMachine.SetState<EnemyTurnFsmState>();
             else
-                FiniteStateMachine.SetState<EnemyDefeatFsmState>();
+                FiniteStateMachine.SetState<PlayerWinFsmState>();
         }
     }
 }
