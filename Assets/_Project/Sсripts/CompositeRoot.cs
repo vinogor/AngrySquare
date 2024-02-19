@@ -17,6 +17,7 @@ using _Project.Sсripts.UI.PopupChoice;
 using _Project.Sсripts.Utility;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace _Project.Sсripts
 {
@@ -49,7 +50,7 @@ namespace _Project.Sсripts
         {
             Debug.Log("CompositeRoot started");
 
-            Validator.ValidateAmount(_cells, 16);
+            Assert.AreEqual(16, _cells.Length);
 
             Defence playerDefence = new Defence(_coefficients.PlayerStartDefence);
             Health playerHealth = new Health(_coefficients.PlayerStartHealth, _coefficients.PlayerMaxHealth,

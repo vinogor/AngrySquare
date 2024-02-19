@@ -1,6 +1,7 @@
 using System.Linq;
 using _Project.Sсripts.Utility;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 namespace _Project.Sсripts.UI.PopupChoice
@@ -14,9 +15,8 @@ namespace _Project.Sсripts.UI.PopupChoice
 
         private void Awake()
         {
-            // TODO: добавить везде где есть коллекции добавляемые через инспектор 
-            Validator.ValidateAmount(_buttons, 3);
-            Validator.ValidateAmount(_images, 3);
+            Assert.AreEqual(3, _buttons.Length);
+            Assert.AreEqual(3, _images.Length);
             Hide();
         }
 

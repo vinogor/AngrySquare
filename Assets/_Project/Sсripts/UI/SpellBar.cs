@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using _Project.Sсripts.Scriptable;
-using _Project.Sсripts.Utility;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 namespace _Project.Sсripts.UI
@@ -16,7 +16,7 @@ namespace _Project.Sсripts.UI
 
         private void Awake()
         {
-            Validator.ValidateAmount(_items, 5); 
+            Assert.AreEqual(5, _items.Count);
         }
 
         public void Clean()

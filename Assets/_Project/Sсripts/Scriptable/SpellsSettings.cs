@@ -1,6 +1,6 @@
 using System;
-using _Project.Sсripts.Utility;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace _Project.Sсripts.Scriptable
 {
@@ -11,7 +11,7 @@ namespace _Project.Sсripts.Scriptable
 
         private void Awake()
         {
-            Validator.ValidateAmount(SpellInfos, 5);
+            Assert.AreEqual(5, SpellInfos.Length);
         }
 
         public Sprite GetSprite(SpellName spellName)
