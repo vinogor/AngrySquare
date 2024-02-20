@@ -730,7 +730,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7681527869305099510}
   - component: {fileID: 3371821093190158153}
-  - component: {fileID: 5890994062476290825}
   m_Layer: 0
   m_Name: EffectIcon
   m_TagString: Untagged
@@ -805,15 +804,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5890994062476290825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8073293911611930476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e72c2c77e0d4627a0fcafca845d455d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
