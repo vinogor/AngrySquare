@@ -4,7 +4,7 @@ using _Project.Sсripts.Services.Spells;
 
 namespace _Project.Sсripts.Domain
 {
-    public class Spells
+    public class AvailableSpells
     {
         private readonly List<SpellName> _spellNames = new();
 
@@ -28,6 +28,12 @@ namespace _Project.Sсripts.Domain
         public void Remove(int spellIndex)
         {
             _spellNames.RemoveAt(spellIndex);
+            Updated?.Invoke();
+        }
+
+        public void Clear()
+        {
+            _spellNames.Clear();
             Updated?.Invoke();
         }
     }

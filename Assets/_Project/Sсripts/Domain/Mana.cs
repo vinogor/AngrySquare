@@ -9,6 +9,8 @@ namespace _Project.Sсripts.Domain
     public class Mana
     {
         private readonly SpellsSettings _spellsSettings;
+        private readonly int _defaultValue;
+        private readonly int _defaultMaxValue;
         public event Action<int> ValueChanged;
         public event Action<int> MaxValueChanged;
         public event Action Replenished;
@@ -20,6 +22,8 @@ namespace _Project.Sсripts.Domain
             _spellsSettings = spellsSettings;
             Value = value;
             MaxValue = maxValue;
+            _defaultValue = value;
+            _defaultMaxValue = maxValue;
         }
 
         public int Value { get; private set; }
@@ -69,6 +73,14 @@ namespace _Project.Sсripts.Domain
             MaxValue += increaseValue;
 
             MaxValueChanged?.Invoke(MaxValue);
+        }
+        
+        public void SetToDefault()
+        {
+            Value = _defaultValue;
+            MaxValue = _defaultMaxValue;
+            MaxValueChanged?.Invoke(MaxValue);
+            ValueChanged?.Invoke(Value);
         }
 
         private void Validate(int value, int maxValue)

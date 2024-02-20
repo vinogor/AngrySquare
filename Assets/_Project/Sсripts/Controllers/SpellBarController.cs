@@ -9,19 +9,19 @@ namespace _Project.Sсripts.Controllers
 {
     public class SpellBarController
     {
-        private readonly Spells _spells;
+        private readonly AvailableSpells _availableSpells;
         private readonly SpellBarView _spellBarView;
         private readonly Mana _mana;
         private readonly SpellActivator _spellActivator;
 
-        public SpellBarController(Spells spells, SpellBarView spellBarView, Mana mana, SpellActivator spellActivator)
+        public SpellBarController(AvailableSpells availableSpells, SpellBarView spellBarView, Mana mana, SpellActivator spellActivator)
         {
-            Assert.IsNotNull(spells);
+            Assert.IsNotNull(availableSpells);
             Assert.IsNotNull(spellBarView);
             Assert.IsNotNull(mana);
             Assert.IsNotNull(spellActivator);
 
-            _spells = spells;
+            _availableSpells = availableSpells;
             _spellBarView = spellBarView;
             _mana = mana;
             _spellActivator = spellActivator;
@@ -43,7 +43,7 @@ namespace _Project.Sсripts.Controllers
             }
 
             _mana.Spend(spellName);
-            _spells.Remove(spellIndex);
+            _availableSpells.Remove(spellIndex);
             _spellActivator.Activate(spellName, () => SpellCompleted?.Invoke());
         }
 
@@ -55,12 +55,12 @@ namespace _Project.Sсripts.Controllers
 
         public void TakeSpell(SpellName spellName)
         {
-            _spells.Add(spellName);
+            _availableSpells.Add(spellName);
         }
 
         public void Enable()
         {
-            if (_spells.IsEmpty)
+            if (_availableSpells.IsEmpty)
             {
                 Debug.Log("Skip spell");
                 SpellCompleted?.Invoke();

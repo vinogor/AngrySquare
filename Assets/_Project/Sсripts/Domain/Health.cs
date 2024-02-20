@@ -8,6 +8,9 @@ namespace _Project.Sсripts.Domain
     {
         private readonly Defence _defence;
 
+        private readonly int _defaultValue;
+        private readonly int _defaultMaxValue;
+
         public Health(int value, int maxValue, Defence defence)
         {
             Validate(value, maxValue);
@@ -15,6 +18,8 @@ namespace _Project.Sсripts.Domain
             Value = value;
             MaxValue = maxValue;
             _defence = defence;
+            _defaultValue = value;
+            _defaultMaxValue = maxValue;
         }
 
         public event Action<int> ValueChanged;
@@ -72,6 +77,14 @@ namespace _Project.Sсripts.Domain
             MaxValue += increaseValue;
 
             MaxValueChanged?.Invoke(MaxValue);
+        }
+
+        public void SetToDefault()
+        {
+            Value = _defaultValue;
+            MaxValue = _defaultMaxValue;
+            MaxValueChanged?.Invoke(MaxValue);
+            ValueChanged?.Invoke(Value);
         }
 
         private void Validate(int value, int maxValue)

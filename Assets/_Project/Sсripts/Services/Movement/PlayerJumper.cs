@@ -3,7 +3,8 @@ using _Project.Sсripts.Scriptable;
 using DG.Tweening;
 using UnityEngine;
 
-namespace _Project.Sсripts.Services.Movement{
+namespace _Project.Sсripts.Services.Movement
+{
     public class PlayerJumper
     {
         private Transform _playerTransform;
@@ -34,9 +35,9 @@ namespace _Project.Sсripts.Services.Movement{
             return Jump(_playerTransform, _playerCellPosition);
         }
 
-        public Sequence JumpToNextCell(Cell nextCell)
+        public Sequence JumpToNextCell(Cell nextCell, bool instantly = false)
         {
-            return Jump(_playerTransform, nextCell.Center() + Vector3.up * _playerTransform.lossyScale.y);
+            return Jump(_playerTransform, nextCell.Center() + Vector3.up * _playerTransform.lossyScale.y, instantly);
         }
 
         public Sequence JumpInPlace()
@@ -58,11 +59,13 @@ namespace _Project.Sсripts.Services.Movement{
             return sequence;
         }
 
-        private Sequence Jump(Transform transform, Vector3 target)
+        private Sequence Jump(Transform transform, Vector3 target, bool instantly = false)
         {
             Debug.Log($"Player - Jump - from {transform.position} - to {target}");
+            float epsilonTime = 0.001f;
+            float duration = instantly ? epsilonTime : _coefficients.JumpDuration;
             return transform
-                .DOJump(target, _coefficients.JumpPower, 1, _coefficients.JumpDuration)
+                .DOJump(target, _coefficients.JumpPower, 1, duration)
                 .SetEase(Ease.Linear);
         }
     }

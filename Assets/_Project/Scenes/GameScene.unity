@@ -21119,7 +21119,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9b9ac51d96d97a47acbfe78ee9f6b6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentCellIndex: 0
   _diceRoller: {fileID: 137139605}
 --- !u!114 &2120022571
 MonoBehaviour:
