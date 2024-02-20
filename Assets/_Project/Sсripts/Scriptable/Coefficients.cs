@@ -26,6 +26,8 @@ namespace _Project.Sсripts.Scriptable
         [field: SerializeField] public int DefenceIncreaseValue  = 1;
         [field: SerializeField] public int MaxHealthIncreaseValue  = 1;
         [field: SerializeField] public int MaxManaIncreaseValue  = 1;
+        
+        [field: SerializeField]  public float DelayAfterVfxSeconds = 1.5f;
 
         [Space(10)]
         [Header("Enemy")] 

@@ -17,11 +17,16 @@ MonoBehaviour:
   AnimationCellDuration: 0.2
   EnemyHeight: 0.2
   PlayerStartHealth: 5
-  PlayerMaxHealth: 5
-  PlayerStartMana: 20
+  PlayerMaxHealth: 20
+  PlayerStartMana: 5
   PlayerMaxMana: 20
   PlayerStartDamage: 2
   PlayerStartDefence: 0
+  DamageIncreaseValue: 1
+  DefenceIncreaseValue: 1
+  MaxHealthIncreaseValue: 1
+  MaxManaIncreaseValue: 1
+  DelayAfterVfxSeconds: 1.5
   EnemyStartHealth: 5
   EnemyMaxHealth: 5
   EnemyStartDamage: 1

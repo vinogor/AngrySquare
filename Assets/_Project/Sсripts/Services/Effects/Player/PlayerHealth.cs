@@ -1,26 +1,30 @@
 using System;
 using _Project.Sсripts.Domain;
+using _Project.Sсripts.Scriptable;
 using _Project.Sсripts.Services.Movement;
 using DG.Tweening;
 
-namespace _Project.Sсripts.Services.Effects.Player{
+namespace _Project.Sсripts.Services.Effects.Player
+{
     public class PlayerHealth : Effect
     {
         private readonly Health _playerHealth;
         private readonly PlayerJumper _playerJumper;
+        private readonly Coefficients _coefficients;
 
-        public PlayerHealth(Health playerHealth, PlayerJumper playerJumper)
+        public PlayerHealth(Health playerHealth, PlayerJumper playerJumper, Coefficients coefficients)
         {
             _playerHealth = playerHealth;
             _playerJumper = playerJumper;
+            _coefficients = coefficients;
         }
 
         protected override void Execute(Action onComplete)
         {
-            _playerHealth.ReplenishToMax();
-
             Sequence sequence = DOTween.Sequence();
             sequence.Append(_playerJumper.JumpInPlace());
+            sequence.AppendCallback(() => _playerHealth.ReplenishToMax());
+            sequence.AppendInterval(_coefficients.DelayAfterVfxSeconds);
             sequence.AppendCallback(onComplete.Invoke);
             sequence.Play();
         }

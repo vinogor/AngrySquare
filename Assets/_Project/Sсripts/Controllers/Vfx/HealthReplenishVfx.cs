@@ -2,24 +2,25 @@ using _Project.Sсripts.Domain;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.View.Animation{
-    public class ManaVfx : MonoBehaviour
+namespace _Project.Sсripts.Controllers.Vfx
+{
+    public class HealthReplenishVfx : MonoBehaviour
     {
         [SerializeField] private ParticleSystem _particleSystem;
 
-        private Mana _mana;
+        private Health _health;
 
-        public void Initialize(Mana mana)
+        public void Initialize(Health health)
         {
             Assert.IsNotNull(_particleSystem);
-            Assert.IsNotNull(mana);
-            _mana = mana;
-            _mana.Replenished += OnReplenished;
+            Assert.IsNotNull(health);
+            _health = health;
+            _health.Replenished += OnReplenished;
         }
 
         private void OnDestroy()
         {
-            _mana.Replenished -= OnReplenished;
+            _health.Replenished -= OnReplenished;
         }
 
         private void OnReplenished()

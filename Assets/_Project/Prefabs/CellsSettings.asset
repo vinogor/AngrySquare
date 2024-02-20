@@ -21,13 +21,13 @@ MonoBehaviour:
     <Amount>k__BackingField: 0
   - <EffectName>k__BackingField: 5
     <Sprite>k__BackingField: {fileID: 21300000, guid: 5489055328f9abb48adbabd49eb7c0c5, type: 3}
-    <Amount>k__BackingField: 0
+    <Amount>k__BackingField: 8
   - <EffectName>k__BackingField: 6
     <Sprite>k__BackingField: {fileID: 21300000, guid: 9b2270fd5e47a254b82ed7c7a7d55e5c, type: 3}
-    <Amount>k__BackingField: 0
+    <Amount>k__BackingField: 8
   - <EffectName>k__BackingField: 2
     <Sprite>k__BackingField: {fileID: 21300000, guid: e9985fe09c06832429532720df66083a, type: 3}
-    <Amount>k__BackingField: 16
+    <Amount>k__BackingField: 0
   - <EffectName>k__BackingField: 4
     <Sprite>k__BackingField: {fileID: 21300000, guid: e1da814df876d9841b8a229d12afb999, type: 3}
     <Amount>k__BackingField: 0

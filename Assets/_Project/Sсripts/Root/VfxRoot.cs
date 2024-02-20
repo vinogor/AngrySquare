@@ -1,6 +1,6 @@
+using _Project.Sсripts.Controllers.Vfx;
 using _Project.Sсripts.Domain;
 using _Project.Sсripts.Services.Effects.Player;
-using _Project.Sсripts.View.Animation;
 using UnityEngine;
 using UnityEngine.Assertions;
 

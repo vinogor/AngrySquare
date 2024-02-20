@@ -2,7 +2,7 @@ using _Project.Sсripts.Domain;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.View.Animation
+namespace _Project.Sсripts.Controllers.Vfx
 {
     public class DamageVfx : MonoBehaviour
     {

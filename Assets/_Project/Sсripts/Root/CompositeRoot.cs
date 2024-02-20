@@ -136,8 +136,8 @@ namespace _Project.Sсripts.Root
             PopUpChoiceEffectController choiceEffectController, PopUpChoiceSpellController choiceSpellController)
         {
             _playerEffects.Add(EffectName.Swords, new PlayerSwords(playerJumper, enemyHealth, playerDamage));
-            _playerEffects.Add(EffectName.Health, new PlayerHealth(playerHealth, playerJumper));
-            _playerEffects.Add(EffectName.Mana, new PlayerMana(playerMana, playerJumper));
+            _playerEffects.Add(EffectName.Health, new PlayerHealth(playerHealth, playerJumper, _coefficients));
+            _playerEffects.Add(EffectName.Mana, new PlayerMana(playerMana, playerJumper, _coefficients));
             _playerEffects.Add(EffectName.Portal, playerPortal);
             _playerEffects.Add(EffectName.Question, new PlayerQuestion(playerJumper, choiceEffectController));
             _playerEffects.Add(EffectName.SpellBook, new PlayerSpellBook(playerJumper, choiceSpellController));
