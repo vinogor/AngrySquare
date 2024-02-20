@@ -7,34 +7,38 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Services.Movement{
+namespace _Project.Sсripts.Services.Movement
+{
     public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField] private int _currentCellIndex;
+        private int _playersCellIndex;
         [SerializeField] private DiceRoller _diceRoller;
 
-        private Cell[] _cells;
+        private CellsManager _cellsManager;
         private Dictionary<EffectName, Effect> _playerEffects;
         private Coefficients _coefficients;
         private PlayerJumper _playerJumper;
 
-        public void Initialize(Cell[] cells, Dictionary<EffectName, Effect> playerEffects,
+        int startingPlayersCellIndex = 0;
+        
+        public void Initialize(CellsManager cellsManager, Dictionary<EffectName, Effect> playerEffects,
             Coefficients coefficients, PlayerJumper playerJumper)
         {
             Assert.IsNotNull(_diceRoller);
-            Assert.IsNotNull(cells);
+            Assert.IsNotNull(cellsManager);
             Assert.IsNotNull(playerEffects);
             Assert.IsNotNull(coefficients);
 
-            _cells = cells;
+            _cellsManager = cellsManager;
             _playerEffects = playerEffects;
             _coefficients = coefficients;
             _playerJumper = playerJumper;
+            _playersCellIndex = startingPlayersCellIndex;
         }
 
         public event Action TurnCompleted;
 
-        public Cell PlayerStayCell => _cells[_currentCellIndex];
+        public Cell PlayerStayCell => _cellsManager.Get(_playersCellIndex);
 
         private void Awake()
         {
@@ -56,14 +60,14 @@ namespace _Project.Sсripts.Services.Movement{
         {
             if (amountMoves == 0)
             {
-                EffectName effectName = _cells[_currentCellIndex].EffectName;
+                EffectName effectName = _cellsManager.Get(_playersCellIndex).EffectName;
                 Debug.Log("Activating effect: " + effectName);
                 ActivateEffect(effectName);
                 return;
             }
 
-            _currentCellIndex = ++_currentCellIndex % _cells.Length;
-            Cell nextCell = _cells[_currentCellIndex];
+            _playersCellIndex = ++_playersCellIndex % _cellsManager.Length;
+            Cell nextCell = _cellsManager.Get(_playersCellIndex);
 
             Sequence sequence = DOTween.Sequence();
             sequence.Append(_playerJumper.JumpToNextCell(nextCell));
@@ -88,7 +92,13 @@ namespace _Project.Sсripts.Services.Movement{
 
         public void SetNewStayCell(Cell newStayCell)
         {
-            _currentCellIndex = Array.IndexOf(_cells, newStayCell);
+            _playersCellIndex = _cellsManager.Index(newStayCell);
+        }
+        
+        public void SetDefaultStayCell()
+        {
+            _playersCellIndex = startingPlayersCellIndex;
+            _playerJumper.JumpToNextCell(PlayerStayCell, true);
         }
     }
 }

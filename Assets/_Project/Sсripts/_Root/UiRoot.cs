@@ -30,7 +30,7 @@ namespace _Project.Sсripts.Root
         public PopUpNotificationView PopUpNotificationView => _popUpNotificationView;
 
         public void Initialize(Health playerHealth, Mana playerMana, Health enemyHealth, Damage playerDamage,
-            Damage enemyDamage, Defence playerDefence, Defence enemyDefence, Spells spells)
+            Damage enemyDamage, Defence playerDefence, Defence enemyDefence, AvailableSpells availableSpells)
         {
             _playerHealthBarView.Initialize(playerHealth);
             _playerManaBarView.Initialize(playerMana);
@@ -39,7 +39,7 @@ namespace _Project.Sсripts.Root
             _enemyDamageView.Initialize(enemyDamage);
             _playerDefenceTextView.Initialize(playerDefence);
             _enemyDefenceTextView.Initialize(enemyDefence);
-            _spellBarView.Initialize(spells);
+            _spellBarView.Initialize(availableSpells);
         }
     }
 }

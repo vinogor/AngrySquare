@@ -1,7 +1,8 @@
 using _Project.Sсripts.Controllers;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Services.StateMachine.States{
+namespace _Project.Sсripts.Services.StateMachine.States
+{
     public class PlayerDefeatFsmState : FsmState
     {
         private readonly PopUpNotificationController _popUpController;
@@ -17,15 +18,20 @@ namespace _Project.Sсripts.Services.StateMachine.States{
         public override void Enter()
         {
             base.Enter();
+            _popUpController.OnClose += NextState;
 
-            // TODO: set new state - game over
-            // _popUpController.OnRestartGameSelected += () => FiniteStateMachine.SetState<>();
             _popUpController.Show();
+        }
+
+        private void NextState()
+        {
+            FiniteStateMachine.SetState<RestartFsmState>();
         }
 
         public override void Exit()
         {
             base.Exit();
+            _popUpController.OnClose -= NextState;
             _popUpController.Hide();
         }
     }

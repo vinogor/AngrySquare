@@ -12,7 +12,7 @@ namespace _Project.Sсripts.Scriptable
 
         private void Awake()
         {
-            Assert.AreEqual(6, SpellInfos.Length);
+            Assert.AreEqual(5, SpellInfos.Length);
         }
 
         public Sprite GetSprite(SpellName spellName)

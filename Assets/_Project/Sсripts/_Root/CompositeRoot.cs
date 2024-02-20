@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using _Project.Sсripts.Controllers;
 using _Project.Sсripts.Controllers.PopupChoice;
 using _Project.Sсripts.Domain;
+using _Project.Sсripts.Root;
 using _Project.Sсripts.Scriptable;
 using _Project.Sсripts.Services;
 using _Project.Sсripts.Services.Effects;
@@ -13,17 +12,16 @@ using _Project.Sсripts.Services.Movement;
 using _Project.Sсripts.Services.Spells;
 using _Project.Sсripts.Services.StateMachine;
 using _Project.Sсripts.Services.StateMachine.States;
-using _Project.Sсripts.Services.Utility;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Root
+namespace _Project.Sсripts._Root
 {
     public class CompositeRoot : MonoBehaviour
     {
         // TODO: сгруппировать по root классам по аналогии с папками
-        
+
         [Header("Common")]
         [SerializeField] [Required] private Coefficients _coefficients;
         [SerializeField] [Required] private DiceRoller _diceRoller;
@@ -52,6 +50,7 @@ namespace _Project.Sсripts.Root
             Debug.Log("CompositeRoot started");
 
             Assert.AreEqual(16, _cells.Length);
+            CellsManager cellsManager = new CellsManager(_cells, _cellsSettings);
 
             Defence playerDefence = new Defence(_coefficients.PlayerStartDefence);
             Health playerHealth = new Health(_coefficients.PlayerStartHealth, _coefficients.PlayerMaxHealth,
@@ -63,7 +62,7 @@ namespace _Project.Sсripts.Root
             Health enemyHealth = new Health(_coefficients.EnemyStartHealth, _coefficients.EnemyMaxHealth, enemyDefence);
             Damage enemyDamage = new Damage(_coefficients.EnemyStartDamage);
 
-            Spells spells = new Spells();
+            AvailableSpells availableSpells = new AvailableSpells();
 
             Dictionary<SpellName, Spell> playerSpells = new Dictionary<SpellName, Spell>();
             playerSpells.Add(SpellName.FullHealth, new FullHealthSpell(playerHealth));
@@ -76,7 +75,7 @@ namespace _Project.Sсripts.Root
 
             // === UI ===
             _uiRoot.Initialize(playerHealth, playerMana, enemyHealth, playerDamage, enemyDamage, playerDefence,
-                enemyDefence, spells);
+                enemyDefence, availableSpells);
             List<EffectName> availableEffectNames = new List<EffectName>
                 { EffectName.Swords, EffectName.Health, EffectName.Mana };
             List<SpellName> availableSpellNames = new List<SpellName>
@@ -90,7 +89,7 @@ namespace _Project.Sсripts.Root
                     _cellsSettings);
 
             SpellBarController spellBarController =
-                new SpellBarController(spells, _uiRoot.SpellBarView, playerMana, spellActivator);
+                new SpellBarController(availableSpells, _uiRoot.SpellBarView, playerMana, spellActivator);
 
             PopUpChoiceSpellController choiceSpellController =
                 new PopUpChoiceSpellController(_uiRoot.PopUpChoiceView, availableSpellNames,
@@ -99,11 +98,15 @@ namespace _Project.Sсripts.Root
             PopUpNotificationController popUpPlayerWin = new PopUpNotificationController(_uiRoot.PopUpNotificationView,
                 new PopUpNotificationModel("Player Win", "It's time to fight a new opponent!"));
             PopUpNotificationController popPlayerDefeat = new PopUpNotificationController(_uiRoot.PopUpNotificationView,
-                new PopUpNotificationModel("Player Lose", "You lost the game!"));
+                new PopUpNotificationModel("Player Lose", "You lost the game! Press 'OK' to restart."));
+
+            EnemyTargetController enemyTargetController = new EnemyTargetController(cellsManager, _enemyAim);
 
             // === STATE MACHINE ===
             FiniteStateMachine stateMachine = new FiniteStateMachine();
-            // stateMachine.AddState(new InitializeFsmState(stateMachine));
+            stateMachine.AddState(new RestartFsmState(stateMachine, cellsManager, playerDefence, playerHealth,
+                playerDamage, playerMana, enemyDefence, enemyHealth, enemyDamage, availableSpells, _playerMovement,
+                enemyTargetController));
             stateMachine.AddState(new PlayerTurnMoveFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth));
             stateMachine.AddState(new PlayerTurnSpellFsmState(stateMachine, spellBarController));
             stateMachine.AddState(new PlayerWinFsmState(stateMachine, popUpPlayerWin));
@@ -113,24 +116,24 @@ namespace _Project.Sсripts.Root
 
             _diceRoller.Initialize();
 
-            EnemyTargetController enemyTargetController = new EnemyTargetController(_cells, _enemyAim);
             enemyTargetController.SetAimToNewRandomTargetCell();
 
             PlayerJumper playerJumper = new PlayerJumper(_player.transform, _enemy.transform, _coefficients);
             EnemyJumper enemyJumper =
                 new EnemyJumper(_enemy.transform, _playerMovement, _coefficients, enemyTargetController);
 
-            // === ЭФФЕКТЫ ===
+            // === ЭФФЕКТЫ ЯЧЕЕК ===
 
-            FillCellsWithEffects();
+            cellsManager.FillWithEffects();
 
-            Cell[] portalCells = FindCellsByEffectName(EffectName.Portal);
+            Cell[] portalCells = cellsManager.Find(EffectName.Portal);
             PlayerPortal playerPortal = new PlayerPortal(playerJumper, portalCells, _playerMovement);
 
             _vfxRoot.Initialize(playerHealth, playerMana, playerPortal, enemyHealth);
 
             CellEffectsInitialize(playerJumper, enemyHealth, playerDamage, playerHealth, playerMana, playerPortal,
-                enemyJumper, enemyDamage, enemyTargetController, choiceEffectController, choiceSpellController);
+                enemyJumper, enemyDamage, enemyTargetController, choiceEffectController, choiceSpellController,
+                cellsManager);
 
             // в самом конце 
             stateMachine.SetState<PlayerTurnSpellFsmState>();
@@ -139,7 +142,8 @@ namespace _Project.Sсripts.Root
         private void CellEffectsInitialize(PlayerJumper playerJumper, Health enemyHealth, Damage playerDamage,
             Health playerHealth, Mana playerMana, PlayerPortal playerPortal, EnemyJumper enemyJumper,
             Damage enemyDamage, EnemyTargetController enemyTargetController,
-            PopUpChoiceEffectController choiceEffectController, PopUpChoiceSpellController choiceSpellController)
+            PopUpChoiceEffectController choiceEffectController, PopUpChoiceSpellController choiceSpellController,
+            CellsManager cellsManager)
         {
             _playerEffects.Add(EffectName.Swords, new PlayerSwords(playerJumper, enemyHealth, playerDamage));
             _playerEffects.Add(EffectName.Health, new PlayerHealth(playerHealth, playerJumper, _coefficients));
@@ -148,7 +152,7 @@ namespace _Project.Sсripts.Root
             _playerEffects.Add(EffectName.Question, new PlayerQuestion(playerJumper, choiceEffectController));
             _playerEffects.Add(EffectName.SpellBook, new PlayerSpellBook(playerJumper, choiceSpellController));
 
-            _playerMovement.Initialize(_cells, _playerEffects, _coefficients, playerJumper);
+            _playerMovement.Initialize(cellsManager, _playerEffects, _coefficients, playerJumper);
 
             _enemyEffects.Add(EffectName.Swords, new EnemySwords(enemyJumper, playerHealth, enemyDamage));
             _enemyEffects.Add(EffectName.Health, new EnemyHealth(enemyJumper));
@@ -159,40 +163,6 @@ namespace _Project.Sсripts.Root
 
             _enemyMovement.Initialize(_enemyEffects, enemyTargetController, enemyJumper,
                 _playerMovement, playerHealth, enemyDamage);
-        }
-
-        private void FillCellsWithEffects()
-        {
-            Array.ForEach(_cellsSettings.CellInfos, FillCells);
-        }
-
-        private Cell[] FindCellsByEffectName(EffectName effectName)
-        {
-            return _cells.Where(cell => cell.EffectName == effectName).ToArray();
-        }
-
-        private void FillCells(CellInfo cellInfo)
-        {
-            EffectName effectName = cellInfo.EffectName;
-            Sprite sprite = cellInfo.Sprite;
-            int amount = cellInfo.Amount;
-
-            var cellsWithoutEffect = CellsWithoutEffect(_cells);
-
-            cellsWithoutEffect
-                .Shuffle()
-                .Take(amount)
-                .ToList()
-                .ForEach(cell =>
-                {
-                    cell.SetEffectName(effectName);
-                    cell.SetSprite(sprite);
-                });
-        }
-
-        private Cell[] CellsWithoutEffect(Cell[] cells)
-        {
-            return cells.Where(cell => cell.IsEffectSet() == false).ToArray();
         }
     }
 }

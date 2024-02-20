@@ -16,14 +16,14 @@ namespace _Project.Sсripts.View
         [SerializeField] [Required] private Button _skipButton;
         [SerializeField] [Required] private SpellsSettings _spellsSettings;
 
-        private Spells _spells;
+        private AvailableSpells _availableSpells;
 
-        public void Initialize(Spells spells)
+        public void Initialize(AvailableSpells availableSpells)
         {
             Assert.AreEqual(5, _items.Count);
 
-            _spells = spells;
-            _spells.Updated += OnSpellsUpdated;
+            _availableSpells = availableSpells;
+            _availableSpells.Updated += OnAvailableSpellsUpdated;
             _skipButton.onClick.AddListener(() => Skipped?.Invoke());
         }
 
@@ -32,15 +32,15 @@ namespace _Project.Sсripts.View
 
         private void OnDestroy()
         {
-            _spells.Updated -= OnSpellsUpdated;
+            _availableSpells.Updated -= OnAvailableSpellsUpdated;
             _skipButton.onClick.RemoveAllListeners();
         }
 
-        private void OnSpellsUpdated()
+        private void OnAvailableSpellsUpdated()
         {
             Clean();
 
-            List<SpellName> spellNames = _spells.SpellNames;
+            List<SpellName> spellNames = _availableSpells.SpellNames;
 
             for (var i = 0; i < spellNames.Count; i++)
             {
