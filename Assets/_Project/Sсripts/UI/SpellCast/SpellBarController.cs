@@ -13,7 +13,7 @@ namespace _Project.Sсripts.UI.SpellCast
         private readonly Mana _mana;
         private readonly SpellActivator _spellActivator;
 
-        public SpellBarController(Spells spells, SpellBarView spellBarView, Mana mana, SpellActivator spellActivator )
+        public SpellBarController(Spells spells, SpellBarView spellBarView, Mana mana, SpellActivator spellActivator)
         {
             Assert.IsNotNull(spells);
             Assert.IsNotNull(spellBarView);
@@ -27,21 +27,13 @@ namespace _Project.Sсripts.UI.SpellCast
 
             _spellBarView.Clean();
             _spellBarView.Disable();
-            _spellBarView.SpellsActivated += OnSpellsActivated;
         }
 
-        public event Action SpellCompleted; 
+        public event Action SpellCompleted;
 
-        private void OnSpellsActivated(int spellIndex, SpellName spellName)
+        private void OnSpellActivated(int spellIndex, SpellName spellName)
         {
             Debug.Log($"OnSpellsActivated {spellName}");
-
-            if (spellName == SpellName.NotSet)
-            {
-                Debug.Log("Skip spell");
-                SpellCompleted?.Invoke();
-                return;
-            }
 
             if (_mana.IsEnough(spellName) == false)
             {
@@ -52,6 +44,12 @@ namespace _Project.Sсripts.UI.SpellCast
             _mana.Spend(spellName);
             _spells.Remove(spellIndex);
             _spellActivator.Activate(spellName, () => SpellCompleted?.Invoke());
+        }
+
+        private void OnSpellSkipped()
+        {
+            Debug.Log("Skip spell");
+            SpellCompleted?.Invoke();
         }
 
         public void TakeSpell(SpellName spellName)
@@ -67,12 +65,16 @@ namespace _Project.Sсripts.UI.SpellCast
                 SpellCompleted?.Invoke();
                 return;
             }
-
+            
+            _spellBarView.SpellsActivated += OnSpellActivated;
+            _spellBarView.Skipped += OnSpellSkipped;
             _spellBarView.Enable();
         }
 
         public void Disable()
         {
+            _spellBarView.SpellsActivated -= OnSpellActivated;
+            _spellBarView.Skipped -= OnSpellSkipped;
             _spellBarView.Disable();
         }
     }

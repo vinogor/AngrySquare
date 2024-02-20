@@ -22,10 +22,11 @@ namespace _Project.Sсripts.UI.SpellCast
 
             _spells = spells;
             _spells.Updated += OnSpellsUpdated;
-            _skipButton.onClick.AddListener(() => SpellsActivated?.Invoke(-1, SpellName.NotSet));
+            _skipButton.onClick.AddListener(() => Skipped?.Invoke());
         }
-        
+
         public event Action<int, SpellName> SpellsActivated;
+        public event Action Skipped;
 
         private void OnDestroy()
         {
@@ -36,7 +37,7 @@ namespace _Project.Sсripts.UI.SpellCast
         private void OnSpellsUpdated()
         {
             Clean();
-            
+
             List<SpellName> spellNames = _spells.SpellNames;
 
             for (var i = 0; i < spellNames.Count; i++)
