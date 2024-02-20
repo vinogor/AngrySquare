@@ -22,6 +22,8 @@ namespace _Project.Sсripts.Root
 {
     public class CompositeRoot : MonoBehaviour
     {
+        // TODO: сгруппировать по root классам по аналогии с папками
+        
         [Header("Common")]
         [SerializeField] [Required] private Coefficients _coefficients;
         [SerializeField] [Required] private DiceRoller _diceRoller;
@@ -94,15 +96,19 @@ namespace _Project.Sсripts.Root
                 new PopUpChoiceSpellController(_uiRoot.PopUpChoiceView, availableSpellNames,
                     spellBarController, _spellsSettings);
 
+            PopUpNotificationController popUpPlayerWin = new PopUpNotificationController(_uiRoot.PopUpNotificationView,
+                new PopUpNotificationModel("Player Win", "It's time to fight a new opponent!"));
+            PopUpNotificationController popPlayerDefeat = new PopUpNotificationController(_uiRoot.PopUpNotificationView,
+                new PopUpNotificationModel("Player Lose", "You lost the game!"));
+
             // === STATE MACHINE ===
             FiniteStateMachine stateMachine = new FiniteStateMachine();
             // stateMachine.AddState(new InitializeFsmState(stateMachine));
             stateMachine.AddState(new PlayerTurnMoveFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth));
             stateMachine.AddState(new PlayerTurnSpellFsmState(stateMachine, spellBarController));
-            stateMachine.AddState(new PlayerWinFsmState(stateMachine, _uiRoot.PopUpPlayerWinNotificationController));
+            stateMachine.AddState(new PlayerWinFsmState(stateMachine, popUpPlayerWin));
             stateMachine.AddState(new EnemyTurnFsmState(stateMachine, _enemyMovement, playerHealth));
-            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine,
-                _uiRoot.PopPlayerDefeatNotificationController));
+            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, popPlayerDefeat));
             stateMachine.AddState(new EndOfGameFsmState(stateMachine));
 
             _diceRoller.Initialize();

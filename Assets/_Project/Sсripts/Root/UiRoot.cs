@@ -1,4 +1,3 @@
-using _Project.Sсripts.Controllers;
 using _Project.Sсripts.Domain;
 using _Project.Sсripts.View;
 using NaughtyAttributes;
@@ -28,9 +27,7 @@ namespace _Project.Sсripts.Root
 
         public PopUpChoiceView PopUpChoiceView => _popUpChoiceView;
         public SpellBarView SpellBarView => _spellBarView;
-
-        public PopUpNotificationController PopUpPlayerWinNotificationController { get; private set; }
-        public PopUpNotificationController PopPlayerDefeatNotificationController { get; private set; }
+        public PopUpNotificationView PopUpNotificationView => _popUpNotificationView;
 
         public void Initialize(Health playerHealth, Mana playerMana, Health enemyHealth, Damage playerDamage,
             Damage enemyDamage, Defence playerDefence, Defence enemyDefence, Spells spells)
@@ -43,13 +40,6 @@ namespace _Project.Sсripts.Root
             _playerDefenceTextView.Initialize(playerDefence);
             _enemyDefenceTextView.Initialize(enemyDefence);
             _spellBarView.Initialize(spells);
-
-            // TODO: вынести в композит рут? 
-
-            PopUpPlayerWinNotificationController = new PopUpNotificationController(_popUpNotificationView,
-                new PopUpNotificationModel("Player Win", "It's time to fight a new opponent!"));
-            PopPlayerDefeatNotificationController = new PopUpNotificationController(_popUpNotificationView,
-                new PopUpNotificationModel("Player Lose", "You lost the game!"));
         }
     }
 }
