@@ -1,19 +1,21 @@
 using _Project.Sсripts.Domain;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.View{
-    public class DamageTextView : MonoBehaviour
+namespace _Project.Sсripts.View
+{
+    public class DamageView : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI _textMeshPro;
+        [SerializeField] [Required] private TextMeshProUGUI _textMeshPro;
+        [SerializeField] [Required] private ParticleSystem _vfx;
 
         private Damage _damage;
 
         public void Initialize(Damage damage)
         {
             Assert.IsNotNull(damage);
-            Assert.IsNotNull(_textMeshPro);
 
             _damage = damage;
             _damage.Changed += OnDamageChanged;
@@ -28,7 +30,7 @@ namespace _Project.Sсripts.View{
 
         private void OnDamageChanged()
         {
-            // TODO: добавить анимацию 
+            _vfx.Play();
             _textMeshPro.SetText($"{_damage.Value}");
         }
     }

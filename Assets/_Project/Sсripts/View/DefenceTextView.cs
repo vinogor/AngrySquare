@@ -1,19 +1,21 @@
 using _Project.Sсripts.Domain;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.View{
+namespace _Project.Sсripts.View
+{
     public class DefenceTextView : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI _textMeshPro;
+        [SerializeField] [Required] private TextMeshProUGUI _textMeshPro;
+        [SerializeField] [Required] private ParticleSystem _vfx;
 
         private Defence _defence;
 
         public void Initialize(Defence defence)
         {
             Assert.IsNotNull(defence);
-            Assert.IsNotNull(_textMeshPro);
 
             _defence = defence;
             _defence.Changed += OnDefenceChanged;
@@ -28,6 +30,7 @@ namespace _Project.Sсripts.View{
 
         private void OnDefenceChanged()
         {
+            _vfx.Play();
             _textMeshPro.SetText($"{_defence.Value}");
         }
     }

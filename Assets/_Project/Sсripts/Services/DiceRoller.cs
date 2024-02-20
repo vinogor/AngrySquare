@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
@@ -13,23 +14,18 @@ namespace _Project.Sсripts.Services
 
         [SerializeField] private float _maxRandomTorqueForce = 300f;
         [SerializeField] private float _upForce = 300f;
-        [SerializeField] private Camera _camera;
+        [SerializeField] [Required] private Camera _camera;
+        [SerializeField] [Required] private Rigidbody _rigidbody;
 
         private DiceFaceDetector[] _detectors;
-        private Rigidbody _rigidbody;
         private bool _canPlayerThrow = false;
         private bool _isDiceThrown = false;
         private int _lastDetectedDiceNumber;
 
         public void Initialize()
         {
-            Assert.IsNotNull(_camera);
-
-            _rigidbody = GetComponent<Rigidbody>();
             _detectors = GetComponentsInChildren<DiceFaceDetector>();
-
-            Assert.IsNotNull(_rigidbody);
-            Assert.IsNotNull(_detectors);
+            Assert.AreEqual(6, _detectors.Length);
 
             foreach (DiceFaceDetector detector in _detectors)
             {

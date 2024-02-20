@@ -14,7 +14,7 @@ namespace _Project.Sсripts.Root
         [Header("Player")]
         [SerializeField] [Required] private HealthBarView _playerHealthBarView;
         [SerializeField] [Required] private ManaBarView _playerManaBarView;
-        [SerializeField] [Required] private DamageTextView _playerDamageTextView;
+        [SerializeField] [Required] private DamageView _playerDamageView;
         [SerializeField] [Required] private DefenceTextView _playerDefenceTextView;
         [SerializeField] [Required] private PopUpChoiceView _popUpChoiceView;
         [SerializeField] [Required] private SpellBarView _spellBarView;
@@ -22,7 +22,7 @@ namespace _Project.Sсripts.Root
         [Space(10)]
         [Header("Enemy")]
         [SerializeField] [Required] private HealthBarView _enemyHealthBarView;
-        [SerializeField] [Required] private DamageTextView _enemyDamageTextView;
+        [SerializeField] [Required] private DamageView _enemyDamageView;
         [SerializeField] [Required] private DefenceTextView _enemyDefenceTextView;
 
         public PopUpChoiceView PopUpChoiceView => _popUpChoiceView;
@@ -35,8 +35,8 @@ namespace _Project.Sсripts.Root
             _playerHealthBarView.Initialize(playerHealth);
             _playerManaBarView.Initialize(playerMana);
             _enemyHealthBarView.Initialize(enemyHealth);
-            _playerDamageTextView.Initialize(playerDamage);
-            _enemyDamageTextView.Initialize(enemyDamage);
+            _playerDamageView.Initialize(playerDamage);
+            _enemyDamageView.Initialize(enemyDamage);
             _playerDefenceTextView.Initialize(playerDefence);
             _enemyDefenceTextView.Initialize(enemyDefence);
             _spellBarView.Initialize(spells);
