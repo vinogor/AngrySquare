@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace _Project.Sсripts.Model
+namespace _Project.Sсripts.Domain
 {
     public class Enemy : MonoBehaviour
     {

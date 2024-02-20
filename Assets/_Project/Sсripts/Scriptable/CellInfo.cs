@@ -1,4 +1,5 @@
 using System;
+using _Project.Sсripts.Services.Effects;
 using UnityEngine;
 
 namespace _Project.Sсripts.Scriptable

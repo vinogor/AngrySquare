@@ -1,9 +1,9 @@
-using _Project.Sсripts.Model;
+using _Project.Sсripts.Domain;
 using _Project.Sсripts.Scriptable;
 using DG.Tweening;
 using UnityEngine;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.Movement{
     public class PlayerJumper
     {
         private Transform _playerTransform;

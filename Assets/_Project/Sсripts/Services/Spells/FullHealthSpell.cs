@@ -1,8 +1,8 @@
 using System;
-using _Project.Sсripts.HealthAndMana;
+using _Project.Sсripts.Domain;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.Spells{
     public class FullHealthSpell : Spell
     {
         private readonly Health _health;

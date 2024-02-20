@@ -1,4 +1,4 @@
-namespace _Project.Sсripts.StateMachine.States
+namespace _Project.Sсripts.Services.StateMachine.States
 {
     public class InitializeFsmState : FsmState
     {

@@ -1,9 +1,9 @@
 using System;
-using _Project.Sсripts.DamageAndDefence;
-using _Project.Sсripts.HealthAndMana;
+using _Project.Sсripts.Domain;
+using _Project.Sсripts.Services.Movement;
 using DG.Tweening;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.Effects.Enemy{
     public class EnemySwords : Effect
     {
         private readonly EnemyJumper _enemyJumper;

@@ -1,7 +1,7 @@
-using _Project.Sсripts.UI.PopUpNotification;
+using _Project.Sсripts.Controllers;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.StateMachine.States{
     public class PlayerDefeatFsmState : FsmState
     {
         private readonly PopUpNotificationController _popUpController;

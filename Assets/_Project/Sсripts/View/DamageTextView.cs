@@ -1,9 +1,9 @@
-using _Project.Sсripts.DamageAndDefence;
+using _Project.Sсripts.Domain;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.View{
     public class DamageTextView : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _textMeshPro;

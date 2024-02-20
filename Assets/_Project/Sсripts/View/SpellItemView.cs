@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace _Project.Sсripts.UI.SpellCast
+namespace _Project.Sсripts.View
 {
     public class SpellItemView : MonoBehaviour
     {

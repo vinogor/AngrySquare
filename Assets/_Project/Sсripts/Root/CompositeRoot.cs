@@ -1,22 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Project.Sсripts.Animation;
-using _Project.Sсripts.DamageAndDefence;
-using _Project.Sсripts.Dice;
-using _Project.Sсripts.HealthAndMana;
-using _Project.Sсripts.Model;
-using _Project.Sсripts.Model.Effects.Player;
+using _Project.Sсripts.Controllers;
+using _Project.Sсripts.Controllers.PopupChoice;
+using _Project.Sсripts.Domain;
 using _Project.Sсripts.Scriptable;
-using _Project.Sсripts.StateMachine.States;
-using _Project.Sсripts.UI.PopupChoice;
-using _Project.Sсripts.UI.SpellCast;
-using _Project.Sсripts.Utility;
+using _Project.Sсripts.Services;
+using _Project.Sсripts.Services.Effects;
+using _Project.Sсripts.Services.Effects.Enemy;
+using _Project.Sсripts.Services.Effects.Player;
+using _Project.Sсripts.Services.Movement;
+using _Project.Sсripts.Services.Spells;
+using _Project.Sсripts.Services.StateMachine;
+using _Project.Sсripts.Services.StateMachine.States;
+using _Project.Sсripts.Services.Utility;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts
+namespace _Project.Sсripts.Root
 {
     public class CompositeRoot : MonoBehaviour
     {

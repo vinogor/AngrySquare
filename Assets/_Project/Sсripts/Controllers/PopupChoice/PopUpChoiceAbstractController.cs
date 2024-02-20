@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Project.Sсripts.Utility;
+using _Project.Sсripts.Services.Utility;
+using _Project.Sсripts.View;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.UI.PopupChoice
+namespace _Project.Sсripts.Controllers.PopupChoice
 {
     public abstract class PopUpChoiceAbstractController
     {

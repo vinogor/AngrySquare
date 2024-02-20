@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using _Project.Sсripts.Dice;
-using _Project.Sсripts.Model;
+using _Project.Sсripts.Domain;
 using _Project.Sсripts.Scriptable;
+using _Project.Sсripts.Services.Effects;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.Movement{
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField] private int _currentCellIndex;

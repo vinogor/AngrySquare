@@ -1,11 +1,10 @@
-using _Project.Sсripts.DamageAndDefence;
-using _Project.Sсripts.HealthAndMana;
-using _Project.Sсripts.UI.PopUpNotification;
-using _Project.Sсripts.UI.SpellCast;
+using _Project.Sсripts.Controllers;
+using _Project.Sсripts.Domain;
+using _Project.Sсripts.View;
 using NaughtyAttributes;
 using UnityEngine;
 
-namespace _Project.Sсripts
+namespace _Project.Sсripts.Root
 {
     public class UiRoot : MonoBehaviour
     {

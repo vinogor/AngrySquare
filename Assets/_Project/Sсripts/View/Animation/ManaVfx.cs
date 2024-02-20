@@ -1,8 +1,8 @@
-using _Project.Sсripts.HealthAndMana;
+using _Project.Sсripts.Domain;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.View.Animation{
     public class ManaVfx : MonoBehaviour
     {
         [SerializeField] private ParticleSystem _particleSystem;

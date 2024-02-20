@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.StateMachine{
     public class FiniteStateMachine
     {
         // == наброски по стейтам ==

@@ -1,7 +1,8 @@
 using System;
+using _Project.Sсripts.Services.Movement;
 using DG.Tweening;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.Effects.Enemy{
     public class EnemySpellBook : Effect
     {
         private readonly EnemyJumper _enemyJumper;

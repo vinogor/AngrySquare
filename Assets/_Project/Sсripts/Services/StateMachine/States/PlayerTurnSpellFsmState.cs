@@ -1,6 +1,6 @@
-using _Project.Sсripts.UI.SpellCast;
+using _Project.Sсripts.Controllers;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.StateMachine.States{
     public class PlayerTurnSpellFsmState : FsmState
     {
         private readonly SpellBarController _spellBarController;

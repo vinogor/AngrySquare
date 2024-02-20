@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.View{
     public class PopUpChoiceView : MonoBehaviour
     {
         [SerializeField] private Button[] _buttons;

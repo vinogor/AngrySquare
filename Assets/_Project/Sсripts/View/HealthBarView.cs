@@ -1,10 +1,10 @@
-using _Project.Sсripts.HealthAndMana;
+using _Project.Sсripts.Domain;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.View{
     public class HealthBarView : MonoBehaviour
     {
         [SerializeField] private Slider _slider;

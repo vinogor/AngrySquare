@@ -1,9 +1,9 @@
 using System;
-using _Project.Sсripts.HealthAndMana;
+using _Project.Sсripts.Domain;
 using _Project.Sсripts.Scriptable;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.Spells{
     public class UpMaxManaSpell : Spell
     {
         private readonly Mana _mana;

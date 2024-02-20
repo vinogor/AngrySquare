@@ -1,7 +1,8 @@
+using _Project.Sсripts.Services.Effects.Player;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.View.Animation{
     public class TeleportVfx : MonoBehaviour
     {
         [SerializeField] private ParticleSystem _particleSystem;

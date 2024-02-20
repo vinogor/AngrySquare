@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using _Project.Sсripts.Scriptable;
+using _Project.Sсripts.Services.Spells;
 
-namespace _Project.Sсripts.UI.SpellCast
+namespace _Project.Sсripts.Domain
 {
     public class Spells
     {

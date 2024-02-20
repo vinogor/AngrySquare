@@ -1,10 +1,11 @@
 using System;
-using _Project.Sсripts.HealthAndMana;
-using _Project.Sсripts.Scriptable;
+using _Project.Sсripts.Domain;
+using _Project.Sсripts.Services.Spells;
+using _Project.Sсripts.View;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.UI.SpellCast
+namespace _Project.Sсripts.Controllers
 {
     public class SpellBarController
     {

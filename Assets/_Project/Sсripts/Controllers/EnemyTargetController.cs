@@ -1,10 +1,10 @@
 using System.Linq;
-using _Project.Sсripts.Model;
-using _Project.Sсripts.Utility;
+using _Project.Sсripts.Domain;
+using _Project.Sсripts.Services.Utility;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Animation
+namespace _Project.Sсripts.Controllers
 {
     public class EnemyTargetController
     {

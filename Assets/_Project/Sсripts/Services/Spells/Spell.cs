@@ -1,7 +1,8 @@
 using System;
+using _Project.Sсripts.Services.Effects;
 using UnityEngine;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.Spells{
     public abstract class Spell : Effect
     {
         public override void Activate(Action onComplete)

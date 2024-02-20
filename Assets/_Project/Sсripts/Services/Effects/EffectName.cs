@@ -1,4 +1,4 @@
-namespace _Project.Sсripts.Scriptable
+namespace _Project.Sсripts.Services.Effects
 {
     public enum EffectName
     {

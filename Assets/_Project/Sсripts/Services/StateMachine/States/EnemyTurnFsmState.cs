@@ -1,7 +1,8 @@
-using _Project.Sсripts.HealthAndMana;
+using _Project.Sсripts.Domain;
+using _Project.Sсripts.Services.Movement;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.StateMachine.States{
     public class EnemyTurnFsmState : FsmState
     {
         private readonly EnemyMovement _enemyMovement;

@@ -1,9 +1,9 @@
 using System;
-using _Project.Sсripts.DamageAndDefence;
+using _Project.Sсripts.Domain;
 using _Project.Sсripts.Scriptable;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.Spells{
     public class UpDamageSpell : Spell
     {
         private readonly Damage _damage;

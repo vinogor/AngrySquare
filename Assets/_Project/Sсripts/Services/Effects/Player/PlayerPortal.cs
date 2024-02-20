@@ -1,10 +1,11 @@
 using System;
 using System.Linq;
-using _Project.Sсripts.Model;
-using _Project.Sсripts.Utility;
+using _Project.Sсripts.Domain;
+using _Project.Sсripts.Services.Movement;
+using _Project.Sсripts.Services.Utility;
 using DG.Tweening;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.Effects.Player{
     public class PlayerPortal : Effect
     {
         private readonly PlayerJumper _playerJumper;

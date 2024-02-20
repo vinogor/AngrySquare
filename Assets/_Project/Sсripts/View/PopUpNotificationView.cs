@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.View{
     public class PopUpNotificationView : MonoBehaviour
     {
         [SerializeField] [Required] private Button _button;

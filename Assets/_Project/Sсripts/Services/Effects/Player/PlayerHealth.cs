@@ -1,8 +1,9 @@
 using System;
-using _Project.Sсripts.HealthAndMana;
+using _Project.Sсripts.Domain;
+using _Project.Sсripts.Services.Movement;
 using DG.Tweening;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.Effects.Player{
     public class PlayerHealth : Effect
     {
         private readonly Health _playerHealth;

@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+using _Project.Sсripts.Domain;
 using _Project.Sсripts.Scriptable;
+using _Project.Sсripts.Services.Spells;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-namespace _Project.Sсripts.UI.SpellCast
+namespace _Project.Sсripts.View
 {
     public class SpellBarView : MonoBehaviour
     {

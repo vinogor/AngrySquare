@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using _Project.Sсripts.Scriptable;
+using _Project.Sсripts.Services.Effects;
+using _Project.Sсripts.Services.Movement;
+using _Project.Sсripts.View;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.UI.PopupChoice
+namespace _Project.Sсripts.Controllers.PopupChoice
 {
     public class PopUpChoiceEffectController : PopUpChoiceAbstractController
     {

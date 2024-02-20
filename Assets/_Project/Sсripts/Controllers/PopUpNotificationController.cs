@@ -1,7 +1,8 @@
 using System;
+using _Project.Sсripts.View;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.UI.PopUpNotification
+namespace _Project.Sсripts.Controllers
 {
     public class PopUpNotificationController
     {

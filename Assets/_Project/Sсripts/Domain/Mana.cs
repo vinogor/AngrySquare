@@ -1,9 +1,10 @@
 using System;
 using _Project.Sсripts.Scriptable;
+using _Project.Sсripts.Services.Spells;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.HealthAndMana
+namespace _Project.Sсripts.Domain
 {
     public class Mana
     {

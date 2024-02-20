@@ -1,9 +1,10 @@
-using _Project.Sсripts.Animation;
-using _Project.Sсripts.HealthAndMana;
+using _Project.Sсripts.Domain;
+using _Project.Sсripts.Services.Effects.Player;
+using _Project.Sсripts.View.Animation;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts
+namespace _Project.Sсripts.Root
 {
     public class VfxRoot : MonoBehaviour
     {

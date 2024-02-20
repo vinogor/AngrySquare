@@ -1,4 +1,4 @@
-namespace _Project.Sсripts.UI.PopUpNotification
+namespace _Project.Sсripts.Controllers
 {
     public class PopUpNotificationModel
     {

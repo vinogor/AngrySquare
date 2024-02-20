@@ -1,8 +1,9 @@
 using System;
-using _Project.Sсripts.HealthAndMana;
+using _Project.Sсripts.Domain;
+using _Project.Sсripts.Services.Movement;
 using DG.Tweening;
 
-namespace _Project.Sсripts.Model.Effects.Player
+namespace _Project.Sсripts.Services.Effects.Player
 {
     public class PlayerMana : Effect
     {

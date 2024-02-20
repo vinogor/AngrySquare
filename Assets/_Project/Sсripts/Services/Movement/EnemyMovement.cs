@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using _Project.Sсripts.Animation;
-using _Project.Sсripts.DamageAndDefence;
-using _Project.Sсripts.HealthAndMana;
-using _Project.Sсripts.Model;
-using _Project.Sсripts.Scriptable;
+using _Project.Sсripts.Controllers;
+using _Project.Sсripts.Domain;
+using _Project.Sсripts.Services.Effects;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.Movement{
     public class EnemyMovement : MonoBehaviour
     {
         private Dictionary<EffectName, Effect> _enemyEffects;

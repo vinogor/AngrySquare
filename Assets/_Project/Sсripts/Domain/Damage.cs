@@ -1,6 +1,6 @@
 using System;
 
-namespace _Project.Sсripts.DamageAndDefence
+namespace _Project.Sсripts.Domain
 {
     public class Damage
     {

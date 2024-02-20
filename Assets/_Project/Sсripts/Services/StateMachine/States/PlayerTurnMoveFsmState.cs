@@ -1,8 +1,8 @@
-using _Project.Sсripts.Dice;
-using _Project.Sсripts.HealthAndMana;
+using _Project.Sсripts.Domain;
+using _Project.Sсripts.Services.Movement;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.StateMachine.States{
     public class PlayerTurnMoveFsmState : FsmState
     {
         private readonly DiceRoller _diceRoller;

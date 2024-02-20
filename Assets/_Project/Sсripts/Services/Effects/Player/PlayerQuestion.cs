@@ -1,9 +1,10 @@
 using System;
-using _Project.Sсripts.UI.PopupChoice;
+using _Project.Sсripts.Controllers.PopupChoice;
+using _Project.Sсripts.Services.Movement;
 using DG.Tweening;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.Effects.Player{
     public class PlayerQuestion : Effect
     {
         private readonly PlayerJumper _playerJumper;

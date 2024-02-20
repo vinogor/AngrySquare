@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using _Project.Sсripts.Scriptable;
 
-namespace _Project.Sсripts{
+namespace _Project.Sсripts.Services.Spells{
     public class SpellActivator
     {
         private readonly Dictionary<SpellName, Spell> _playerSpells;

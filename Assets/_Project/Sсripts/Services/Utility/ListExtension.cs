@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace _Project.Sсripts.Utility
+namespace _Project.Sсripts.Services.Utility
 {
     public static class ListExtension
     {
