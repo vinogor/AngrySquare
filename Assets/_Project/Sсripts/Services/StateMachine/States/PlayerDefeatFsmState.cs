@@ -6,32 +6,35 @@ namespace _Project.Sсripts.Services.StateMachine.States
     public class PlayerDefeatFsmState : FsmState
     {
         private readonly PopUpNotificationController _popUpController;
+        private readonly LevelRestarter _levelRestarter;
 
         public PlayerDefeatFsmState(FiniteStateMachine finiteStateMachine,
-            PopUpNotificationController popUpController) :
+            PopUpNotificationController popUpController, LevelRestarter levelRestarter) :
             base(finiteStateMachine)
         {
             Assert.IsNotNull(popUpController);
+            Assert.IsNotNull(levelRestarter);
             _popUpController = popUpController;
+            _levelRestarter = levelRestarter;
         }
 
         public override void Enter()
         {
             base.Enter();
-            _popUpController.OnClose += NextState;
-
+            _popUpController.OnClose += Handle;
             _popUpController.Show();
         }
 
-        private void NextState()
+        private void Handle()
         {
-            FiniteStateMachine.SetState<RestartFsmState>();
+            _levelRestarter.RestartAfterDefeat();
+            FiniteStateMachine.SetState<PlayerTurnSpellFsmState>();
         }
 
         public override void Exit()
         {
             base.Exit();
-            _popUpController.OnClose -= NextState;
+            _popUpController.OnClose -= Handle;
             _popUpController.Hide();
         }
     }

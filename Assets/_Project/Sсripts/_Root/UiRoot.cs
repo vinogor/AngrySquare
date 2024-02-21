@@ -24,13 +24,15 @@ namespace _Project.Sсripts.Root
         [SerializeField] [Required] private HealthBarView _enemyHealthBarView;
         [SerializeField] [Required] private DamageView _enemyDamageView;
         [SerializeField] [Required] private DefenceTextView _enemyDefenceTextView;
+        [SerializeField] [Required] private EnemyLevelTextView _enemyLevelTextView;
 
         public PopUpChoiceView PopUpChoiceView => _popUpChoiceView;
         public SpellBarView SpellBarView => _spellBarView;
         public PopUpNotificationView PopUpNotificationView => _popUpNotificationView;
 
         public void Initialize(Health playerHealth, Mana playerMana, Health enemyHealth, Damage playerDamage,
-            Damage enemyDamage, Defence playerDefence, Defence enemyDefence, AvailableSpells availableSpells)
+            Damage enemyDamage, Defence playerDefence, Defence enemyDefence, AvailableSpells availableSpells,
+            EnemyLevel enemyLevel)
         {
             _playerHealthBarView.Initialize(playerHealth);
             _playerManaBarView.Initialize(playerMana);
@@ -40,6 +42,7 @@ namespace _Project.Sсripts.Root
             _playerDefenceTextView.Initialize(playerDefence);
             _enemyDefenceTextView.Initialize(enemyDefence);
             _spellBarView.Initialize(availableSpells);
+            _enemyLevelTextView.Initialize(enemyLevel);
         }
     }
 }

@@ -2,9 +2,9 @@ using _Project.Sсripts.Controllers;
 using _Project.Sсripts.Domain;
 using _Project.Sсripts.Services.Movement;
 
-namespace _Project.Sсripts.Services.StateMachine.States
+namespace _Project.Sсripts.Services
 {
-    public class RestartFsmState : FsmState
+    public class LevelRestarter
     {
         private readonly CellsManager _cellsManager;
 
@@ -16,16 +16,16 @@ namespace _Project.Sсripts.Services.StateMachine.States
         private readonly Defence _enemyDefence;
         private readonly Health _enemyHealth;
         private readonly Damage _enemyDamage;
+        private readonly EnemyLevel _enemyLevel;
 
         private readonly AvailableSpells _availableSpells;
         private readonly PlayerMovement _playerMovement;
         private readonly EnemyTargetController _enemyTargetController;
 
-        public RestartFsmState(FiniteStateMachine finiteStateMachine, CellsManager cellsManager, Defence playerDefence,
-            Health playerHealth, Damage playerDamage, Mana playerMana, Defence enemyDefence, Health enemyHealth,
-            Damage enemyDamage, AvailableSpells availableSpells, PlayerMovement playerMovement,
-            EnemyTargetController enemyTargetController)
-            : base(finiteStateMachine)
+        public LevelRestarter(CellsManager cellsManager, Defence playerDefence, Health playerHealth,
+            Damage playerDamage, Mana playerMana, Defence enemyDefence, Health enemyHealth, Damage enemyDamage,
+            AvailableSpells availableSpells, PlayerMovement playerMovement, EnemyTargetController enemyTargetController,
+            EnemyLevel enemyLevel)
         {
             _cellsManager = cellsManager;
             _playerDefence = playerDefence;
@@ -38,12 +38,11 @@ namespace _Project.Sсripts.Services.StateMachine.States
             _availableSpells = availableSpells;
             _playerMovement = playerMovement;
             _enemyTargetController = enemyTargetController;
+            _enemyLevel = enemyLevel;
         }
 
-        public override void Enter()
+        public void RestartAfterDefeat()
         {
-            base.Enter();
-
             _cellsManager.CleanAll();
             _cellsManager.FillWithEffects();
 
@@ -51,24 +50,35 @@ namespace _Project.Sсripts.Services.StateMachine.States
             _playerHealth.SetToDefault();
             _playerDamage.SetToDefault();
             _playerMana.SetToDefault();
-
             _availableSpells.Clear();
-
             _playerMovement.SetDefaultStayCell();
 
+            // TODO: задать начальную модель противника  
             _enemyDefence.SetToDefault();
             _enemyHealth.SetToDefault();
             _enemyDamage.SetToDefault();
-            // TODO: задать начальную модель противника  
+            _enemyLevel.SetToDefault();
 
             _enemyTargetController.SetAimToNewRandomTargetCell();
-
-            FiniteStateMachine.SetState<PlayerTurnSpellFsmState>();
         }
 
-        public override void Exit()
+        public void RestartAfterWin()
         {
-            base.Exit();
+            _cellsManager.CleanAll();
+            _cellsManager.FillWithEffects();
+
+            _playerMovement.SetDefaultStayCell();
+            _playerHealth.ReplenishToMax();
+            _playerMana.ReplenishToMax();
+
+            // заменить модель противника, пока просто сделать крупнее - плавно 
+            // эффект на модель противника 
+            
+            _enemyLevel.Increase();
+            _enemyDefence.Increase(1);
+            _enemyDamage.Increase(1);
+            _enemyHealth.IncreaseMaxValue(2);
+            _enemyHealth.ReplenishToMax();
         }
     }
 }

@@ -38,7 +38,7 @@ namespace _Project.Sсripts._Root
 
         [Space(10)]
         [Header("Enemy")]
-        [SerializeField] [Required] private Enemy _enemy;
+        [SerializeField] [Required] private EnemyModel _enemyModel;
         [SerializeField] [Required] private EnemyMovement _enemyMovement;
         [SerializeField] [Required] private EnemyAim _enemyAim;
 
@@ -61,6 +61,8 @@ namespace _Project.Sсripts._Root
             Defence enemyDefence = new Defence(_coefficients.EnemyStartDefence);
             Health enemyHealth = new Health(_coefficients.EnemyStartHealth, _coefficients.EnemyMaxHealth, enemyDefence);
             Damage enemyDamage = new Damage(_coefficients.EnemyStartDamage);
+            EnemyLevel enemyLevel = new EnemyLevel();
+            _enemyModel.Initialize(enemyLevel);
 
             AvailableSpells availableSpells = new AvailableSpells();
 
@@ -75,7 +77,7 @@ namespace _Project.Sсripts._Root
 
             // === UI ===
             _uiRoot.Initialize(playerHealth, playerMana, enemyHealth, playerDamage, enemyDamage, playerDefence,
-                enemyDefence, availableSpells);
+                enemyDefence, availableSpells, enemyLevel);
             List<EffectName> availableEffectNames = new List<EffectName>
                 { EffectName.Swords, EffectName.Health, EffectName.Mana };
             List<SpellName> availableSpellNames = new List<SpellName>
@@ -97,30 +99,33 @@ namespace _Project.Sсripts._Root
 
             PopUpNotificationController popUpPlayerWin = new PopUpNotificationController(_uiRoot.PopUpNotificationView,
                 new PopUpNotificationModel("Player Win", "It's time to fight a new opponent!"));
-            PopUpNotificationController popPlayerDefeat = new PopUpNotificationController(_uiRoot.PopUpNotificationView,
+            PopUpNotificationController popUpPlayerDefeat = new PopUpNotificationController(
+                _uiRoot.PopUpNotificationView,
                 new PopUpNotificationModel("Player Lose", "You lost the game! Press 'OK' to restart."));
 
             EnemyTargetController enemyTargetController = new EnemyTargetController(cellsManager, _enemyAim);
 
+            LevelRestarter levelRestarter = new LevelRestarter(cellsManager, playerDefence, playerHealth,
+                playerDamage, playerMana, enemyDefence, enemyHealth, enemyDamage, availableSpells, _playerMovement,
+                enemyTargetController, enemyLevel);
+
             // === STATE MACHINE ===
             FiniteStateMachine stateMachine = new FiniteStateMachine();
-            stateMachine.AddState(new RestartFsmState(stateMachine, cellsManager, playerDefence, playerHealth,
-                playerDamage, playerMana, enemyDefence, enemyHealth, enemyDamage, availableSpells, _playerMovement,
-                enemyTargetController));
+            // stateMachine.AddState(new RestartFsmState(stateMachine, levelRestarter));
             stateMachine.AddState(new PlayerTurnMoveFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth));
             stateMachine.AddState(new PlayerTurnSpellFsmState(stateMachine, spellBarController));
-            stateMachine.AddState(new PlayerWinFsmState(stateMachine, popUpPlayerWin));
+            stateMachine.AddState(new PlayerWinFsmState(stateMachine, popUpPlayerWin, levelRestarter));
             stateMachine.AddState(new EnemyTurnFsmState(stateMachine, _enemyMovement, playerHealth));
-            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, popPlayerDefeat));
+            stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, popUpPlayerDefeat, levelRestarter));
             stateMachine.AddState(new EndOfGameFsmState(stateMachine));
 
             _diceRoller.Initialize();
 
             enemyTargetController.SetAimToNewRandomTargetCell();
 
-            PlayerJumper playerJumper = new PlayerJumper(_player.transform, _enemy.transform, _coefficients);
+            PlayerJumper playerJumper = new PlayerJumper(_player.transform, _enemyModel.transform, _coefficients);
             EnemyJumper enemyJumper =
-                new EnemyJumper(_enemy.transform, _playerMovement, _coefficients, enemyTargetController);
+                new EnemyJumper(_enemyModel.transform, _playerMovement, _coefficients, enemyTargetController);
 
             // === ЭФФЕКТЫ ЯЧЕЕК ===
 
