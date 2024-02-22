@@ -18,6 +18,7 @@ namespace _Project.Sсripts._Root
         [SerializeField] [Required] private DefenceTextView _playerDefenceTextView;
         [SerializeField] [Required] private PopUpChoiceView _popUpChoiceView;
         [SerializeField] [Required] private SpellBarView _spellBarView;
+        [SerializeField] [Required] private SpellBarShaker _spellBarShaker;
 
         [Space(10)]
         [Header("Enemy")]
@@ -29,6 +30,7 @@ namespace _Project.Sсripts._Root
         public PopUpChoiceView PopUpChoiceView => _popUpChoiceView;
         public SpellBarView SpellBarView => _spellBarView;
         public PopUpNotificationView PopUpNotificationView => _popUpNotificationView;
+        public SpellBarShaker SpellBarShaker => _spellBarShaker;
 
         public void Initialize(Health playerHealth, Mana playerMana, Health enemyHealth, Damage playerDamage,
             Damage enemyDamage, Defence playerDefence, Defence enemyDefence, AvailableSpells availableSpells,
@@ -43,6 +45,7 @@ namespace _Project.Sсripts._Root
             _enemyDefenceTextView.Initialize(enemyDefence);
             _spellBarView.Initialize(availableSpells);
             _enemyLevelTextView.Initialize(enemyLevel);
+            _spellBarShaker.Initialize();
         }
     }
 }

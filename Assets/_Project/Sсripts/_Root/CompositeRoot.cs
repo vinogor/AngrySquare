@@ -90,7 +90,8 @@ namespace _Project.Sсripts._Root
                     _cellsSettings);
 
             SpellBarController spellBarController =
-                new SpellBarController(availableSpells, _uiRoot.SpellBarView, playerMana, spellActivator);
+                new SpellBarController(availableSpells, _uiRoot.SpellBarView, playerMana, spellActivator,
+                    _uiRoot.SpellBarShaker);
 
             PopUpChoiceSpellController choiceSpellController =
                 new PopUpChoiceSpellController(_uiRoot.PopUpChoiceView, availableSpellNames,

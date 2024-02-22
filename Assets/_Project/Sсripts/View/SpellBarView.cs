@@ -30,12 +30,6 @@ namespace _Project.Sсripts.View
         public event Action<int, SpellName> SpellsActivated;
         public event Action Skipped;
 
-        private void OnDestroy()
-        {
-            _availableSpells.Updated -= OnAvailableSpellsUpdated;
-            _skipButton.onClick.RemoveAllListeners();
-        }
-
         private void OnAvailableSpellsUpdated()
         {
             Clean();
@@ -67,6 +61,12 @@ namespace _Project.Sсripts.View
         {
             _skipButton.enabled = true;
             _items.ForEach(item => item.Enable());
+        }
+
+        private void OnDestroy()
+        {
+            _availableSpells.Updated -= OnAvailableSpellsUpdated;
+            _skipButton.onClick.RemoveAllListeners();
         }
     }
 }
