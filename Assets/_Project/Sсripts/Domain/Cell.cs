@@ -1,4 +1,4 @@
-using _Project.Sсripts.Services.Effects;
+using _Project.Sсripts.Domain.Effects;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;

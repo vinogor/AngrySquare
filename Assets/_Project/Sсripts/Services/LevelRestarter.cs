@@ -1,6 +1,6 @@
 using _Project.Sсripts.Controllers;
 using _Project.Sсripts.Domain;
-using _Project.Sсripts.Services.Movement;
+using _Project.Sсripts.Domain.Movement;
 
 namespace _Project.Sсripts.Services
 {

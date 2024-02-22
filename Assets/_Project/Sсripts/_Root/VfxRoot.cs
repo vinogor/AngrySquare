@@ -1,10 +1,10 @@
-using _Project.Sсripts.Controllers.Vfx;
 using _Project.Sсripts.Domain;
-using _Project.Sсripts.Services.Effects.Player;
+using _Project.Sсripts.Domain.Effects.Player;
+using _Project.Sсripts.View.Vfx;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Root
+namespace _Project.Sсripts._Root
 {
     public class VfxRoot : MonoBehaviour
     {

@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
+using _Project.Sсripts.Config;
 using _Project.Sсripts.Domain;
-using _Project.Sсripts.Scriptable;
-using _Project.Sсripts.Services.Effects;
+using _Project.Sсripts.Domain.Effects;
 using _Project.Sсripts.Services.Utility;
 using UnityEngine;
 

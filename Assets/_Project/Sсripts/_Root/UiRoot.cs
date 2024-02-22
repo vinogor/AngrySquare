@@ -3,7 +3,7 @@ using _Project.Sсripts.View;
 using NaughtyAttributes;
 using UnityEngine;
 
-namespace _Project.Sсripts.Root
+namespace _Project.Sсripts._Root
 {
     public class UiRoot : MonoBehaviour
     {

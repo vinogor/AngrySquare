@@ -1,6 +1,6 @@
 using System;
 using _Project.Sсripts.Domain;
-using _Project.Sсripts.Services.Spells;
+using _Project.Sсripts.Domain.Spells;
 using _Project.Sсripts.View;
 using UnityEngine;
 using UnityEngine.Assertions;

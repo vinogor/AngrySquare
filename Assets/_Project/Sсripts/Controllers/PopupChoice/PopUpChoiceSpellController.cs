@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using _Project.Sсripts.Scriptable;
-using _Project.Sсripts.Services.Spells;
+using _Project.Sсripts.Config;
+using _Project.Sсripts.Domain.Spells;
 using _Project.Sсripts.View;
 using Cysharp.Threading.Tasks;
 using UnityEngine;

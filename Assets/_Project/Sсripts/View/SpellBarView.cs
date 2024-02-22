@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using _Project.Sсripts.Config;
 using _Project.Sсripts.Domain;
-using _Project.Sсripts.Scriptable;
-using _Project.Sсripts.Services.Spells;
+using _Project.Sсripts.Domain.Spells;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;

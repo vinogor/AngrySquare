@@ -1,6 +1,6 @@
 using System;
-using _Project.Sсripts.Scriptable;
-using _Project.Sсripts.Services.Spells;
+using _Project.Sсripts.Config;
+using _Project.Sсripts.Domain.Spells;
 using UnityEngine;
 using UnityEngine.Assertions;
 

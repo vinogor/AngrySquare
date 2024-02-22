@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using _Project.Sсripts.Services.Spells;
+using _Project.Sсripts.Domain.Spells;
 
 namespace _Project.Sсripts.Domain
 {
