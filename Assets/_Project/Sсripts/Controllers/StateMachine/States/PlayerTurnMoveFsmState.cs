@@ -28,7 +28,7 @@ namespace _Project.Sсripts.Controllers.StateMachine.States{
         public override void Enter()
         {
             base.Enter();
-            _diceRoller.MakeAvailable(); // TODO: добавить эффект 
+            _diceRoller.MakeAvailable();
             _playerMovement.TurnCompleted += GoToNextState;
         }
 

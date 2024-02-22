@@ -18,7 +18,7 @@ namespace _Project.Sсripts.Services
             _cells = cells;
             _cellsSettings = cellsSettings;
         }
-        
+
         public int Length => _cells.Length;
 
         public void FillWithEffects()
@@ -31,16 +31,22 @@ namespace _Project.Sсripts.Services
             return _cells.Where(cell => cell.EffectName == effectName).ToArray();
         }
 
-        public Cell GetRandom()
+        public Cell[] GetRandomTreeInRow()
         {
-            return _cells.Shuffle().First();
+            Cell center = _cells.Shuffle().First();
+            
+            int centerIndex = Index(center);
+            int leftIndex = (centerIndex - 1) % _cells.Length;
+            int rightIndex = (centerIndex + 1) % _cells.Length;
+
+            return new[] { _cells[leftIndex], center, _cells[rightIndex] };
         }
-        
+
         public Cell Get(int index)
         {
             return _cells[index];
         }
-        
+
         public int Index(Cell cell)
         {
             return Array.IndexOf(_cells, cell);

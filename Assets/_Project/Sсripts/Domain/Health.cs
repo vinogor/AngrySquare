@@ -58,6 +58,13 @@ namespace _Project.Sсripts.Domain
                 Died?.Invoke();
         }
 
+        public void TakeTripleDamage(int damage)
+        {
+            TakeDamage(damage);
+            TakeDamage(damage);
+            TakeDamage(damage);
+        }
+
         public void ReplenishToMax()
         {
             if (Value == MaxValue)
@@ -68,7 +75,7 @@ namespace _Project.Sсripts.Domain
             Replenished?.Invoke();
             ValueChanged?.Invoke(Value);
         }
-        
+
         public void IncreaseMaxValue(int increaseValue)
         {
             if (increaseValue < 1)

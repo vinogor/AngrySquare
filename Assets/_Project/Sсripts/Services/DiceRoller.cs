@@ -16,6 +16,7 @@ namespace _Project.Sсripts.Services
         [SerializeField] private float _upForce = 300f;
         [SerializeField] [Required] private Camera _camera;
         [SerializeField] [Required] private Rigidbody _rigidbody;
+        [SerializeField] [Required] private ParticleSystem _vfx;
 
         private DiceFaceDetector[] _detectors;
         private bool _canPlayerThrow = false;
@@ -70,6 +71,8 @@ namespace _Project.Sсripts.Services
                 return;
             }
 
+            _vfx.Stop();
+            
             Ray ray = _camera.ScreenPointToRay(eventData.position);
 
             if (Physics.Raycast(ray, out RaycastHit raycastHit))
@@ -93,6 +96,7 @@ namespace _Project.Sсripts.Services
 
         public void MakeAvailable()
         {
+            _vfx.Play();
             _canPlayerThrow = true;
         }
 

@@ -39,7 +39,7 @@ namespace _Project.Sсripts._Root
         [Header("Enemy")]
         [SerializeField] [Required] private EnemyModel _enemyModel;
         [SerializeField] [Required] private EnemyMovement _enemyMovement;
-        [SerializeField] [Required] private EnemyAim _enemyAim;
+        [SerializeField] private EnemyAim[] _enemyAims;
 
         private readonly Dictionary<EffectName, Effect> _playerEffects = new();
         private readonly Dictionary<EffectName, Effect> _enemyEffects = new();
@@ -49,6 +49,8 @@ namespace _Project.Sсripts._Root
             Debug.Log("CompositeRoot started");
 
             Assert.AreEqual(16, _cells.Length);
+            Assert.AreEqual(3, _enemyAims.Length);
+
             CellsManager cellsManager = new CellsManager(_cells, _cellsSettings);
 
             Defence playerDefence = new Defence(_coefficients.PlayerStartDefence);
@@ -103,7 +105,7 @@ namespace _Project.Sсripts._Root
                 _uiRoot.PopUpNotificationView,
                 new PopUpNotificationModel("Player Lose", "You lost the game! Press 'OK' to restart."));
 
-            EnemyTargetController enemyTargetController = new EnemyTargetController(cellsManager, _enemyAim);
+            EnemyTargetController enemyTargetController = new EnemyTargetController(cellsManager, _enemyAims);
 
             LevelRestarter levelRestarter = new LevelRestarter(cellsManager, playerDefence, playerHealth,
                 playerDamage, playerMana, enemyDefence, enemyHealth, enemyDamage, availableSpells, _playerMovement,
@@ -160,14 +162,14 @@ namespace _Project.Sсripts._Root
             _playerMovement.Initialize(cellsManager, _playerEffects, _coefficients, playerJumper);
 
             _enemyEffects.Add(EffectName.Swords, new EnemySwords(enemyJumper, playerHealth, enemyDamage));
-            _enemyEffects.Add(EffectName.Health, new EnemyHealth(enemyJumper));
+            _enemyEffects.Add(EffectName.Health,
+                new EnemyHealth(enemyJumper, enemyHealth, _coefficients, enemyTargetController));
             _enemyEffects.Add(EffectName.Mana, new EnemyMana(enemyJumper));
             _enemyEffects.Add(EffectName.Portal, new EnemyPortal(enemyJumper));
             _enemyEffects.Add(EffectName.Question, new EnemyQuestion(enemyJumper));
             _enemyEffects.Add(EffectName.SpellBook, new EnemySpellBook(enemyJumper));
 
-            _enemyMovement.Initialize(_enemyEffects, enemyTargetController, enemyJumper,
-                _playerMovement, playerHealth, enemyDamage);
+            _enemyMovement.Initialize(_enemyEffects, enemyTargetController, enemyJumper, playerHealth, enemyDamage);
         }
     }
 }

@@ -4,7 +4,8 @@ using _Project.Sсripts.Controllers;
 using DG.Tweening;
 using UnityEngine;
 
-namespace _Project.Sсripts.Domain.Movement{
+namespace _Project.Sсripts.Domain.Movement
+{
     public class EnemyJumper
     {
         private readonly Transform _enemyTransform;
@@ -23,13 +24,36 @@ namespace _Project.Sсripts.Domain.Movement{
             _enemyTargetController = enemyTargetController;
         }
 
+        public Sequence JumpToTargetThreeInRowCells(Cell[] targetCells, Action attackAction)
+        {
+            Debug.Log("Enemy - JumpToTargetThreeInRowCells");
+
+            _baseEnemyPosition = _enemyTransform.position;
+
+            Sequence sequence = DOTween.Sequence();
+
+            foreach (Cell targetCell in targetCells)
+            {
+                sequence.Append(Jump(_enemyTransform, targetCell.Center() + Vector3.up * _coefficients.EnemyHeight));
+                sequence.AppendCallback(() =>
+                {
+                    if (targetCell == _playerMovement.PlayerStayCell)
+                        attackAction.Invoke();
+                });
+            }
+
+            sequence.Append(JumpBackToBase());
+
+            return sequence;
+        }
+
         public Sequence JumpToTargetCell()
         {
             Debug.Log("Enemy - JumpToCell");
 
             _baseEnemyPosition = _enemyTransform.position;
 
-            Cell targetCell = _enemyTargetController.GetCurrentTargetCell();
+            Cell targetCell = _enemyTargetController.GetCurrentTargetCells()[0];
 
             return Jump(_enemyTransform, targetCell.Center() + Vector3.up * _coefficients.EnemyHeight);
         }
@@ -55,29 +79,6 @@ namespace _Project.Sсripts.Domain.Movement{
             return transform
                 .DOJump(target, _coefficients.JumpPower, 1, _coefficients.JumpDuration)
                 .SetEase(Ease.Linear);
-        }
-
-        public void ForcedAttack(Action everyAttackAction, Action onJumpComplete)
-        {
-            Sequence sequence = DOTween.Sequence();
-            sequence.Append(JumpToTargetCell());
-            sequence.AppendCallback(everyAttackAction.Invoke);
-            sequence.Append(JumpLooped(2, everyAttackAction.Invoke));
-            sequence.Append(JumpBackToBase());
-            sequence.AppendCallback(onJumpComplete.Invoke);
-            sequence.Play();
-        }
-
-        public Sequence JumpLooped(int amount, Action onEveryLoop)
-        {
-            Cell targetCell = _enemyTargetController.GetCurrentTargetCell();
-
-            return _enemyTransform
-                .DOJump(targetCell.Center() + Vector3.up * _coefficients.EnemyHeight, _coefficients.JumpPower, 1,
-                    _coefficients.JumpDuration)
-                .SetEase(Ease.Linear)
-                .SetLoops(amount)
-                .OnStepComplete(onEveryLoop.Invoke);
         }
     }
 }

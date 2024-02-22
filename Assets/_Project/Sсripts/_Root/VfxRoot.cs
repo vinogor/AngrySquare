@@ -17,6 +17,7 @@ namespace _Project.Sсripts._Root
         [Space(10)]
         [Header("Enemy")]
         [SerializeField] private DamageVfx _enemyDamageVfx;
+        [SerializeField] private HealthReplenishVfx _enemyHealthReplenishVfx;
 
         private void Awake()
         {
@@ -35,6 +36,7 @@ namespace _Project.Sсripts._Root
             _teleportVfx.Initialize(playerPortal);
             _enemyDamageVfx.Initialize(enemyHealth);
             _playerHealthReplenishVfx.Initialize(playerHealth);
+            _enemyHealthReplenishVfx.Initialize(enemyHealth);
         }
     }
 }
