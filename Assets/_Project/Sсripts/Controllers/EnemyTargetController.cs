@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using _Project.Sсripts.Domain;
 using _Project.Sсripts.Services;
 using UnityEngine;
@@ -8,9 +9,9 @@ namespace _Project.Sсripts.Controllers
     public class EnemyTargetController
     {
         private readonly CellsManager _cellsManager;
-        
+
         private readonly EnemyAim[] _enemyAims;
-        private Cell[] _targetCells;
+        private List<Cell> _targetCells;
 
         private bool _isTripleAim = false;
 
@@ -25,40 +26,31 @@ namespace _Project.Sсripts.Controllers
 
         public void SetAimToNewRandomTargetCell()
         {
-            _targetCells = _cellsManager.GetRandomTreeInRow();
+            _targetCells = _cellsManager.GetRandomInRow(_isTripleAim);
 
-            EnemyAim leftEnemyAim = _enemyAims[0];
-            EnemyAim centerEnemyAim = _enemyAims[1];
-            EnemyAim rightEnemyAim = _enemyAims[2];
-
-            centerEnemyAim.transform.position = _targetCells[1].Center() + Vector3.up * 0.03f;
-
-            if (_isTripleAim)
+            for (var i = 0; i < _targetCells.Count; i++)
             {
-                leftEnemyAim.transform.position = _targetCells[0].Center() + Vector3.up * 0.03f;
-                rightEnemyAim.transform.position = _targetCells[2].Center() + Vector3.up * 0.03f;
+                _enemyAims[i].gameObject.SetActive(true);
+                _enemyAims[i].transform.position = _targetCells[i].Center() + Vector3.up * 0.03f;
             }
-            else
-            {
-                leftEnemyAim.transform.position = _targetCells[1].Center() + Vector3.up * 0.03f;
-                rightEnemyAim.transform.position = _targetCells[1].Center() + Vector3.up * 0.03f;
-            }
+
+            for (var i = _targetCells.Count; i < _enemyAims.Length; i++)
+                _enemyAims[i].gameObject.SetActive(false);
         }
 
         public void NextTurnTripleTarget()
         {
             _isTripleAim = true;
         }
-        
+
         public void NextTurnOneTarget()
         {
             _isTripleAim = false;
         }
 
-        public Cell[] GetCurrentTargetCells()
+        public List<Cell> GetCurrentTargetCells()
         {
-            Cell[] currentTargetCells = _isTripleAim ? _targetCells : new[] { _targetCells[1] };
-            return currentTargetCells;
+            return _targetCells;
         }
     }
 }

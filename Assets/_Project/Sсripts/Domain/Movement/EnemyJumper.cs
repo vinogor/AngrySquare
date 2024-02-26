@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using _Project.Sсripts.Config;
 using _Project.Sсripts.Controllers;
 using DG.Tweening;
@@ -24,7 +25,7 @@ namespace _Project.Sсripts.Domain.Movement
             _enemyTargetController = enemyTargetController;
         }
 
-        public Sequence JumpToTargetThreeInRowCells(Cell[] targetCells, Action attackAction)
+        public Sequence JumpToTargetThreeInRowCells(List<Cell> targetCells, Action attackAction)
         {
             Debug.Log("Enemy - JumpToTargetThreeInRowCells");
 

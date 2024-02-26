@@ -6,7 +6,7 @@ namespace _Project.Sсripts.Controllers{
     {
         // TODO: вынести числа в настройки
         
-        private void OnEnable()
+        private void Start()
         {
             float duration = 1f;
             float scale = 0.4f;

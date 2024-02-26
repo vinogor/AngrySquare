@@ -37,9 +37,9 @@ namespace _Project.Sсripts.Domain.Movement
 
         public void Move()
         {
-            Cell[] targetCells = _enemyTargetController.GetCurrentTargetCells();
+            List<Cell> targetCells = _enemyTargetController.GetCurrentTargetCells();
 
-            if (targetCells.Length == 3)
+            if (targetCells.Count == 3)
             {
                 _enemyJumper.JumpToTargetThreeInRowCells(targetCells,
                         () => _playerHealth.TakeTripleDamage(_enemyDamage.Value))

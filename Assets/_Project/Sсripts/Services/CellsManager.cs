@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using _Project.Sсripts.Config;
 using _Project.Sсripts.Domain;
@@ -31,15 +32,18 @@ namespace _Project.Sсripts.Services
             return _cells.Where(cell => cell.EffectName == effectName).ToArray();
         }
 
-        public Cell[] GetRandomTreeInRow()
+        public List<Cell> GetRandomInRow(bool isTripleAim)
         {
             Cell center = _cells.Shuffle().First();
-            
+
+            if (isTripleAim == false)
+                return new() { center };
+
             int centerIndex = Index(center);
             int leftIndex = (centerIndex - 1) % _cells.Length;
             int rightIndex = (centerIndex + 1) % _cells.Length;
 
-            return new[] { _cells[leftIndex], center, _cells[rightIndex] };
+            return new() { _cells[leftIndex], center, _cells[rightIndex] };
         }
 
         public Cell Get(int index)
