@@ -1,4 +1,5 @@
 using System;
+using _Project.Sсripts.Controllers.Sound;
 using _Project.Sсripts.Domain;
 using _Project.Sсripts.Domain.Spells;
 using _Project.Sсripts.View;
@@ -14,21 +15,24 @@ namespace _Project.Sсripts.Controllers
         private readonly Mana _mana;
         private readonly SpellActivator _spellActivator;
         private readonly SpellBarShaker _spellBarShaker;
+        private readonly GameSounds _gameSounds;
 
         public SpellBarController(AvailableSpells availableSpells, SpellBarView spellBarView, Mana mana,
-            SpellActivator spellActivator, SpellBarShaker spellBarShaker)
+            SpellActivator spellActivator, SpellBarShaker spellBarShaker, GameSounds gameSounds)
         {
             Assert.IsNotNull(availableSpells);
             Assert.IsNotNull(spellBarView);
             Assert.IsNotNull(mana);
             Assert.IsNotNull(spellActivator);
             Assert.IsNotNull(spellBarShaker);
+            Assert.IsNotNull(gameSounds);
 
             _availableSpells = availableSpells;
             _spellBarView = spellBarView;
             _mana = mana;
             _spellActivator = spellActivator;
             _spellBarShaker = spellBarShaker;
+            _gameSounds = gameSounds;
 
             _spellBarView.Clean();
             _spellBarView.Disable();
@@ -54,6 +58,7 @@ namespace _Project.Sсripts.Controllers
         private void OnSpellSkipped()
         {
             Debug.Log("Skip spell");
+            _gameSounds.PlayClickButton();
             SpellCompleted?.Invoke();
         }
 
@@ -79,6 +84,7 @@ namespace _Project.Sсripts.Controllers
 
         public void Disable()
         {
+            
             _spellBarShaker.Disable();
             _spellBarView.SpellsActivated -= OnSpellActivated;
             _spellBarView.Skipped -= OnSpellSkipped;

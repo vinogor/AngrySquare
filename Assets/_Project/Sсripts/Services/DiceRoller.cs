@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using _Project.Sсripts.Controllers.Sound;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -22,12 +23,16 @@ namespace _Project.Sсripts.Services
         private bool _canPlayerThrow = false;
         private bool _isDiceThrown = false;
         private int _lastDetectedDiceNumber;
+        private GameSounds _gameSounds;
 
-        public void Initialize()
+        public void Initialize(GameSounds gameSounds)
         {
             _detectors = GetComponentsInChildren<DiceFaceDetector>();
             Assert.AreEqual(6, _detectors.Length);
+            Assert.IsNotNull(gameSounds);
 
+            _gameSounds = gameSounds;
+            
             foreach (DiceFaceDetector detector in _detectors)
             {
                 Assert.IsNotNull(detector);
@@ -47,15 +52,14 @@ namespace _Project.Sсripts.Services
 
         private void OnDiceNumberDetected(int number)
         {
+            _gameSounds.PlayDiceFall();
             _lastDetectedDiceNumber = number;
-            // Debug.Log("lastDetectedDiceNumber " + _lastDetectedDiceNumber);
         }
 
         private void Update()
         {
             if (_isDiceThrown && _rigidbody.velocity == Vector3.zero)
             {
-                // Debug.Log("get dice number " + _lastDetectedDiceNumber);
                 DetectorsSetActive(false);
                 PlayerMoveAmountSet?.Invoke(_lastDetectedDiceNumber);
                 _isDiceThrown = false;

@@ -1,5 +1,6 @@
 using System;
 using _Project.Sсripts.Config;
+using _Project.Sсripts.Controllers.Sound;
 using _Project.Sсripts.Domain.Spells;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -9,17 +10,20 @@ namespace _Project.Sсripts.Domain
     public class Mana
     {
         private readonly SpellsSettings _spellsSettings;
+        private readonly GameSounds _gameSounds;
         private readonly int _defaultValue;
         private readonly int _defaultMaxValue;
         public event Action<int> ValueChanged;
         public event Action<int> MaxValueChanged;
         public event Action Replenished;
 
-        public Mana(int value, int maxValue, SpellsSettings spellsSettings)
+        public Mana(int value, int maxValue, SpellsSettings spellsSettings, GameSounds gameSounds)
         {
             Validate(value, maxValue);
             Assert.IsNotNull(spellsSettings);
+            Assert.IsNotNull(gameSounds);
             _spellsSettings = spellsSettings;
+            _gameSounds = gameSounds;
             Value = value;
             MaxValue = maxValue;
             _defaultValue = value;
@@ -39,7 +43,7 @@ namespace _Project.Sсripts.Domain
         public void Spend(SpellName spellName)
         {
             int spellCost = _spellsSettings.GetManaCost(spellName);
-            
+
             Debug.Log("Spend mana " + spellCost);
 
             if (spellCost <= 0)
@@ -59,6 +63,7 @@ namespace _Project.Sсripts.Domain
             if (Value == MaxValue)
                 return;
 
+            _gameSounds.PlayManaReplenish();
             Value = MaxValue;
 
             Replenished?.Invoke();
@@ -74,7 +79,7 @@ namespace _Project.Sсripts.Domain
 
             MaxValueChanged?.Invoke(MaxValue);
         }
-        
+
         public void SetToDefault()
         {
             Value = _defaultValue;

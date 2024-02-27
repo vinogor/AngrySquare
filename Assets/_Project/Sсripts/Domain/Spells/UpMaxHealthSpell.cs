@@ -1,14 +1,16 @@
 using System;
 using _Project.Sсripts.Config;
+using _Project.Sсripts.Controllers.Sound;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Domain.Spells{
+namespace _Project.Sсripts.Domain.Spells
+{
     public class UpMaxHealthSpell : Spell
     {
         private readonly Health _health;
         private readonly Coefficients _coefficients;
 
-        public UpMaxHealthSpell(Health health, Coefficients coefficients)
+        public UpMaxHealthSpell(GameSounds gameSounds, Health health, Coefficients coefficients) : base(gameSounds)
         {
             Assert.IsNotNull(health);
             Assert.IsNotNull(coefficients);

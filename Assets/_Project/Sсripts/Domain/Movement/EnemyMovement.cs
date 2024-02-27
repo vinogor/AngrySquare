@@ -12,25 +12,28 @@ namespace _Project.Sсripts.Domain.Movement
     {
         private Dictionary<EffectName, Effect> _enemyEffects;
         private EnemyTargetController _enemyTargetController;
+        private PlayerMovement _playerMovement;
         private EnemyJumper _enemyJumper;
         private Health _playerHealth;
         private Damage _enemyDamage;
 
         public void Initialize(Dictionary<EffectName, Effect> enemyEffects,
             EnemyTargetController enemyTargetController, EnemyJumper enemyJumper,
-            Health playerHealth, Damage enemyDamage)
+            Health playerHealth, Damage enemyDamage, PlayerMovement playerMovement)
         {
             Assert.IsNotNull(enemyEffects);
             Assert.IsNotNull(enemyTargetController);
             Assert.IsNotNull(enemyJumper);
             Assert.IsNotNull(playerHealth);
             Assert.IsNotNull(enemyDamage);
+            Assert.IsNotNull(playerMovement);
 
             _enemyEffects = enemyEffects;
             _enemyTargetController = enemyTargetController;
             _enemyJumper = enemyJumper;
             _playerHealth = playerHealth;
             _enemyDamage = enemyDamage;
+            _playerMovement = playerMovement;
         }
 
         public event Action TurnCompleted;
@@ -51,6 +54,13 @@ namespace _Project.Sсripts.Domain.Movement
                     })
                     .Play();
             }
+            else if (targetCells[0] == _playerMovement.PlayerStayCell)
+            {
+                _enemyJumper.JumpToAttackPlayer(targetCells[0], () => _playerHealth.TakeDamage(_enemyDamage.Value))
+                    .AppendCallback(() => TurnCompleted?.Invoke())
+                    .Play();
+            }
+
             else
             {
                 EffectName effectName = targetCells[0].EffectName;

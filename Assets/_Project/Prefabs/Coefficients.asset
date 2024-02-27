@@ -16,7 +16,7 @@ MonoBehaviour:
   JumpDuration: 0.5
   AnimationCellDuration: 0.2
   EnemyHeight: 0.2
-  PlayerStartHealth: 5
+  PlayerStartHealth: 3
   PlayerMaxHealth: 10
   PlayerStartMana: 5
   PlayerMaxMana: 20

@@ -1,4 +1,5 @@
 using _Project.Sсripts.Config;
+using _Project.Sсripts.Controllers.Sound;
 using DG.Tweening;
 using UnityEngine;
 
@@ -6,17 +7,19 @@ namespace _Project.Sсripts.Domain.Movement
 {
     public class PlayerJumper
     {
-        private Transform _playerTransform;
-        private Transform _enemyTransform;
-        private Coefficients _coefficients;
+        private readonly Transform _playerTransform;
+        private readonly Transform _enemyTransform;
+        private readonly Coefficients _coefficients;
+        private readonly GameSounds _gameSounds; 
 
         private Vector3 _playerCellPosition;
 
-        public PlayerJumper(Transform playerTransform, Transform enemyTransform, Coefficients coefficients)
+        public PlayerJumper(Transform playerTransform, Transform enemyTransform, Coefficients coefficients, GameSounds gameSounds)
         {
             _playerTransform = playerTransform;
             _enemyTransform = enemyTransform;
             _coefficients = coefficients;
+            _gameSounds = gameSounds;
         }
 
         public Sequence JumpOnEnemy()
@@ -52,8 +55,10 @@ namespace _Project.Sсripts.Domain.Movement
             float jumpDuration = _coefficients.JumpDuration;
 
             Sequence sequence = DOTween.Sequence();
+            sequence.AppendCallback(_gameSounds.PlayTeleport);
             sequence.Append(_playerTransform.DOMoveY(_playerTransform.position.y - lossyScaleY * offset, jumpDuration));
             sequence.Append(_playerTransform.DOMove(cellCenter - Vector3.up * (lossyScaleY * offset), jumpDuration));
+            sequence.AppendCallback(_gameSounds.PlayTeleport);
             sequence.Append(_playerTransform.DOMove(cellCenter + Vector3.up * lossyScaleY, jumpDuration));
             return sequence;
         }
@@ -65,6 +70,7 @@ namespace _Project.Sсripts.Domain.Movement
             float duration = instantly ? epsilonTime : _coefficients.JumpDuration;
             return transform
                 .DOJump(target, _coefficients.JumpPower, 1, duration)
+                .AppendCallback(_gameSounds.PlayPlayerStep)
                 .SetEase(Ease.Linear);
         }
     }

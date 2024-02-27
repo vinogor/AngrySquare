@@ -1,4 +1,5 @@
 using System;
+using _Project.Sсripts.Controllers.Sound;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -7,19 +8,22 @@ namespace _Project.Sсripts.Domain
     public class Health
     {
         private readonly Defence _defence;
+        private readonly GameSounds _gameSounds;
 
         private readonly int _defaultValue;
         private readonly int _defaultMaxValue;
 
-        public Health(int value, int maxValue, Defence defence)
+        public Health(int value, int maxValue, Defence defence, GameSounds gameSounds)
         {
             Validate(value, maxValue);
             Assert.IsNotNull(defence);
+            Assert.IsNotNull(gameSounds);
             Value = value;
             MaxValue = maxValue;
             _defence = defence;
             _defaultValue = value;
             _defaultMaxValue = maxValue;
+            _gameSounds = gameSounds;
         }
 
         public event Action<int> ValueChanged;
@@ -46,6 +50,7 @@ namespace _Project.Sсripts.Domain
             if (passedDamage <= 0)
                 return;
 
+            _gameSounds.PlaySwordsAttack();
             Value -= passedDamage;
 
             if (Value <= 0)
@@ -72,6 +77,7 @@ namespace _Project.Sсripts.Domain
 
             Value = MaxValue;
 
+            _gameSounds.PlayHealthReplenish();
             Replenished?.Invoke();
             ValueChanged?.Invoke(Value);
         }

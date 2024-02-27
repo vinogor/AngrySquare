@@ -22,8 +22,13 @@ namespace _Project.Sсripts.Domain.Effects.Player
         {
             Sequence sequence = DOTween.Sequence();
             sequence.Append(_playerJumper.JumpInPlace());
-            sequence.AppendCallback(() => _playerMana.ReplenishToMax());
-            sequence.AppendInterval(_coefficients.DelayAfterVfxSeconds);
+
+            if (_playerMana.Value != _playerMana.MaxValue)
+            {
+                sequence.AppendCallback(() => _playerMana.ReplenishToMax());
+                sequence.AppendInterval(_coefficients.DelayAfterVfxSeconds);
+            }
+
             sequence.AppendCallback(onComplete.Invoke);
             sequence.Play();
         }
