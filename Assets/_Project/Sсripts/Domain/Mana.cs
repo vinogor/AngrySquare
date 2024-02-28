@@ -30,9 +30,9 @@ namespace _Project.Sсripts.Domain
             _defaultMaxValue = maxValue;
         }
 
-        public int Value { get; private set; }
+        public int Value { get; set; }
 
-        public int MaxValue { get; private set; }
+        public int MaxValue { get; set; }
 
         public bool IsEnough(SpellName spellName)
         {

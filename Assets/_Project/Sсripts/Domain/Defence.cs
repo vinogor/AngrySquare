@@ -16,7 +16,7 @@ namespace _Project.Sсripts.Domain
 
         public event Action Changed;
 
-        public int Value { get; private set; }
+        public int Value { get; set; }
 
         public void Increase(int increaseValue)
         {

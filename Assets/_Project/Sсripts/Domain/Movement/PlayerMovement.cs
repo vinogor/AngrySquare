@@ -11,7 +11,6 @@ namespace _Project.Sсripts.Domain.Movement
 {
     public class PlayerMovement : MonoBehaviour
     {
-        private int _playersCellIndex;
         [SerializeField] private DiceRoller _diceRoller;
 
         private CellsManager _cellsManager;
@@ -20,7 +19,7 @@ namespace _Project.Sсripts.Domain.Movement
         private PlayerJumper _playerJumper;
 
         int startingPlayersCellIndex = 0;
-        
+
         public void Initialize(CellsManager cellsManager, Dictionary<EffectName, Effect> playerEffects,
             Coefficients coefficients, PlayerJumper playerJumper)
         {
@@ -33,12 +32,13 @@ namespace _Project.Sсripts.Domain.Movement
             _playerEffects = playerEffects;
             _coefficients = coefficients;
             _playerJumper = playerJumper;
-            _playersCellIndex = startingPlayersCellIndex;
+            PlayersCellIndex = startingPlayersCellIndex;
         }
 
         public event Action TurnCompleted;
 
-        public Cell PlayerStayCell => _cellsManager.Get(_playersCellIndex);
+        public int PlayersCellIndex { get; private set; }
+        public Cell PlayerStayCell => _cellsManager.Get(PlayersCellIndex);
 
         private void Awake()
         {
@@ -60,14 +60,14 @@ namespace _Project.Sсripts.Domain.Movement
         {
             if (amountMoves == 0)
             {
-                EffectName effectName = _cellsManager.Get(_playersCellIndex).EffectName;
+                EffectName effectName = _cellsManager.Get(PlayersCellIndex).EffectName;
                 Debug.Log("Activating effect: " + effectName);
                 ActivateEffect(effectName);
                 return;
             }
 
-            _playersCellIndex = ++_playersCellIndex % _cellsManager.Length;
-            Cell nextCell = _cellsManager.Get(_playersCellIndex);
+            PlayersCellIndex = ++PlayersCellIndex % _cellsManager.Length;
+            Cell nextCell = _cellsManager.Get(PlayersCellIndex);
 
             Sequence sequence = DOTween.Sequence();
             sequence.Append(_playerJumper.JumpToNextCell(nextCell));
@@ -92,12 +92,17 @@ namespace _Project.Sсripts.Domain.Movement
 
         public void SetNewStayCell(Cell newStayCell)
         {
-            _playersCellIndex = _cellsManager.Index(newStayCell);
+            PlayersCellIndex = _cellsManager.Index(newStayCell);
         }
         
+        public void SetNewStayCell(int newStayCellIndex)
+        {
+            PlayersCellIndex = newStayCellIndex;
+        }
+
         public void SetDefaultStayCell()
         {
-            _playersCellIndex = startingPlayersCellIndex;
+            PlayersCellIndex = startingPlayersCellIndex;
             _playerJumper.JumpToNextCell(PlayerStayCell, true);
         }
     }

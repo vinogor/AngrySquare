@@ -9,6 +9,8 @@ namespace _Project.Sсripts.Controllers.StateMachine
 
         private readonly Dictionary<Type, FsmState> _states = new();
 
+        public event Action StateChanged;
+
         public void AddState(FsmState fsmState)
         {
             _states.Add(fsmState.GetType(), fsmState);
@@ -26,6 +28,7 @@ namespace _Project.Sсripts.Controllers.StateMachine
                 _currentFsmState?.Exit();
                 _currentFsmState = newState;
                 _currentFsmState.Enter();
+                StateChanged?.Invoke();
             }
         }
     }

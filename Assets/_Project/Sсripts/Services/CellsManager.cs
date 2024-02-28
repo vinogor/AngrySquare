@@ -46,6 +46,18 @@ namespace _Project.Sсripts.Services
             return new() { _cells[leftIndex], center, _cells[rightIndex] };
         }
 
+        public Dictionary<int, EffectName> GetCellIndexesWithEffectNames()
+        {
+            Dictionary<int, EffectName> result = new();
+
+            for (var i = 0; i < _cells.Length; i++)
+            {
+                result.Add(i, _cells[i].EffectName);
+            }
+
+            return result;
+        }
+
         public Cell Get(int index)
         {
             return _cells[index];
@@ -88,6 +100,20 @@ namespace _Project.Sсripts.Services
         private Cell[] CellsWithoutEffect(Cell[] cells)
         {
             return cells.Where(cell => cell.IsEffectSet() == false).ToArray();
+        }
+
+        public void SetCellsEffects(Dictionary<int, EffectName> cellIndexesWithEffectNames)
+        {
+            CleanAll();
+
+            for (var i = 0; i < _cells.Length; i++)
+            {
+                Cell cell = _cells[i];
+                EffectName effectName = cellIndexesWithEffectNames[i];
+
+                cell.SetEffectName(effectName);
+                cell.SetSprite(_cellsSettings.GetCellSprite(effectName));
+            }
         }
     }
 }

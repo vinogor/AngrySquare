@@ -32,9 +32,9 @@ namespace _Project.Sсripts.Domain
         public event Action Replenished;
         public event Action Died;
 
-        public int Value { get; private set; }
+        public int Value { get; set; }
 
-        public int MaxValue { get; private set; }
+        public int MaxValue { get; set; }
 
         public bool IsAlive => Value > 0;
 

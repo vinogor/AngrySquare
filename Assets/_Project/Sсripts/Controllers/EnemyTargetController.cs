@@ -52,5 +52,20 @@ namespace _Project.Sсripts.Controllers
         {
             return _targetCells;
         }
+
+        public void SetNewTargetCells(List<int> cellsIndexes)
+        {
+            _targetCells = new List<Cell>();
+            cellsIndexes.ForEach(index => _targetCells.Add(_cellsManager.Get(index)));
+            
+            for (var i = 0; i < _targetCells.Count; i++)
+            {
+                _enemyAims[i].gameObject.SetActive(true);
+                _enemyAims[i].transform.position = _targetCells[i].Center() + Vector3.up * 0.03f;
+            }
+
+            for (var i = _targetCells.Count; i < _enemyAims.Length; i++)
+                _enemyAims[i].gameObject.SetActive(false);
+        }
     }
 }

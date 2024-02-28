@@ -2437,7 +2437,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 250.01001, y: 174.77}
+  m_AnchoredPosition: {x: 250.01001, y: 174.77002}
   m_SizeDelta: {x: 500, y: 350}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &139977003
@@ -3820,6 +3820,7 @@ MonoBehaviour:
   _vfxRoot: {fileID: 60840387}
   _soundView: {fileID: 1300796439}
   _audioSource: {fileID: 963194230}
+  _saveController: {fileID: 963194231}
   _player: {fileID: 2120022569}
   _playerMovement: {fileID: 2120022570}
   _enemyModel: {fileID: 112534803}
@@ -11674,6 +11675,7 @@ GameObject:
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
   - component: {fileID: 963194230}
+  - component: {fileID: 963194231}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -11867,6 +11869,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &963194231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80582b4ebe0a4ac88c65c3dbe12ebd5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &967860521
 GameObject:
   m_ObjectHideFlags: 0

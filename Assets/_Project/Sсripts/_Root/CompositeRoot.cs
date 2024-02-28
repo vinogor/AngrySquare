@@ -34,6 +34,7 @@ namespace _Project.Sсripts._Root
         [SerializeField] [Required] private VfxRoot _vfxRoot;
         [SerializeField] [Required] private SoundView _soundView;
         [SerializeField] [Required] private AudioSource _audioSource;
+        [SerializeField] [Required] private SaveController _saveController;
 
         [Space(10)]
         [Header("Player")]
@@ -157,6 +158,12 @@ namespace _Project.Sсripts._Root
             CellEffectsInitialize(playerJumper, enemyHealth, playerDamage, playerHealth, playerMana, playerPortal,
                 enemyJumper, enemyDamage, enemyTargetController, choiceEffectController, choiceSpellController,
                 cellsManager);
+
+            // === SAVE ===
+            
+            SaveService saveService = new SaveService(playerDamage, playerDefence, playerHealth, playerMana, availableSpells,
+                _playerMovement,enemyLevel, enemyDamage, enemyDefence, enemyHealth, enemyTargetController, cellsManager);
+            _saveController.Initialize(saveService, stateMachine);
 
             // в самом конце 
             stateMachine.SetState<PlayerTurnSpellFsmState>();
