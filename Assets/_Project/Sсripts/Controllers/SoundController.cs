@@ -1,9 +1,10 @@
+using System;
 using _Project.Sсripts.Controllers.Sound;
 using _Project.Sсripts.View;
 
 namespace _Project.Sсripts.Controllers
 {
-    public class SoundController
+    public class SoundController : IDisposable
     {
         private readonly SoundView _soundView;
         private readonly GameSounds _gameSounds;
@@ -18,6 +19,8 @@ namespace _Project.Sсripts.Controllers
             _soundView.ButtonOnClick.AddListener(OnButtonClick);
         }
 
+        public void Dispose() => _soundView.ButtonOnClick.RemoveListener(OnButtonClick);
+
         private void OnButtonClick()
         {
             _isEnabled = !_isEnabled;
@@ -26,10 +29,8 @@ namespace _Project.Sсripts.Controllers
                 _soundView.SetOn();
             else
                 _soundView.SetOff();
-            
+
             _gameSounds.Switch(_isEnabled);
         }
-        
-        // TODO: remove listener ?
     }
 }

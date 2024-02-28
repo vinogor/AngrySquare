@@ -9,15 +9,20 @@ namespace _Project.Sсripts.Controllers.Sound
     {
         private readonly Dictionary<SoundName, AudioClip> _sounds;
         private bool _isEnabled = true;
+        private readonly AudioSource _audioSource;
 
-        public GameSounds(SoundSettings soundSettings)
+        public GameSounds(SoundSettings soundSettings, AudioSource audioSource)
         {
             _sounds = soundSettings.Configs.ToDictionary(key => key.SoundName, value => value.AudioClip);
+            _audioSource = audioSource;
         }
 
         public void Switch(bool isEnabled)
         {
             _isEnabled = isEnabled;
+            
+            if (_isEnabled == false) 
+                _audioSource.Stop();
         }
 
         public void PlayPlayerStep() => PlaySound(SoundName.PlayerStep);
@@ -37,23 +42,7 @@ namespace _Project.Sсripts.Controllers.Sound
         private void PlaySound(SoundName soundName)
         {
             if (_isEnabled)
-                AudioSource.PlayClipAtPoint(_sounds[soundName], Vector3.zero);
+                _audioSource.PlayOneShot(_sounds[soundName]);
         }
-    }
-
-    public enum SoundName
-    {
-        PlayerStep,
-        EnemyStep,
-        DiceDrop,
-        PlayerWin,
-        PlayerDefeat,
-        SwordsAttack,
-        HealthReplenish,
-        ManaReplenish,
-        Teleport,
-        PopUp,
-        SpellCast,
-        ClickButton
     }
 }

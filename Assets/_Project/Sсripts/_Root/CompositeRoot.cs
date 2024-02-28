@@ -33,6 +33,7 @@ namespace _Project.Sсripts._Root
         [SerializeField] [Required] private UiRoot _uiRoot;
         [SerializeField] [Required] private VfxRoot _vfxRoot;
         [SerializeField] [Required] private SoundView _soundView;
+        [SerializeField] [Required] private AudioSource _audioSource;
 
         [Space(10)]
         [Header("Player")]
@@ -48,6 +49,8 @@ namespace _Project.Sсripts._Root
         private readonly Dictionary<EffectName, Effect> _playerEffects = new();
         private readonly Dictionary<EffectName, Effect> _enemyEffects = new();
 
+        private SoundController _soundController;
+
         private void Start()
         {
             Debug.Log("CompositeRoot started");
@@ -55,9 +58,9 @@ namespace _Project.Sсripts._Root
             Assert.AreEqual(16, _cells.Length);
             Assert.AreEqual(3, _enemyAims.Length);
 
-            GameSounds gameSounds = new GameSounds(_soundSettings);
+            GameSounds gameSounds = new GameSounds(_soundSettings, _audioSource);
 
-            SoundController soundController = new SoundController(_soundView, gameSounds);
+            _soundController = new SoundController(_soundView, gameSounds);
 
             CellsManager cellsManager = new CellsManager(_cells, _cellsSettings);
 
@@ -185,6 +188,11 @@ namespace _Project.Sсripts._Root
 
             _enemyMovement.Initialize(_enemyEffects, enemyTargetController, enemyJumper, playerHealth, enemyDamage,
                 _playerMovement);
+        }
+
+        private void OnDestroy()
+        {
+            _soundController.Dispose();
         }
     }
 }
