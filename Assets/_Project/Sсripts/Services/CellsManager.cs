@@ -40,8 +40,8 @@ namespace _Project.Sсripts.Services
                 return new() { center };
 
             int centerIndex = Index(center);
-            int leftIndex = (centerIndex - 1) % _cells.Length;
-            int rightIndex = (centerIndex + 1) % _cells.Length;
+            int leftIndex = (centerIndex - 1 + _cells.Length) % _cells.Length;
+            int rightIndex = (centerIndex + 1 + _cells.Length) % _cells.Length;
 
             return new() { _cells[leftIndex], center, _cells[rightIndex] };
         }
