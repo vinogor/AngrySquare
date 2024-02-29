@@ -7,16 +7,15 @@ using _Project.Sсripts.Domain;
 using _Project.Sсripts.Domain.Effects;
 using _Project.Sсripts.Domain.Movement;
 using _Project.Sсripts.Domain.Spells;
+using Agava.YandexGames;
 using Newtonsoft.Json;
+using UnityEngine;
 
 namespace _Project.Sсripts.Services
 {
-    // TODO: добавить стейт Инициализация + перетащить туда из композита что надо 
-    // TODO: авторизация - как чё?
-    // TODO: а вызов загрузки как будет? 
-    // TODO: ??? как пороверить это всё?
-    //    + кешировать локально json - проверить +
-    //    - загрузить билд в ЯИ
+    // TODO: как пороверить это всё:
+    //    + кешировать локально json
+    //    - загрузить билд в ЯИ (но непонятно как блок с #if отработает)
 
     public class SaveService
     {
@@ -99,26 +98,68 @@ namespace _Project.Sсripts.Services
 
             _localSaveJson = JsonConvert.SerializeObject(dataRecord);
 
-            // PlayerAccount.SetCloudSaveData(json, () => Debug.Log("PlayerAccount.SetCloudSaveData - SUCCESS"));
+#if UNITY_WEBGL && !UNITY_EDITOR
+            CloudSave();
+#endif
         }
 
         public void Load()
         {
-            // PlayerAccount.GetCloudSaveData((data) =>
-            // {
-            // IsSaveExist = string.IsNullOrEmpty(data) == false;
-            // DataRecord dataRecord = JsonConvert.DeserializeObject<DataRecord>(data);
+            
+#if !UNITY_WEBGL && UNITY_EDITOR
+            LocalLoad();
+#endif
 
-            IsSaveExist = string.IsNullOrEmpty(_localSaveJson) == false;
+#if UNITY_WEBGL && !UNITY_EDITOR
+            CloudLoad();
+#endif
+            
+            LoadComplete = true;
+        }
 
-            if (IsSaveExist == false)
-            {
-                LoadComplete = true;
+        private void CloudLoad()
+        {
+            Debug.Log("CloudLoad - STARTED");
+            PlayerAccount.GetCloudSaveData((data) =>
+                {
+                    Handle(data);
+                    Debug.Log("PlayerAccount.GetCloudSaveData - COMPLETED");
+                },
+                errorMessage => { Debug.Log($"PlayerAccount.GetCloudSaveData - ERROR: {errorMessage}"); });
+        }
+
+        private void LocalLoad()
+        {
+            Handle(_localSaveJson);
+        }
+
+        private void CloudSave()
+        {
+            Debug.Log("CloudSave - STARTED");
+            PlayerAccount.SetCloudSaveData(_localSaveJson, () => Debug.Log("PlayerAccount.SetCloudSaveData - SUCCESS"));
+        }
+
+        private void Handle(string data)
+        {
+            if (IsExisted(data) == false)
                 return;
-            }
 
-            DataRecord dataRecord = JsonConvert.DeserializeObject<DataRecord>(_localSaveJson);
+            Apply(Deserialize(data));
+        }
 
+        private bool IsExisted(string data)
+        {
+            IsSaveExist = string.IsNullOrEmpty(data) == false;
+            return IsSaveExist;
+        }
+
+        private DataRecord Deserialize(string data)
+        {
+            return JsonConvert.DeserializeObject<DataRecord>(data);
+        }
+
+        private void Apply(DataRecord dataRecord)
+        {
             _playerDamage.SetNewValue(dataRecord.PlayerDamageValue);
             _playerDefence.SetNewValue(dataRecord.PlayerDefenceValue);
             _playerHealth.SetNewValues(dataRecord.PlayerHealthValue, dataRecord.PlayerHealthMaxValue);
@@ -134,16 +175,9 @@ namespace _Project.Sсripts.Services
             _enemyTargetController.SetNewTargetCells(dataRecord.TargetCellsIndexes);
 
             _cellsManager.SetCellsEffects(dataRecord.CellIndexesWithEffectNames);
-            _finiteStateMachine.SetState(Type.GetType(dataRecord.FsmStateTypeName)); // может плохо работать в браузере
+            _finiteStateMachine.SetState(Type.GetType(dataRecord.FsmStateTypeName));
 
             LoadComplete = true;
-
-            // Debug.Log("PlayerAccount.GetCloudSaveData - SUCCESS");
-            // }, (errorMessage) =>
-            // {
-            // LoadComplete = true;
-            // Debug.Log($"PlayerAccount.GetCloudSaveData - ERROR: {errorMessage}");
-            // });
         }
 
         private class DataRecord

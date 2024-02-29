@@ -2,11 +2,11 @@ using Agava.YandexGames;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace _Project.Sсripts
+namespace _Project.Sсripts.SDK
 {
     public class SdkInitialization : MonoBehaviour
     {
-        // TODO: добавить какой-то экран загрузки
+        // TODO: добавить какой-то экран загрузки?
 
         private void Awake() => YandexGamesSdk.CallbackLogging = true;
 

@@ -13,6 +13,7 @@ using _Project.Sсripts.Domain.Movement;
 using _Project.Sсripts.Domain.Spells;
 using _Project.Sсripts.Services;
 using _Project.Sсripts.View;
+using Agava.YandexGames;
 using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
 using UnityEngine;
@@ -174,6 +175,30 @@ namespace _Project.Sсripts._Root
 
             if (saveService.IsSaveExist == false)
                 stateMachine.SetState<PlayerTurnSpellFsmState>();
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+            YandexAuthorize();
+#endif
+        }
+
+        private void YandexAuthorize()
+        {
+            Debug.Log("YandexGamesSdk.GameReady() - STARTED");
+            YandexGamesSdk.GameReady();
+
+            Debug.Log("PlayerAccount.Authorize() - STARTED");
+            PlayerAccount.Authorize();
+
+            if (PlayerAccount.IsAuthorized)
+            {
+                Debug.Log("PlayerAccount.RequestPersonalProfileDataPermission() - STARTED");
+                PlayerAccount.RequestPersonalProfileDataPermission();
+            }
+
+            if (PlayerAccount.IsAuthorized == false)
+            {
+                Debug.Log("PlayerAccount.IsAuthorized == false");
+            }
         }
 
         private void CellEffectsInitialize(PlayerJumper playerJumper, Health enemyHealth, Damage playerDamage,
