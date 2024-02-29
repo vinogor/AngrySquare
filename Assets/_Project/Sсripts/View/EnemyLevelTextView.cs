@@ -18,7 +18,7 @@ namespace _Project.Sсripts.View
             Assert.IsNotNull(enemyLevel);
 
             _enemyLevel = enemyLevel;
-            _enemyLevel.Increased += OnEnemyLevelChanged;
+            _enemyLevel.Changed += OnEnemyLevelChanged;
             _enemyLevel.SetDefault += OnEnemyLevelChanged;
 
             _textMeshPro.SetText($"{IntroText} {_enemyLevel.Value}");
@@ -31,7 +31,7 @@ namespace _Project.Sсripts.View
 
         private void OnDestroy()
         {
-            _enemyLevel.Increased -= OnEnemyLevelChanged;
+            _enemyLevel.Changed -= OnEnemyLevelChanged;
             _enemyLevel.SetDefault -= OnEnemyLevelChanged;
         }
     }

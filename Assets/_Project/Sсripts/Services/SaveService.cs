@@ -1,26 +1,27 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using _Project.Sсripts.Controllers;
+using _Project.Sсripts.Controllers.StateMachine;
 using _Project.Sсripts.Domain;
 using _Project.Sсripts.Domain.Effects;
 using _Project.Sсripts.Domain.Movement;
 using _Project.Sсripts.Domain.Spells;
-using Agava.YandexGames;
-using Palmmedia.ReportGenerator.Core.Common;
-using UnityEngine;
+using Newtonsoft.Json;
 
 namespace _Project.Sсripts.Services
 {
     // TODO: добавить стейт Инициализация + перетащить туда из композита что надо 
     // TODO: авторизация - как чё?
     // TODO: а вызов загрузки как будет? 
-    // TODO: ??? сериализация листов и енамов?   public Dictionary<int, EffectName>
-    // TODO: + фаза стейт машины - сохранить как какой-то енам? 
-    // TODO: пришлось в модельных классах открыть setter для value  
-    // TODO: ??? как пороверить это всё? Кнопка в инспекторе 
+    // TODO: ??? как пороверить это всё?
+    //    + кешировать локально json - проверить +
+    //    - загрузить билд в ЯИ
 
     public class SaveService
     {
+        private string _localSaveJson;
+
         // player 
         private readonly Damage _playerDamage;
         private readonly Defence _playerDefence;
@@ -41,12 +42,12 @@ namespace _Project.Sсripts.Services
 
         // common
         private readonly CellsManager _cellsManager;
-        // TODO: + фазу стейт машины
+        private readonly FiniteStateMachine _finiteStateMachine;
 
         public SaveService(Damage playerDamage, Defence playerDefence, Health playerHealth, Mana playerMana,
             AvailableSpells availableSpells, PlayerMovement playerMovement, EnemyLevel enemyLevel, Damage enemyDamage,
             Defence enemyDefence, Health enemyHealth, EnemyTargetController enemyTargetController,
-            CellsManager cellsManager)
+            CellsManager cellsManager, FiniteStateMachine finiteStateMachine)
         {
             _playerDamage = playerDamage;
             _playerDefence = playerDefence;
@@ -60,11 +61,13 @@ namespace _Project.Sсripts.Services
             _enemyDefence = enemyDefence;
             _enemyHealth = enemyHealth;
             _enemyTargetController = enemyTargetController;
-            // TODO: + вид модели 
 
             _cellsManager = cellsManager;
-            // TODO: + фазу стейт машины
+            _finiteStateMachine = finiteStateMachine;
         }
+
+        public bool LoadComplete { get; private set; }
+        public bool IsSaveExist { get; private set; }
 
         public void Save()
         {
@@ -77,7 +80,7 @@ namespace _Project.Sсripts.Services
                 PlayerHealthMaxValue = _playerHealth.MaxValue,
                 PlayerManaValue = _playerMana.Value,
                 PlayerManaMaxValue = _playerMana.MaxValue,
-                SpellNames = _availableSpells.SpellNames, // не сериализовалось
+                SpellNames = _availableSpells.SpellNames,
                 PlayersCellIndex = _playerMovement.PlayersCellIndex,
 
                 // enemy
@@ -86,50 +89,61 @@ namespace _Project.Sсripts.Services
                 EnemyDefenceValue = _enemyDefence.Value,
                 EnemyHealthValue = _enemyHealth.Value,
                 EnemyHealthMaxValue = _enemyHealth.MaxValue,
-                TargetCellsIndexes = _enemyTargetController.GetCurrentTargetCells() // не сериализовалось
+                TargetCellsIndexes = _enemyTargetController.GetCurrentTargetCells()
                     .Select(cell => _cellsManager.Index(cell)).ToList(),
-                // TODO: + вид модели 
 
                 // common
-                CellIndexesWithEffectNames = _cellsManager.GetCellIndexesWithEffectNames()
-                // TODO: + фазу стейт машины
+                CellIndexesWithEffectNames = _cellsManager.GetCellIndexesWithEffectNames(),
+                FsmStateTypeName = _finiteStateMachine.GetCurrentStateTypeName()
             };
 
-            string jsonString = JsonSerializer.ToJsonString(dataRecord);
-            string json = JsonUtility.ToJson(dataRecord);
+            _localSaveJson = JsonConvert.SerializeObject(dataRecord);
 
-            PlayerAccount.SetCloudSaveData(json, () => Debug.Log("PlayerAccount.SetCloudSaveData - SUCCESS"));
+            // PlayerAccount.SetCloudSaveData(json, () => Debug.Log("PlayerAccount.SetCloudSaveData - SUCCESS"));
         }
 
         public void Load()
         {
-            PlayerAccount.GetCloudSaveData((data) =>
+            // PlayerAccount.GetCloudSaveData((data) =>
+            // {
+            // IsSaveExist = string.IsNullOrEmpty(data) == false;
+            // DataRecord dataRecord = JsonConvert.DeserializeObject<DataRecord>(data);
+
+            IsSaveExist = string.IsNullOrEmpty(_localSaveJson) == false;
+
+            if (IsSaveExist == false)
             {
-                DataRecord dataRecord = JsonUtility.FromJson<DataRecord>(data);
+                LoadComplete = true;
+                return;
+            }
 
-                _playerDamage.Value = dataRecord.PlayerDamageValue;
-                _playerDefence.Value = dataRecord.PlayerDefenceValue;
-                _playerHealth.Value = dataRecord.PlayerHealthValue;
-                _playerHealth.MaxValue = dataRecord.PlayerHealthMaxValue;
-                _playerMana.Value = dataRecord.PlayerManaValue;
-                _playerMana.MaxValue = dataRecord.PlayerManaMaxValue;
-                _availableSpells.Clear();
-                dataRecord.SpellNames.ForEach(_availableSpells.Add);
-                _playerMovement.SetNewStayCell(dataRecord.PlayersCellIndex);
+            DataRecord dataRecord = JsonConvert.DeserializeObject<DataRecord>(_localSaveJson);
 
-                _enemyLevel.Value = dataRecord.EnemyLevelValue;
-                _enemyDamage.Value = dataRecord.EnemyDamageValue;
-                _enemyDefence.Value = dataRecord.EnemyDefenceValue;
-                _enemyHealth.Value = dataRecord.EnemyHealthValue;
-                _enemyHealth.MaxValue = dataRecord.EnemyHealthMaxValue;
-                _enemyTargetController.SetNewTargetCells(dataRecord.TargetCellsIndexes);
-                // TODO: + вид модели 
+            _playerDamage.SetNewValue(dataRecord.PlayerDamageValue);
+            _playerDefence.SetNewValue(dataRecord.PlayerDefenceValue);
+            _playerHealth.SetNewValues(dataRecord.PlayerHealthValue, dataRecord.PlayerHealthMaxValue);
+            _playerMana.SetNewValues(dataRecord.PlayerManaValue, dataRecord.PlayerManaMaxValue);
+            _availableSpells.Clear();
+            dataRecord.SpellNames.ForEach(_availableSpells.Add);
+            _playerMovement.SetNewStayCell(dataRecord.PlayersCellIndex);
 
-                _cellsManager.SetCellsEffects(dataRecord.CellIndexesWithEffectNames);
-                // TODO: добавить фазу стейт машины
+            _enemyLevel.SetNewValue(dataRecord.EnemyLevelValue);
+            _enemyDamage.SetNewValue(dataRecord.EnemyDamageValue);
+            _enemyDefence.SetNewValue(dataRecord.EnemyDefenceValue);
+            _enemyHealth.SetNewValues(dataRecord.EnemyHealthValue, dataRecord.EnemyHealthMaxValue);
+            _enemyTargetController.SetNewTargetCells(dataRecord.TargetCellsIndexes);
 
-                Debug.Log("PlayerAccount.GetCloudSaveData - SUCCESS");
-            }, (errorMessage) => Debug.Log($"PlayerAccount.GetCloudSaveData - ERROR: {errorMessage}"));
+            _cellsManager.SetCellsEffects(dataRecord.CellIndexesWithEffectNames);
+            _finiteStateMachine.SetState(Type.GetType(dataRecord.FsmStateTypeName)); // может плохо работать в браузере
+
+            LoadComplete = true;
+
+            // Debug.Log("PlayerAccount.GetCloudSaveData - SUCCESS");
+            // }, (errorMessage) =>
+            // {
+            // LoadComplete = true;
+            // Debug.Log($"PlayerAccount.GetCloudSaveData - ERROR: {errorMessage}");
+            // });
         }
 
         private class DataRecord
@@ -151,11 +165,10 @@ namespace _Project.Sсripts.Services
             public int EnemyHealthValue;
             public int EnemyHealthMaxValue;
             public List<int> TargetCellsIndexes;
-            // TODO: + вид модели 
 
             // common
             public Dictionary<int, EffectName> CellIndexesWithEffectNames;
-            // TODO: + фаза стейт машины - сохранить какой-то енам? 
+            public string FsmStateTypeName;
         }
     }
 }

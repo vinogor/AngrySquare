@@ -13,6 +13,7 @@ using _Project.Sсripts.Domain.Movement;
 using _Project.Sсripts.Domain.Spells;
 using _Project.Sсripts.Services;
 using _Project.Sсripts.View;
+using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -52,7 +53,7 @@ namespace _Project.Sсripts._Root
 
         private SoundController _soundController;
 
-        private void Start()
+        private async void Start()
         {
             Debug.Log("CompositeRoot started");
 
@@ -160,13 +161,19 @@ namespace _Project.Sсripts._Root
                 cellsManager);
 
             // === SAVE ===
-            
-            SaveService saveService = new SaveService(playerDamage, playerDefence, playerHealth, playerMana, availableSpells,
-                _playerMovement,enemyLevel, enemyDamage, enemyDefence, enemyHealth, enemyTargetController, cellsManager);
+
+            SaveService saveService = new SaveService(playerDamage, playerDefence, playerHealth, playerMana,
+                availableSpells, _playerMovement, enemyLevel, enemyDamage, enemyDefence, enemyHealth,
+                enemyTargetController, cellsManager, stateMachine);
             _saveController.Initialize(saveService, stateMachine);
 
-            // в самом конце 
-            stateMachine.SetState<PlayerTurnSpellFsmState>();
+            // в самом конце
+
+            saveService.Load();
+            await UniTask.WaitUntil(() => saveService.LoadComplete);
+
+            if (saveService.IsSaveExist == false)
+                stateMachine.SetState<PlayerTurnSpellFsmState>();
         }
 
         private void CellEffectsInitialize(PlayerJumper playerJumper, Health enemyHealth, Damage playerDamage,

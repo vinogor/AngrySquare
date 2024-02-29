@@ -32,9 +32,9 @@ namespace _Project.Sсripts.Domain
         public event Action Replenished;
         public event Action Died;
 
-        public int Value { get; set; }
+        public int Value { get; private set; }
 
-        public int MaxValue { get; set; }
+        public int MaxValue { get; private set; }
 
         public bool IsAlive => Value > 0;
 
@@ -96,6 +96,14 @@ namespace _Project.Sсripts.Domain
         {
             Value = _defaultValue;
             MaxValue = _defaultMaxValue;
+            MaxValueChanged?.Invoke(MaxValue);
+            ValueChanged?.Invoke(Value);
+        }
+        
+        public void SetNewValues(int value, int maxValue)
+        {
+            Value = value;
+            MaxValue = maxValue;
             MaxValueChanged?.Invoke(MaxValue);
             ValueChanged?.Invoke(Value);
         }

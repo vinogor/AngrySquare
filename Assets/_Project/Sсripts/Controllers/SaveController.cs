@@ -1,7 +1,9 @@
 using _Project.Sсripts.Controllers.StateMachine;
+using _Project.Sсripts.Services;
+using NaughtyAttributes;
 using UnityEngine;
 
-namespace _Project.Sсripts.Services
+namespace _Project.Sсripts.Controllers
 {
     public class SaveController : MonoBehaviour
     {
@@ -13,6 +15,18 @@ namespace _Project.Sсripts.Services
             _saveService = saveService;
             _finiteStateMachine = finiteStateMachine;
             _finiteStateMachine.StateChanged += OnStateChanged;
+        }
+
+        [Button]
+        private void LocalLoad()
+        {
+            _saveService.Load();
+        }
+        
+        [Button]
+        private void LocalSave()
+        {
+            _saveService.Save();
         }
 
         private void OnDestroy()

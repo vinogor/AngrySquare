@@ -24,7 +24,7 @@ namespace _Project.Sсripts.Domain
             Assert.IsNotNull(enemyLevel);
             _enemyLevel = enemyLevel;
 
-            _enemyLevel.Increased += SetNewModel;
+            _enemyLevel.Changed += SetNewModel;
             _enemyLevel.SetDefault += SetDefaultModel;
         }
 
@@ -42,7 +42,7 @@ namespace _Project.Sсripts.Domain
 
         private void OnDestroy()
         {
-            _enemyLevel.Increased -= SetNewModel;
+            _enemyLevel.Changed -= SetNewModel;
             _enemyLevel.SetDefault -= SetDefaultModel;
         }
     }

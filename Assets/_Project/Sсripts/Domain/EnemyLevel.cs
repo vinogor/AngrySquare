@@ -12,21 +12,27 @@ namespace _Project.Sсripts.Domain
             _defaultValue = Value;
         }
 
-        public event Action Increased;
+        public event Action Changed;
         public event Action SetDefault;
 
-        public int Value { get; set; }
+        public int Value { get; private set; }
 
         public void Increase()
         {
             Value++;
-            Increased?.Invoke();
+            Changed?.Invoke();
         }
 
         public void SetToDefault()
         {
             Value = _defaultValue;
             SetDefault?.Invoke();
+        }
+        
+        public void SetNewValue(int value)
+        {
+            Value = value;
+            Changed?.Invoke();
         }
     }
 }

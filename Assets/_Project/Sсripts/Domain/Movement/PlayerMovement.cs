@@ -98,6 +98,7 @@ namespace _Project.Sсripts.Domain.Movement
         public void SetNewStayCell(int newStayCellIndex)
         {
             PlayersCellIndex = newStayCellIndex;
+            _playerJumper.JumpToNextCell(PlayerStayCell, true);
         }
 
         public void SetDefaultStayCell()

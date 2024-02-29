@@ -11,6 +11,8 @@ namespace _Project.Sсripts.Controllers.StateMachine
 
         public event Action StateChanged;
 
+        public string GetCurrentStateTypeName() => _currentFsmState.GetType().FullName;
+
         public void AddState(FsmState fsmState)
         {
             _states.Add(fsmState.GetType(), fsmState);
@@ -19,7 +21,11 @@ namespace _Project.Sсripts.Controllers.StateMachine
         public void SetState<T>() where T : FsmState
         {
             var type = typeof(T);
+            SetState(type);
+        }
 
+        public void SetState(Type type)
+        {
             if (_currentFsmState != null && _currentFsmState.GetType() == type)
                 return;
 
