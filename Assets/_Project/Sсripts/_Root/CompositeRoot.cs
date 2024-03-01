@@ -62,13 +62,14 @@ namespace _Project.Sсripts._Root
             YandexGamesSdk.GameReady();
             Debug.LogError("YandexGamesSdk.GameReady() - STARTED");
         }
-        
+
         private async void Start()
         {
             Debug.LogError("CompositeRoot started");
-            
+
             YandexGamesSdk.Initialize(OnInitialized);
-            
+
+            await UniTask.WaitUntil(() => YandexGamesSdk.IsInitialized);
 
             Assert.AreEqual(16, _cells.Length);
             Assert.AreEqual(3, _enemyAims.Length);
@@ -181,8 +182,6 @@ namespace _Project.Sсripts._Root
             _saveController.Initialize(saveService, stateMachine);
 
             // в самом конце
-            
-
 
             saveService.Load();
             await UniTask.WaitUntil(() => saveService.LoadComplete);
