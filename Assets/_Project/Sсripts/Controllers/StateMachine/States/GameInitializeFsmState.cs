@@ -4,11 +4,13 @@ namespace _Project.Sсripts.Controllers.StateMachine.States
 {
     public class GameInitializeFsmState : FsmState
     {
+        private readonly PopUpTutorialController _popUpTutorialController;
         private readonly Advertising _advertising;
 
-        public GameInitializeFsmState(FiniteStateMachine finiteStateMachine, Advertising advertising) : base(
+        public GameInitializeFsmState(FiniteStateMachine finiteStateMachine, PopUpTutorialController popUpTutorialController, Advertising advertising) : base(
             finiteStateMachine)
         {
+            _popUpTutorialController = popUpTutorialController;
             _advertising = advertising;
         }
 
@@ -18,6 +20,8 @@ namespace _Project.Sсripts.Controllers.StateMachine.States
 
             await _advertising.ShowAd();
 
+            _popUpTutorialController.Enable();
+            
             GoToNextState();
         }
 

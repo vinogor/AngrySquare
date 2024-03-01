@@ -152,14 +152,14 @@ namespace _Project.Sсripts._Root
             LevelRestarter levelRestarter = new LevelRestarter(cellsManager, playerDefence, playerHealth,
                 playerDamage, playerMana, enemyDefence, enemyHealth, enemyDamage, availableSpells, _playerMovement,
                 enemyTargetController, enemyLevel);
-            
+
             // === ADS ===
-            
-            Advertising advertising = new Advertising(gameSounds); 
+
+            Advertising advertising = new Advertising(gameSounds);
 
             // === STATE MACHINE ===
             FiniteStateMachine stateMachine = new FiniteStateMachine();
-            stateMachine.AddState(new GameInitializeFsmState(stateMachine, advertising));
+            stateMachine.AddState(new GameInitializeFsmState(stateMachine, popUpTutorialController, advertising));
             stateMachine.AddState(
                 new PlayerTurnSpellFsmState(stateMachine, spellBarController, popUpTutorialController));
             stateMachine.AddState(new PlayerTurnMoveFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth,
