@@ -61,7 +61,7 @@ namespace _Project.Sсripts.Domain.Movement
             if (amountMoves == 0)
             {
                 EffectName effectName = _cellsManager.Get(PlayersCellIndex).EffectName;
-                Debug.Log("Activating effect: " + effectName);
+                Debug.Log($"Cell with index {PlayersCellIndex}, Activating effect: {effectName}");
                 ActivateEffect(effectName);
                 return;
             }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace _Project.Sсripts.Controllers.StateMachine
 {
@@ -27,7 +28,11 @@ namespace _Project.Sсripts.Controllers.StateMachine
         public void SetState(Type type)
         {
             if (_currentFsmState != null && _currentFsmState.GetType() == type)
+            {
+                Debug.Log("FiniteStateMachine SetState - cant set state - type = " + type);
                 return;
+            }
+                
 
             if (_states.TryGetValue(type, out var newState))
             {
@@ -35,6 +40,7 @@ namespace _Project.Sсripts.Controllers.StateMachine
                 _currentFsmState = newState;
                 _currentFsmState.Enter();
                 StateChanged?.Invoke();
+                Debug.Log("FiniteStateMachine SetState - state  set - " + newState);
             }
         }
     }

@@ -56,10 +56,12 @@ namespace _Project.Sсripts._Root
 
         private async void Start()
         {
-            Debug.LogError("CompositeRoot started");
+            Debug.Log("CompositeRoot started");
             
-            Debug.LogError("YandexGamesSdk.GameReady() - STARTED");
+#if UNITY_WEBGL && !UNITY_EDITOR
+            Debug.Log("YandexGamesSdk.GameReady() - STARTED");
             YandexGamesSdk.GameReady();
+#endif
 
             Assert.AreEqual(16, _cells.Length);
             Assert.AreEqual(3, _enemyAims.Length);
@@ -96,8 +98,7 @@ namespace _Project.Sсripts._Root
             SpellActivator spellActivator = new SpellActivator(playerSpells);
 
             // === UI ===
-            _uiRoot.Initialize(playerHealth, playerMana, enemyHealth, playerDamage, enemyDamage, playerDefence,
-                enemyDefence, availableSpells, enemyLevel);
+
             List<EffectName> availableEffectNames = new List<EffectName>
                 { EffectName.Swords, EffectName.Health, EffectName.Mana };
             List<SpellName> availableSpellNames = new List<SpellName>
@@ -129,6 +130,8 @@ namespace _Project.Sсripts._Root
             LevelRestarter levelRestarter = new LevelRestarter(cellsManager, playerDefence, playerHealth,
                 playerDamage, playerMana, enemyDefence, enemyHealth, enemyDamage, availableSpells, _playerMovement,
                 enemyTargetController, enemyLevel);
+            
+
 
             // === STATE MACHINE ===
             FiniteStateMachine stateMachine = new FiniteStateMachine();
@@ -151,12 +154,13 @@ namespace _Project.Sсripts._Root
                 new EnemyJumper(_enemyModel.transform, _playerMovement, _coefficients, enemyTargetController,
                     gameSounds);
 
+
+            
             // === ЭФФЕКТЫ ЯЧЕЕК ===
 
             cellsManager.FillWithEffects();
 
-            Cell[] portalCells = cellsManager.Find(EffectName.Portal);
-            PlayerPortal playerPortal = new PlayerPortal(playerJumper, portalCells, _playerMovement, gameSounds);
+            PlayerPortal playerPortal = new PlayerPortal(playerJumper, cellsManager, _playerMovement);
 
             _vfxRoot.Initialize(playerHealth, playerMana, playerPortal, enemyHealth);
 
@@ -171,6 +175,11 @@ namespace _Project.Sсripts._Root
                 enemyTargetController, cellsManager, stateMachine);
             _saveController.Initialize(saveService, stateMachine);
 
+            // ========
+            
+            _uiRoot.Initialize(playerHealth, playerMana, enemyHealth, playerDamage, enemyDamage, playerDefence,
+                enemyDefence, availableSpells, enemyLevel, levelRestarter, stateMachine,  saveService);
+            
             // в самом конце
 
             saveService.Load();
@@ -186,21 +195,21 @@ namespace _Project.Sсripts._Root
 
         private void YandexAuthorize()
         {
-            // Debug.LogError("YandexGamesSdk.GameReady() - STARTED");
+            // Debug.Log("YandexGamesSdk.GameReady() - STARTED");
             // YandexGamesSdk.GameReady();
 
-            Debug.LogError("PlayerAccount.Authorize() - STARTED");
+            Debug.Log("PlayerAccount.Authorize() - STARTED");
             PlayerAccount.Authorize();
 
             if (PlayerAccount.IsAuthorized)
             {
-                Debug.LogError("PlayerAccount.RequestPersonalProfileDataPermission() - STARTED");
+                Debug.Log("PlayerAccount.RequestPersonalProfileDataPermission() - STARTED");
                 PlayerAccount.RequestPersonalProfileDataPermission();
             }
 
             if (PlayerAccount.IsAuthorized == false)
             {
-                Debug.LogError("PlayerAccount.IsAuthorized == false");
+                Debug.Log("PlayerAccount.IsAuthorized == false");
             }
         }
 

@@ -105,7 +105,6 @@ namespace _Project.Sсripts.Services
 
         public void Load()
         {
-            
 #if UNITY_EDITOR
             LocalLoad();
             LoadComplete = true;
@@ -114,22 +113,20 @@ namespace _Project.Sсripts.Services
 #if UNITY_WEBGL && !UNITY_EDITOR
             CloudLoad();
 #endif
-            
-            
         }
 
         private void CloudLoad()
         {
-            Debug.LogError("CloudLoad - STARTED");
+            Debug.Log("CloudLoad - STARTED");
             PlayerAccount.GetCloudSaveData((data) =>
                 {
                     Handle(data);
-                    Debug.LogError("PlayerAccount.GetCloudSaveData - COMPLETED");
+                    Debug.Log("PlayerAccount.GetCloudSaveData - COMPLETED");
                     LoadComplete = true;
                 },
                 errorMessage =>
                 {
-                    Debug.LogError($"PlayerAccount.GetCloudSaveData - ERROR: {errorMessage}");
+                    Debug.Log($"PlayerAccount.GetCloudSaveData - ERROR: {errorMessage}");
                     LoadComplete = true;
                 });
         }
@@ -141,31 +138,48 @@ namespace _Project.Sсripts.Services
 
         private void CloudSave()
         {
-            Debug.LogError("CloudSave - STARTED");
-            PlayerAccount.SetCloudSaveData(_localSaveJson, () => Debug.LogError("PlayerAccount.SetCloudSaveData - SUCCESS"));
+            Debug.Log("CloudSave - STARTED");
+            PlayerAccount.SetCloudSaveData(_localSaveJson,
+                () => Debug.Log("PlayerAccount.SetCloudSaveData - SUCCESS"));
         }
 
         private void Handle(string data)
         {
-            if (IsExisted(data) == false)
+            if (string.IsNullOrEmpty(data))
+            {
+                IsSaveExist = false;
+                Debug.Log("SaveService Handle - data empty");
                 return;
+            }
 
-            Apply(Deserialize(data));
-        }
+            DataRecord dataRecord;
 
-        private bool IsExisted(string data)
-        {
-            IsSaveExist = string.IsNullOrEmpty(data) == false;
-            return IsSaveExist;
-        }
+            try
+            {
+                dataRecord = JsonConvert.DeserializeObject<DataRecord>(data);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("SaveService Handle error DeserializeObject: " + e);
+                dataRecord = null;
+            }
+            
+            Debug.Log("SaveService Handle - DeserializeObject success");
+            
+            
+            if (dataRecord == null)
+            {
+                Debug.Log("SaveService Handle - dataRecord is null");
+                IsSaveExist = false;
+                return;
+            }
 
-        private DataRecord Deserialize(string data)
-        {
-            return JsonConvert.DeserializeObject<DataRecord>(data);
+            Apply(dataRecord);
         }
 
         private void Apply(DataRecord dataRecord)
         {
+            Debug.Log("SaveService Apply - start...");
             _playerDamage.SetNewValue(dataRecord.PlayerDamageValue);
             _playerDefence.SetNewValue(dataRecord.PlayerDefenceValue);
             _playerHealth.SetNewValues(dataRecord.PlayerHealthValue, dataRecord.PlayerHealthMaxValue);
@@ -181,9 +195,13 @@ namespace _Project.Sсripts.Services
             _enemyTargetController.SetNewTargetCells(dataRecord.TargetCellsIndexes);
 
             _cellsManager.SetCellsEffects(dataRecord.CellIndexesWithEffectNames);
-            _finiteStateMachine.SetState(Type.GetType(dataRecord.FsmStateTypeName));
+            
+            Type type = Type.GetType(dataRecord.FsmStateTypeName);
+            Debug.Log("SaveService Apply - type = " + type);
+            _finiteStateMachine.SetState(type);
 
-            LoadComplete = true;
+            IsSaveExist = true;
+            Debug.Log("SaveService Apply - finish! IsSaveExist = " + IsSaveExist);
         }
 
         private class DataRecord

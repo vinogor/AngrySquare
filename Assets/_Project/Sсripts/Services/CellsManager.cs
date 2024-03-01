@@ -24,7 +24,7 @@ namespace _Project.Sсripts.Services
 
         public void FillWithEffects()
         {
-            Array.ForEach(_cellsSettings.CellInfos, Fill);
+            Array.ForEach(_cellsSettings.CellInfos, RandomFill);
         }
 
         public Cell[] Find(EffectName effectName)
@@ -75,10 +75,12 @@ namespace _Project.Sсripts.Services
 
         private void Clean(Cell cell)
         {
+            Debug.Log($"CellsManager - Clean - ALD VALUES: cell index={Index(cell)}, effectName={cell.EffectName}");
             cell.SetEffectName(EffectName.NotSet);
+            Debug.Log($"CellsManager - Clean - NEW VALUES: cell index={Index(cell)}, effectName={cell.EffectName}");
         }
 
-        private void Fill(CellInfo cellInfo)
+        private void RandomFill(CellInfo cellInfo)
         {
             EffectName effectName = cellInfo.EffectName;
             Sprite sprite = cellInfo.Sprite;
@@ -92,8 +94,10 @@ namespace _Project.Sсripts.Services
                 .ToList()
                 .ForEach(cell =>
                 {
+                    Debug.Log($"CellsManager - RandomFill - ALD VALUES: cell index={Index(cell)}, effectName={cell.EffectName}");
                     cell.SetEffectName(effectName);
                     cell.SetSprite(sprite);
+                    Debug.Log($"CellsManager - RandomFill - NEW VALUES: cell index={Index(cell)}, effectName={effectName}, cellSprite={sprite.name}");
                 });
         }
 
@@ -109,10 +113,16 @@ namespace _Project.Sсripts.Services
             for (var i = 0; i < _cells.Length; i++)
             {
                 Cell cell = _cells[i];
+                
+                Debug.Log($"CellsManager - SetCellsEffects - ALD VALUES: cell index={i}, effectName={cell.EffectName}");
+                
                 EffectName effectName = cellIndexesWithEffectNames[i];
 
                 cell.SetEffectName(effectName);
-                cell.SetSprite(_cellsSettings.GetCellSprite(effectName));
+                Sprite cellSprite = _cellsSettings.GetCellSprite(effectName);
+                cell.SetSprite(cellSprite);
+                
+                Debug.Log($"CellsManager - SetCellsEffects - NEW VALUES: cell index={i}, effectName={effectName}, cellSprite={cellSprite.name}");
             }
         }
     }
