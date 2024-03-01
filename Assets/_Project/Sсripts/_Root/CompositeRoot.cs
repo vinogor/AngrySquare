@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using _Project.Sсripts.Config;
 using _Project.Sсripts.Controllers;
@@ -57,6 +58,9 @@ namespace _Project.Sсripts._Root
         private void OnInitialized()
         {
             Debug.LogError("YandexGamesSdk initialized");
+
+            YandexGamesSdk.GameReady();
+            Debug.LogError("YandexGamesSdk.GameReady() - STARTED");
         }
         
         private async void Start()
@@ -178,8 +182,7 @@ namespace _Project.Sсripts._Root
 
             // в самом конце
             
-            Debug.LogError("YandexGamesSdk.GameReady() - STARTED");
-            YandexGamesSdk.GameReady();
+
 
             saveService.Load();
             await UniTask.WaitUntil(() => saveService.LoadComplete);
