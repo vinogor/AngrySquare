@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using _Project.Sсripts.Controllers.Sound;
 using Agava.YandexGames;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace _Project.Sсripts.SDK
 {
@@ -26,7 +27,9 @@ namespace _Project.Sсripts.SDK
 
         private async Task Show()
         {
+            Debug.Log("Advertising - Show - start");
             VideoAd.Show(OnOpenCallBack, OnRewardedCallback, OnCloseCallback);
+            Debug.Log("Advertising - Show - end");
             await UniTask.WaitUntil(() => _isAdClosed);
         }
 
