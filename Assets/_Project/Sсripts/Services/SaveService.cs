@@ -106,7 +106,7 @@ namespace _Project.Sсripts.Services
         public void Load()
         {
             
-#if !UNITY_WEBGL && UNITY_EDITOR
+#if UNITY_EDITOR
             LocalLoad();
 #endif
 

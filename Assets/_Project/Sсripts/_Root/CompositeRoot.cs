@@ -54,9 +54,17 @@ namespace _Project.Sсripts._Root
 
         private SoundController _soundController;
 
+        private void OnInitialized()
+        {
+            Debug.LogError("YandexGamesSdk initialized");
+        }
+        
         private async void Start()
         {
-            Debug.Log("CompositeRoot started");
+            Debug.LogError("CompositeRoot started");
+            
+            YandexGamesSdk.Initialize(OnInitialized);
+            
 
             Assert.AreEqual(16, _cells.Length);
             Assert.AreEqual(3, _enemyAims.Length);
@@ -169,6 +177,9 @@ namespace _Project.Sсripts._Root
             _saveController.Initialize(saveService, stateMachine);
 
             // в самом конце
+            
+            Debug.LogError("YandexGamesSdk.GameReady() - STARTED");
+            YandexGamesSdk.GameReady();
 
             saveService.Load();
             await UniTask.WaitUntil(() => saveService.LoadComplete);
@@ -183,21 +194,18 @@ namespace _Project.Sсripts._Root
 
         private void YandexAuthorize()
         {
-            Debug.Log("YandexGamesSdk.GameReady() - STARTED");
-            YandexGamesSdk.GameReady();
-
-            Debug.Log("PlayerAccount.Authorize() - STARTED");
+            Debug.LogError("PlayerAccount.Authorize() - STARTED");
             PlayerAccount.Authorize();
 
             if (PlayerAccount.IsAuthorized)
             {
-                Debug.Log("PlayerAccount.RequestPersonalProfileDataPermission() - STARTED");
+                Debug.LogError("PlayerAccount.RequestPersonalProfileDataPermission() - STARTED");
                 PlayerAccount.RequestPersonalProfileDataPermission();
             }
 
             if (PlayerAccount.IsAuthorized == false)
             {
-                Debug.Log("PlayerAccount.IsAuthorized == false");
+                Debug.LogError("PlayerAccount.IsAuthorized == false");
             }
         }
 
