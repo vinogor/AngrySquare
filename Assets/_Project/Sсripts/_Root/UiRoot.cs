@@ -9,6 +9,7 @@ namespace _Project.Sсripts._Root
     {
         [Header("Common")]
         [SerializeField] [Required] private PopUpNotificationView _popUpNotificationView;
+        [SerializeField] [Required] private PopUpNotificationView _popUpTutorialView;
         [SerializeField] [Required] private RestartGameView _restartGameView;
 
         [Space(10)]
@@ -31,6 +32,7 @@ namespace _Project.Sсripts._Root
         public PopUpChoiceView PopUpChoiceView => _popUpChoiceView;
         public SpellBarView SpellBarView => _spellBarView;
         public PopUpNotificationView PopUpNotificationView => _popUpNotificationView;
+        public PopUpNotificationView PopUpTutorialView => _popUpTutorialView;
         public SpellBarShaker SpellBarShaker => _spellBarShaker;
         public RestartGameView RestartGameView => _restartGameView;
 

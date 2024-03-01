@@ -2,6 +2,8 @@ namespace _Project.Sсripts.Controllers.StateMachine.States
 {
     public class EndOfGameFsmState : FsmState
     {
+        
+        // TODO: не нужен вообще?
         public EndOfGameFsmState(FiniteStateMachine finiteStateMachine) : base(finiteStateMachine)
         {
         }

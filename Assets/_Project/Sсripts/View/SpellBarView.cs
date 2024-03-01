@@ -23,6 +23,7 @@ namespace _Project.Sсripts.View
             Assert.AreEqual(5, _items.Count);
 
             _availableSpells = availableSpells;
+            OnAvailableSpellsUpdated();
             _availableSpells.Updated += OnAvailableSpellsUpdated;
             _skipButton.onClick.AddListener(() => Skipped?.Invoke());
         }
@@ -46,7 +47,7 @@ namespace _Project.Sсripts.View
             }
         }
 
-        public void Clean()
+        private void Clean()
         {
             _items.ForEach(item => item.SetEmptyContent());
         }

@@ -75,7 +75,7 @@ namespace _Project.Sсripts.Services
 
         private void Clean(Cell cell)
         {
-            Debug.Log($"CellsManager - Clean - ALD VALUES: cell index={Index(cell)}, effectName={cell.EffectName}");
+            Debug.Log($"CellsManager - Clean - OLD VALUES: cell index={Index(cell)}, effectName={cell.EffectName}");
             cell.SetEffectName(EffectName.NotSet);
             Debug.Log($"CellsManager - Clean - NEW VALUES: cell index={Index(cell)}, effectName={cell.EffectName}");
         }
@@ -94,7 +94,7 @@ namespace _Project.Sсripts.Services
                 .ToList()
                 .ForEach(cell =>
                 {
-                    Debug.Log($"CellsManager - RandomFill - ALD VALUES: cell index={Index(cell)}, effectName={cell.EffectName}");
+                    Debug.Log($"CellsManager - RandomFill - OLD VALUES: cell index={Index(cell)}, effectName={cell.EffectName}");
                     cell.SetEffectName(effectName);
                     cell.SetSprite(sprite);
                     Debug.Log($"CellsManager - RandomFill - NEW VALUES: cell index={Index(cell)}, effectName={effectName}, cellSprite={sprite.name}");
@@ -114,7 +114,7 @@ namespace _Project.Sсripts.Services
             {
                 Cell cell = _cells[i];
                 
-                Debug.Log($"CellsManager - SetCellsEffects - ALD VALUES: cell index={i}, effectName={cell.EffectName}");
+                Debug.Log($"CellsManager - SetCellsEffects - OLD VALUES: cell index={i}, effectName={cell.EffectName}");
                 
                 EffectName effectName = cellIndexesWithEffectNames[i];
 

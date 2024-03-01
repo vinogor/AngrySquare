@@ -89,6 +89,7 @@ namespace _Project.Sсripts._Root
             _enemyModel.Initialize(enemyLevel);
 
             AvailableSpells availableSpells = new AvailableSpells();
+            availableSpells.Add(SpellName.UpDamage);
 
             Dictionary<SpellName, Spell> playerSpells = new Dictionary<SpellName, Spell>();
             playerSpells.Add(SpellName.FullHealth, new FullHealthSpell(gameSounds, playerHealth));
@@ -130,6 +131,21 @@ namespace _Project.Sсripts._Root
                 _uiRoot.PopUpNotificationView,
                 new PopUpNotificationModel("Player Lose", "You lost the game! Press 'OK' to restart."));
 
+            Dictionary<TutorialStep, PopUpNotificationModel> tutorialContent = new ();
+            tutorialContent.Add(TutorialStep.Intro,
+                new PopUpNotificationModel(UiTexts.TutorialIntroTitle, UiTexts.TutorialIntroInfo));
+            tutorialContent.Add(TutorialStep.SpellCast,
+                new PopUpNotificationModel(UiTexts.TutorialSpellCastTitle, UiTexts.TutorialSpellCastInfo));
+            tutorialContent.Add(TutorialStep.RollDice,
+                new PopUpNotificationModel(UiTexts.TutorialRollDiceTitle, UiTexts.TutorialRollDiceInfo));
+            tutorialContent.Add(TutorialStep.EnemyTurn,
+                new PopUpNotificationModel(UiTexts.TutorialEnemyTurnTitle, UiTexts.TutorialEnemyTurnInfo));
+            tutorialContent.Add(TutorialStep.LastTip,
+                new PopUpNotificationModel(UiTexts.TutorialLastTipTitle, UiTexts.TutorialLastTipInfo));
+
+            PopUpTutorialController popUpTutorialController = new PopUpTutorialController(_uiRoot.PopUpTutorialView,
+                tutorialContent);
+
             EnemyTargetController enemyTargetController = new EnemyTargetController(cellsManager, _enemyAims);
 
             LevelRestarter levelRestarter = new LevelRestarter(cellsManager, playerDefence, playerHealth,
@@ -139,10 +155,13 @@ namespace _Project.Sсripts._Root
             // === STATE MACHINE ===
             FiniteStateMachine stateMachine = new FiniteStateMachine();
             // stateMachine.AddState(new RestartFsmState(stateMachine, levelRestarter));
-            stateMachine.AddState(new PlayerTurnMoveFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth));
-            stateMachine.AddState(new PlayerTurnSpellFsmState(stateMachine, spellBarController));
+            stateMachine.AddState(
+                new PlayerTurnSpellFsmState(stateMachine, spellBarController, popUpTutorialController));
+            stateMachine.AddState(new PlayerTurnMoveFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth,
+                popUpTutorialController));
             stateMachine.AddState(new PlayerWinFsmState(stateMachine, popUpPlayerWin, levelRestarter, gameSounds));
-            stateMachine.AddState(new EnemyTurnFsmState(stateMachine, _enemyMovement, playerHealth));
+            stateMachine.AddState(new EnemyTurnFsmState(stateMachine, _enemyMovement, playerHealth,
+                popUpTutorialController));
             stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, popUpPlayerDefeat, levelRestarter,
                 gameSounds));
             // stateMachine.AddState(new EndOfGameFsmState(stateMachine));

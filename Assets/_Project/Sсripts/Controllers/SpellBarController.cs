@@ -34,7 +34,6 @@ namespace _Project.Sсripts.Controllers
             _spellBarShaker = spellBarShaker;
             _gameSounds = gameSounds;
 
-            _spellBarView.Clean();
             _spellBarView.Disable();
         }
 
