@@ -33,7 +33,7 @@ namespace _Project.Sсripts.Controllers.StateMachine.States
         private void Handle()
         {
             _levelRestarter.RestartAfterDefeat();
-            FiniteStateMachine.SetState<PlayerTurnSpellFsmState>();
+            FiniteStateMachine.SetState<GameInitializeFsmState>();
         }
 
         public override void Exit()

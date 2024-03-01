@@ -26,7 +26,7 @@ namespace _Project.Sсripts.Controllers
         private void OnClick()
         {
             _levelRestarter.RestartAfterDefeat();
-            _finiteStateMachine.SetState<PlayerTurnSpellFsmState>();
+            _finiteStateMachine.SetState<GameInitializeFsmState>();
             _saveService.Save();
         }
 
