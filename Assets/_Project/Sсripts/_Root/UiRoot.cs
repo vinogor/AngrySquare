@@ -1,6 +1,4 @@
-using _Project.Sсripts.Controllers.StateMachine;
 using _Project.Sсripts.Domain;
-using _Project.Sсripts.Services;
 using _Project.Sсripts.View;
 using NaughtyAttributes;
 using UnityEngine;
@@ -11,7 +9,7 @@ namespace _Project.Sсripts._Root
     {
         [Header("Common")]
         [SerializeField] [Required] private PopUpNotificationView _popUpNotificationView;
-        [SerializeField] [Required] private RestartGameButton _restartGameButton;
+        [SerializeField] [Required] private RestartGameView _restartGameView;
 
         [Space(10)]
         [Header("Player")]
@@ -34,11 +32,11 @@ namespace _Project.Sсripts._Root
         public SpellBarView SpellBarView => _spellBarView;
         public PopUpNotificationView PopUpNotificationView => _popUpNotificationView;
         public SpellBarShaker SpellBarShaker => _spellBarShaker;
+        public RestartGameView RestartGameView => _restartGameView;
 
         public void Initialize(Health playerHealth, Mana playerMana, Health enemyHealth, Damage playerDamage,
             Damage enemyDamage, Defence playerDefence, Defence enemyDefence, AvailableSpells availableSpells,
-            EnemyLevel enemyLevel, LevelRestarter levelRestarter, FiniteStateMachine finiteStateMachine,
-            SaveService saveService)
+            EnemyLevel enemyLevel)
         {
             _playerHealthBarView.Initialize(playerHealth);
             _playerManaBarView.Initialize(playerMana);
@@ -50,7 +48,6 @@ namespace _Project.Sсripts._Root
             _spellBarView.Initialize(availableSpells);
             _enemyLevelTextView.Initialize(enemyLevel);
             _spellBarShaker.Initialize();
-            _restartGameButton.initialize(levelRestarter, finiteStateMachine, saveService);
         }
     }
 }

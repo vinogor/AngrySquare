@@ -24,8 +24,7 @@ namespace _Project.Sсripts.Domain
 
         public void SetEffectName(EffectName effectName)
         {
-            if (IsEffectSet() == false)
-                EffectName = effectName;
+            EffectName = effectName;
         }
 
         public void SetSprite(Sprite sprite)

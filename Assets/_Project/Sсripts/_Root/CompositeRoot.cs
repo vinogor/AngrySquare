@@ -36,6 +36,7 @@ namespace _Project.Sсripts._Root
         [SerializeField] [Required] private VfxRoot _vfxRoot;
         [SerializeField] [Required] private SoundView _soundView;
         [SerializeField] [Required] private AudioSource _audioSource;
+        [SerializeField] [Required] private AudioSource _backgroundAudioSource;
         [SerializeField] [Required] private SaveController _saveController;
 
         [Space(10)]
@@ -53,11 +54,12 @@ namespace _Project.Sсripts._Root
         private readonly Dictionary<EffectName, Effect> _enemyEffects = new();
 
         private SoundController _soundController;
+        private RestartGameController _restartGameController;
 
         private async void Start()
         {
             Debug.Log("CompositeRoot started");
-            
+
 #if UNITY_WEBGL && !UNITY_EDITOR
             Debug.Log("YandexGamesSdk.GameReady() - STARTED");
             YandexGamesSdk.GameReady();
@@ -66,7 +68,7 @@ namespace _Project.Sсripts._Root
             Assert.AreEqual(16, _cells.Length);
             Assert.AreEqual(3, _enemyAims.Length);
 
-            GameSounds gameSounds = new GameSounds(_soundSettings, _audioSource);
+            GameSounds gameSounds = new GameSounds(_soundSettings, _audioSource, _backgroundAudioSource);
 
             _soundController = new SoundController(_soundView, gameSounds);
 
@@ -99,6 +101,9 @@ namespace _Project.Sсripts._Root
 
             // === UI ===
 
+            _uiRoot.Initialize(playerHealth, playerMana, enemyHealth, playerDamage, enemyDamage, playerDefence,
+                enemyDefence, availableSpells, enemyLevel);
+
             List<EffectName> availableEffectNames = new List<EffectName>
                 { EffectName.Swords, EffectName.Health, EffectName.Mana };
             List<SpellName> availableSpellNames = new List<SpellName>
@@ -130,8 +135,6 @@ namespace _Project.Sсripts._Root
             LevelRestarter levelRestarter = new LevelRestarter(cellsManager, playerDefence, playerHealth,
                 playerDamage, playerMana, enemyDefence, enemyHealth, enemyDamage, availableSpells, _playerMovement,
                 enemyTargetController, enemyLevel);
-            
-
 
             // === STATE MACHINE ===
             FiniteStateMachine stateMachine = new FiniteStateMachine();
@@ -154,8 +157,6 @@ namespace _Project.Sсripts._Root
                 new EnemyJumper(_enemyModel.transform, _playerMovement, _coefficients, enemyTargetController,
                     gameSounds);
 
-
-            
             // === ЭФФЕКТЫ ЯЧЕЕК ===
 
             cellsManager.FillWithEffects();
@@ -176,10 +177,10 @@ namespace _Project.Sсripts._Root
             _saveController.Initialize(saveService, stateMachine);
 
             // ========
-            
-            _uiRoot.Initialize(playerHealth, playerMana, enemyHealth, playerDamage, enemyDamage, playerDefence,
-                enemyDefence, availableSpells, enemyLevel, levelRestarter, stateMachine,  saveService);
-            
+
+            _restartGameController =
+                new RestartGameController(_uiRoot.RestartGameView, levelRestarter, stateMachine, saveService);
+
             // в самом конце
 
             saveService.Load();
