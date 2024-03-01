@@ -108,24 +108,30 @@ namespace _Project.Sсripts.Services
             
 #if UNITY_EDITOR
             LocalLoad();
+            LoadComplete = true;
 #endif
 
 #if UNITY_WEBGL && !UNITY_EDITOR
             CloudLoad();
 #endif
             
-            LoadComplete = true;
+            
         }
 
         private void CloudLoad()
         {
-            Debug.Log("CloudLoad - STARTED");
+            Debug.LogError("CloudLoad - STARTED");
             PlayerAccount.GetCloudSaveData((data) =>
                 {
                     Handle(data);
-                    Debug.Log("PlayerAccount.GetCloudSaveData - COMPLETED");
+                    Debug.LogError("PlayerAccount.GetCloudSaveData - COMPLETED");
+                    LoadComplete = true;
                 },
-                errorMessage => { Debug.Log($"PlayerAccount.GetCloudSaveData - ERROR: {errorMessage}"); });
+                errorMessage =>
+                {
+                    Debug.LogError($"PlayerAccount.GetCloudSaveData - ERROR: {errorMessage}");
+                    LoadComplete = true;
+                });
         }
 
         private void LocalLoad()
@@ -135,8 +141,8 @@ namespace _Project.Sсripts.Services
 
         private void CloudSave()
         {
-            Debug.Log("CloudSave - STARTED");
-            PlayerAccount.SetCloudSaveData(_localSaveJson, () => Debug.Log("PlayerAccount.SetCloudSaveData - SUCCESS"));
+            Debug.LogError("CloudSave - STARTED");
+            PlayerAccount.SetCloudSaveData(_localSaveJson, () => Debug.LogError("PlayerAccount.SetCloudSaveData - SUCCESS"));
         }
 
         private void Handle(string data)

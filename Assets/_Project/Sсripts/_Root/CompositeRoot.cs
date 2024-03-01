@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using _Project.Sсripts.Config;
 using _Project.Sсripts.Controllers;
@@ -55,21 +54,12 @@ namespace _Project.Sсripts._Root
 
         private SoundController _soundController;
 
-        private void OnInitialized()
-        {
-            Debug.LogError("YandexGamesSdk initialized");
-
-            YandexGamesSdk.GameReady();
-            Debug.LogError("YandexGamesSdk.GameReady() - STARTED");
-        }
-
         private async void Start()
         {
             Debug.LogError("CompositeRoot started");
-
-            YandexGamesSdk.Initialize(OnInitialized);
-
-            await UniTask.WaitUntil(() => YandexGamesSdk.IsInitialized);
+            
+            Debug.LogError("YandexGamesSdk.GameReady() - STARTED");
+            YandexGamesSdk.GameReady();
 
             Assert.AreEqual(16, _cells.Length);
             Assert.AreEqual(3, _enemyAims.Length);
@@ -196,6 +186,9 @@ namespace _Project.Sсripts._Root
 
         private void YandexAuthorize()
         {
+            // Debug.LogError("YandexGamesSdk.GameReady() - STARTED");
+            // YandexGamesSdk.GameReady();
+
             Debug.LogError("PlayerAccount.Authorize() - STARTED");
             PlayerAccount.Authorize();
 

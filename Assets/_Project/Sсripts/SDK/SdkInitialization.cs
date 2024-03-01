@@ -1,3 +1,4 @@
+using System.Collections;
 using Agava.YandexGames;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,9 +11,9 @@ namespace _Project.Sсripts.SDK
 
         private void Awake() => YandexGamesSdk.CallbackLogging = true;
 
-        private void Start()
+        private IEnumerator Start()
         {
-            YandexGamesSdk.Initialize(OnInitialized);
+            yield return YandexGamesSdk.Initialize(OnInitialized);
         }
 
         private void OnInitialized()
