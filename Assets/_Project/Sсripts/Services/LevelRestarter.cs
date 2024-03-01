@@ -1,6 +1,7 @@
 using _Project.Sсripts.Controllers;
 using _Project.Sсripts.Domain;
 using _Project.Sсripts.Domain.Movement;
+using _Project.Sсripts.Domain.Spells;
 
 namespace _Project.Sсripts.Services
 {
@@ -51,6 +52,7 @@ namespace _Project.Sсripts.Services
             _playerDamage.SetToDefault();
             _playerMana.SetToDefault();
             _availableSpells.Clear();
+            _availableSpells.Add(SpellName.UpDamage);
             _playerMovement.SetDefaultStayCell();
 
             // TODO: задать начальную модель противника  

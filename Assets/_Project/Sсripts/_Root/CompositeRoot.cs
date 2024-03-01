@@ -11,6 +11,7 @@ using _Project.Sсripts.Domain.Effects.Enemy;
 using _Project.Sсripts.Domain.Effects.Player;
 using _Project.Sсripts.Domain.Movement;
 using _Project.Sсripts.Domain.Spells;
+using _Project.Sсripts.SDK;
 using _Project.Sсripts.Services;
 using _Project.Sсripts.View;
 using Agava.YandexGames;
@@ -131,7 +132,7 @@ namespace _Project.Sсripts._Root
                 _uiRoot.PopUpNotificationView,
                 new PopUpNotificationModel("Player Lose", "You lost the game! Press 'OK' to restart."));
 
-            Dictionary<TutorialStep, PopUpNotificationModel> tutorialContent = new ();
+            Dictionary<TutorialStep, PopUpNotificationModel> tutorialContent = new();
             tutorialContent.Add(TutorialStep.Intro,
                 new PopUpNotificationModel(UiTexts.TutorialIntroTitle, UiTexts.TutorialIntroInfo));
             tutorialContent.Add(TutorialStep.SpellCast,
@@ -151,10 +152,14 @@ namespace _Project.Sсripts._Root
             LevelRestarter levelRestarter = new LevelRestarter(cellsManager, playerDefence, playerHealth,
                 playerDamage, playerMana, enemyDefence, enemyHealth, enemyDamage, availableSpells, _playerMovement,
                 enemyTargetController, enemyLevel);
+            
+            // === ADS ===
+            
+            Advertising advertising = new Advertising(gameSounds); 
 
             // === STATE MACHINE ===
             FiniteStateMachine stateMachine = new FiniteStateMachine();
-            // stateMachine.AddState(new RestartFsmState(stateMachine, levelRestarter));
+            stateMachine.AddState(new GameInitializeFsmState(stateMachine, advertising));
             stateMachine.AddState(
                 new PlayerTurnSpellFsmState(stateMachine, spellBarController, popUpTutorialController));
             stateMachine.AddState(new PlayerTurnMoveFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth,
@@ -206,7 +211,7 @@ namespace _Project.Sсripts._Root
             await UniTask.WaitUntil(() => saveService.LoadComplete);
 
             if (saveService.IsSaveExist == false)
-                stateMachine.SetState<PlayerTurnSpellFsmState>();
+                stateMachine.SetState<GameInitializeFsmState>();
 
 #if UNITY_WEBGL && !UNITY_EDITOR
             YandexAuthorize();
