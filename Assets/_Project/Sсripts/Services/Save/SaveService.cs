@@ -7,20 +7,13 @@ using _Project.Sсripts.Domain;
 using _Project.Sсripts.Domain.Effects;
 using _Project.Sсripts.Domain.Movement;
 using _Project.Sсripts.Domain.Spells;
-using Agava.YandexGames;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace _Project.Sсripts.Services
+namespace _Project.Sсripts.Services.Save
 {
-    // TODO: как пороверить это всё:
-    //    + кешировать локально json
-    //    - загрузить билд в ЯИ (но непонятно как блок с #if отработает)
-
     public class SaveService
     {
-        private string _localSaveJson;
-
         // player 
         private readonly Damage _playerDamage;
         private readonly Defence _playerDefence;
@@ -43,12 +36,14 @@ namespace _Project.Sсripts.Services
         private readonly CellsManager _cellsManager;
         private readonly FiniteStateMachine _finiteStateMachine;
         private readonly PopUpTutorialController _popUpTutorialController;
+        
+        private readonly ISaver _saver;
 
         public SaveService(Damage playerDamage, Defence playerDefence, Health playerHealth, Mana playerMana,
             AvailableSpells availableSpells, PlayerMovement playerMovement, EnemyLevel enemyLevel, Damage enemyDamage,
             Defence enemyDefence, Health enemyHealth, EnemyTargetController enemyTargetController,
             CellsManager cellsManager, FiniteStateMachine finiteStateMachine,
-            PopUpTutorialController popUpTutorialController)
+            PopUpTutorialController popUpTutorialController, ISaver saver)
         {
             _playerDamage = playerDamage;
             _playerDefence = playerDefence;
@@ -66,6 +61,8 @@ namespace _Project.Sсripts.Services
             _cellsManager = cellsManager;
             _finiteStateMachine = finiteStateMachine;
             _popUpTutorialController = popUpTutorialController;
+            
+            _saver = saver;
         }
 
         public bool LoadComplete { get; private set; }
@@ -100,51 +97,16 @@ namespace _Project.Sсripts.Services
                 FsmStateTypeName = _finiteStateMachine.GetCurrentStateTypeName(),
             };
 
-            _localSaveJson = JsonConvert.SerializeObject(dataRecord);
+            string json = JsonConvert.SerializeObject(dataRecord);
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-            CloudSave();
-#endif
+            _saver.Write(json);
         }
 
         public void Load()
         {
-#if UNITY_EDITOR
-            LocalLoad();
+            string json = _saver.Read().Result;
+            Handle(json);
             LoadComplete = true;
-#endif
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-            CloudLoad();
-#endif
-        }
-
-        private void CloudLoad()
-        {
-            Debug.Log("CloudLoad - STARTED");
-            PlayerAccount.GetCloudSaveData((data) =>
-                {
-                    Handle(data);
-                    Debug.Log("PlayerAccount.GetCloudSaveData - COMPLETED");
-                    LoadComplete = true;
-                },
-                errorMessage =>
-                {
-                    Debug.Log($"PlayerAccount.GetCloudSaveData - ERROR: {errorMessage}");
-                    LoadComplete = true;
-                });
-        }
-
-        private void LocalLoad()
-        {
-            Handle(_localSaveJson);
-        }
-
-        private void CloudSave()
-        {
-            Debug.Log("CloudSave - STARTED");
-            PlayerAccount.SetCloudSaveData(_localSaveJson,
-                () => Debug.Log("PlayerAccount.SetCloudSaveData - SUCCESS"));
         }
 
         private void Handle(string data)
@@ -198,11 +160,10 @@ namespace _Project.Sсripts.Services
             _enemyTargetController.SetNewTargetCells(dataRecord.TargetCellsIndexes);
 
             _cellsManager.SetCellsEffects(dataRecord.CellIndexesWithEffectNames);
-
+            _popUpTutorialController.Switch(dataRecord.IsTutorialEnable);
             Type type = Type.GetType(dataRecord.FsmStateTypeName);
             Debug.Log("SaveService Apply - type = " + type);
             _finiteStateMachine.SetState(type);
-            _popUpTutorialController.Switch(dataRecord.IsTutorialEnable);
 
             IsSaveExist = true;
             Debug.Log("SaveService Apply - finish! IsSaveExist = " + IsSaveExist);

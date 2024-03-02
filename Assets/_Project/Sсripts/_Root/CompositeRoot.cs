@@ -13,6 +13,7 @@ using _Project.Sсripts.Domain.Movement;
 using _Project.Sсripts.Domain.Spells;
 using _Project.Sсripts.SDK;
 using _Project.Sсripts.Services;
+using _Project.Sсripts.Services.Save;
 using _Project.Sсripts.View;
 using Agava.YandexGames;
 using Cysharp.Threading.Tasks;
@@ -56,14 +57,19 @@ namespace _Project.Sсripts._Root
 
         private SoundController _soundController;
         private RestartGameController _restartGameController;
+        private ISaver _saver;
 
         private async void Start()
         {
             Debug.Log("CompositeRoot started");
 
+            
 #if UNITY_WEBGL && !UNITY_EDITOR
+            _saver = new CloudSaver();
             Debug.Log("YandexGamesSdk.GameReady() - STARTED");
             YandexGamesSdk.GameReady();
+#else
+            _saver = new LocalSaver();
 #endif
 
             Assert.AreEqual(16, _cells.Length);
@@ -196,7 +202,7 @@ namespace _Project.Sсripts._Root
 
             SaveService saveService = new SaveService(playerDamage, playerDefence, playerHealth, playerMana,
                 availableSpells, _playerMovement, enemyLevel, enemyDamage, enemyDefence, enemyHealth,
-                enemyTargetController, cellsManager, stateMachine, popUpTutorialController);
+                enemyTargetController, cellsManager, stateMachine, popUpTutorialController, _saver);
             _saveController.Initialize(saveService, stateMachine);
 
             // ========
@@ -268,6 +274,7 @@ namespace _Project.Sсripts._Root
         private void OnDestroy()
         {
             _soundController.Dispose();
+            _restartGameController.Dispose();
         }
     }
 }

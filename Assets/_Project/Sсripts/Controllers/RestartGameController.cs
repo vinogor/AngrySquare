@@ -2,6 +2,7 @@ using System;
 using _Project.Sсripts.Controllers.StateMachine;
 using _Project.Sсripts.Controllers.StateMachine.States;
 using _Project.Sсripts.Services;
+using _Project.Sсripts.Services.Save;
 using _Project.Sсripts.View;
 
 namespace _Project.Sсripts.Controllers
@@ -13,7 +14,8 @@ namespace _Project.Sсripts.Controllers
         private readonly FiniteStateMachine _finiteStateMachine;
         private readonly SaveService _saveService;
 
-        public RestartGameController(RestartGameView restartGameView, LevelRestarter levelRestarter, FiniteStateMachine finiteStateMachine, SaveService saveService)
+        public RestartGameController(RestartGameView restartGameView, LevelRestarter levelRestarter,
+            FiniteStateMachine finiteStateMachine, SaveService saveService)
         {
             _restartGameView = restartGameView;
             _levelRestarter = levelRestarter;
@@ -22,7 +24,7 @@ namespace _Project.Sсripts.Controllers
 
             _restartGameView.ButtonClickedEvent.AddListener(OnClick);
         }
-        
+
         private void OnClick()
         {
             _levelRestarter.RestartAfterDefeat();
