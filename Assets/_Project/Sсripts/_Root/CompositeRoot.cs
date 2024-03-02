@@ -159,7 +159,7 @@ namespace _Project.Sсripts._Root
 
             // === STATE MACHINE ===
             FiniteStateMachine stateMachine = new FiniteStateMachine();
-            stateMachine.AddState(new GameInitializeFsmState(stateMachine, popUpTutorialController, advertising));
+            stateMachine.AddState(new GameInitializeFsmState(stateMachine, advertising));
             stateMachine.AddState(
                 new PlayerTurnSpellFsmState(stateMachine, spellBarController, popUpTutorialController));
             stateMachine.AddState(new PlayerTurnMoveFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth,
@@ -169,7 +169,6 @@ namespace _Project.Sсripts._Root
                 popUpTutorialController));
             stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, popUpPlayerDefeat, levelRestarter,
                 gameSounds));
-            // stateMachine.AddState(new EndOfGameFsmState(stateMachine));
 
             _diceRoller.Initialize(gameSounds);
 
@@ -197,7 +196,7 @@ namespace _Project.Sсripts._Root
 
             SaveService saveService = new SaveService(playerDamage, playerDefence, playerHealth, playerMana,
                 availableSpells, _playerMovement, enemyLevel, enemyDamage, enemyDefence, enemyHealth,
-                enemyTargetController, cellsManager, stateMachine);
+                enemyTargetController, cellsManager, stateMachine, popUpTutorialController);
             _saveController.Initialize(saveService, stateMachine);
 
             // ========

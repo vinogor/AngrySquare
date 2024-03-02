@@ -42,11 +42,13 @@ namespace _Project.Sсripts.Services
         // common
         private readonly CellsManager _cellsManager;
         private readonly FiniteStateMachine _finiteStateMachine;
+        private readonly PopUpTutorialController _popUpTutorialController;
 
         public SaveService(Damage playerDamage, Defence playerDefence, Health playerHealth, Mana playerMana,
             AvailableSpells availableSpells, PlayerMovement playerMovement, EnemyLevel enemyLevel, Damage enemyDamage,
             Defence enemyDefence, Health enemyHealth, EnemyTargetController enemyTargetController,
-            CellsManager cellsManager, FiniteStateMachine finiteStateMachine)
+            CellsManager cellsManager, FiniteStateMachine finiteStateMachine,
+            PopUpTutorialController popUpTutorialController)
         {
             _playerDamage = playerDamage;
             _playerDefence = playerDefence;
@@ -63,6 +65,7 @@ namespace _Project.Sсripts.Services
 
             _cellsManager = cellsManager;
             _finiteStateMachine = finiteStateMachine;
+            _popUpTutorialController = popUpTutorialController;
         }
 
         public bool LoadComplete { get; private set; }
@@ -93,7 +96,8 @@ namespace _Project.Sсripts.Services
 
                 // common
                 CellIndexesWithEffectNames = _cellsManager.GetCellIndexesWithEffectNames(),
-                FsmStateTypeName = _finiteStateMachine.GetCurrentStateTypeName()
+                FsmStateTypeName = _finiteStateMachine.GetCurrentStateTypeName(),
+                IsTutorialEnable = _popUpTutorialController.IsEnable
             };
 
             _localSaveJson = JsonConvert.SerializeObject(dataRecord);
@@ -163,10 +167,9 @@ namespace _Project.Sсripts.Services
                 Debug.Log("SaveService Handle error DeserializeObject: " + e);
                 dataRecord = null;
             }
-            
+
             Debug.Log("SaveService Handle - DeserializeObject success");
-            
-            
+
             if (dataRecord == null)
             {
                 Debug.Log("SaveService Handle - dataRecord is null");
@@ -195,10 +198,11 @@ namespace _Project.Sсripts.Services
             _enemyTargetController.SetNewTargetCells(dataRecord.TargetCellsIndexes);
 
             _cellsManager.SetCellsEffects(dataRecord.CellIndexesWithEffectNames);
-            
+
             Type type = Type.GetType(dataRecord.FsmStateTypeName);
             Debug.Log("SaveService Apply - type = " + type);
             _finiteStateMachine.SetState(type);
+            _popUpTutorialController.Switch(dataRecord.IsTutorialEnable);
 
             IsSaveExist = true;
             Debug.Log("SaveService Apply - finish! IsSaveExist = " + IsSaveExist);
@@ -227,6 +231,7 @@ namespace _Project.Sсripts.Services
             // common
             public Dictionary<int, EffectName> CellIndexesWithEffectNames;
             public string FsmStateTypeName;
+            public bool IsTutorialEnable;
         }
     }
 }

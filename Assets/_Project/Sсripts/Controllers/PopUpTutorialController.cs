@@ -11,7 +11,6 @@ namespace _Project.Sсripts.Controllers
         private readonly PopUpNotificationView _popUp;
         private readonly Dictionary<TutorialStep, PopUpNotificationModel> _tutorialContent;
 
-        private bool _isEnabled = false;
         private bool _isClosed = true;
 
         public PopUpTutorialController(PopUpNotificationView popUp,
@@ -22,16 +21,19 @@ namespace _Project.Sсripts.Controllers
 
             _popUp = popUp;
             _tutorialContent = tutorialContent;
+            IsEnable = true;
         }
 
-        public void Enable()
+        public bool IsEnable { get; private set; }
+
+        public void Switch(bool isEnabled)
         {
-            _isEnabled = true;
+            IsEnable = isEnabled;
         }
 
         public async Task Show(TutorialStep tutorialStep)
         {
-            if (!_isEnabled) return;
+            if (!IsEnable) return;
 
             _isClosed = false;
 
@@ -43,7 +45,7 @@ namespace _Project.Sсripts.Controllers
 
             if (tutorialStep == TutorialStep.LastTip)
             {
-                _isEnabled = false;
+                IsEnable = false;
             }
 
             await UniTask.WaitUntil(() => _isClosed);

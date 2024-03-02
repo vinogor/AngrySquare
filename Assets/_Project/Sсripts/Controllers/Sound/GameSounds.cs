@@ -17,6 +17,9 @@ namespace _Project.Sсripts.Controllers.Sound
             _sounds = soundSettings.Configs.ToDictionary(key => key.SoundName, value => value.AudioClip);
             _audioSource = audioSource;
             _backgroundAudioSource = backgroundAudioSource;
+
+            _backgroundAudioSource.playOnAwake = true;
+            _backgroundAudioSource.loop = true;
         }
 
         public void Switch(bool isEnabled)

@@ -106,6 +106,7 @@ namespace _Project.Sсripts.Services
 
         public void MakeUnavailable()
         {
+            _vfx.Stop();
             _canPlayerThrow = false;
         }
 
