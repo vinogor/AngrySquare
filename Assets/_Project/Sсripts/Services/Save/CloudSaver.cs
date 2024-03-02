@@ -1,6 +1,5 @@
-using System.Threading.Tasks;
+using System;
 using Agava.YandexGames;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace _Project.Sсripts.Services.Save
@@ -9,37 +8,30 @@ namespace _Project.Sсripts.Services.Save
     {
         public void Write(string data)
         {
-            Debug.Log("CloudSave - STARTED");
+            Debug.Log("CloudSaver - save - STARTED");
 
             PlayerAccount.SetCloudSaveData(data,
-                () => Debug.Log("PlayerAccount.SetCloudSaveData - SUCCESS"));
+                () => Debug.Log("CloudSaver - PlayerAccount.SetCloudSaveData - SUCCESS"),
+                (message) => Debug.Log("CloudSaver - PlayerAccount.SetCloudSaveData - ERROR: " + message));
         }
 
-        public async Task<string> Read()
+        public void Read(Action<string> action)
         {
-            Debug.Log("CloudLoad - STARTED");
+            Debug.Log("CloudSaver - load - STARTED");
 
-            bool isLoadCompleted = false;
             string data = string.Empty;
 
             PlayerAccount.GetCloudSaveData((loadedData) =>
                 {
                     Debug.Log("CloudSaver - PlayerAccount.GetCloudSaveData - COMPLETED");
                     data = loadedData;
-                    isLoadCompleted = true;
+                    action.Invoke(data);
                 },
                 errorMessage =>
                 {
                     Debug.Log($"CloudSaver - PlayerAccount.GetCloudSaveData - ERROR: {errorMessage}");
-                    isLoadCompleted = true;
+                    action.Invoke(data);
                 });
-
-            Debug.Log("CloudSaver - waiting for 'isLoadCompleted' " + isLoadCompleted);
-            
-            
-            await UniTask.WaitUntil(() => isLoadCompleted);
-
-            return await Task.FromResult(data);
         }
     }
 }

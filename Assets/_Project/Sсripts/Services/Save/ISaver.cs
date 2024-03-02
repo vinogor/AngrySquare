@@ -1,10 +1,10 @@
-using System.Threading.Tasks;
+using System;
 
 namespace _Project.Sсripts.Services.Save
 {
     public interface ISaver
     {
         void Write(string data);
-        Task<string> Read();
+        void Read(Action<string> action);
     }
 }

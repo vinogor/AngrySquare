@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using System;
 using UnityEngine;
 
 namespace _Project.Sсripts.Services.Save
@@ -13,9 +13,9 @@ namespace _Project.Sсripts.Services.Save
             PlayerPrefs.Save();
         }
 
-        public Task<string> Read()
+        public void Read(Action<string> action)
         {
-            return Task.FromResult(PlayerPrefs.GetString(SaveKey));
+            action.Invoke(PlayerPrefs.GetString(SaveKey));
         }
     }
 }

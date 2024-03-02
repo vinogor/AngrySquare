@@ -7,6 +7,7 @@ using _Project.Sсripts.Domain;
 using _Project.Sсripts.Domain.Effects;
 using _Project.Sсripts.Domain.Movement;
 using _Project.Sсripts.Domain.Spells;
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -36,7 +37,7 @@ namespace _Project.Sсripts.Services.Save
         private readonly CellsManager _cellsManager;
         private readonly FiniteStateMachine _finiteStateMachine;
         private readonly PopUpTutorialController _popUpTutorialController;
-        
+
         private readonly ISaver _saver;
 
         public SaveService(Damage playerDamage, Defence playerDefence, Health playerHealth, Mana playerMana,
@@ -61,7 +62,7 @@ namespace _Project.Sсripts.Services.Save
             _cellsManager = cellsManager;
             _finiteStateMachine = finiteStateMachine;
             _popUpTutorialController = popUpTutorialController;
-            
+
             _saver = saver;
         }
 
@@ -102,12 +103,20 @@ namespace _Project.Sсripts.Services.Save
             _saver.Write(json);
         }
 
-        public void Load()
+        public async void Load()
         {
-            string json = _saver.Read().Result;
-            Handle(json);
+            string json = null;
+
+            _saver.Read(loadedData => json = loadedData);
+
+            await UniTask.WaitUntil(() => json != null);
+
             LoadComplete = true;
+
+            Debug.Log("SaveService - Load - json=" + json);
+            Handle(json);
         }
+
 
         private void Handle(string data)
         {
