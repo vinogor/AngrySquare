@@ -41,6 +41,7 @@ namespace _Project.Sсripts.Controllers.StateMachine.States
         public override void Exit()
         {
             base.Exit();
+            _diceRoller.MakeUnavailable();
             _playerMovement.TurnCompleted -= GoToNextState;
         }
 

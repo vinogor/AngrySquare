@@ -28,24 +28,21 @@ namespace _Project.Sсripts.SDK
         private async Task Show()
         {
             Debug.Log("Advertising - Show - start");
-            VideoAd.Show(OnOpenCallBack, OnRewardedCallback, OnCloseCallback);
+            InterstitialAd.Show(OnOpenCallBack, OnCloseCallback);
             Debug.Log("Advertising - Show - end");
             await UniTask.WaitUntil(() => _isAdClosed);
+        }
+
+        private void OnCloseCallback(bool flag)
+        {
+            Debug.Log("Advertising - OnCloseCallback - " + flag);
+            _gameSounds.Switch(true);
+            _isAdClosed = true;
         }
 
         private void OnOpenCallBack()
         {
             _gameSounds.Switch(false);
-        }
-
-        private void OnCloseCallback()
-        {
-            _gameSounds.Switch(true);
-            _isAdClosed = true;
-        }
-
-        private void OnRewardedCallback()
-        {
         }
     }
 }
