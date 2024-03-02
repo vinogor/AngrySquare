@@ -95,9 +95,9 @@ namespace _Project.Sсripts.Services
                     .Select(cell => _cellsManager.Index(cell)).ToList(),
 
                 // common
+                IsTutorialEnable = _popUpTutorialController.IsEnable,
                 CellIndexesWithEffectNames = _cellsManager.GetCellIndexesWithEffectNames(),
                 FsmStateTypeName = _finiteStateMachine.GetCurrentStateTypeName(),
-                IsTutorialEnable = _popUpTutorialController.IsEnable
             };
 
             _localSaveJson = JsonConvert.SerializeObject(dataRecord);
