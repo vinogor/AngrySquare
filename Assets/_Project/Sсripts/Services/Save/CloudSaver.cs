@@ -19,22 +19,25 @@ namespace _Project.Sсripts.Services.Save
         {
             Debug.Log("CloudLoad - STARTED");
 
-            bool isCompleted = false;
+            bool isLoadCompleted = false;
             string data = string.Empty;
 
             PlayerAccount.GetCloudSaveData((loadedData) =>
                 {
-                    Debug.Log("PlayerAccount.GetCloudSaveData - COMPLETED");
+                    Debug.Log("CloudSaver - PlayerAccount.GetCloudSaveData - COMPLETED");
                     data = loadedData;
-                    isCompleted = true;
+                    isLoadCompleted = true;
                 },
                 errorMessage =>
                 {
-                    Debug.Log($"PlayerAccount.GetCloudSaveData - ERROR: {errorMessage}");
-                    isCompleted = true;
+                    Debug.Log($"CloudSaver - PlayerAccount.GetCloudSaveData - ERROR: {errorMessage}");
+                    isLoadCompleted = true;
                 });
 
-            await UniTask.WaitUntil(() => isCompleted);
+            Debug.Log("CloudSaver - waiting for 'isLoadCompleted' " + isLoadCompleted);
+            
+            
+            await UniTask.WaitUntil(() => isLoadCompleted);
 
             return await Task.FromResult(data);
         }

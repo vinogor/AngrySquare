@@ -215,6 +215,8 @@ namespace _Project.Sсripts._Root
             saveService.Load();
             await UniTask.WaitUntil(() => saveService.LoadComplete);
 
+            Debug.Log("LoadComplete " + saveService.LoadComplete);
+            
             if (saveService.IsSaveExist == false)
                 stateMachine.SetState<GameInitializeFsmState>();
 
