@@ -29,8 +29,8 @@ namespace _Project.Sсripts.View{
 
         public void SetContent(string title, string info)
         {
-            _title.SetText(title);
-            _info.SetText(info);
+            _title.SetText(Lean.Localization.LeanLocalization.GetTranslationText(title));
+            _info.SetText(Lean.Localization.LeanLocalization.GetTranslationText(info));
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using _Project.Sсripts.Config;
 using _Project.Sсripts.View;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Assertions;
@@ -9,18 +10,14 @@ namespace _Project.Sсripts.Controllers
     public class PopUpTutorialController
     {
         private readonly PopUpNotificationView _popUp;
-        private readonly Dictionary<TutorialStep, PopUpNotificationModel> _tutorialContent;
 
         private bool _isClosed = true;
 
-        public PopUpTutorialController(PopUpNotificationView popUp,
-            Dictionary<TutorialStep, PopUpNotificationModel> tutorialContent)
+        public PopUpTutorialController(PopUpNotificationView popUp)
         {
             Assert.IsNotNull(popUp);
-            Assert.IsNotNull(tutorialContent);
 
             _popUp = popUp;
-            _tutorialContent = tutorialContent;
             IsEnable = true;
         }
 
@@ -37,9 +34,9 @@ namespace _Project.Sсripts.Controllers
 
             _isClosed = false;
 
-            PopUpNotificationModel model = _tutorialContent[tutorialStep];
-
+            PopUpNotificationModel model = UiTextKeys.Get(tutorialStep);
             _popUp.SetContent(model.Title, model.Info);
+            
             _popUp.Button.onClick.AddListener(Hide);
             _popUp.Show();
 

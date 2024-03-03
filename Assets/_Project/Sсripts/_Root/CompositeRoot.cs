@@ -17,6 +17,7 @@ using _Project.Sсripts.Services.Save;
 using _Project.Sсripts.View;
 using Agava.YandexGames;
 using Cysharp.Threading.Tasks;
+using Lean.Localization;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -40,6 +41,7 @@ namespace _Project.Sсripts._Root
         [SerializeField] [Required] private AudioSource _audioSource;
         [SerializeField] [Required] private AudioSource _backgroundAudioSource;
         [SerializeField] [Required] private SaveController _saveController;
+        [SerializeField] [Required] private LeanLocalization _leanLocalization;
 
         [Space(10)]
         [Header("Player")]
@@ -63,7 +65,6 @@ namespace _Project.Sсripts._Root
         {
             Debug.Log("CompositeRoot started");
 
-            
 #if UNITY_WEBGL && !UNITY_EDITOR
             _saver = new CloudSaver();
             Debug.Log("YandexGamesSdk.GameReady() - STARTED");
@@ -133,25 +134,14 @@ namespace _Project.Sсripts._Root
                     spellBarController, _spellsSettings, gameSounds);
 
             PopUpNotificationController popUpPlayerWin = new PopUpNotificationController(_uiRoot.PopUpNotificationView,
-                new PopUpNotificationModel("Player Win", "It's time to fight a new opponent!"));
+                new PopUpNotificationModel(UiTextKeys.NotificationPlayerWinTitleKey,
+                    UiTextKeys.NotificationPlayerWinInfoKey));
             PopUpNotificationController popUpPlayerDefeat = new PopUpNotificationController(
                 _uiRoot.PopUpNotificationView,
-                new PopUpNotificationModel("Player Lose", "You lost the game! Press 'OK' to restart."));
+                new PopUpNotificationModel(UiTextKeys.NotificationPlayerDefeatTitleKey,
+                    UiTextKeys.NotificationPlayerDefeatInfoKey));
 
-            Dictionary<TutorialStep, PopUpNotificationModel> tutorialContent = new();
-            tutorialContent.Add(TutorialStep.Intro,
-                new PopUpNotificationModel(UiTexts.TutorialIntroTitle, UiTexts.TutorialIntroInfo));
-            tutorialContent.Add(TutorialStep.SpellCast,
-                new PopUpNotificationModel(UiTexts.TutorialSpellCastTitle, UiTexts.TutorialSpellCastInfo));
-            tutorialContent.Add(TutorialStep.RollDice,
-                new PopUpNotificationModel(UiTexts.TutorialRollDiceTitle, UiTexts.TutorialRollDiceInfo));
-            tutorialContent.Add(TutorialStep.EnemyTurn,
-                new PopUpNotificationModel(UiTexts.TutorialEnemyTurnTitle, UiTexts.TutorialEnemyTurnInfo));
-            tutorialContent.Add(TutorialStep.LastTip,
-                new PopUpNotificationModel(UiTexts.TutorialLastTipTitle, UiTexts.TutorialLastTipInfo));
-
-            PopUpTutorialController popUpTutorialController = new PopUpTutorialController(_uiRoot.PopUpTutorialView,
-                tutorialContent);
+            PopUpTutorialController popUpTutorialController = new PopUpTutorialController(_uiRoot.PopUpTutorialView);
 
             EnemyTargetController enemyTargetController = new EnemyTargetController(cellsManager, _enemyAims);
 
@@ -210,14 +200,20 @@ namespace _Project.Sсripts._Root
             _restartGameController =
                 new RestartGameController(_uiRoot.RestartGameView, levelRestarter, stateMachine, saveService);
 
-            // в самом конце
+           
 
+            Localization localization = new Localization(_leanLocalization);
+            localization.SetLanguageFromYandex();
+
+            LanguageController languageController = new LanguageController(_uiRoot.LanguageView , localization);
+            
+            // в самом конце
             saveService.Load();
             await UniTask.WaitUntil(() => saveService.LoadComplete);
 
             Debug.Log("CompositeRoot - LoadComplete " + saveService.LoadComplete);
             Debug.Log("CompositeRoot - IsSaveExist " + saveService.IsSaveExist);
-            
+
             if (saveService.IsSaveExist == false)
                 stateMachine.SetState<GameInitializeFsmState>();
 

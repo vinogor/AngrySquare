@@ -7,6 +7,7 @@ namespace _Project.Sсripts.View
     public class SoundView : MonoBehaviour
     {
         [SerializeField] [Required] private Button _button;
+        [SerializeField] [Required] private Image _image;
         [SerializeField] [Required] private Sprite _spriteOn;
         [SerializeField] [Required] private Sprite _spriteOff;
 
@@ -19,12 +20,12 @@ namespace _Project.Sсripts.View
 
         public void SetOn()
         {
-            _button.image.sprite = _spriteOn;
+            _image.sprite = _spriteOn;
         }
 
         public void SetOff()
         {
-            _button.image.sprite = _spriteOff;
+            _image.sprite = _spriteOff;
         }
     }
 }

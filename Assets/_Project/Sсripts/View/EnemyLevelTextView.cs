@@ -1,3 +1,4 @@
+using _Project.Sсripts.Config;
 using _Project.Sсripts.Domain;
 using NaughtyAttributes;
 using TMPro;
@@ -11,7 +12,6 @@ namespace _Project.Sсripts.View
         [SerializeField] [Required] private TextMeshProUGUI _textMeshPro;
 
         private EnemyLevel _enemyLevel;
-        private const string IntroText = "Enemy level: ";
 
         public void Initialize(EnemyLevel enemyLevel)
         {
@@ -21,12 +21,18 @@ namespace _Project.Sсripts.View
             _enemyLevel.Changed += OnEnemyLevelChanged;
             _enemyLevel.SetDefault += OnEnemyLevelChanged;
 
-            _textMeshPro.SetText($"{IntroText} {_enemyLevel.Value}");
+            SetText();
         }
 
         private void OnEnemyLevelChanged()
         {
-            _textMeshPro.SetText($"{IntroText} {_enemyLevel.Value}");
+            SetText();
+        }
+
+        private void SetText()
+        {
+            string introText = Lean.Localization.LeanLocalization.GetTranslationText(UiTextKeys.EnemyLevelKey);
+            _textMeshPro.SetText($"{introText}: {_enemyLevel.Value}");
         }
 
         private void OnDestroy()

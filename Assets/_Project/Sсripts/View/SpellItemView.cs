@@ -1,4 +1,6 @@
 using System;
+using _Project.Sсripts.Config;
+using Lean.Localization;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
@@ -24,10 +26,11 @@ namespace _Project.Sсripts.View
             _button.enabled = true;
         }
 
-        public void SetContent(Sprite sprite, int manaCost,  UnityAction unityAction)
+        public void SetContent(Sprite sprite, int manaCost, UnityAction unityAction)
         {
             SetSprite(sprite);
-            SetText("cost: " + manaCost);
+            string introText = LeanLocalization.GetTranslationText(UiTextKeys.SpellBarCostKey);
+            SetText(introText + ": " + manaCost);
             _button.onClick.AddListener(unityAction);
         }
 
