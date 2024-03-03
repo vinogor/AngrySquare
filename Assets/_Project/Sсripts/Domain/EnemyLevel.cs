@@ -8,8 +8,8 @@ namespace _Project.Domain
 
         public EnemyLevel()
         {
-            Value = 1;
-            _defaultValue = Value;
+            _defaultValue = 1;
+            Value = _defaultValue;
         }
 
         public event Action Changed;
