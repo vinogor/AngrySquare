@@ -1,6 +1,6 @@
 using Agava.YandexGames;
 
-namespace _Project.Sсripts.SDK
+namespace _Project.SDK
 {
     public class ButtonOpenLeaderBoard
     {

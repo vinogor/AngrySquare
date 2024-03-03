@@ -1,17 +1,18 @@
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
-using _Project.Sсripts.Config;
-using _Project.Sсripts.View;
+using _Project.Config;
+using _Project.View;
 using Cysharp.Threading.Tasks;
+using Lean.Localization;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Controllers
+namespace _Project.Controllers
 {
-    public class PopUpTutorialController
+    public class PopUpTutorialController : IDisposable
     {
         private readonly PopUpNotificationView _popUp;
-
         private bool _isClosed = true;
+        private PopUpNotificationModel _model;
 
         public PopUpTutorialController(PopUpNotificationView popUp)
         {
@@ -19,6 +20,7 @@ namespace _Project.Sсripts.Controllers
 
             _popUp = popUp;
             IsEnable = true;
+            LeanLocalization.OnLocalizationChanged += SetContent;
         }
 
         public bool IsEnable { get; private set; }
@@ -34,9 +36,10 @@ namespace _Project.Sсripts.Controllers
 
             _isClosed = false;
 
-            PopUpNotificationModel model = UiTextKeys.Get(tutorialStep);
-            _popUp.SetContent(model.Title, model.Info);
+            _model = UiTextKeys.Get(tutorialStep);
             
+            SetContent();
+
             _popUp.Button.onClick.AddListener(Hide);
             _popUp.Show();
 
@@ -48,11 +51,26 @@ namespace _Project.Sсripts.Controllers
             await UniTask.WaitUntil(() => _isClosed);
         }
 
+        private void SetContent()
+        {
+            if (_model == null)
+                return;
+            
+            string title = LeanLocalization.GetTranslationText(_model.Title);
+            string info = LeanLocalization.GetTranslationText(_model.Info);
+            _popUp.SetContent(title, info);
+        }
+
         private void Hide()
         {
             _popUp.Button.onClick.RemoveListener(Hide);
             _popUp.Hide();
             _isClosed = true;
+        }
+
+        public void Dispose()
+        {
+            LeanLocalization.OnLocalizationChanged -= SetContent;
         }
     }
 }

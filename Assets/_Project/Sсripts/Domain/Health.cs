@@ -1,9 +1,9 @@
 using System;
-using _Project.Sсripts.Controllers.Sound;
+using _Project.Controllers.Sound;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Domain
+namespace _Project.Domain
 {
     public class Health
     {

@@ -1,10 +1,10 @@
 using System;
-using _Project.Sсripts.Domain.Effects;
+using _Project.Domain.Effects;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Config
+namespace _Project.Config
 {
     [CreateAssetMenu(fileName = "CellsSettings", menuName = "Gameplay/CellsSettings")]
     public class CellsSettings : ScriptableObject

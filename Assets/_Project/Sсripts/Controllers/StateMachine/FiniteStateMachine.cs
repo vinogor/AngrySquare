@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace _Project.Sсripts.Controllers.StateMachine
+namespace _Project.Controllers.StateMachine
 {
     public class FiniteStateMachine
     {

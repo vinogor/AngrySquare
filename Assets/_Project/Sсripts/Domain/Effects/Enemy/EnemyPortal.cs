@@ -1,8 +1,8 @@
 using System;
-using _Project.Sсripts.Domain.Movement;
+using _Project.Domain.Movement;
 using DG.Tweening;
 
-namespace _Project.Sсripts.Domain.Effects.Enemy{
+namespace _Project.Domain.Effects.Enemy{
     public class EnemyPortal : Effect
     {
         private readonly EnemyJumper _enemyJumper;

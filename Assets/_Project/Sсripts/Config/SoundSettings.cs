@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace _Project.Sсripts.Config
+namespace _Project.Config
 {
     [CreateAssetMenu(fileName = "SoundSettings", menuName = "Gameplay/SoundSettings")]
     public class SoundSettings : ScriptableObject

@@ -1,8 +1,8 @@
-using _Project.Sсripts.Domain;
-using _Project.Sсripts.Domain.Movement;
+using _Project.Domain;
+using _Project.Domain.Movement;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Controllers.StateMachine.States{
+namespace _Project.Controllers.StateMachine.States{
     public class EnemyTurnFsmState : FsmState
     {
         private readonly EnemyMovement _enemyMovement;

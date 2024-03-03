@@ -1,8 +1,9 @@
 using System;
-using _Project.Sсripts.View;
+using _Project.View;
+using Lean.Localization;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Controllers
+namespace _Project.Controllers
 {
     public class PopUpNotificationController
     {
@@ -16,13 +17,15 @@ namespace _Project.Sсripts.Controllers
 
             _popUp = popUp;
             _model = model;
+            
+            LeanLocalization.OnLocalizationChanged += SetContent;
         }
 
         public event Action OnClose;
 
         public void Show()
         {
-            SetInfo();
+            SetContent();
             _popUp.Button.onClick.AddListener(Hide);
             _popUp.Show();
         }
@@ -31,13 +34,15 @@ namespace _Project.Sсripts.Controllers
         {
             _popUp.Button.onClick.RemoveListener(Hide);
             _popUp.Hide();
-
+            LeanLocalization.OnLocalizationChanged -= SetContent;
             OnClose?.Invoke();
         }
-
-        private void SetInfo()
+        
+        private void SetContent()
         {
-            _popUp.SetContent(_model.Title, _model.Info);
+            string title = LeanLocalization.GetTranslationText(_model.Title);
+            string info = LeanLocalization.GetTranslationText(_model.Info);
+            _popUp.SetContent(title, info);
         }
     }
 }

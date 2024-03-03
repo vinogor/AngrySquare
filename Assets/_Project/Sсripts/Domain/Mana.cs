@@ -1,11 +1,11 @@
 using System;
-using _Project.Sсripts.Config;
-using _Project.Sсripts.Controllers.Sound;
-using _Project.Sсripts.Domain.Spells;
+using _Project.Config;
+using _Project.Controllers.Sound;
+using _Project.Domain.Spells;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Domain
+namespace _Project.Domain
 {
     public class Mana
     {

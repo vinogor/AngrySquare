@@ -1,6 +1,6 @@
 using System;
 
-namespace _Project.Sсripts.Domain
+namespace _Project.Domain
 {
     public class Defence
     {

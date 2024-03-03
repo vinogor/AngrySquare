@@ -1,8 +1,8 @@
 using System;
-using _Project.Sсripts.Controllers.Sound;
-using _Project.Sсripts.View;
+using _Project.Controllers.Sound;
+using _Project.View;
 
-namespace _Project.Sсripts.Controllers
+namespace _Project.Controllers
 {
     public class SoundController : IDisposable
     {

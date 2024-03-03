@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Project.Sсripts.View{
+namespace _Project.View{
     public class PopUpNotificationView : MonoBehaviour
     {
         [SerializeField] [Required] private Button _button;
@@ -29,8 +29,8 @@ namespace _Project.Sсripts.View{
 
         public void SetContent(string title, string info)
         {
-            _title.SetText(Lean.Localization.LeanLocalization.GetTranslationText(title));
-            _info.SetText(Lean.Localization.LeanLocalization.GetTranslationText(info));
+            _title.SetText(title);
+            _info.SetText(info);
         }
     }
 }

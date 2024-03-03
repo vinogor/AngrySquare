@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using _Project.Sсripts.Config;
-using _Project.Sсripts.Controllers.Sound;
-using _Project.Sсripts.Domain.Spells;
-using _Project.Sсripts.View;
+using _Project.Config;
+using _Project.Controllers.Sound;
+using _Project.Domain.Spells;
+using _Project.View;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Controllers.PopupChoice
+namespace _Project.Controllers.PopupChoice
 {
     public class PopUpChoiceSpellController : PopUpChoiceAbstractController
     {

@@ -1,4 +1,4 @@
-namespace _Project.Sсripts.Controllers.StateMachine.States
+namespace _Project.Controllers.StateMachine.States
 {
     public class PlayerTurnSpellFsmState : FsmState
     {

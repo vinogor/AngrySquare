@@ -1,8 +1,8 @@
 using System;
-using _Project.Sсripts.Controllers.Sound;
+using _Project.Controllers.Sound;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Domain.Spells
+namespace _Project.Domain.Spells
 {
     public class FullHealthSpell : Spell
     {

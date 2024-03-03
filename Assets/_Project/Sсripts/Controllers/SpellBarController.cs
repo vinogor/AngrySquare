@@ -1,12 +1,12 @@
 using System;
-using _Project.Sсripts.Controllers.Sound;
-using _Project.Sсripts.Domain;
-using _Project.Sсripts.Domain.Spells;
-using _Project.Sсripts.View;
+using _Project.Controllers.Sound;
+using _Project.Domain;
+using _Project.Domain.Spells;
+using _Project.View;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Controllers
+namespace _Project.Controllers
 {
     public class SpellBarController
     {
@@ -83,7 +83,6 @@ namespace _Project.Sсripts.Controllers
 
         public void Disable()
         {
-            
             _spellBarShaker.Disable();
             _spellBarView.SpellsActivated -= OnSpellActivated;
             _spellBarView.Skipped -= OnSpellSkipped;

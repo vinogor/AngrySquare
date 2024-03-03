@@ -1,13 +1,12 @@
 using System;
 using System.Linq;
-using _Project.Sсripts.Controllers.Sound;
-using _Project.Sсripts.Domain.Movement;
-using _Project.Sсripts.Services;
-using _Project.Sсripts.Services.Utility;
+using _Project.Domain.Movement;
+using _Project.Services;
+using _Project.Services.Utility;
 using DG.Tweening;
 using UnityEngine;
 
-namespace _Project.Sсripts.Domain.Effects.Player
+namespace _Project.Domain.Effects.Player
 {
     public class PlayerPortal : Effect
     {

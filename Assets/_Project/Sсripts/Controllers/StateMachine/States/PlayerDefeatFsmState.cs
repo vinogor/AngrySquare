@@ -1,8 +1,8 @@
-using _Project.Sсripts.Controllers.Sound;
-using _Project.Sсripts.Services;
+using _Project.Controllers.Sound;
+using _Project.Services;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Controllers.StateMachine.States
+namespace _Project.Controllers.StateMachine.States
 {
     public class PlayerDefeatFsmState : FsmState
     {

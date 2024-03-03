@@ -1,9 +1,9 @@
-using _Project.Sсripts.SDK;
+using _Project.SDK;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Project.Sсripts.View
+namespace _Project.View
 {
     public class LanguageView : MonoBehaviour
     {

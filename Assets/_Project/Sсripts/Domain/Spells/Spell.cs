@@ -1,9 +1,9 @@
 using System;
-using _Project.Sсripts.Controllers.Sound;
-using _Project.Sсripts.Domain.Effects;
+using _Project.Controllers.Sound;
+using _Project.Domain.Effects;
 using UnityEngine;
 
-namespace _Project.Sсripts.Domain.Spells
+namespace _Project.Domain.Spells
 {
     public abstract class Spell : Effect
     {

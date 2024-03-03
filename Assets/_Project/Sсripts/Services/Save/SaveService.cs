@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Project.Sсripts.Controllers;
-using _Project.Sсripts.Controllers.StateMachine;
-using _Project.Sсripts.Domain;
-using _Project.Sсripts.Domain.Effects;
-using _Project.Sсripts.Domain.Movement;
-using _Project.Sсripts.Domain.Spells;
+using _Project.Controllers;
+using _Project.Controllers.StateMachine;
+using _Project.Domain;
+using _Project.Domain.Effects;
+using _Project.Domain.Movement;
+using _Project.Domain.Spells;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace _Project.Sсripts.Services.Save
+namespace _Project.Services.Save
 {
     public class SaveService
     {

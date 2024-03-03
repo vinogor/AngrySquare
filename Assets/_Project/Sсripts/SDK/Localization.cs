@@ -1,7 +1,7 @@
 using Agava.YandexGames;
 using Lean.Localization;
 
-namespace _Project.Sсripts.SDK
+namespace _Project.SDK
 {
     public static class LanguageCodes
     {

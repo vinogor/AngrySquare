@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
-using _Project.Sсripts.Config;
-using _Project.Sсripts.Domain;
-using _Project.Sсripts.Domain.Spells;
+using _Project.Config;
+using _Project.Domain;
+using _Project.Domain.Spells;
+using Lean.Localization;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-namespace _Project.Sсripts.View
+namespace _Project.View
 {
     public class SpellBarView : MonoBehaviour
     {
@@ -25,6 +26,7 @@ namespace _Project.Sсripts.View
             _availableSpells = availableSpells;
             OnAvailableSpellsUpdated();
             _availableSpells.Updated += OnAvailableSpellsUpdated;
+            LeanLocalization.OnLocalizationChanged += OnAvailableSpellsUpdated;
             _skipButton.onClick.AddListener(() => Skipped?.Invoke());
         }
 
@@ -68,6 +70,7 @@ namespace _Project.Sсripts.View
         {
             _availableSpells.Updated -= OnAvailableSpellsUpdated;
             _skipButton.onClick.RemoveAllListeners();
+            LeanLocalization.OnLocalizationChanged -= OnAvailableSpellsUpdated;
         }
     }
 }

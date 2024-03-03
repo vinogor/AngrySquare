@@ -1,13 +1,13 @@
 using System;
 using System.Collections;
-using _Project.Sсripts.Controllers.Sound;
+using _Project.Controllers.Sound;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using Random = UnityEngine.Random;
 
-namespace _Project.Sсripts.Services
+namespace _Project.Services
 {
     public class DiceRoller : MonoBehaviour, IPointerDownHandler
     {

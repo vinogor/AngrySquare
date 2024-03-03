@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace _Project.Sсripts.Services.Utility
+namespace _Project.Services.Utility
 {
     public sealed class CoroutineHolder : MonoBehaviour
     {

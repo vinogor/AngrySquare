@@ -1,9 +1,9 @@
-using _Project.Sсripts.Domain;
-using _Project.Sсripts.View;
+using _Project.Domain;
+using _Project.View;
 using NaughtyAttributes;
 using UnityEngine;
 
-namespace _Project.Sсripts._Root
+namespace _Project._Root
 {
     public class UiRoot : MonoBehaviour
     {

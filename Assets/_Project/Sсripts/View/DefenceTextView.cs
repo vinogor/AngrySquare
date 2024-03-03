@@ -1,10 +1,10 @@
-using _Project.Sсripts.Domain;
+using _Project.Domain;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.View
+namespace _Project.View
 {
     public class DefenceTextView : MonoBehaviour
     {

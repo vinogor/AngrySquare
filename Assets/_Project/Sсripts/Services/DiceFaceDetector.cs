@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace _Project.Sсripts.Services
+namespace _Project.Services
 {
     public class DiceFaceDetector : MonoBehaviour
     {

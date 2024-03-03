@@ -2,7 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Domain
+namespace _Project.Domain
 {
     public class EnemyModel : MonoBehaviour
     {

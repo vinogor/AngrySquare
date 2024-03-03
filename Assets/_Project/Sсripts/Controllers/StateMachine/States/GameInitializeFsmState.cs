@@ -1,6 +1,6 @@
-using _Project.Sсripts.SDK;
+using _Project.SDK;
 
-namespace _Project.Sсripts.Controllers.StateMachine.States
+namespace _Project.Controllers.StateMachine.States
 {
     public class GameInitializeFsmState : FsmState
     {

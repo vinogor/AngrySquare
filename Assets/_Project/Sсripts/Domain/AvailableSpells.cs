@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using _Project.Sсripts.Domain.Spells;
+using _Project.Domain.Spells;
 
-namespace _Project.Sсripts.Domain
+namespace _Project.Domain
 {
     public class AvailableSpells
     {

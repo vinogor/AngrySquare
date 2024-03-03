@@ -2,7 +2,7 @@ using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Project.Sсripts.View
+namespace _Project.View
 {
     public class SoundView : MonoBehaviour
     {

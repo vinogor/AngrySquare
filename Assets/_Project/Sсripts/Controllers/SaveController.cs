@@ -1,9 +1,9 @@
-using _Project.Sсripts.Controllers.StateMachine;
-using _Project.Sсripts.Services.Save;
+using _Project.Controllers.StateMachine;
+using _Project.Services.Save;
 using NaughtyAttributes;
 using UnityEngine;
 
-namespace _Project.Sсripts.Controllers
+namespace _Project.Controllers
 {
     public class SaveController : MonoBehaviour
     {
@@ -32,6 +32,7 @@ namespace _Project.Sсripts.Controllers
             _saveService.Save();
         }
         
+        [Button]
         private void Clean()
         {
             _saveService.Clean();

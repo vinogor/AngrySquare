@@ -1,9 +1,9 @@
-using _Project.Sсripts.Domain.Effects;
+using _Project.Domain.Effects;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.Domain
+namespace _Project.Domain
 {
     public class Cell : MonoBehaviour
     {

@@ -1,10 +1,10 @@
 using System;
-using _Project.Sсripts.Config;
-using _Project.Sсripts.Controllers;
-using _Project.Sсripts.Domain.Movement;
+using _Project.Config;
+using _Project.Controllers;
+using _Project.Domain.Movement;
 using DG.Tweening;
 
-namespace _Project.Sсripts.Domain.Effects.Enemy
+namespace _Project.Domain.Effects.Enemy
 {
     public class EnemyHealth : Effect
     {

@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace _Project.Sсripts.Controllers{
+namespace _Project.Controllers{
     public class EnemyAimRotator : MonoBehaviour
     {
         // TODO: вынести числа в настройки

@@ -1,8 +1,8 @@
-using _Project.Sсripts.Domain;
+using _Project.Domain;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.View.Vfx
+namespace _Project.View.Vfx
 {
     public class HealthReplenishVfx : MonoBehaviour
     {

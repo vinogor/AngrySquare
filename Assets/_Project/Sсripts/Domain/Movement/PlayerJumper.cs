@@ -1,9 +1,9 @@
-using _Project.Sсripts.Config;
-using _Project.Sсripts.Controllers.Sound;
+using _Project.Config;
+using _Project.Controllers.Sound;
 using DG.Tweening;
 using UnityEngine;
 
-namespace _Project.Sсripts.Domain.Movement
+namespace _Project.Domain.Movement
 {
     public class PlayerJumper
     {

@@ -1,9 +1,9 @@
 using System;
-using _Project.Sсripts.Config;
-using _Project.Sсripts.Domain.Movement;
+using _Project.Config;
+using _Project.Domain.Movement;
 using DG.Tweening;
 
-namespace _Project.Sсripts.Domain.Effects.Player
+namespace _Project.Domain.Effects.Player
 {
     public class PlayerHealth : Effect
     {

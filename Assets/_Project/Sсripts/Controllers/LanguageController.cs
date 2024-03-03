@@ -1,8 +1,8 @@
 using System;
-using _Project.Sсripts.SDK;
-using _Project.Sсripts.View;
+using _Project.SDK;
+using _Project.View;
 
-namespace _Project.Sсripts.Controllers
+namespace _Project.Controllers
 {
     public class LanguageController : IDisposable
     {

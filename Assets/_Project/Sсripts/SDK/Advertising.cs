@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using _Project.Sсripts.Controllers.Sound;
+using _Project.Controllers.Sound;
 using Agava.YandexGames;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace _Project.Sсripts.SDK
+namespace _Project.SDK
 {
     public class Advertising
     {

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace _Project.Sсripts.Domain.Effects{
+namespace _Project.Domain.Effects{
     public abstract class Effect
     {
         public virtual void Activate(Action onComplete)

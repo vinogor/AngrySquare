@@ -1,4 +1,4 @@
-namespace _Project.Sсripts.SDK
+namespace _Project.SDK
 {
     public class LeaderBoardPlayer
     {

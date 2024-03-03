@@ -1,5 +1,5 @@
 using System;
-using _Project.Sсripts.Config;
+using _Project.Config;
 using Lean.Localization;
 using NaughtyAttributes;
 using TMPro;
@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace _Project.Sсripts.View
+namespace _Project.View
 {
     public class SpellItemView : MonoBehaviour
     {

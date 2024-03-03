@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Project.Sсripts.Config;
-using _Project.Sсripts.Domain;
-using _Project.Sсripts.Domain.Effects;
-using _Project.Sсripts.Services.Utility;
+using _Project.Config;
+using _Project.Domain;
+using _Project.Domain.Effects;
+using _Project.Services.Utility;
 using UnityEngine;
 
-namespace _Project.Sсripts.Services
+namespace _Project.Services
 {
     public class CellsManager
     {

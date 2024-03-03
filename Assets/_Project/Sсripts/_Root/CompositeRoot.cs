@@ -1,28 +1,27 @@
 using System.Collections.Generic;
-using _Project.Sсripts.Config;
-using _Project.Sсripts.Controllers;
-using _Project.Sсripts.Controllers.PopupChoice;
-using _Project.Sсripts.Controllers.Sound;
-using _Project.Sсripts.Controllers.StateMachine;
-using _Project.Sсripts.Controllers.StateMachine.States;
-using _Project.Sсripts.Domain;
-using _Project.Sсripts.Domain.Effects;
-using _Project.Sсripts.Domain.Effects.Enemy;
-using _Project.Sсripts.Domain.Effects.Player;
-using _Project.Sсripts.Domain.Movement;
-using _Project.Sсripts.Domain.Spells;
-using _Project.Sсripts.SDK;
-using _Project.Sсripts.Services;
-using _Project.Sсripts.Services.Save;
-using _Project.Sсripts.View;
+using _Project.Config;
+using _Project.Controllers;
+using _Project.Controllers.PopupChoice;
+using _Project.Controllers.Sound;
+using _Project.Controllers.StateMachine;
+using _Project.Controllers.StateMachine.States;
+using _Project.Domain;
+using _Project.Domain.Effects;
+using _Project.Domain.Effects.Enemy;
+using _Project.Domain.Effects.Player;
+using _Project.Domain.Movement;
+using _Project.Domain.Spells;
+using _Project.SDK;
+using _Project.Services;
+using _Project.Services.Save;
+using _Project.View;
 using Agava.YandexGames;
-using Cysharp.Threading.Tasks;
 using Lean.Localization;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts._Root
+namespace _Project._Root
 {
     public class CompositeRoot : MonoBehaviour
     {
@@ -60,6 +59,7 @@ namespace _Project.Sсripts._Root
         private SoundController _soundController;
         private RestartGameController _restartGameController;
         private ISaver _saver;
+        private PopUpTutorialController _popUpTutorialController;
 
         private async void Start()
         {
@@ -141,7 +141,7 @@ namespace _Project.Sсripts._Root
                 new PopUpNotificationModel(UiTextKeys.NotificationPlayerDefeatTitleKey,
                     UiTextKeys.NotificationPlayerDefeatInfoKey));
 
-            PopUpTutorialController popUpTutorialController = new PopUpTutorialController(_uiRoot.PopUpTutorialView);
+            _popUpTutorialController = new PopUpTutorialController(_uiRoot.PopUpTutorialView);
 
             EnemyTargetController enemyTargetController = new EnemyTargetController(cellsManager, _enemyAims);
 
@@ -157,12 +157,12 @@ namespace _Project.Sсripts._Root
             FiniteStateMachine stateMachine = new FiniteStateMachine();
             stateMachine.AddState(new GameInitializeFsmState(stateMachine, advertising));
             stateMachine.AddState(
-                new PlayerTurnSpellFsmState(stateMachine, spellBarController, popUpTutorialController));
+                new PlayerTurnSpellFsmState(stateMachine, spellBarController, _popUpTutorialController));
             stateMachine.AddState(new PlayerTurnMoveFsmState(stateMachine, _diceRoller, _playerMovement, enemyHealth,
-                popUpTutorialController));
+                _popUpTutorialController));
             stateMachine.AddState(new PlayerWinFsmState(stateMachine, popUpPlayerWin, levelRestarter, gameSounds));
             stateMachine.AddState(new EnemyTurnFsmState(stateMachine, _enemyMovement, playerHealth,
-                popUpTutorialController));
+                _popUpTutorialController));
             stateMachine.AddState(new PlayerDefeatFsmState(stateMachine, popUpPlayerDefeat, levelRestarter,
                 gameSounds));
 
@@ -192,7 +192,7 @@ namespace _Project.Sсripts._Root
 
             SaveService saveService = new SaveService(playerDamage, playerDefence, playerHealth, playerMana,
                 availableSpells, _playerMovement, enemyLevel, enemyDamage, enemyDefence, enemyHealth,
-                enemyTargetController, cellsManager, stateMachine, popUpTutorialController, _saver);
+                enemyTargetController, cellsManager, stateMachine, _popUpTutorialController, _saver);
             _saveController.Initialize(saveService, stateMachine);
 
             // ========
@@ -270,6 +270,7 @@ namespace _Project.Sсripts._Root
         {
             _soundController.Dispose();
             _restartGameController.Dispose();
+            _popUpTutorialController.Dispose();
         }
     }
 }

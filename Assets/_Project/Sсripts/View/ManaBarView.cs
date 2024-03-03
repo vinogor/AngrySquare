@@ -1,11 +1,11 @@
-using _Project.Sсripts.Domain;
+using _Project.Domain;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-namespace _Project.Sсripts.View
+namespace _Project.View
 {
     public class ManaBarView : MonoBehaviour
     {

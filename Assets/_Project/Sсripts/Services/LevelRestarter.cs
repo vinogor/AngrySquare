@@ -1,9 +1,9 @@
-using _Project.Sсripts.Controllers;
-using _Project.Sсripts.Domain;
-using _Project.Sсripts.Domain.Movement;
-using _Project.Sсripts.Domain.Spells;
+using _Project.Controllers;
+using _Project.Domain;
+using _Project.Domain.Movement;
+using _Project.Domain.Spells;
 
-namespace _Project.Sсripts.Services
+namespace _Project.Services
 {
     public class LevelRestarter
     {

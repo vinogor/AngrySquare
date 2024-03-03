@@ -1,11 +1,12 @@
-using _Project.Sсripts.Config;
-using _Project.Sсripts.Domain;
+using _Project.Config;
+using _Project.Domain;
+using Lean.Localization;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Sсripts.View
+namespace _Project.View
 {
     public class EnemyLevelTextView : MonoBehaviour
     {
@@ -20,6 +21,7 @@ namespace _Project.Sсripts.View
             _enemyLevel = enemyLevel;
             _enemyLevel.Changed += OnEnemyLevelChanged;
             _enemyLevel.SetDefault += OnEnemyLevelChanged;
+            LeanLocalization.OnLocalizationChanged += OnEnemyLevelChanged;
 
             SetText();
         }
@@ -31,7 +33,7 @@ namespace _Project.Sсripts.View
 
         private void SetText()
         {
-            string introText = Lean.Localization.LeanLocalization.GetTranslationText(UiTextKeys.EnemyLevelKey);
+            string introText = LeanLocalization.GetTranslationText(UiTextKeys.EnemyLevelKey);
             _textMeshPro.SetText($"{introText}: {_enemyLevel.Value}");
         }
 
@@ -39,6 +41,7 @@ namespace _Project.Sсripts.View
         {
             _enemyLevel.Changed -= OnEnemyLevelChanged;
             _enemyLevel.SetDefault -= OnEnemyLevelChanged;
+            LeanLocalization.OnLocalizationChanged -= OnEnemyLevelChanged;
         }
     }
 }

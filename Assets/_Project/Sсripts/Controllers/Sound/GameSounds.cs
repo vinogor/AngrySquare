@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using _Project.Sсripts.Config;
+using _Project.Config;
 using UnityEngine;
 
-namespace _Project.Sсripts.Controllers.Sound
+namespace _Project.Controllers.Sound
 {
     public class GameSounds
     {
@@ -20,6 +20,7 @@ namespace _Project.Sсripts.Controllers.Sound
 
             _backgroundAudioSource.playOnAwake = true;
             _backgroundAudioSource.loop = true;
+            _backgroundAudioSource.Play();
         }
 
         public void Switch(bool isEnabled)
