@@ -1,26 +1,32 @@
 using System.Collections.Generic;
 using Agava.YandexGames;
 
-namespace _Project.SDK
+namespace _Project.SDK.Leader
 {
-    public class LeaderBoard
+    public class YandexLeaderBoard
     {
         private const string AnonymousName = "Anonymous";
         private const string LeaderBoardName = "LeaderBoard-AngrySquare";
 
-        // нигде не вызывается 
         private readonly List<LeaderBoardPlayer> _leaderBoardPlayers = new();
-
-        // TODO: вызвать когда стейт Игрок выйграл  
+        
         public void SetPlayer(int score)
         {
             if (PlayerAccount.IsAuthorized == false)
                 return;
 
             Leaderboard.GetPlayerEntry(LeaderBoardName,
-                onSuccessCallback => { Leaderboard.SetScore(LeaderBoardName, score); });
+                onSuccessCallback =>
+                {
+                    Leaderboard.SetScore(LeaderBoardName, score);
+                });
 
             Fill();
+        }
+
+        public List<LeaderBoardPlayer> GetLeaderBoardPlayers()
+        {
+            return _leaderBoardPlayers;
         }
 
         private void Fill()

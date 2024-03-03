@@ -12,10 +12,10 @@ using _Project.Domain.Effects.Player;
 using _Project.Domain.Movement;
 using _Project.Domain.Spells;
 using _Project.SDK;
+using _Project.SDK.Leader;
 using _Project.Services;
 using _Project.Services.Save;
 using _Project.View;
-using Agava.YandexGames;
 using Lean.Localization;
 using NaughtyAttributes;
 using UnityEngine;
@@ -77,6 +77,7 @@ namespace _Project._Root
             Assert.AreEqual(3, _enemyAims.Length);
 
             GameSounds gameSounds = new GameSounds(_soundSettings, _audioSource, _backgroundAudioSource);
+            YandexLeaderBoard yandexLeaderBoard = new YandexLeaderBoard();
 
             _soundController = new SoundController(_soundView, gameSounds);
 
@@ -93,7 +94,7 @@ namespace _Project._Root
             Health enemyHealth = new Health(_coefficients.EnemyStartHealth, _coefficients.EnemyMaxHealth, enemyDefence,
                 gameSounds);
             Damage enemyDamage = new Damage(_coefficients.EnemyStartDamage);
-            EnemyLevel enemyLevel = new EnemyLevel();
+            EnemyLevel enemyLevel = new EnemyLevel(yandexLeaderBoard);
             _enemyModel.Initialize(enemyLevel);
 
             AvailableSpells availableSpells = new AvailableSpells();
@@ -112,6 +113,9 @@ namespace _Project._Root
 
             _uiRoot.Initialize(playerHealth, playerMana, enemyHealth, playerDamage, enemyDamage, playerDefence,
                 enemyDefence, availableSpells, enemyLevel);
+
+            LeaderboardController leaderboardController = new LeaderboardController(_uiRoot.LeaderboardButtonView,
+                _uiRoot.LeaderboardPopupView, yandexLeaderBoard);
 
             List<EffectName> availableEffectNames = new List<EffectName>
                 { EffectName.Swords, EffectName.Health, EffectName.Mana };
@@ -212,30 +216,6 @@ namespace _Project._Root
                 if (saveService.IsSaveExist == false)
                     stateMachine.SetState<GameInitializeFsmState>();
             });
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-            YandexAuthorize();
-#endif
-        }
-
-        private void YandexAuthorize()
-        {
-            // Debug.Log("YandexGamesSdk.GameReady() - STARTED");
-            // YandexGamesSdk.GameReady();
-
-            Debug.Log("PlayerAccount.Authorize() - STARTED");
-            PlayerAccount.Authorize();
-
-            if (PlayerAccount.IsAuthorized)
-            {
-                Debug.Log("PlayerAccount.RequestPersonalProfileDataPermission() - STARTED");
-                PlayerAccount.RequestPersonalProfileDataPermission();
-            }
-
-            if (PlayerAccount.IsAuthorized == false)
-            {
-                Debug.Log("PlayerAccount.IsAuthorized == false");
-            }
         }
 
         private void CellEffectsInitialize(PlayerJumper playerJumper, Health enemyHealth, Damage playerDamage,

@@ -12,6 +12,8 @@ namespace _Project._Root
         [SerializeField] [Required] private PopUpNotificationView _popUpTutorialView;
         [SerializeField] [Required] private RestartGameView _restartGameView;
         [SerializeField] [Required] private LanguageView _languageView;
+        [SerializeField] [Required] private LeaderboardButtonView _leaderboardButtonView;
+        [SerializeField] [Required] private LeaderboardPopupView _leaderboardPopupView;
 
         [Space(10)]
         [Header("Player")]
@@ -37,6 +39,8 @@ namespace _Project._Root
         public SpellBarShaker SpellBarShaker => _spellBarShaker;
         public RestartGameView RestartGameView => _restartGameView;
         public LanguageView LanguageView => _languageView;
+        public LeaderboardButtonView LeaderboardButtonView => _leaderboardButtonView;
+        public LeaderboardPopupView LeaderboardPopupView => _leaderboardPopupView;
 
         public void Initialize(Health playerHealth, Mana playerMana, Health enemyHealth, Damage playerDamage,
             Damage enemyDamage, Defence playerDefence, Defence enemyDefence, AvailableSpells availableSpells,
