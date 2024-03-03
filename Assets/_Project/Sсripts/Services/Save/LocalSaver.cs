@@ -15,9 +15,7 @@ namespace _Project.Sсripts.Services.Save
 
         public void Read(Action<string> action)
         {
-            // TODO: потом вернуть 
-            // action.Invoke(PlayerPrefs.GetString(SaveKey));
-            action.Invoke(PlayerPrefs.GetString("empty"));
+            action.Invoke(PlayerPrefs.GetString(SaveKey));
         }
     }
 }

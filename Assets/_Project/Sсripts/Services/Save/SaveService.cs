@@ -7,7 +7,6 @@ using _Project.Sсripts.Domain;
 using _Project.Sсripts.Domain.Effects;
 using _Project.Sсripts.Domain.Movement;
 using _Project.Sсripts.Domain.Spells;
-using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -66,7 +65,6 @@ namespace _Project.Sсripts.Services.Save
             _saver = saver;
         }
 
-        public bool LoadComplete { get; private set; }
         public bool IsSaveExist { get; private set; }
 
         public void Save()
@@ -103,20 +101,15 @@ namespace _Project.Sсripts.Services.Save
             _saver.Write(json);
         }
 
-        public async void Load()
+        public void Load(Action onComplete)
         {
-            string json = null;
-
-            _saver.Read(loadedData => json = loadedData);
-
-            await UniTask.WaitUntil(() => json != null);
-
-            LoadComplete = true;
-
-            Debug.Log("SaveService - Load - json=" + json);
-            Handle(json);
+            _saver.Read(json =>
+            {
+                Debug.Log("SaveService - Load - json=" + json);
+                Handle(json);
+                onComplete.Invoke();
+            });
         }
-
 
         private void Handle(string data)
         {
@@ -149,6 +142,11 @@ namespace _Project.Sсripts.Services.Save
             }
 
             Apply(dataRecord);
+        }
+
+        public void Clean()
+        {
+            _saver.Write(string.Empty);
         }
 
         private void Apply(DataRecord dataRecord)

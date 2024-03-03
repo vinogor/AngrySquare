@@ -200,22 +200,18 @@ namespace _Project.Sсripts._Root
             _restartGameController =
                 new RestartGameController(_uiRoot.RestartGameView, levelRestarter, stateMachine, saveService);
 
-           
-
             Localization localization = new Localization(_leanLocalization);
             localization.SetLanguageFromYandex();
 
-            LanguageController languageController = new LanguageController(_uiRoot.LanguageView , localization);
-            
+            LanguageController languageController = new LanguageController(_uiRoot.LanguageView, localization);
+
             // в самом конце
-            saveService.Load();
-            await UniTask.WaitUntil(() => saveService.LoadComplete);
-
-            Debug.Log("CompositeRoot - LoadComplete " + saveService.LoadComplete);
-            Debug.Log("CompositeRoot - IsSaveExist " + saveService.IsSaveExist);
-
-            if (saveService.IsSaveExist == false)
-                stateMachine.SetState<GameInitializeFsmState>();
+            saveService.Load(() =>
+            {
+                Debug.Log("CompositeRoot - IsSaveExist " + saveService.IsSaveExist);
+                if (saveService.IsSaveExist == false)
+                    stateMachine.SetState<GameInitializeFsmState>();
+            });
 
 #if UNITY_WEBGL && !UNITY_EDITOR
             YandexAuthorize();

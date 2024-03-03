@@ -18,15 +18,23 @@ namespace _Project.Sсripts.Controllers
         }
 
         [Button]
-        private void LocalLoad()
+        private void Load()
         {
-            _saveService.Load();
+            _saveService.Load(() =>
+            {
+                Debug.Log("Loaded");
+            });
         }
 
         [Button]
-        private void LocalSave()
+        private void Save()
         {
             _saveService.Save();
+        }
+        
+        private void Clean()
+        {
+            _saveService.Clean();
         }
 
         private void OnDestroy()

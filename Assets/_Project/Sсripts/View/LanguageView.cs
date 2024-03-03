@@ -15,9 +15,6 @@ namespace _Project.Sсripts.View
 
         public Button.ButtonClickedEvent ButtonOnClick => _button.onClick;
 
-        // установить в самом начале
-        // устанавливать по клику 
-
         public void SetSprite(string languageCode)
         {
             switch (languageCode)

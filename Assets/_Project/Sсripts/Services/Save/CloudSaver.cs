@@ -19,18 +19,15 @@ namespace _Project.Sсripts.Services.Save
         {
             Debug.Log("CloudSaver - load - STARTED");
 
-            string data = string.Empty;
-
             PlayerAccount.GetCloudSaveData((loadedData) =>
                 {
                     Debug.Log("CloudSaver - PlayerAccount.GetCloudSaveData - COMPLETED");
-                    data = loadedData;
-                    action.Invoke(data);
+                    action.Invoke(loadedData);
                 },
                 errorMessage =>
                 {
                     Debug.Log($"CloudSaver - PlayerAccount.GetCloudSaveData - ERROR: {errorMessage}");
-                    action.Invoke(data);
+                    action.Invoke(String.Empty);
                 });
         }
     }
