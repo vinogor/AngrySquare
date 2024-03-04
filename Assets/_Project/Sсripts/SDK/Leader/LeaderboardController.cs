@@ -67,7 +67,7 @@ namespace _Project.SDK.Leader
                 return;
             }
 
-            List<LeaderBoardPlayer> leaderBoardPlayers = _yandexLeaderBoard.GetLeaderBoardPlayers().Result;
+            List<LeaderBoardPlayer> leaderBoardPlayers = _yandexLeaderBoard.GetLeaderBoardPlayers();
             
             Debug.Log("leaderBoardPlayers from yandex: " + leaderBoardPlayers.Count);
 

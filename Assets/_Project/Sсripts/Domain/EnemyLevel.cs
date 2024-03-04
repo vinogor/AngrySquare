@@ -1,5 +1,6 @@
 using System;
 using _Project.SDK.Leader;
+using UnityEngine;
 
 namespace _Project.Domain
 {
@@ -46,9 +47,11 @@ namespace _Project.Domain
             Changed?.Invoke();
         }
 
-        private void SetPlayer()
+        private async void SetPlayer()
         {
-            _yandexLeaderBoard.SetPlayer(Value);
+            Debug.Log("EnemyLevel - SetPlayer - start...");
+            await _yandexLeaderBoard.SetPlayer(Value);
+            Debug.Log("EnemyLevel - SetPlayer - finish!");
         }
     }
 }

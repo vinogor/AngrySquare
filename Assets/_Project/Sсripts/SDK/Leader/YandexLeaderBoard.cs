@@ -13,7 +13,7 @@ namespace _Project.SDK.Leader
 
         private readonly List<LeaderBoardPlayer> _leaderBoardPlayers = new();
 
-        public void SetPlayer(int score)
+        public async Task SetPlayer(int score)
         {
             Debug.Log("YandexLeaderBoard - SetPlayer - " + score + ", start...");
 
@@ -30,12 +30,12 @@ namespace _Project.SDK.Leader
                     Debug.Log("YandexLeaderBoard - SetPlayer - Success");
                 });
 
-            Fill();
+            await Fill();
         }
 
-        public async Task<List<LeaderBoardPlayer>> GetLeaderBoardPlayers()
+        public List<LeaderBoardPlayer> GetLeaderBoardPlayers()
         {
-            await Fill();
+            // await Fill();
             return _leaderBoardPlayers;
         }
 
@@ -67,8 +67,10 @@ namespace _Project.SDK.Leader
 
                         _leaderBoardPlayers.Add(new LeaderBoardPlayer(score, name));
                     }
-                    
-                    Debug.Log("YandexLeaderBoard - Leaderboard.GetEntries - loadComplete = true");
+
+                    Debug.Log(
+                        "YandexLeaderBoard - Leaderboard.GetEntries - loadComplete = true, _leaderBoardPlayers.Count = " +
+                        _leaderBoardPlayers.Count);
                     loadComplete = true;
                 },
                 (onErrorCallback) =>

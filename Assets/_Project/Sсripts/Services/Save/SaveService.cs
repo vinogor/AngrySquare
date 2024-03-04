@@ -113,7 +113,7 @@ namespace _Project.Services.Save
 
         private void Handle(string data)
         {
-            if (string.IsNullOrEmpty(data))
+            if (string.IsNullOrEmpty(data) || data == "{}")
             {
                 IsSaveExist = false;
                 Debug.Log("SaveService Handle - data empty");
