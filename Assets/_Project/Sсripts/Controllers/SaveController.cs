@@ -45,17 +45,23 @@ namespace _Project.Controllers
 
         private void OnStateChanged()
         {
+            Debug.Log("SaveController - OnStateChanged - _saveService.Save()");
             _saveService.Save();
         }
 
         private void OnApplicationPause(bool pauseStatus)
         {
             if (pauseStatus)
+            {
+                Debug.Log("SaveController - OnApplicationPause - _saveService.Save()");
                 _saveService.Save();
+            }
+                
         }
 
         private void OnApplicationQuit()
         {
+            Debug.Log("SaveController - OnApplicationQuit - _saveService.Save()");
             _saveService.Save();
         }
     }

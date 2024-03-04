@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _Project.Controllers.StateMachine.States;
 using UnityEngine;
 
 namespace _Project.Controllers.StateMachine
@@ -32,14 +33,18 @@ namespace _Project.Controllers.StateMachine
                 Debug.Log("FiniteStateMachine SetState - cant set state - type = " + type);
                 return;
             }
-                
 
             if (_states.TryGetValue(type, out var newState))
             {
                 _currentFsmState?.Exit();
                 _currentFsmState = newState;
                 _currentFsmState.Enter();
-                StateChanged?.Invoke();
+
+                if (_currentFsmState is not GameInitializeFsmState)
+                {
+                    StateChanged?.Invoke();
+                }
+
                 Debug.Log("FiniteStateMachine SetState - state  set - " + newState);
             }
         }
