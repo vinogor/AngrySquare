@@ -42,6 +42,7 @@ namespace _Project._Root
         [SerializeField] [Required] private AudioSource _backgroundAudioSource;
         [SerializeField] [Required] private SaveController _saveController;
         [SerializeField] [Required] private LeanLocalization _leanLocalization;
+        [SerializeField] [Required] private FocusTracking _focusTracking;
 
         [Space(10)]
         [Header("Player")]
@@ -78,6 +79,8 @@ namespace _Project._Root
             Assert.AreEqual(3, _enemyAims.Length);
 
             GameSounds gameSounds = new GameSounds(_soundSettings, _audioSource, _backgroundAudioSource);
+            _focusTracking.Initialize(gameSounds);
+            
             YandexLeaderBoard yandexLeaderBoard = new YandexLeaderBoard();
 
             _soundController = new SoundController(_soundView, gameSounds);
