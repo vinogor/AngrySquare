@@ -68,7 +68,7 @@ namespace _Project.SDK.Leader
             }
 
             List<LeaderBoardPlayer> leaderBoardPlayers = _yandexLeaderBoard.GetLeaderBoardPlayers();
-            Debug.Log("leaderBoardPlayers from yandex: " + leaderBoardPlayers.Count);
+            Debug.Log("leaderBoardPlayers from yandex: " + leaderBoardPlayers[0].Name + " " +  leaderBoardPlayers[0].Score);
 
             List<LeaderBoardPlayer> limitedPlayers = LimitAmount(leaderBoardPlayers);
             Debug.Log("limitedPlayers from yandex: " + limitedPlayers.Count);

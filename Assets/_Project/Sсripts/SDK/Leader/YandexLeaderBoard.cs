@@ -33,6 +33,7 @@ namespace _Project.SDK.Leader
 
         public List<LeaderBoardPlayer> GetLeaderBoardPlayers()
         {
+            Fill();
             return _leaderBoardPlayers;
         }
 
@@ -46,25 +47,27 @@ namespace _Project.SDK.Leader
                 Debug.Log("YandexLeaderBoard - Fill - IsAuthorized == false");
                 return;
             }
-                
+
             Debug.Log("YandexLeaderBoard - Leaderboard.GetEntries - start...");
             Leaderboard.GetEntries(LeaderBoardName, onSuccessCallback: result =>
-            {
-                Debug.Log("YandexLeaderBoard - Leaderboard.GetEntries - Success");
-                foreach (var entry in result.entries)
                 {
-                    var score = entry.score;
-                    var name = entry.player.publicName;
+                    Debug.Log("YandexLeaderBoard - Leaderboard.GetEntries - Success");
 
-                    if (string.IsNullOrEmpty(name))
-                        name = AnonymousName;
+                    foreach (var entry in result.entries)
+                    {
+                        var score = entry.score;
+                        var name = entry.player.publicName;
 
-                    _leaderBoardPlayers.Add(new LeaderBoardPlayer(score, name));
-                }
-            }, (onErrorCallback) =>
-            {
-                Debug.Log("YandexLeaderBoard - Leaderboard.GetEntries - Error: " + onErrorCallback);
-            });
+                        if (string.IsNullOrEmpty(name))
+                            name = AnonymousName;
+
+                        _leaderBoardPlayers.Add(new LeaderBoardPlayer(score, name));
+                    }
+                },
+                (onErrorCallback) =>
+                {
+                    Debug.Log("YandexLeaderBoard - Leaderboard.GetEntries - Error: " + onErrorCallback);
+                });
         }
     }
 }
