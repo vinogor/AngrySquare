@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Agava.YandexGames;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -32,13 +33,13 @@ namespace _Project.SDK.Leader
             Fill();
         }
 
-        public List<LeaderBoardPlayer> GetLeaderBoardPlayers()
+        public async Task<List<LeaderBoardPlayer>> GetLeaderBoardPlayers()
         {
-            Fill();
+            await Fill();
             return _leaderBoardPlayers;
         }
 
-        private async void Fill()
+        private async Task Fill()
         {
             Debug.Log("YandexLeaderBoard - Fill - start...");
             _leaderBoardPlayers.Clear();
