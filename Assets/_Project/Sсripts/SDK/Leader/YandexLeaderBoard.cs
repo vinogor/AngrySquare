@@ -23,19 +23,27 @@ namespace _Project.SDK.Leader
                 return;
             }
 
+            bool isSetScoreCompleted = false;
             Leaderboard.GetPlayerEntry(LeaderBoardName,
                 onSuccessCallback =>
                 {
                     Leaderboard.SetScore(LeaderBoardName, score);
-                    Debug.Log("YandexLeaderBoard - SetPlayer - Success");
+                    Debug.Log("YandexLeaderBoard - SetPlayer - Success, score = " + score);
+                    isSetScoreCompleted = true;
+                }, onErrorCallback =>
+                {
+                    Debug.Log("YandexLeaderBoard - SetPlayer - Error: " + onErrorCallback);
+                    isSetScoreCompleted = true;
                 });
 
+            await UniTask.WaitUntil(() => isSetScoreCompleted);
             await Fill();
         }
 
         public List<LeaderBoardPlayer> GetLeaderBoardPlayers()
         {
             // await Fill();
+            
             return _leaderBoardPlayers;
         }
 
@@ -61,6 +69,7 @@ namespace _Project.SDK.Leader
                     {
                         var score = entry.score;
                         var name = entry.player.publicName;
+                        Debug.Log($"YandexLeaderBoard - Leaderboard.GetEntries - name = {name}, score = {score}");
 
                         if (string.IsNullOrEmpty(name))
                             name = AnonymousName;

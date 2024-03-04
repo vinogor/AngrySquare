@@ -214,8 +214,12 @@ namespace _Project._Root
             saveService.Load(() =>
             {
                 Debug.Log("CompositeRoot - IsSaveExist " + saveService.IsSaveExist);
+
                 if (saveService.IsSaveExist == false)
+                {
+                    enemyLevel.SetPlayer();
                     stateMachine.SetState<GameInitializeFsmState>();
+                }
             });
         }
 

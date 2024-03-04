@@ -30,7 +30,7 @@ namespace _Project.Domain
 
         private void SetNewModel()
         {
-            _transform.DOScale(_transform.localScale + new Vector3(0.7f, 0.7f, 0.7f), _duration);
+            _transform.DOScale(_transform.localScale + new Vector3(0.3f, 0.3f, 0.3f), _duration);
             _material.color = new Color(Random.value, Random.value, Random.value);
         }
 

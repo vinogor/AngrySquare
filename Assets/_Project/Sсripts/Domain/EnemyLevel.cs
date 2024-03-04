@@ -15,9 +15,6 @@ namespace _Project.Domain
             Value = _defaultValue;
 
             _yandexLeaderBoard = yandexLeaderBoard;
-#if UNITY_WEBGL && !UNITY_EDITOR
-            SetPlayer();
-#endif
         }
 
         public event Action Changed;
@@ -44,10 +41,13 @@ namespace _Project.Domain
         public void SetNewValue(int value)
         {
             Value = value;
+#if UNITY_WEBGL && !UNITY_EDITOR
+            SetPlayer();
+#endif
             Changed?.Invoke();
         }
 
-        private async void SetPlayer()
+        public async void SetPlayer()
         {
             Debug.Log("EnemyLevel - SetPlayer - start...");
             await _yandexLeaderBoard.SetPlayer(Value);
