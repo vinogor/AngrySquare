@@ -22,29 +22,33 @@ namespace _Project.View
         private void OnDestroy()
         {
             _buttonClose.onClick.RemoveListener(Hide);
+            ClearLeaderboard();
         }
 
         public void ConstructLeaderboard(List<LeaderBoardPlayer> leaderBoardPlayers)
         {
-            // TODO: не очищается почему-то! 
-            ClearLeaderboard();
-
-            foreach (LeaderBoardPlayer player in leaderBoardPlayers)
+            for (int i = 0; i < leaderBoardPlayers.Count; i++)
             {
-                LeaderboardElement leaderboardElementInstance = Instantiate(_leaderboardElementPrefab, _container);
-                leaderboardElementInstance.Initialize(player.Name, player.Score);
+                if (_spawnedElements.Count <= i)
+                {
+                    LeaderboardElement leaderboardElementInstance = Instantiate(_leaderboardElementPrefab, _container);
+                    _spawnedElements.Add(leaderboardElementInstance);
+                }
 
-                _spawnedElements.Add(leaderboardElementInstance);
+                _spawnedElements[i].Initialize(leaderBoardPlayers[i].Name, leaderBoardPlayers[i].Score);
             }
+
+            for (int i = leaderBoardPlayers.Count; i < _spawnedElements.Count; i++)
+                _spawnedElements[i].Hide();
 
             Show();
         }
 
         private void ClearLeaderboard()
         {
-            foreach (var element in _spawnedElements)
+            foreach (LeaderboardElement element in _spawnedElements)
             {
-                Destroy(element);
+                Destroy(element.gameObject);
             }
 
             _spawnedElements = new List<LeaderboardElement>();

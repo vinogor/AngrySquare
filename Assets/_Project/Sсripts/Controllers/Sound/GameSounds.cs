@@ -18,7 +18,6 @@ namespace _Project.Controllers.Sound
             _audioSource = audioSource;
             _backgroundAudioSource = backgroundAudioSource;
 
-            _backgroundAudioSource.playOnAwake = true;
             _backgroundAudioSource.loop = true;
             _backgroundAudioSource.Play();
         }

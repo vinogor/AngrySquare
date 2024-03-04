@@ -13,5 +13,7 @@ namespace _Project.View
             _nameText.SetText(playerName);
             _scoreText.SetText(playerScore.ToString());
         }
+
+        public void Hide() => gameObject.SetActive(false);
     }
 }

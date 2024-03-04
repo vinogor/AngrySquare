@@ -23,6 +23,11 @@ namespace _Project.Controllers
             LeanLocalization.OnLocalizationChanged += SetContent;
         }
 
+        public void Dispose()
+        {
+            LeanLocalization.OnLocalizationChanged -= SetContent;
+        }
+
         public bool IsEnable { get; private set; }
 
         public void Switch(bool isEnabled)
@@ -66,11 +71,6 @@ namespace _Project.Controllers
             _popUp.Button.onClick.RemoveListener(Hide);
             _popUp.Hide();
             _isClosed = true;
-        }
-
-        public void Dispose()
-        {
-            LeanLocalization.OnLocalizationChanged -= SetContent;
         }
     }
 }

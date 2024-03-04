@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using _Project.View;
 using Agava.YandexGames;
 using UnityEngine;
@@ -11,6 +12,9 @@ namespace _Project.SDK.Leader
         private readonly LeaderboardButtonView _leaderboardButtonView;
         private readonly LeaderboardPopupView _leaderboardPopup;
         private readonly YandexLeaderBoard _yandexLeaderBoard;
+        
+        // TODO: вынести в коэфф
+        private int _maxPlayerToShow = 20;
 
         public LeaderboardController(LeaderboardButtonView leaderboardButtonView, LeaderboardPopupView leaderboardPopup,
             YandexLeaderBoard yandexLeaderBoard)
@@ -41,7 +45,9 @@ namespace _Project.SDK.Leader
                 new LeaderBoardPlayer(6, "name4"),
             };
 
-            _leaderboardPopup.ConstructLeaderboard(leaderBoardPlayers);
+            var limitedPlayers = LimitAmount(leaderBoardPlayers);
+            
+            _leaderboardPopup.ConstructLeaderboard(limitedPlayers);
         }
 
         private void Open()
@@ -62,8 +68,17 @@ namespace _Project.SDK.Leader
             }
 
             List<LeaderBoardPlayer> leaderBoardPlayers = _yandexLeaderBoard.GetLeaderBoardPlayers();
+            Debug.Log("leaderBoardPlayers from yandex: " + leaderBoardPlayers.Count);
 
-            _leaderboardPopup.ConstructLeaderboard(leaderBoardPlayers);
+            List<LeaderBoardPlayer> limitedPlayers = LimitAmount(leaderBoardPlayers);
+            Debug.Log("limitedPlayers from yandex: " + limitedPlayers.Count);
+            
+            _leaderboardPopup.ConstructLeaderboard(limitedPlayers);
+        }
+
+        private List<LeaderBoardPlayer> LimitAmount(List<LeaderBoardPlayer> leaderBoardPlayers)
+        {
+            return leaderBoardPlayers.Take(Mathf.Min(leaderBoardPlayers.Count, _maxPlayerToShow)).ToList();
         }
 
         public void Dispose()

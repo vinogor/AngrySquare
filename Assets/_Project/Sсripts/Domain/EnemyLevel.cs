@@ -12,14 +12,15 @@ namespace _Project.Domain
         {
             _defaultValue = 1;
             Value = _defaultValue;
-            
+
             _yandexLeaderBoard = yandexLeaderBoard;
-            
-            // TODO: закомментил для локального теста 
-            // _yandexLeaderBoard.SetPlayer(Value);
+#if UNITY_WEBGL && !UNITY_EDITOR
+            SetPlayer();
+#endif
         }
 
         public event Action Changed;
+
         public event Action SetDefault;
 
         public int Value { get; private set; }
@@ -27,8 +28,9 @@ namespace _Project.Domain
         public void Increase()
         {
             Value++;
-            // TODO: закомментил для локального теста 
-            // _yandexLeaderBoard.SetPlayer(Value);
+#if UNITY_WEBGL && !UNITY_EDITOR
+            SetPlayer();
+#endif
             Changed?.Invoke();
         }
 
@@ -37,11 +39,16 @@ namespace _Project.Domain
             Value = _defaultValue;
             SetDefault?.Invoke();
         }
-        
+
         public void SetNewValue(int value)
         {
             Value = value;
             Changed?.Invoke();
+        }
+
+        private void SetPlayer()
+        {
+            _yandexLeaderBoard.SetPlayer(Value);
         }
     }
 }
