@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Agava.YandexGames;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace _Project.SDK.Leader
@@ -37,7 +38,7 @@ namespace _Project.SDK.Leader
             return _leaderBoardPlayers;
         }
 
-        private void Fill()
+        private async void Fill()
         {
             Debug.Log("YandexLeaderBoard - Fill - start...");
             _leaderBoardPlayers.Clear();
@@ -49,6 +50,8 @@ namespace _Project.SDK.Leader
             }
 
             Debug.Log("YandexLeaderBoard - Leaderboard.GetEntries - start...");
+
+            bool loadComplete = false;
             Leaderboard.GetEntries(LeaderBoardName, onSuccessCallback: result =>
                 {
                     Debug.Log("YandexLeaderBoard - Leaderboard.GetEntries - Success");
@@ -63,11 +66,18 @@ namespace _Project.SDK.Leader
 
                         _leaderBoardPlayers.Add(new LeaderBoardPlayer(score, name));
                     }
+                    
+                    Debug.Log("YandexLeaderBoard - Leaderboard.GetEntries - loadComplete = true");
+                    loadComplete = true;
                 },
                 (onErrorCallback) =>
                 {
                     Debug.Log("YandexLeaderBoard - Leaderboard.GetEntries - Error: " + onErrorCallback);
+                    Debug.Log("YandexLeaderBoard - Leaderboard.GetEntries - loadComplete = true");
+                    loadComplete = true;
                 });
+
+            await UniTask.WaitUntil(() => loadComplete);
         }
     }
 }
