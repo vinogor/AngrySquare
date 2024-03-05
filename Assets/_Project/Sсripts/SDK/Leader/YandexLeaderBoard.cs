@@ -11,7 +11,12 @@ namespace _Project.SDK.Leader
         private const string AnonymousName = "Anonymous";
         private const string LeaderBoardName = "LeaderBoardAngrySquare";
 
-        private readonly List<LeaderBoardPlayer> _leaderBoardPlayers = new();
+        public List<LeaderBoardPlayer> LeaderBoardPlayers { get; private set; }
+
+        public YandexLeaderBoard()
+        {
+            LeaderBoardPlayers = new List<LeaderBoardPlayer>();
+        }
 
         public async Task SetPlayer(int score)
         {
@@ -40,17 +45,10 @@ namespace _Project.SDK.Leader
             await Fill();
         }
 
-        public List<LeaderBoardPlayer> GetLeaderBoardPlayers()
-        {
-            // await Fill();
-            
-            return _leaderBoardPlayers;
-        }
-
         private async Task Fill()
         {
             Debug.Log("YandexLeaderBoard - Fill - start...");
-            _leaderBoardPlayers.Clear();
+            LeaderBoardPlayers.Clear();
 
             if (PlayerAccount.IsAuthorized == false)
             {
@@ -74,12 +72,12 @@ namespace _Project.SDK.Leader
                         if (string.IsNullOrEmpty(name))
                             name = AnonymousName;
 
-                        _leaderBoardPlayers.Add(new LeaderBoardPlayer(score, name));
+                        LeaderBoardPlayers.Add(new LeaderBoardPlayer(score, name));
                     }
 
                     Debug.Log(
                         "YandexLeaderBoard - Leaderboard.GetEntries - loadComplete = true, _leaderBoardPlayers.Count = " +
-                        _leaderBoardPlayers.Count);
+                        LeaderBoardPlayers.Count);
                     loadComplete = true;
                 },
                 (onErrorCallback) =>
