@@ -55,7 +55,6 @@ namespace _Project._Root
             _enemyDefenceTextView.Initialize(enemyDefence);
             _spellBarView.Initialize(availableSpells);
             _enemyLevelTextView.Initialize(enemyLevel);
-            _spellBarShaker.Initialize();
         }
     }
 }

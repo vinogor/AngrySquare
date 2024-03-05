@@ -8,42 +8,25 @@ namespace _Project.View
         [SerializeField] private Transform[] _spellsTransforms;
         [SerializeField] private Transform _skipButtonTransform;
 
-        private Sequence[] _spellSequences = new Sequence[5];
-        private Sequence _skipButtonSequence;
+        private Sequence _sequence;
 
         private int _shakingAngle = 3;
         private float _shakeDuration = 0.2f;
 
-        public void Initialize()
-        {
-            _skipButtonSequence = CreateSequence(_skipButtonTransform);
-
-            for (var i = 0; i < _spellsTransforms.Length; i++)
-            {
-                _spellSequences[i] = CreateSequence(_spellsTransforms[i]);
-            }
-        }
-
         public void Enable(int amountAvailableSpells)
         {
-            // TODO: ??? как запустить несколько анимаций одноврменно? 
-
-            _skipButtonSequence.Play();
+            _sequence = DOTween.Sequence();
+            _sequence.Join(CreateSequence(_skipButtonTransform));
 
             for (var i = 0; i < amountAvailableSpells; i++)
-            {
-                _spellSequences[i].Play();
-            }
+                _sequence.Join(CreateSequence(_spellsTransforms[i]));
+
+            _sequence.Play();
         }
 
         public void Disable()
         {
-            _skipButtonSequence.Pause();
-
-            foreach (Sequence sequence in _spellSequences)
-            {
-                sequence.Pause();
-            }
+            _sequence.Pause();
         }
 
         private Sequence CreateSequence(Transform transformToShake)

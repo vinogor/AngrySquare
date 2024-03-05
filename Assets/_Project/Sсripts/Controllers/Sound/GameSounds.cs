@@ -33,7 +33,7 @@ namespace _Project.Controllers.Sound
             }
             else
             {
-                _backgroundAudioSource.Play();
+                _backgroundAudioSource.UnPause();
             }
         }
 
