@@ -1,3 +1,4 @@
+using _Project.Config;
 using _Project.Controllers;
 using _Project.Domain;
 using _Project.Domain.Movement;
@@ -14,6 +15,7 @@ namespace _Project.Services
         private readonly Damage _playerDamage;
         private readonly Mana _playerMana;
 
+        private readonly EnemyProgression _enemyProgression;
         private readonly Defence _enemyDefence;
         private readonly Health _enemyHealth;
         private readonly Damage _enemyDamage;
@@ -24,22 +26,27 @@ namespace _Project.Services
         private readonly EnemyTargetController _enemyTargetController;
 
         public LevelRestarter(CellsManager cellsManager, Defence playerDefence, Health playerHealth,
-            Damage playerDamage, Mana playerMana, Defence enemyDefence, Health enemyHealth, Damage enemyDamage,
+            Damage playerDamage, Mana playerMana, EnemyProgression enemyProgression, Defence enemyDefence,
+            Health enemyHealth, Damage enemyDamage,
             AvailableSpells availableSpells, PlayerMovement playerMovement, EnemyTargetController enemyTargetController,
             EnemyLevel enemyLevel)
         {
             _cellsManager = cellsManager;
+
             _playerDefence = playerDefence;
             _playerHealth = playerHealth;
             _playerDamage = playerDamage;
             _playerMana = playerMana;
+
+            _enemyProgression = enemyProgression;
             _enemyDefence = enemyDefence;
             _enemyHealth = enemyHealth;
             _enemyDamage = enemyDamage;
+            _enemyLevel = enemyLevel;
+
             _availableSpells = availableSpells;
             _playerMovement = playerMovement;
             _enemyTargetController = enemyTargetController;
-            _enemyLevel = enemyLevel;
         }
 
         public void RestartAfterDefeat()
@@ -73,13 +80,16 @@ namespace _Project.Services
             _playerHealth.ReplenishToMax();
             _playerMana.ReplenishToMax();
 
-            // заменить модель противника, пока просто сделать крупнее - плавно 
+            // заменить модель противника 
             // эффект на модель противника 
-            
+
             _enemyLevel.Increase();
-            _enemyDefence.Increase(1);
-            _enemyDamage.Increase(1);
-            _enemyHealth.IncreaseMaxValue(2);
+            int enemyLevelValue = _enemyLevel.Value;
+            _enemyDefence.SetNewValue(_enemyProgression.GetDefence(enemyLevelValue));
+            _enemyDamage.SetNewValue(_enemyProgression.GetDamage(enemyLevelValue));
+            int newValue = _enemyProgression.GetHealth(enemyLevelValue);
+            _enemyHealth.SetNewValues(newValue, newValue);
+
             _enemyHealth.ReplenishToMax();
         }
     }

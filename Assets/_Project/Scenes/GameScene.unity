@@ -4158,6 +4158,7 @@ MonoBehaviour:
   _cellsSettings: {fileID: 11400000, guid: ef7e568403d49024f9e6d2e3c80dc6b1, type: 2}
   _spellsSettings: {fileID: 11400000, guid: 1aaac2dac6dd14349b971399d8fb0bf8, type: 2}
   _soundSettings: {fileID: 11400000, guid: 13feb1c72fbf68f49bc7c1bc22033d8f, type: 2}
+  _enemyProgression: {fileID: 11400000, guid: 06c1796db5ee18e46baef0039ecb6381, type: 2}
   _uiRoot: {fileID: 1518102252}
   _vfxRoot: {fileID: 60840387}
   _soundView: {fileID: 1049798280}

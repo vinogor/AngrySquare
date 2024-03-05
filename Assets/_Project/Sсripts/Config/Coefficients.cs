@@ -29,6 +29,7 @@ namespace _Project.Config
         
         [field: SerializeField]  public float DelayAfterVfxSeconds = 1.5f;
 
+        // TODO: наверное этот блок больше не нужен 
         [Space(10)]
         [Header("Enemy")] 
         [field: SerializeField] public int EnemyStartHealth = 5;

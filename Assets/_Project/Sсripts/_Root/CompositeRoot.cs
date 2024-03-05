@@ -35,6 +35,7 @@ namespace _Project._Root
         [SerializeField] [Required] private CellsSettings _cellsSettings;
         [SerializeField] [Required] private SpellsSettings _spellsSettings;
         [SerializeField] [Required] private SoundSettings _soundSettings;
+        [SerializeField] [Required] private EnemyProgression _enemyProgression;
         [SerializeField] [Required] private UiRoot _uiRoot;
         [SerializeField] [Required] private VfxRoot _vfxRoot;
         [SerializeField] [Required] private SoundView _soundView;
@@ -68,9 +69,7 @@ namespace _Project._Root
             Debug.Log("CompositeRoot started");
 
 #if UNITY_WEBGL && !UNITY_EDITOR
-            _saver = new CloudSaver();
-            Debug.Log("YandexGamesSdk.GameReady() - STARTED");
-            YandexGamesSdk.GameReady();
+            Yandex();
 #else
             _saver = new LocalSaver();
 #endif
@@ -80,7 +79,7 @@ namespace _Project._Root
 
             GameSounds gameSounds = new GameSounds(_soundSettings, _audioSource, _backgroundAudioSource);
             _focusTracking.Initialize(gameSounds);
-            
+
             YandexLeaderBoard yandexLeaderBoard = new YandexLeaderBoard();
 
             _soundController = new SoundController(_soundView, gameSounds);
@@ -94,11 +93,14 @@ namespace _Project._Root
             Mana playerMana = new Mana(_coefficients.PlayerStartMana, _coefficients.PlayerMaxMana, _spellsSettings,
                 gameSounds);
 
-            Defence enemyDefence = new Defence(_coefficients.EnemyStartDefence);
-            Health enemyHealth = new Health(_coefficients.EnemyStartHealth, _coefficients.EnemyMaxHealth, enemyDefence,
-                gameSounds);
-            Damage enemyDamage = new Damage(_coefficients.EnemyStartDamage);
             EnemyLevel enemyLevel = new EnemyLevel(yandexLeaderBoard);
+            int enemyLevelValue = enemyLevel.Value;
+
+            Defence enemyDefence = new Defence(_enemyProgression.GetDefence(enemyLevelValue));
+            int healthValue = _enemyProgression.GetHealth(enemyLevelValue);
+            Health enemyHealth = new Health(healthValue, healthValue, enemyDefence, gameSounds);
+            Damage enemyDamage = new Damage(_enemyProgression.GetDamage(enemyLevelValue));
+
             _enemyModel.Initialize(enemyLevel);
 
             AvailableSpells availableSpells = new AvailableSpells();
@@ -154,8 +156,8 @@ namespace _Project._Root
             EnemyTargetController enemyTargetController = new EnemyTargetController(cellsManager, _enemyAims);
 
             LevelRestarter levelRestarter = new LevelRestarter(cellsManager, playerDefence, playerHealth,
-                playerDamage, playerMana, enemyDefence, enemyHealth, enemyDamage, availableSpells, _playerMovement,
-                enemyTargetController, enemyLevel);
+                playerDamage, playerMana, _enemyProgression, enemyDefence, enemyHealth, enemyDamage, availableSpells,
+                _playerMovement, enemyTargetController, enemyLevel);
 
             // === ADS ===
 
@@ -224,6 +226,13 @@ namespace _Project._Root
                     stateMachine.SetState<GameInitializeFsmState>();
                 }
             });
+        }
+
+        private void Yandex()
+        {
+            _saver = new CloudSaver();
+            Debug.Log("YandexGamesSdk.GameReady() - STARTED");
+            YandexGamesSdk.GameReady();
         }
 
         private void CellEffectsInitialize(PlayerJumper playerJumper, Health enemyHealth, Damage playerDamage,
