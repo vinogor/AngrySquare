@@ -56,7 +56,8 @@ namespace _Project.Domain.Movement
             }
             else if (targetCells[0] == _playerMovement.PlayerStayCell)
             {
-                _enemyJumper.JumpToAttackPlayer(targetCells[0], () => _playerHealth.TakeDamage(_enemyDamage.Value))
+                _enemyJumper.JumpToAttackPlayer(targetCells[0],
+                        () => _playerHealth.TakeTripleDamage(_enemyDamage.Value))
                     .AppendCallback(() => TurnCompleted?.Invoke())
                     .Play();
             }

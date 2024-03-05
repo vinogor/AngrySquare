@@ -29,8 +29,7 @@ namespace _Project.View
         public void SetContent(Sprite sprite, int manaCost, UnityAction unityAction)
         {
             SetSprite(sprite);
-            string introText = LeanLocalization.GetTranslationText(UiTextKeys.SpellBarCostKey);
-            SetText(introText + ": " + manaCost);
+            SetText(manaCost.ToString());
             _button.onClick.AddListener(unityAction);
         }
 

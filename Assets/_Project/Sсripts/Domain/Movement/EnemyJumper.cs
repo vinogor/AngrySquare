@@ -95,9 +95,10 @@ namespace _Project.Domain.Movement
         private Sequence Jump(Transform transform, Vector3 target)
         {
             Debug.Log($"Enemy - Jump - from {transform.position} - to {target}");
-            return transform
-                .DOJump(target, _coefficients.JumpPower, 1, _coefficients.JumpDuration)
+
+            return DOTween.Sequence()
                 .AppendCallback(_gameSounds.PlayEnemyStep)
+                .Join(transform.DOJump(target, _coefficients.JumpPower, 1, _coefficients.JumpDuration))
                 .SetEase(Ease.Linear);
         }
     }

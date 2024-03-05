@@ -64,7 +64,7 @@ namespace _Project._Root
         private ISaver _saver;
         private PopUpTutorialController _popUpTutorialController;
 
-        private async void Start()
+        private void OnEnable()
         {
             Debug.Log("CompositeRoot started");
 

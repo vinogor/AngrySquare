@@ -1,4 +1,3 @@
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -6,43 +5,55 @@ namespace _Project.Domain
 {
     public class EnemyModel : MonoBehaviour
     {
-        [SerializeField] private Transform _transform;
-        [SerializeField] private Material _material;
+        [SerializeField] private Transform[] _transforms;
 
+        private Transform _currentTransform;
         private EnemyLevel _enemyLevel;
-
-        private Vector3 _defaultLocalScale;
-        private Color _defaultMaterialColor;
-
-        private float _duration = 3f;
 
         public void Initialize(EnemyLevel enemyLevel)
         {
-            _defaultLocalScale = _transform.localScale;
-            _defaultMaterialColor = new Color(_material.color.r, _material.color.g, _material.color.b, 1f);
-
             Assert.IsNotNull(enemyLevel);
             _enemyLevel = enemyLevel;
 
-            _enemyLevel.Changed += SetNewModel;
+            foreach (Transform enemyModel in _transforms)
+            {
+                enemyModel.gameObject.SetActive(false);
+            }
+
+            ActivateNewModel();
+
+            _enemyLevel.Changed += SetNextModel;
             _enemyLevel.SetDefault += SetDefaultModel;
         }
 
-        private void SetNewModel()
+        private void SetNextModel()
         {
-            _transform.DOScale(_transform.localScale + new Vector3(0.3f, 0.3f, 0.3f), _duration);
-            _material.color = new Color(Random.value, Random.value, Random.value);
+            DeactivateOldModel();
+            ActivateNewModel();
+        }
+
+        private void DeactivateOldModel()
+        {
+            _currentTransform.gameObject.SetActive(false);
+        }
+
+        private void ActivateNewModel()
+        {
+            int enemyModelNumber = (_enemyLevel.Value - 1) % _transforms.Length;
+            _currentTransform = _transforms[enemyModelNumber];
+            _currentTransform.gameObject.SetActive(true);
         }
 
         private void SetDefaultModel()
         {
-            _transform.DOScale(_defaultLocalScale, 0.001f) ;
-            _material.color = _defaultMaterialColor;
+            DeactivateOldModel();
+            _currentTransform = _transforms[0];
+            _currentTransform.gameObject.SetActive(true);
         }
 
         private void OnDestroy()
         {
-            _enemyLevel.Changed -= SetNewModel;
+            _enemyLevel.Changed -= SetNextModel;
             _enemyLevel.SetDefault -= SetDefaultModel;
         }
     }

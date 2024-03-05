@@ -27,6 +27,18 @@ namespace _Project.View
         public void Disable()
         {
             _sequence.Pause();
+            ResetRotation();
+        }
+
+        private void ResetRotation()
+        {
+            Quaternion zeroQuaternion = Quaternion.Euler(new Vector3(0, 0, 0));
+            _skipButtonTransform.localRotation = zeroQuaternion;
+
+            foreach (Transform spellsTransform in _spellsTransforms)
+            {
+                spellsTransform.localRotation = zeroQuaternion;
+            }
         }
 
         private Sequence CreateSequence(Transform transformToShake)
@@ -40,7 +52,7 @@ namespace _Project.View
                     .DORotate(new Vector3(0, 0, _shakingAngle), _shakeDuration, RotateMode.LocalAxisAdd)
                     .SetEase(Ease.Linear)
                 )
-                .OnPause(() => transformToShake.localRotation = Quaternion.Euler(new Vector3(0, 0, 0)))
+                // .OnPause(() => transformToShake.localRotation = Quaternion.Euler(new Vector3(0, 0, 0)))
                 .SetLoops(-1)
                 .Pause();
         }
