@@ -19,7 +19,7 @@ MonoBehaviour:
   PlayerStartHealth: 8
   PlayerMaxHealth: 8
   PlayerStartMana: 5
-  PlayerMaxMana: 20
+  PlayerMaxMana: 10
   PlayerStartDamage: 2
   PlayerStartDefence: 0
   DamageIncreaseValue: 1
