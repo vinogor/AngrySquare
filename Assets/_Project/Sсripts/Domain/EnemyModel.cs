@@ -23,7 +23,6 @@ namespace _Project.Domain
             ActivateNewModel();
 
             _enemyLevel.Changed += SetNextModel;
-            _enemyLevel.SetDefault += SetDefaultModel;
         }
 
         private void SetNextModel()
@@ -54,7 +53,6 @@ namespace _Project.Domain
         private void OnDestroy()
         {
             _enemyLevel.Changed -= SetNextModel;
-            _enemyLevel.SetDefault -= SetDefaultModel;
         }
     }
 }

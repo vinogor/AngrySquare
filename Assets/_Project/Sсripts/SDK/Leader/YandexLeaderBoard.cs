@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using _Project.Controllers.StateMachine.States;
 using _Project.Domain;
 using Agava.YandexGames;
 using Cysharp.Threading.Tasks;
@@ -11,38 +12,51 @@ namespace _Project.SDK.Leader
     public class YandexLeaderBoard : IDisposable
     {
         private readonly EnemyLevel _enemyLevel;
+        private readonly PlayerDefeatFsmState _playerDefeatFsmState;
+
+        private string _currentPublicName;
+
         private const string AnonymousName = "Anonymous";
         private const string LeaderBoardName = "LeaderBoardAngrySquare";
 
         public List<LeaderBoardPlayer> LeaderBoardPlayers { get; private set; }
 
-        public YandexLeaderBoard(EnemyLevel enemyLevel)
+        public YandexLeaderBoard(EnemyLevel enemyLevel, PlayerDefeatFsmState playerDefeatFsmState)
         {
             LeaderBoardPlayers = new List<LeaderBoardPlayer>();
-            _enemyLevel = enemyLevel;
 
-            _enemyLevel.Changed += EnemyLevelOnChanged();
-            _enemyLevel.SetDefault += EnemyLevelOnChanged();
+            _enemyLevel = enemyLevel;
+            _playerDefeatFsmState = playerDefeatFsmState;
+
+            _playerDefeatFsmState.Defeat += OnDefeat;
         }
 
         public void Dispose()
         {
-            _enemyLevel.Changed -= EnemyLevelOnChanged();
-            _enemyLevel.SetDefault -= EnemyLevelOnChanged();
+            _playerDefeatFsmState.Defeat -= OnDefeat;
         }
 
-        private Action EnemyLevelOnChanged()
+        private void OnDefeat()
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
-            return () => SetScore(_enemyLevel.Value);
-#else
-            return () => { };
+            SetScore(_enemyLevel.Value);
 #endif
         }
 
         public async void SetScore(int score)
         {
             Debug.Log("YandexLeaderBoard - SetPlayer - " + score + ", start...");
+
+            LeaderBoardPlayer currentPlayer = LeaderBoardPlayers.Find(player => player.Name == _currentPublicName);
+
+            Debug.Log("YandexLeaderBoard - SetPlayer - currentPlayer: " + currentPlayer);
+
+            if (currentPlayer != null && currentPlayer.Score >= score)
+            {
+                Debug.Log(
+                    $"YandexLeaderBoard - SetPlayer - score less then at leaderboard: new score {score}, old score: {currentPlayer.Score} ");
+                return;
+            }
 
             if (PlayerAccount.IsAuthorized == false)
             {
@@ -51,6 +65,7 @@ namespace _Project.SDK.Leader
             }
 
             bool isSetScoreCompleted = false;
+
             Leaderboard.GetPlayerEntry(LeaderBoardName,
                 onSuccessCallback =>
                 {
@@ -67,7 +82,33 @@ namespace _Project.SDK.Leader
             await Fill();
         }
 
-        private async Task Fill()
+        public void GetCurrentPublicName()
+        {
+            if (PlayerAccount.IsAuthorized == false)
+            {
+                Debug.Log("YandexLeaderBoard - GetCurrentPublicName - IsAuthorized == false");
+                return;
+            }
+
+            if (PlayerAccount.HasPersonalProfileDataPermission == false)
+            {
+                Debug.Log("YandexLeaderBoard - GetCurrentPublicName - HasPersonalProfileDataPermission == false");
+                return;
+            }
+
+            PlayerAccount.GetProfileData(onSuccessCallback =>
+                {
+                    _currentPublicName = onSuccessCallback.publicName;
+                    Debug.Log("YandexLeaderBoard - GetCurrentPublicName - SUCCESS, currentPublicName = " +
+                              _currentPublicName);
+                },
+                onErrorCallback =>
+                {
+                    Debug.Log("YandexLeaderBoard - GetCurrentPublicName - ERROR: " + onErrorCallback);
+                });
+        }
+
+        public async Task Fill()
         {
             Debug.Log("YandexLeaderBoard - Fill - start...");
             LeaderBoardPlayers.Clear();

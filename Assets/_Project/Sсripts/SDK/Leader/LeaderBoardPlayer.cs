@@ -10,5 +10,10 @@ namespace _Project.SDK
 
         public int Score { get; private set; }
         public string Name { get; private set; }
+        
+        public override string ToString()
+        {
+            return $"{Name}: {Score}";
+        }
     }
 }

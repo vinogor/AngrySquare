@@ -14,8 +14,6 @@ namespace _Project.Domain
 
         public event Action Changed;
 
-        public event Action SetDefault;
-
         public int Value { get; private set; }
 
         public void Increase()
@@ -27,7 +25,7 @@ namespace _Project.Domain
         public void SetToDefault()
         {
             Value = _defaultValue;
-            SetDefault?.Invoke();
+            Changed?.Invoke();
         }
 
         public void SetNewValue(int value)

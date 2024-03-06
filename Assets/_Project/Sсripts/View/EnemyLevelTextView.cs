@@ -20,7 +20,6 @@ namespace _Project.View
 
             _enemyLevel = enemyLevel;
             _enemyLevel.Changed += OnEnemyLevelChanged;
-            _enemyLevel.SetDefault += OnEnemyLevelChanged;
             LeanLocalization.OnLocalizationChanged += OnEnemyLevelChanged;
 
             SetText();
@@ -40,7 +39,6 @@ namespace _Project.View
         private void OnDestroy()
         {
             _enemyLevel.Changed -= OnEnemyLevelChanged;
-            _enemyLevel.SetDefault -= OnEnemyLevelChanged;
             LeanLocalization.OnLocalizationChanged -= OnEnemyLevelChanged;
         }
     }

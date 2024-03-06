@@ -27,9 +27,8 @@ namespace _Project.Services
 
         public LevelRestarter(CellsManager cellsManager, Defence playerDefence, Health playerHealth,
             Damage playerDamage, Mana playerMana, EnemyProgression enemyProgression, Defence enemyDefence,
-            Health enemyHealth, Damage enemyDamage,
-            AvailableSpells availableSpells, PlayerMovement playerMovement, EnemyTargetController enemyTargetController,
-            EnemyLevel enemyLevel)
+            Health enemyHealth, Damage enemyDamage, AvailableSpells availableSpells, PlayerMovement playerMovement,
+            EnemyTargetController enemyTargetController, EnemyLevel enemyLevel)
         {
             _cellsManager = cellsManager;
 

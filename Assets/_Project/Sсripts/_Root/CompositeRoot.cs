@@ -62,7 +62,7 @@ namespace _Project._Root
         private PopUpTutorialController _popUpTutorialController;
         private YandexLeaderBoard _yandexLeaderBoard;
 
-        private void OnEnable()
+        private async void OnEnable()
         {
             Debug.Log("CompositeRoot started");
 
@@ -152,9 +152,7 @@ namespace _Project._Root
             _uiRoot.Initialize(playerHealth, playerMana, enemyHealth, playerDamage, enemyDamage, playerDefence,
                 enemyDefence, availableSpells, enemyLevel);
 
-            _yandexLeaderBoard = new YandexLeaderBoard(enemyLevel);
-            LeaderboardController leaderboardController = new LeaderboardController(_uiRoot.LeaderboardButtonView,
-                _uiRoot.LeaderboardPopupView, _yandexLeaderBoard);
+
 
             _playerEffects.Add(EffectName.Swords,
                 new PlayerSwords(playerJumper, enemyHealth, playerDamage));
@@ -248,6 +246,10 @@ namespace _Project._Root
 
             // === SAVE / RESTART ===
 
+            _yandexLeaderBoard = new YandexLeaderBoard(enemyLevel, playerDefeatFsmState);
+            LeaderboardController leaderboardController = new LeaderboardController(_uiRoot.LeaderboardButtonView,
+                _uiRoot.LeaderboardPopupView, _yandexLeaderBoard);
+            
             SaveService saveService = new SaveService(playerDamage, playerDefence, playerHealth, playerMana,
                 availableSpells, _playerMovement, enemyLevel, enemyDamage, enemyDefence, enemyHealth,
                 enemyTargetController, cellsManager, stateMachine, _popUpTutorialController, _saver);
@@ -255,6 +257,9 @@ namespace _Project._Root
 
             _restartGameController =
                 new RestartGameController(_uiRoot.RestartGameView, levelRestarter, stateMachine, saveService);
+
+            await _yandexLeaderBoard.Fill();
+            _yandexLeaderBoard.GetCurrentPublicName();
 
             // === START GAME ===
 
@@ -288,7 +293,7 @@ namespace _Project._Root
             saveService.Load(() =>
             {
                 Debug.Log("CompositeRoot - IsSaveExist " + saveService.IsSaveExist);
-
+                
                 if (saveService.IsSaveExist == false)
                 {
                     stateMachine.SetState<GameInitializeFsmState>();
