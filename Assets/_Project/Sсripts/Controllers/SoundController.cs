@@ -30,7 +30,7 @@ namespace _Project.Controllers
             else
                 _soundView.SetOff();
 
-            _gameSounds.Switch(_isEnabled);
+            _gameSounds.SwitchByButton(_isEnabled);
         }
     }
 }

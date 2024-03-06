@@ -1,20 +1,15 @@
 using System;
-using _Project.SDK.Leader;
-using UnityEngine;
 
 namespace _Project.Domain
 {
     public class EnemyLevel
     {
         private readonly int _defaultValue;
-        private readonly YandexLeaderBoard _yandexLeaderBoard;
 
-        public EnemyLevel(YandexLeaderBoard yandexLeaderBoard)
+        public EnemyLevel()
         {
             _defaultValue = 1;
             Value = _defaultValue;
-
-            _yandexLeaderBoard = yandexLeaderBoard;
         }
 
         public event Action Changed;
@@ -26,9 +21,6 @@ namespace _Project.Domain
         public void Increase()
         {
             Value++;
-#if UNITY_WEBGL && !UNITY_EDITOR
-            SetPlayer();
-#endif
             Changed?.Invoke();
         }
 
@@ -41,17 +33,7 @@ namespace _Project.Domain
         public void SetNewValue(int value)
         {
             Value = value;
-#if UNITY_WEBGL && !UNITY_EDITOR
-            SetPlayer();
-#endif
             Changed?.Invoke();
-        }
-
-        public async void SetPlayer()
-        {
-            Debug.Log("EnemyLevel - SetPlayer - start...");
-            await _yandexLeaderBoard.SetPlayer(Value);
-            Debug.Log("EnemyLevel - SetPlayer - finish!");
         }
     }
 }

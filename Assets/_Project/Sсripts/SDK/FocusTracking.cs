@@ -39,7 +39,7 @@ namespace _Project.SDK
 
         private void MuteAudio(bool value)
         {
-            _gameSounds.Switch(value);
+            _gameSounds.SwitchByFocus(value);
         }
     }
 }

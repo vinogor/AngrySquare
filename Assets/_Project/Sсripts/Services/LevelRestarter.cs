@@ -80,9 +80,6 @@ namespace _Project.Services
             _playerHealth.ReplenishToMax();
             _playerMana.ReplenishToMax();
 
-            // заменить модель противника 
-            // эффект на модель противника 
-
             _enemyLevel.Increase();
             int enemyLevelValue = _enemyLevel.Value;
             _enemyDefence.SetNewValue(_enemyProgression.GetDefence(enemyLevelValue));

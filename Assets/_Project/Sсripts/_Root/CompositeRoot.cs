@@ -63,6 +63,7 @@ namespace _Project._Root
         private RestartGameController _restartGameController;
         private ISaver _saver;
         private PopUpTutorialController _popUpTutorialController;
+        private YandexLeaderBoard _yandexLeaderBoard;
 
         private void OnEnable()
         {
@@ -80,8 +81,6 @@ namespace _Project._Root
             GameSounds gameSounds = new GameSounds(_soundSettings, _audioSource, _backgroundAudioSource);
             _focusTracking.Initialize(gameSounds);
 
-            YandexLeaderBoard yandexLeaderBoard = new YandexLeaderBoard();
-
             _soundController = new SoundController(_soundView, gameSounds);
 
             CellsManager cellsManager = new CellsManager(_cells, _cellsSettings);
@@ -93,8 +92,10 @@ namespace _Project._Root
             Mana playerMana = new Mana(_coefficients.PlayerStartMana, _coefficients.PlayerMaxMana, _spellsSettings,
                 gameSounds);
 
-            EnemyLevel enemyLevel = new EnemyLevel(yandexLeaderBoard);
+            EnemyLevel enemyLevel = new EnemyLevel();
             int enemyLevelValue = enemyLevel.Value;
+
+            _yandexLeaderBoard = new YandexLeaderBoard(enemyLevel);
 
             Defence enemyDefence = new Defence(_enemyProgression.GetDefence(enemyLevelValue));
             int healthValue = _enemyProgression.GetHealth(enemyLevelValue);
@@ -121,7 +122,7 @@ namespace _Project._Root
                 enemyDefence, availableSpells, enemyLevel);
 
             LeaderboardController leaderboardController = new LeaderboardController(_uiRoot.LeaderboardButtonView,
-                _uiRoot.LeaderboardPopupView, yandexLeaderBoard);
+                _uiRoot.LeaderboardPopupView, _yandexLeaderBoard);
 
             List<EffectName> availableEffectNames = new List<EffectName>
                 { EffectName.Swords, EffectName.Health, EffectName.Mana };
@@ -222,7 +223,6 @@ namespace _Project._Root
 
                 if (saveService.IsSaveExist == false)
                 {
-                    enemyLevel.SetPlayer();
                     stateMachine.SetState<GameInitializeFsmState>();
                 }
             });
@@ -268,6 +268,7 @@ namespace _Project._Root
             _soundController.Dispose();
             _restartGameController.Dispose();
             _popUpTutorialController.Dispose();
+            _yandexLeaderBoard.Dispose();
         }
     }
 }

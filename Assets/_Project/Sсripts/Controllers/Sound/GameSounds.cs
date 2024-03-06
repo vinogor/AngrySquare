@@ -8,9 +8,12 @@ namespace _Project.Controllers.Sound
     public class GameSounds
     {
         private readonly Dictionary<SoundName, AudioClip> _sounds;
-        private bool _isEnabled = true;
         private readonly AudioSource _audioSource;
         private readonly AudioSource _backgroundAudioSource;
+
+        private bool _isEnabledByButton = true;
+        private bool _isEnabledByAdv = true;
+        private bool _isEnabledByFocus = true;
 
         public GameSounds(SoundSettings soundSettings, AudioSource audioSource, AudioSource backgroundAudioSource)
         {
@@ -22,11 +25,51 @@ namespace _Project.Controllers.Sound
             _backgroundAudioSource.Play();
         }
 
-        public void Switch(bool isEnabled)
+        public void SwitchByButton(bool isEnabled)
         {
-            _isEnabled = isEnabled;
+            Debug.Log("GameSounds - SwitchByButton - isEnabled = " + isEnabled);
 
-            if (_isEnabled == false)
+            _isEnabledByButton = isEnabled;
+
+            Switch(_isEnabledByButton);
+
+            Debug.Log(
+                $"GameSounds - SwitchByButton - _isEnabledByButton = {_isEnabledByButton}, _isEnabledByAdv = {_isEnabledByAdv}, _isEnabledByFocus = {_isEnabledByFocus}");
+        }
+
+        public void SwitchByAdv(bool isEnabled)
+        {
+            Debug.Log("GameSounds - SwitchByAdv - isEnabled = " + isEnabled);
+
+            if (_isEnabledByButton == false)
+                return;
+
+            _isEnabledByAdv = isEnabled;
+
+            Switch(_isEnabledByAdv);
+
+            Debug.Log(
+                $"GameSounds - SwitchByAdv - _isEnabledByButton = {_isEnabledByButton}, _isEnabledByAdv = {_isEnabledByAdv}, _isEnabledByFocus = {_isEnabledByFocus}");
+        }
+
+        public void SwitchByFocus(bool isEnabled)
+        {
+            Debug.Log("GameSounds - SwitchByFocus - isEnabled = " + isEnabled);
+
+            if (_isEnabledByButton == false || _isEnabledByAdv == false)
+                return;
+
+            _isEnabledByFocus = isEnabled;
+
+            Switch(_isEnabledByFocus);
+
+            Debug.Log(
+                $"GameSounds - SwitchByFocus - _isEnabledByButton = {_isEnabledByButton}, _isEnabledByAdv = {_isEnabledByAdv}, _isEnabledByFocus = {_isEnabledByFocus}");
+        }
+
+        private void Switch(bool isEnabled)
+        {
+            if (isEnabled == false)
             {
                 _audioSource.Stop();
                 _backgroundAudioSource.Pause();
@@ -53,7 +96,7 @@ namespace _Project.Controllers.Sound
 
         private void PlayOneShot(SoundName soundName)
         {
-            if (_isEnabled)
+            if (_isEnabledByButton && _isEnabledByAdv && _isEnabledByFocus)
                 _audioSource.PlayOneShot(_sounds[soundName]);
         }
     }

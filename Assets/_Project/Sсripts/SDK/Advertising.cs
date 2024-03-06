@@ -36,13 +36,13 @@ namespace _Project.SDK
         private void OnCloseCallback(bool flag)
         {
             Debug.Log("Advertising - OnCloseCallback - " + flag);
-            _gameSounds.Switch(true);
+            _gameSounds.SwitchByAdv(true);
             _isAdClosed = true;
         }
 
         private void OnOpenCallBack()
         {
-            _gameSounds.Switch(false);
+            _gameSounds.SwitchByAdv(false);
         }
     }
 }

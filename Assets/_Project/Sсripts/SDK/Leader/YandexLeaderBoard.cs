@@ -1,24 +1,46 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using _Project.Domain;
 using Agava.YandexGames;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace _Project.SDK.Leader
 {
-    public class YandexLeaderBoard
+    public class YandexLeaderBoard : IDisposable
     {
+        private readonly EnemyLevel _enemyLevel;
         private const string AnonymousName = "Anonymous";
         private const string LeaderBoardName = "LeaderBoardAngrySquare";
 
         public List<LeaderBoardPlayer> LeaderBoardPlayers { get; private set; }
 
-        public YandexLeaderBoard()
+        public YandexLeaderBoard(EnemyLevel enemyLevel)
         {
             LeaderBoardPlayers = new List<LeaderBoardPlayer>();
+            _enemyLevel = enemyLevel;
+
+            _enemyLevel.Changed += EnemyLevelOnChanged();
+            _enemyLevel.SetDefault += EnemyLevelOnChanged();
         }
 
-        public async Task SetPlayer(int score)
+        public void Dispose()
+        {
+            _enemyLevel.Changed -= EnemyLevelOnChanged();
+            _enemyLevel.SetDefault -= EnemyLevelOnChanged();
+        }
+
+        private Action EnemyLevelOnChanged()
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            return () => SetScore(_enemyLevel.Value);
+#else
+            return () => { };
+#endif
+        }
+
+        public async void SetScore(int score)
         {
             Debug.Log("YandexLeaderBoard - SetPlayer - " + score + ", start...");
 
