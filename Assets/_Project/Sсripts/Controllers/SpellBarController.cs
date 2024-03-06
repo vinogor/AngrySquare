@@ -72,6 +72,22 @@ namespace _Project.Controllers
                 return;
             }
 
+            bool isEnoughManaForAnySpell = false;
+            foreach (var spellName in _availableSpells.SpellNames)
+            {
+                if (_mana.IsEnough(spellName))
+                {
+                    isEnoughManaForAnySpell = true;
+                }
+            }
+
+            if (isEnoughManaForAnySpell == false)
+            {
+                Debug.Log("Skip spell");
+                SpellCompleted?.Invoke();
+                return;
+            }
+
             _spellBarShaker.Enable(_availableSpells.SpellNames.Count);
             _spellBarView.SpellsActivated += OnSpellActivated;
             _spellBarView.Skipped += OnSpellSkipped;

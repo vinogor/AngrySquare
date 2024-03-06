@@ -258,8 +258,10 @@ namespace _Project._Root
             _restartGameController =
                 new RestartGameController(_uiRoot.RestartGameView, levelRestarter, stateMachine, saveService);
 
+#if UNITY_WEBGL && !UNITY_EDITOR
             await _yandexLeaderBoard.Fill();
             _yandexLeaderBoard.GetCurrentPublicName();
+#endif
 
             // === START GAME ===
 
