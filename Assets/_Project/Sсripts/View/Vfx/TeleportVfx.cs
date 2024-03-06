@@ -1,17 +1,18 @@
 using _Project.Domain.Effects.Player;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.View.Vfx{
+namespace _Project.View.Vfx
+{
     public class TeleportVfx : MonoBehaviour
     {
-        [SerializeField] private ParticleSystem _particleSystem;
+        [SerializeField] [Required] private ParticleSystem _particleSystem;
 
         private PlayerPortal _playerPortal;
 
         public void Initialize(PlayerPortal playerPortal)
         {
-            Assert.IsNotNull(_particleSystem);
             Assert.IsNotNull(playerPortal);
             _playerPortal = playerPortal;
             _playerPortal.Teleporting += OnTeleporting;

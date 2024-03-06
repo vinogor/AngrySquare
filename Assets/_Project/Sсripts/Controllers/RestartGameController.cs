@@ -29,7 +29,6 @@ namespace _Project.Controllers
         {
             _levelRestarter.RestartAfterDefeat();
             _finiteStateMachine.SetState<GameInitializeFsmState>();
-            // _saveService.Save();
         }
 
         public void Dispose() => _restartGameView.ButtonClickedEvent.RemoveListener(OnClick);

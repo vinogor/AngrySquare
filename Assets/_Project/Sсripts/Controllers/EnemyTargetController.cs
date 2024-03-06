@@ -27,15 +27,7 @@ namespace _Project.Controllers
         public void SetAimToNewRandomTargetCell()
         {
             _targetCells = _cellsManager.GetRandomInRow(_isTripleAim);
-
-            for (var i = 0; i < _targetCells.Count; i++)
-            {
-                _enemyAims[i].gameObject.SetActive(true);
-                _enemyAims[i].transform.position = _targetCells[i].Center() + Vector3.up * 0.03f;
-            }
-
-            for (var i = _targetCells.Count; i < _enemyAims.Length; i++)
-                _enemyAims[i].gameObject.SetActive(false);
+            Activate();
         }
 
         public void NextTurnTripleTarget()
@@ -57,7 +49,11 @@ namespace _Project.Controllers
         {
             _targetCells = new List<Cell>();
             cellsIndexes.ForEach(index => _targetCells.Add(_cellsManager.Get(index)));
-            
+            Activate();
+        }
+
+        private void Activate()
+        {
             for (var i = 0; i < _targetCells.Count; i++)
             {
                 _enemyAims[i].gameObject.SetActive(true);

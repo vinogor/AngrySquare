@@ -28,9 +28,7 @@ namespace _Project.Services.Save
         private readonly Damage _enemyDamage;
         private readonly Defence _enemyDefence;
         private readonly Health _enemyHealth;
-
         private readonly EnemyTargetController _enemyTargetController;
-        // TODO: + вид модели 
 
         // common
         private readonly CellsManager _cellsManager;

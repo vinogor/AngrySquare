@@ -29,6 +29,7 @@ namespace _Project.Config
             int expectedAmount = 16;
             Assert.AreEqual(expectedAmount, counter,
                 $"Wrong amount, expected {expectedAmount} cells, actual {counter}");
+            Assert.AreNotEqual(expectedAmount, counter, $"Everything OK!");
         }
     }
 }

@@ -73,6 +73,27 @@ namespace _Project.Services
             Array.ForEach(_cells, Clean);
         }
 
+        public void SetCellsEffects(Dictionary<int, EffectName> cellIndexesWithEffectNames)
+        {
+            CleanAll();
+
+            for (var i = 0; i < _cells.Length; i++)
+            {
+                Cell cell = _cells[i];
+
+                Debug.Log($"CellsManager - SetCellsEffects - OLD VALUES: cell index={i}, effectName={cell.EffectName}");
+
+                EffectName effectName = cellIndexesWithEffectNames[i];
+
+                cell.SetEffectName(effectName);
+                Sprite cellSprite = _cellsSettings.GetCellSprite(effectName);
+                cell.SetSprite(cellSprite);
+
+                Debug.Log(
+                    $"CellsManager - SetCellsEffects - NEW VALUES: cell index={i}, effectName={effectName}, cellSprite={cellSprite.name}");
+            }
+        }
+
         private void Clean(Cell cell)
         {
             Debug.Log($"CellsManager - Clean - OLD VALUES: cell index={Index(cell)}, effectName={cell.EffectName}");
@@ -94,36 +115,18 @@ namespace _Project.Services
                 .ToList()
                 .ForEach(cell =>
                 {
-                    Debug.Log($"CellsManager - RandomFill - OLD VALUES: cell index={Index(cell)}, effectName={cell.EffectName}");
+                    Debug.Log(
+                        $"CellsManager - RandomFill - OLD VALUES: cell index={Index(cell)}, effectName={cell.EffectName}");
                     cell.SetEffectName(effectName);
                     cell.SetSprite(sprite);
-                    Debug.Log($"CellsManager - RandomFill - NEW VALUES: cell index={Index(cell)}, effectName={effectName}, cellSprite={sprite.name}");
+                    Debug.Log(
+                        $"CellsManager - RandomFill - NEW VALUES: cell index={Index(cell)}, effectName={effectName}, cellSprite={sprite.name}");
                 });
         }
 
         private Cell[] CellsWithoutEffect(Cell[] cells)
         {
             return cells.Where(cell => cell.IsEffectSet() == false).ToArray();
-        }
-
-        public void SetCellsEffects(Dictionary<int, EffectName> cellIndexesWithEffectNames)
-        {
-            CleanAll();
-
-            for (var i = 0; i < _cells.Length; i++)
-            {
-                Cell cell = _cells[i];
-                
-                Debug.Log($"CellsManager - SetCellsEffects - OLD VALUES: cell index={i}, effectName={cell.EffectName}");
-                
-                EffectName effectName = cellIndexesWithEffectNames[i];
-
-                cell.SetEffectName(effectName);
-                Sprite cellSprite = _cellsSettings.GetCellSprite(effectName);
-                cell.SetSprite(cellSprite);
-                
-                Debug.Log($"CellsManager - SetCellsEffects - NEW VALUES: cell index={i}, effectName={effectName}, cellSprite={cellSprite.name}");
-            }
         }
     }
 }

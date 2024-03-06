@@ -52,7 +52,6 @@ namespace _Project.View
                     .DORotate(new Vector3(0, 0, _shakingAngle), _shakeDuration, RotateMode.LocalAxisAdd)
                     .SetEase(Ease.Linear)
                 )
-                // .OnPause(() => transformToShake.localRotation = Quaternion.Euler(new Vector3(0, 0, 0)))
                 .SetLoops(-1)
                 .Pause();
         }

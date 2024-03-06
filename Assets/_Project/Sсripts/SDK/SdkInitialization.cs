@@ -7,8 +7,6 @@ namespace _Project.SDK
 {
     public class SdkInitialization : MonoBehaviour
     {
-        // TODO: добавить какой-то экран загрузки?
-
         private void Awake() => YandexGamesSdk.CallbackLogging = true;
 
         private IEnumerator Start()

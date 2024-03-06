@@ -1,3 +1,5 @@
+using UnityEngine.Assertions;
+
 namespace _Project.Controllers.StateMachine.States
 {
     public class PlayerTurnSpellFsmState : FsmState
@@ -9,6 +11,10 @@ namespace _Project.Controllers.StateMachine.States
             PopUpTutorialController popUpTutorialController) :
             base(finiteStateMachine)
         {
+            Assert.IsNotNull(finiteStateMachine);
+            Assert.IsNotNull(spellBarController);
+            Assert.IsNotNull(popUpTutorialController);
+            
             _spellBarController = spellBarController;
             _popUpTutorialController = popUpTutorialController;
         }

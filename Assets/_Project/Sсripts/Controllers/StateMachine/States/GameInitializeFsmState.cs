@@ -1,4 +1,5 @@
 using _Project.SDK;
+using UnityEngine.Assertions;
 
 namespace _Project.Controllers.StateMachine.States
 {
@@ -9,6 +10,8 @@ namespace _Project.Controllers.StateMachine.States
         public GameInitializeFsmState(FiniteStateMachine finiteStateMachine, Advertising advertising) : base(
             finiteStateMachine)
         {
+            Assert.IsNotNull(finiteStateMachine);
+            Assert.IsNotNull(advertising);
             _advertising = advertising;
         }
 

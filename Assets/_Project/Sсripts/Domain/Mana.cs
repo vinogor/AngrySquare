@@ -11,9 +11,6 @@ namespace _Project.Domain
         private readonly SpellsSettings _spellsSettings;
         private readonly int _defaultValue;
         private readonly int _defaultMaxValue;
-        public event Action<int> ValueChanged;
-        public event Action<int> MaxValueChanged;
-        public event Action Replenished;
 
         public Mana(int value, int maxValue, SpellsSettings spellsSettings)
         {
@@ -25,6 +22,10 @@ namespace _Project.Domain
             _defaultValue = value;
             _defaultMaxValue = maxValue;
         }
+
+        public event Action<int> ValueChanged;
+        public event Action<int> MaxValueChanged;
+        public event Action Replenished;
 
         public int Value { get; private set; }
 

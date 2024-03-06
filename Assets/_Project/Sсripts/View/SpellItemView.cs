@@ -1,6 +1,4 @@
 using System;
-using _Project.Config;
-using Lean.Localization;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;

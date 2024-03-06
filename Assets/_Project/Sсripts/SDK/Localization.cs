@@ -3,20 +3,8 @@ using Lean.Localization;
 
 namespace _Project.SDK
 {
-    public static class LanguageCodes
-    {
-        public const string LeanEnglishCode = "English";
-        public const string LeanRussianCode = "Russian";
-        public const string LeanTurkishCode = "Turkish";
-
-        public const string YandexEnglishCode = "en";
-        public const string YandexRussianCode = "ru";
-        public const string YandexTurkishCode = "tr";
-    }
-
     public class Localization
     {
-
         private readonly LeanLocalization _leanLocalization;
 
         public Localization(LeanLocalization leanLocalization)
@@ -54,7 +42,6 @@ namespace _Project.SDK
         public void SetLanguage(string leanLanguageCode)
         {
             _leanLocalization.SetCurrentLanguage(leanLanguageCode);
-
         }
 
         public string GetCurrent()

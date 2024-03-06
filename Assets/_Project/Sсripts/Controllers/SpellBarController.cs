@@ -65,13 +65,6 @@ namespace _Project.Controllers
 
         public void Enable()
         {
-            if (_availableSpells.IsEmpty)
-            {
-                Debug.Log("Skip spell");
-                SpellCompleted?.Invoke();
-                return;
-            }
-
             bool isEnoughManaForAnySpell = false;
             foreach (var spellName in _availableSpells.SpellNames)
             {

@@ -10,6 +10,7 @@ namespace _Project.Config
         [field: SerializeField] public float JumpDuration = 0.5f;
         [field: SerializeField] public float AnimationCellDuration = 0.2f;
         [field: SerializeField] public float EnemyHeight = 0.5f;
+        [field: SerializeField] public int LeaderboardMaxPlayersToShow = 20;
 
         [Space(10)]
         [Header("Player")]
@@ -29,7 +30,6 @@ namespace _Project.Config
 
         [field: SerializeField] public float DelayAfterVfxSeconds = 1.5f;
 
-        // TODO: наверное этот блок больше не нужен 
         [Space(10)]
         [Header("Enemy")]
         [field: SerializeField] public int EnemyStartHealth = 5;

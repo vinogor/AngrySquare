@@ -12,6 +12,7 @@ namespace _Project.Controllers.StateMachine.States
         public PlayerWinFsmState(FiniteStateMachine finiteStateMachine,
             PopUpNotificationController popUpController, LevelRestarter levelRestarter) : base(finiteStateMachine)
         {
+            Assert.IsNotNull(finiteStateMachine);
             Assert.IsNotNull(popUpController);
             Assert.IsNotNull(levelRestarter);
             _popUpController = popUpController;

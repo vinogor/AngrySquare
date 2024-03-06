@@ -2,6 +2,7 @@ using System;
 using _Project.Config;
 using _Project.Domain.Movement;
 using DG.Tweening;
+using UnityEngine.Assertions;
 
 namespace _Project.Domain.Effects.Player
 {
@@ -13,6 +14,10 @@ namespace _Project.Domain.Effects.Player
 
         public PlayerHealth(Health playerHealth, PlayerJumper playerJumper, Coefficients coefficients)
         {
+            Assert.IsNotNull(playerHealth);
+            Assert.IsNotNull(playerJumper);
+            Assert.IsNotNull(coefficients);
+            
             _playerHealth = playerHealth;
             _playerJumper = playerJumper;
             _coefficients = coefficients;

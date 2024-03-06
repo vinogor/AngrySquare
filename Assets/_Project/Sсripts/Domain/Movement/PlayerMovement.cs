@@ -18,7 +18,7 @@ namespace _Project.Domain.Movement
         private Coefficients _coefficients;
         private PlayerJumper _playerJumper;
 
-        int startingPlayersCellIndex = 0;
+        private readonly int _startingPlayersCellIndex = 0;
 
         public void Initialize(CellsManager cellsManager, Dictionary<EffectName, Effect> playerEffects,
             Coefficients coefficients, PlayerJumper playerJumper)
@@ -27,12 +27,13 @@ namespace _Project.Domain.Movement
             Assert.IsNotNull(cellsManager);
             Assert.IsNotNull(playerEffects);
             Assert.IsNotNull(coefficients);
+            Assert.IsNotNull(playerJumper);
 
             _cellsManager = cellsManager;
             _playerEffects = playerEffects;
             _coefficients = coefficients;
             _playerJumper = playerJumper;
-            PlayersCellIndex = startingPlayersCellIndex;
+            PlayersCellIndex = _startingPlayersCellIndex;
         }
 
         public event Action TurnCompleted;
@@ -103,7 +104,7 @@ namespace _Project.Domain.Movement
 
         public void SetDefaultStayCell()
         {
-            PlayersCellIndex = startingPlayersCellIndex;
+            PlayersCellIndex = _startingPlayersCellIndex;
             _playerJumper.JumpToNextCell(PlayerStayCell, true);
         }
     }

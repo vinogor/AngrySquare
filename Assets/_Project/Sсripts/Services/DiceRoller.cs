@@ -38,6 +38,40 @@ namespace _Project.Services
         public event Action<int> PlayerMoveAmountSet;
         public event Action DiceFall;
 
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            if (_canPlayerThrow == false)
+            {
+                return;
+            }
+
+            _vfx.Stop();
+
+            Ray ray = _camera.ScreenPointToRay(eventData.position);
+
+            if (Physics.Raycast(ray, out RaycastHit raycastHit))
+            {
+                if (raycastHit.collider.gameObject == gameObject)
+                {
+                    RollDice();
+                    DetectorsSetActive(true);
+                    StartCoroutine(SetIsDiceThrownTrueWithDelay());
+                }
+            }
+        }
+
+        public void MakeAvailable()
+        {
+            _vfx.Play();
+            _canPlayerThrow = true;
+        }
+
+        public void MakeUnavailable()
+        {
+            _vfx.Stop();
+            _canPlayerThrow = false;
+        }
+
         private void OnDestroy()
         {
             foreach (DiceFaceDetector detector in _detectors)
@@ -62,44 +96,10 @@ namespace _Project.Services
             }
         }
 
-        public void OnPointerDown(PointerEventData eventData)
-        {
-            if (_canPlayerThrow == false)
-            {
-                return;
-            }
-
-            _vfx.Stop();
-
-            Ray ray = _camera.ScreenPointToRay(eventData.position);
-
-            if (Physics.Raycast(ray, out RaycastHit raycastHit))
-            {
-                if (raycastHit.collider.gameObject == gameObject)
-                {
-                    RollDice();
-                    DetectorsSetActive(true);
-                    StartCoroutine(SetIsDiceThrownTrueWithDelay());
-                }
-            }
-        }
-
         private IEnumerator SetIsDiceThrownTrueWithDelay()
         {
             yield return new WaitForSeconds(1f);
             _isDiceThrown = true;
-        }
-
-        public void MakeAvailable()
-        {
-            _vfx.Play();
-            _canPlayerThrow = true;
-        }
-
-        public void MakeUnavailable()
-        {
-            _vfx.Stop();
-            _canPlayerThrow = false;
         }
 
         private void RollDice()

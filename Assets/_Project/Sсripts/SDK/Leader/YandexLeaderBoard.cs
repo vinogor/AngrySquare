@@ -14,12 +14,9 @@ namespace _Project.SDK.Leader
         private readonly EnemyLevel _enemyLevel;
         private readonly PlayerDefeatFsmState _playerDefeatFsmState;
 
-        private string _currentPublicName;
-
         private const string AnonymousName = "Anonymous";
         private const string LeaderBoardName = "LeaderBoardAngrySquare";
-
-        public List<LeaderBoardPlayer> LeaderBoardPlayers { get; private set; }
+        private string _currentPublicName;
 
         public YandexLeaderBoard(EnemyLevel enemyLevel, PlayerDefeatFsmState playerDefeatFsmState)
         {
@@ -30,6 +27,8 @@ namespace _Project.SDK.Leader
 
             _playerDefeatFsmState.Defeat += OnDefeat;
         }
+
+        public List<LeaderBoardPlayer> LeaderBoardPlayers { get; private set; }
 
         public void Dispose()
         {

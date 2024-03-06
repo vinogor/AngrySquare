@@ -1,6 +1,7 @@
 using System;
 using _Project.Domain.Movement;
 using DG.Tweening;
+using UnityEngine.Assertions;
 
 namespace _Project.Domain.Effects.Enemy{
     public class EnemyPortal : Effect
@@ -9,6 +10,7 @@ namespace _Project.Domain.Effects.Enemy{
 
         public EnemyPortal(EnemyJumper enemyJumper)
         {
+            Assert.IsNotNull(enemyJumper);
             _enemyJumper = enemyJumper;
         }
 

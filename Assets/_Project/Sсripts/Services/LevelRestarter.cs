@@ -61,7 +61,6 @@ namespace _Project.Services
             _availableSpells.Add(SpellName.UpDamage);
             _playerMovement.SetDefaultStayCell();
 
-            // TODO: задать начальную модель противника  
             _enemyDefence.SetToDefault();
             _enemyHealth.SetToDefault();
             _enemyDamage.SetToDefault();

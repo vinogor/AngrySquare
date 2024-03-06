@@ -5,6 +5,7 @@ using _Project.Services;
 using _Project.Services.Utility;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace _Project.Domain.Effects.Player
 {
@@ -16,6 +17,10 @@ namespace _Project.Domain.Effects.Player
 
         public PlayerPortal(PlayerJumper playerJumper, CellsManager cellsManager, PlayerMovement playerMovement)
         {
+            Assert.IsNotNull(playerJumper);
+            Assert.IsNotNull(cellsManager);
+            Assert.IsNotNull(playerMovement);
+            
             _playerJumper = playerJumper;
             _cellsManager = cellsManager;
             _playerMovement = playerMovement;

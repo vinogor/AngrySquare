@@ -2,6 +2,7 @@ using System;
 using _Project.Config;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace _Project.Domain.Movement
 {
@@ -15,6 +16,10 @@ namespace _Project.Domain.Movement
 
         public PlayerJumper(Transform playerTransform, Transform enemyTransform, Coefficients coefficients)
         {
+            Assert.IsNotNull(playerTransform);
+            Assert.IsNotNull(enemyTransform);
+            Assert.IsNotNull(coefficients);
+
             _playerTransform = playerTransform;
             _enemyTransform = enemyTransform;
             _coefficients = coefficients;

@@ -1,6 +1,7 @@
 using System;
 using _Project.SDK;
 using _Project.View;
+using UnityEngine.Assertions;
 
 namespace _Project.Controllers
 {
@@ -12,6 +13,9 @@ namespace _Project.Controllers
 
         public LanguageController(LanguageView languageView, Localization localization)
         {
+            Assert.IsNotNull(languageView);
+            Assert.IsNotNull(localization);
+            
             _languageView = languageView;
             _localization = localization;
 

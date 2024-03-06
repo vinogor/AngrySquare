@@ -3,6 +3,7 @@ using _Project.Config;
 using _Project.Controllers;
 using _Project.Domain.Movement;
 using DG.Tweening;
+using UnityEngine.Assertions;
 
 namespace _Project.Domain.Effects.Enemy
 {
@@ -16,6 +17,11 @@ namespace _Project.Domain.Effects.Enemy
         public EnemyHealth(EnemyJumper enemyJumper, Health enemyHealth, Coefficients coefficients,
             EnemyTargetController enemyTargetController)
         {
+            Assert.IsNotNull(enemyJumper);
+            Assert.IsNotNull(enemyHealth);
+            Assert.IsNotNull(coefficients);
+            Assert.IsNotNull(enemyTargetController);
+            
             _enemyJumper = enemyJumper;
             _enemyHealth = enemyHealth;
             _coefficients = coefficients;

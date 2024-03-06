@@ -1,6 +1,7 @@
 using System;
 using _Project.Domain.Movement;
 using DG.Tweening;
+using UnityEngine.Assertions;
 
 namespace _Project.Domain.Effects.Player
 {
@@ -12,6 +13,10 @@ namespace _Project.Domain.Effects.Player
 
         public PlayerSwords(PlayerJumper playerJumper, Health enemyHealth, Damage playerDamage)
         {
+            Assert.IsNotNull(playerJumper);
+            Assert.IsNotNull(enemyHealth);
+            Assert.IsNotNull(playerDamage);
+            
             _playerJumper = playerJumper;
             _enemyHealth = enemyHealth;
             _playerDamage = playerDamage;

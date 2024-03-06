@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Project.Config;
 using _Project.View;
 using Agava.YandexGames;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace _Project.SDK.Leader
 {
@@ -12,16 +14,20 @@ namespace _Project.SDK.Leader
         private readonly LeaderboardButtonView _leaderboardButtonView;
         private readonly LeaderboardPopupView _leaderboardPopup;
         private readonly YandexLeaderBoard _yandexLeaderBoard;
-        
-        // TODO: вынести в коэфф
-        private int _maxPlayerToShow = 20;
+        private readonly Coefficients _coefficients;
 
         public LeaderboardController(LeaderboardButtonView leaderboardButtonView, LeaderboardPopupView leaderboardPopup,
-            YandexLeaderBoard yandexLeaderBoard)
+            YandexLeaderBoard yandexLeaderBoard, Coefficients coefficients)
         {
+            Assert.IsNotNull(leaderboardButtonView);
+            Assert.IsNotNull(leaderboardPopup);
+            Assert.IsNotNull(yandexLeaderBoard);
+            Assert.IsNotNull(coefficients);
+
             _leaderboardButtonView = leaderboardButtonView;
             _leaderboardPopup = leaderboardPopup;
             _yandexLeaderBoard = yandexLeaderBoard;
+            _coefficients = coefficients;
 
             _leaderboardButtonView.ButtonOnClick.AddListener(OnButtonClick);
         }
@@ -31,11 +37,11 @@ namespace _Project.SDK.Leader
 #if UNITY_WEBGL && !UNITY_EDITOR
             Open();
 #else
-            Test();
+            MockForLocal();
 #endif
         }
 
-        private void Test()
+        private void MockForLocal()
         {
             List<LeaderBoardPlayer> leaderBoardPlayers = new List<LeaderBoardPlayer>()
             {
@@ -44,9 +50,7 @@ namespace _Project.SDK.Leader
                 new LeaderBoardPlayer(8, "name3"),
                 new LeaderBoardPlayer(6, "name4"),
             };
-
             var limitedPlayers = LimitAmount(leaderBoardPlayers);
-            
             _leaderboardPopup.ConstructLeaderboard(limitedPlayers);
         }
 
@@ -68,18 +72,19 @@ namespace _Project.SDK.Leader
             }
 
             List<LeaderBoardPlayer> leaderBoardPlayers = _yandexLeaderBoard.LeaderBoardPlayers;
-            
+
             Debug.Log("leaderBoardPlayers from yandex: " + leaderBoardPlayers.Count);
 
             List<LeaderBoardPlayer> limitedPlayers = LimitAmount(leaderBoardPlayers);
             Debug.Log("limitedPlayers from yandex: " + limitedPlayers.Count);
-            
+
             _leaderboardPopup.ConstructLeaderboard(limitedPlayers);
         }
 
         private List<LeaderBoardPlayer> LimitAmount(List<LeaderBoardPlayer> leaderBoardPlayers)
         {
-            return leaderBoardPlayers.Take(Mathf.Min(leaderBoardPlayers.Count, _maxPlayerToShow)).ToList();
+            return leaderBoardPlayers
+                .Take(Mathf.Min(leaderBoardPlayers.Count, _coefficients.LeaderboardMaxPlayersToShow)).ToList();
         }
 
         public void Dispose()
