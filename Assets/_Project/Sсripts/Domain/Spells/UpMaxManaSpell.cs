@@ -1,6 +1,5 @@
 using System;
 using _Project.Config;
-using _Project.Controllers.Sound;
 using UnityEngine.Assertions;
 
 namespace _Project.Domain.Spells
@@ -10,7 +9,7 @@ namespace _Project.Domain.Spells
         private readonly Mana _mana;
         private readonly Coefficients _coefficients;
 
-        public UpMaxManaSpell(GameSounds gameSounds, Mana mana, Coefficients coefficients) : base(gameSounds)
+        public UpMaxManaSpell(Mana mana, Coefficients coefficients)
         {
             Assert.IsNotNull(mana);
             Assert.IsNotNull(coefficients);

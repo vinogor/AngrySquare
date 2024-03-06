@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using _Project.Config;
-using _Project.Controllers.Sound;
 using _Project.Domain.Effects;
 using _Project.Domain.Movement;
 using _Project.View;
@@ -15,26 +15,26 @@ namespace _Project.Controllers.PopupChoice
         private readonly List<EffectName> _availableEffectNames;
         private readonly PlayerMovement _playerMovement;
         private readonly CellsSettings _cellsSettings;
-        private readonly GameSounds _gameSounds;
 
         public PopUpChoiceEffectController(PopUpChoiceView popUpChoiceView, List<EffectName> availableEffectNames,
-            PlayerMovement playerMovement, CellsSettings cellsSettings, GameSounds gameSounds) : base(popUpChoiceView)
+            PlayerMovement playerMovement, CellsSettings cellsSettings) : base(popUpChoiceView)
         {
             Assert.IsNotNull(availableEffectNames);
             Assert.IsNotNull(playerMovement);
             Assert.IsNotNull(cellsSettings);
-            Assert.IsNotNull(gameSounds);
 
             _availableEffectNames = availableEffectNames;
             _playerMovement = playerMovement;
             _cellsSettings = cellsSettings;
-            _gameSounds = gameSounds;
         }
+
+        public event Action Showed;
+        public event Action Clicked;
 
         public void ShowEffects()
         {
             PrepareEffectButtons();
-            _gameSounds.PlayPopUp();
+            Showed?.Invoke();
             PopUpChoiceView.Show();
         }
 
@@ -55,7 +55,7 @@ namespace _Project.Controllers.PopupChoice
         private void PlayEffect(EffectName effectName)
         {
             HidePopup();
-            _gameSounds.PlayClickButton();
+            Clicked?.Invoke();
             _playerMovement.ActivateEffect(effectName);
         }
     }

@@ -1,5 +1,4 @@
 using System;
-using _Project.Controllers.Sound;
 using _Project.View;
 
 namespace _Project.Controllers
@@ -7,17 +6,17 @@ namespace _Project.Controllers
     public class SoundController : IDisposable
     {
         private readonly SoundView _soundView;
-        private readonly GameSounds _gameSounds;
         private bool _isEnabled;
 
-        public SoundController(SoundView soundView, GameSounds gameSounds)
+        public SoundController(SoundView soundView)
         {
             _soundView = soundView;
-            _gameSounds = gameSounds;
 
             _isEnabled = true;
             _soundView.ButtonOnClick.AddListener(OnButtonClick);
         }
+
+        public event Action<bool> SwitchSound;
 
         public void Dispose() => _soundView.ButtonOnClick.RemoveListener(OnButtonClick);
 
@@ -30,7 +29,7 @@ namespace _Project.Controllers
             else
                 _soundView.SetOff();
 
-            _gameSounds.SwitchByButton(_isEnabled);
+            SwitchSound?.Invoke(_isEnabled);
         }
     }
 }

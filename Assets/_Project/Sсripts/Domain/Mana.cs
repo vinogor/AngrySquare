@@ -1,6 +1,5 @@
 using System;
 using _Project.Config;
-using _Project.Controllers.Sound;
 using _Project.Domain.Spells;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -10,20 +9,17 @@ namespace _Project.Domain
     public class Mana
     {
         private readonly SpellsSettings _spellsSettings;
-        private readonly GameSounds _gameSounds;
         private readonly int _defaultValue;
         private readonly int _defaultMaxValue;
         public event Action<int> ValueChanged;
         public event Action<int> MaxValueChanged;
         public event Action Replenished;
 
-        public Mana(int value, int maxValue, SpellsSettings spellsSettings, GameSounds gameSounds)
+        public Mana(int value, int maxValue, SpellsSettings spellsSettings)
         {
             Validate(value, maxValue);
             Assert.IsNotNull(spellsSettings);
-            Assert.IsNotNull(gameSounds);
             _spellsSettings = spellsSettings;
-            _gameSounds = gameSounds;
             Value = value;
             MaxValue = maxValue;
             _defaultValue = value;
@@ -63,7 +59,6 @@ namespace _Project.Domain
             if (Value == MaxValue)
                 return;
 
-            _gameSounds.PlayManaReplenish();
             Value = MaxValue;
 
             Replenished?.Invoke();

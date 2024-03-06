@@ -1,5 +1,5 @@
+using System;
 using _Project.Config;
-using _Project.Controllers.Sound;
 using DG.Tweening;
 using UnityEngine;
 
@@ -10,17 +10,18 @@ namespace _Project.Domain.Movement
         private readonly Transform _playerTransform;
         private readonly Transform _enemyTransform;
         private readonly Coefficients _coefficients;
-        private readonly GameSounds _gameSounds; 
 
         private Vector3 _playerCellPosition;
 
-        public PlayerJumper(Transform playerTransform, Transform enemyTransform, Coefficients coefficients, GameSounds gameSounds)
+        public PlayerJumper(Transform playerTransform, Transform enemyTransform, Coefficients coefficients)
         {
             _playerTransform = playerTransform;
             _enemyTransform = enemyTransform;
             _coefficients = coefficients;
-            _gameSounds = gameSounds;
         }
+
+        public event Action Teleported;
+        public event Action MadeStep;
 
         public Sequence JumpOnEnemy()
         {
@@ -55,10 +56,10 @@ namespace _Project.Domain.Movement
             float jumpDuration = _coefficients.JumpDuration;
 
             Sequence sequence = DOTween.Sequence();
-            sequence.AppendCallback(_gameSounds.PlayTeleport);
+            sequence.AppendCallback(() => Teleported?.Invoke());
             sequence.Append(_playerTransform.DOMoveY(_playerTransform.position.y - lossyScaleY * offset, jumpDuration));
             sequence.Append(_playerTransform.DOMove(cellCenter - Vector3.up * (lossyScaleY * offset), jumpDuration));
-            sequence.AppendCallback(_gameSounds.PlayTeleport);
+            sequence.AppendCallback(() => Teleported?.Invoke());
             sequence.Append(_playerTransform.DOMove(cellCenter + Vector3.up * lossyScaleY, jumpDuration));
             return sequence;
         }
@@ -70,7 +71,7 @@ namespace _Project.Domain.Movement
             float duration = instantly ? epsilonTime : _coefficients.JumpDuration;
             return transform
                 .DOJump(target, _coefficients.JumpPower, 1, duration)
-                .AppendCallback(_gameSounds.PlayPlayerStep)
+                .AppendCallback(() => MadeStep?.Invoke())
                 .SetEase(Ease.Linear);
         }
     }

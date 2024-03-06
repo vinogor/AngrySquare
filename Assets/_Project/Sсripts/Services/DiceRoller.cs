@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using _Project.Controllers.Sound;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -11,8 +10,6 @@ namespace _Project.Services
 {
     public class DiceRoller : MonoBehaviour, IPointerDownHandler
     {
-        public event Action<int> PlayerMoveAmountSet;
-
         [SerializeField] private float _maxRandomTorqueForce = 300f;
         [SerializeField] private float _upForce = 300f;
         [SerializeField] [Required] private Camera _camera;
@@ -23,16 +20,12 @@ namespace _Project.Services
         private bool _canPlayerThrow = false;
         private bool _isDiceThrown = false;
         private int _lastDetectedDiceNumber;
-        private GameSounds _gameSounds;
 
-        public void Initialize(GameSounds gameSounds)
+        public void Initialize()
         {
             _detectors = GetComponentsInChildren<DiceFaceDetector>();
             Assert.AreEqual(6, _detectors.Length);
-            Assert.IsNotNull(gameSounds);
 
-            _gameSounds = gameSounds;
-            
             foreach (DiceFaceDetector detector in _detectors)
             {
                 Assert.IsNotNull(detector);
@@ -41,6 +34,9 @@ namespace _Project.Services
 
             DetectorsSetActive(false);
         }
+
+        public event Action<int> PlayerMoveAmountSet;
+        public event Action DiceFall;
 
         private void OnDestroy()
         {
@@ -52,7 +48,7 @@ namespace _Project.Services
 
         private void OnDiceNumberDetected(int number)
         {
-            _gameSounds.PlayDiceFall();
+            DiceFall?.Invoke();
             _lastDetectedDiceNumber = number;
         }
 
@@ -68,15 +64,13 @@ namespace _Project.Services
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            // можно кликнуть на кубик пока он в полёте, но возможно это не проблема
-
             if (_canPlayerThrow == false)
             {
                 return;
             }
 
             _vfx.Stop();
-            
+
             Ray ray = _camera.ScreenPointToRay(eventData.position);
 
             if (Physics.Raycast(ray, out RaycastHit raycastHit))
@@ -85,8 +79,6 @@ namespace _Project.Services
                 {
                     RollDice();
                     DetectorsSetActive(true);
-                    // пришлось сделать задержку, т.к. в самом начале когда детекторы включаются,
-                    // rb ещё неподвижно, и число уже отправляется
                     StartCoroutine(SetIsDiceThrownTrueWithDelay());
                 }
             }
@@ -126,8 +118,6 @@ namespace _Project.Services
             {
                 detector.gameObject.SetActive(value);
             }
-
-            // Debug.Log("detectors set active = " + value);
         }
     }
 }

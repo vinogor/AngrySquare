@@ -45,7 +45,7 @@ namespace _Project.Domain.Movement
             if (targetCells.Count == 3)
             {
                 _enemyJumper.JumpToTargetThreeInRowCells(targetCells,
-                        () => _playerHealth.TakeTripleDamage(_enemyDamage.Value))
+                        () => _playerHealth.TakeDoubleDamage(_enemyDamage.Value))
                     .AppendCallback(() =>
                     {
                         _enemyTargetController.NextTurnOneTarget();
@@ -57,7 +57,7 @@ namespace _Project.Domain.Movement
             else if (targetCells[0] == _playerMovement.PlayerStayCell)
             {
                 _enemyJumper.JumpToAttackPlayer(targetCells[0],
-                        () => _playerHealth.TakeTripleDamage(_enemyDamage.Value))
+                        () => _playerHealth.TakeDoubleDamage(_enemyDamage.Value))
                     .AppendCallback(() => TurnCompleted?.Invoke())
                     .Play();
             }

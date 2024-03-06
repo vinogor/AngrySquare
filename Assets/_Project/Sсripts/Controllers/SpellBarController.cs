@@ -1,5 +1,4 @@
 using System;
-using _Project.Controllers.Sound;
 using _Project.Domain;
 using _Project.Domain.Spells;
 using _Project.View;
@@ -15,29 +14,27 @@ namespace _Project.Controllers
         private readonly Mana _mana;
         private readonly SpellActivator _spellActivator;
         private readonly SpellBarShaker _spellBarShaker;
-        private readonly GameSounds _gameSounds;
 
         public SpellBarController(AvailableSpells availableSpells, SpellBarView spellBarView, Mana mana,
-            SpellActivator spellActivator, SpellBarShaker spellBarShaker, GameSounds gameSounds)
+            SpellActivator spellActivator, SpellBarShaker spellBarShaker)
         {
             Assert.IsNotNull(availableSpells);
             Assert.IsNotNull(spellBarView);
             Assert.IsNotNull(mana);
             Assert.IsNotNull(spellActivator);
             Assert.IsNotNull(spellBarShaker);
-            Assert.IsNotNull(gameSounds);
 
             _availableSpells = availableSpells;
             _spellBarView = spellBarView;
             _mana = mana;
             _spellActivator = spellActivator;
             _spellBarShaker = spellBarShaker;
-            _gameSounds = gameSounds;
 
             _spellBarView.Disable();
         }
 
         public event Action SpellCompleted;
+        public event Action SpellSkipped;
 
         private void OnSpellActivated(int spellIndex, SpellName spellName)
         {
@@ -57,7 +54,7 @@ namespace _Project.Controllers
         private void OnSpellSkipped()
         {
             Debug.Log("Skip spell");
-            _gameSounds.PlayClickButton();
+            SpellSkipped?.Invoke();
             SpellCompleted?.Invoke();
         }
 

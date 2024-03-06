@@ -1,6 +1,5 @@
 using System;
 using _Project.Config;
-using _Project.Controllers.Sound;
 using UnityEngine.Assertions;
 
 namespace _Project.Domain.Spells
@@ -10,7 +9,7 @@ namespace _Project.Domain.Spells
         private readonly Damage _damage;
         private readonly Coefficients _coefficients;
 
-        public UpDamageSpell(GameSounds gameSounds, Damage damage, Coefficients coefficients) : base(gameSounds)
+        public UpDamageSpell(Damage damage, Coefficients coefficients)
         {
             Assert.IsNotNull(damage);
             Assert.IsNotNull(coefficients);

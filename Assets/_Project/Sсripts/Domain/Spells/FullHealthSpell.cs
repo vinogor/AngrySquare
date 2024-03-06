@@ -1,5 +1,4 @@
 using System;
-using _Project.Controllers.Sound;
 using UnityEngine.Assertions;
 
 namespace _Project.Domain.Spells
@@ -8,7 +7,7 @@ namespace _Project.Domain.Spells
     {
         private readonly Health _health;
 
-        public FullHealthSpell(GameSounds gameSounds, Health health) : base(gameSounds)
+        public FullHealthSpell(Health health)
         {
             Assert.IsNotNull(health);
             _health = health;

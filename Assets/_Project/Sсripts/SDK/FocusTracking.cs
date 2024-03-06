@@ -1,4 +1,4 @@
-using _Project.Controllers.Sound;
+using System;
 using Agava.WebUtility;
 using UnityEngine;
 
@@ -6,12 +6,7 @@ namespace _Project.SDK
 {
     public class FocusTracking : MonoBehaviour
     {
-        private GameSounds _gameSounds;
-
-        public void Initialize(GameSounds gameSounds)
-        {
-            _gameSounds = gameSounds;
-        }
+        public event Action<bool> SwitchSound;
 
         private void OnEnable()
         {
@@ -39,7 +34,7 @@ namespace _Project.SDK
 
         private void MuteAudio(bool value)
         {
-            _gameSounds.SwitchByFocus(value);
+            SwitchSound?.Invoke(value);
         }
     }
 }

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using _Project.Config;
 using _Project.Controllers;
-using _Project.Controllers.Sound;
 using DG.Tweening;
 using UnityEngine;
 
@@ -14,19 +13,19 @@ namespace _Project.Domain.Movement
         private readonly PlayerMovement _playerMovement;
         private readonly Coefficients _coefficients;
         private readonly EnemyTargetController _enemyTargetController;
-        private readonly GameSounds _gameSounds;
 
         private Vector3 _baseEnemyPosition;
 
         public EnemyJumper(Transform enemyTransform, PlayerMovement playerMovement, Coefficients coefficients,
-            EnemyTargetController enemyTargetController, GameSounds gameSounds)
+            EnemyTargetController enemyTargetController)
         {
             _enemyTransform = enemyTransform;
             _playerMovement = playerMovement;
             _coefficients = coefficients;
             _enemyTargetController = enemyTargetController;
-            _gameSounds = gameSounds;
         }
+
+        public event Action MadeStep;
 
         public Sequence JumpToTargetThreeInRowCells(List<Cell> targetCells, Action attackAction)
         {
@@ -97,7 +96,7 @@ namespace _Project.Domain.Movement
             Debug.Log($"Enemy - Jump - from {transform.position} - to {target}");
 
             return DOTween.Sequence()
-                .AppendCallback(_gameSounds.PlayEnemyStep)
+                .AppendCallback(() => MadeStep?.Invoke())
                 .Join(transform.DOJump(target, _coefficients.JumpPower, 1, _coefficients.JumpDuration))
                 .SetEase(Ease.Linear);
         }

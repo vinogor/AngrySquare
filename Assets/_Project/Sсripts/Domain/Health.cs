@@ -1,5 +1,4 @@
 using System;
-using _Project.Controllers.Sound;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -8,22 +7,19 @@ namespace _Project.Domain
     public class Health
     {
         private readonly Defence _defence;
-        private readonly GameSounds _gameSounds;
 
         private readonly int _defaultValue;
         private readonly int _defaultMaxValue;
 
-        public Health(int value, int maxValue, Defence defence, GameSounds gameSounds)
+        public Health(int value, int maxValue, Defence defence)
         {
             Validate(value, maxValue);
             Assert.IsNotNull(defence);
-            Assert.IsNotNull(gameSounds);
             Value = value;
             MaxValue = maxValue;
             _defence = defence;
             _defaultValue = value;
             _defaultMaxValue = maxValue;
-            _gameSounds = gameSounds;
         }
 
         public event Action<int> ValueChanged;
@@ -50,7 +46,6 @@ namespace _Project.Domain
             if (passedDamage <= 0)
                 return;
 
-            _gameSounds.PlaySwordsAttack();
             Value -= passedDamage;
 
             if (Value <= 0)
@@ -63,9 +58,8 @@ namespace _Project.Domain
                 Died?.Invoke();
         }
 
-        public void TakeTripleDamage(int damage)
+        public void TakeDoubleDamage(int damage)
         {
-            TakeDamage(damage);
             TakeDamage(damage);
             TakeDamage(damage);
         }
@@ -77,7 +71,6 @@ namespace _Project.Domain
 
             Value = MaxValue;
 
-            _gameSounds.PlayHealthReplenish();
             Replenished?.Invoke();
             ValueChanged?.Invoke(Value);
         }
@@ -99,7 +92,7 @@ namespace _Project.Domain
             MaxValueChanged?.Invoke(MaxValue);
             ValueChanged?.Invoke(Value);
         }
-        
+
         public void SetNewValues(int value, int maxValue)
         {
             Value = value;

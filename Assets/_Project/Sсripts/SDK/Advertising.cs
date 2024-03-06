@@ -1,5 +1,5 @@
+using System;
 using System.Threading.Tasks;
-using _Project.Controllers.Sound;
 using Agava.YandexGames;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -8,15 +8,8 @@ namespace _Project.SDK
 {
     public class Advertising
     {
-        private readonly GameSounds _gameSounds;
-
-        private bool _isAdClosed;
-
-        public Advertising(GameSounds gameSounds)
-        {
-            _gameSounds = gameSounds;
-            _isAdClosed = false;
-        }
+        private bool _isAdClosed = false;
+        public event Action<bool> SwitchSound;
 
         public async Task ShowAd()
         {
@@ -36,13 +29,14 @@ namespace _Project.SDK
         private void OnCloseCallback(bool flag)
         {
             Debug.Log("Advertising - OnCloseCallback - " + flag);
-            _gameSounds.SwitchByAdv(true);
+
+            SwitchSound?.Invoke(true);
             _isAdClosed = true;
         }
 
         private void OnOpenCallBack()
         {
-            _gameSounds.SwitchByAdv(false);
+            SwitchSound?.Invoke(false);
         }
     }
 }

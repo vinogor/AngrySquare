@@ -1,4 +1,4 @@
-using _Project.Controllers.Sound;
+using System;
 using _Project.Services;
 using UnityEngine.Assertions;
 
@@ -8,24 +8,23 @@ namespace _Project.Controllers.StateMachine.States
     {
         private readonly PopUpNotificationController _popUpController;
         private readonly LevelRestarter _levelRestarter;
-        private readonly GameSounds _gameSounds;
 
         public PlayerDefeatFsmState(FiniteStateMachine finiteStateMachine,
-            PopUpNotificationController popUpController, LevelRestarter levelRestarter, GameSounds gameSounds) :
+            PopUpNotificationController popUpController, LevelRestarter levelRestarter) :
             base(finiteStateMachine)
         {
             Assert.IsNotNull(popUpController);
             Assert.IsNotNull(levelRestarter);
-            Assert.IsNotNull(gameSounds);
             _popUpController = popUpController;
             _levelRestarter = levelRestarter;
-            _gameSounds = gameSounds;
         }
+
+        public event Action Defeat;
 
         public override void Enter()
         {
             base.Enter();
-            _gameSounds.PlayPlayerDefeat();
+            Defeat?.Invoke();
             _popUpController.OnClose += Handle;
             _popUpController.Show();
         }
