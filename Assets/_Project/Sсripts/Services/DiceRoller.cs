@@ -119,8 +119,8 @@ namespace _Project.Services
             float forceY = Random.Range(0, _maxRandomTorqueForce);
             float forceZ = Random.Range(0, _maxRandomTorqueForce);
 
-            float forceRight = Random.Range(-_throwingForce / 2, _throwingForce / 2);
-            float forceForward = Random.Range(-_throwingForce / 2, _throwingForce / 2);
+            float forceRight = Random.Range(-_throwingForce / 3, _throwingForce / 3);
+            float forceForward = Random.Range(-_throwingForce / 3, _throwingForce / 3);
 
             _rigidbody.AddForce(Vector3.up * _throwingForce + Vector3.right * forceRight + Vector3.forward * forceForward);
             _rigidbody.AddTorque(forceX, forceY, forceZ);
