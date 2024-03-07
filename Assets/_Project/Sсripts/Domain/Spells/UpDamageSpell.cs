@@ -1,10 +1,11 @@
 using System;
 using _Project.Config;
+using _Project.Domain.Effects;
 using UnityEngine.Assertions;
 
 namespace _Project.Domain.Spells
 {
-    public class UpDamageSpell : Spell
+    public class UpDamageSpell : Effect
     {
         private readonly Damage _damage;
         private readonly Coefficients _coefficients;

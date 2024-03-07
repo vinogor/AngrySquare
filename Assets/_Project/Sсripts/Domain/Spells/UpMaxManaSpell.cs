@@ -1,10 +1,11 @@
 using System;
 using _Project.Config;
+using _Project.Domain.Effects;
 using UnityEngine.Assertions;
 
 namespace _Project.Domain.Spells
 {
-    public class UpMaxManaSpell : Spell
+    public class UpMaxManaSpell : Effect
     {
         private readonly Mana _mana;
         private readonly Coefficients _coefficients;

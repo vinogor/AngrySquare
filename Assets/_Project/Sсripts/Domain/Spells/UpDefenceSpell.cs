@@ -1,10 +1,11 @@
 using System;
 using _Project.Config;
+using _Project.Domain.Effects;
 using UnityEngine.Assertions;
 
 namespace _Project.Domain.Spells
 {
-    public class UpDefenceSpell : Spell
+    public class UpDefenceSpell : Effect
     {
         private readonly Defence _defence;
         private readonly Coefficients _coefficients;

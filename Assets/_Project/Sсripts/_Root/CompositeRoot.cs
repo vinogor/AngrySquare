@@ -94,7 +94,7 @@ namespace _Project._Root
             AvailableSpells availableSpells = new AvailableSpells();
             availableSpells.Add(SpellName.UpDamage);
 
-            Dictionary<SpellName, Spell> playerSpells = new Dictionary<SpellName, Spell>();
+            Dictionary<SpellName, Effect> playerSpells = new Dictionary<SpellName, Effect>();
             FullHealthSpell fullHealthSpell = new FullHealthSpell(playerHealth);
             UpDamageSpell upDamageSpell = new UpDamageSpell(playerDamage, _coefficients);
             UpMaxHealthSpell upMaxHealthSpell = new UpMaxHealthSpell(playerHealth, _coefficients);
@@ -213,11 +213,13 @@ namespace _Project._Root
             enemyHealth.DamageReceived += gameSounds.PlaySwordsAttack;
             enemyHealth.Replenished += gameSounds.PlayHealthReplenish;
 
-            fullHealthSpell.SpellCast += gameSounds.PlaySpellCast;
-            upDamageSpell.SpellCast += gameSounds.PlaySpellCast;
-            upMaxHealthSpell.SpellCast += gameSounds.PlaySpellCast;
-            upDefenceSpell.SpellCast += gameSounds.PlaySpellCast;
-            upMaxManaSpell.SpellCast += gameSounds.PlaySpellCast;
+
+            spellActivator.SpellCast +=  gameSounds.PlaySpellCast;
+            // fullHealthSpell.SpellCast += gameSounds.PlaySpellCast;
+            // upDamageSpell.SpellCast += gameSounds.PlaySpellCast;
+            // upMaxHealthSpell.SpellCast += gameSounds.PlaySpellCast;
+            // upDefenceSpell.SpellCast += gameSounds.PlaySpellCast;
+            // upMaxManaSpell.SpellCast += gameSounds.PlaySpellCast;
 
             choiceEffectController.Showed += gameSounds.PlayPopUp;
             choiceEffectController.Clicked += gameSounds.PlayClickButton;

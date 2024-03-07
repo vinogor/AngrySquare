@@ -1,9 +1,10 @@
 using System;
+using _Project.Domain.Effects;
 using UnityEngine.Assertions;
 
 namespace _Project.Domain.Spells
 {
-    public class FullHealthSpell : Spell
+    public class FullHealthSpell : Effect
     {
         private readonly Health _health;
 

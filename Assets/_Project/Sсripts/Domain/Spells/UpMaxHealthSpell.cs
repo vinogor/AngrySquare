@@ -1,10 +1,11 @@
 using System;
 using _Project.Config;
+using _Project.Domain.Effects;
 using UnityEngine.Assertions;
 
 namespace _Project.Domain.Spells
 {
-    public class UpMaxHealthSpell : Spell
+    public class UpMaxHealthSpell : Effect
     {
         private readonly Health _health;
         private readonly Coefficients _coefficients;
