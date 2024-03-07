@@ -11,10 +11,11 @@ namespace _Project.Services
     public class DiceRoller : MonoBehaviour, IPointerDownHandler
     {
         [SerializeField] private float _maxRandomTorqueForce = 300f;
-        [SerializeField] private float _upForce = 300f;
+        [SerializeField] private float _throwingForce = 300f;
         [SerializeField] [Required] private Camera _camera;
         [SerializeField] [Required] private Rigidbody _rigidbody;
         [SerializeField] [Required] private ParticleSystem _vfx;
+        [SerializeField] private Wall[] _walls;
 
         private DiceFaceDetector[] _detectors;
         private bool _canPlayerThrow = false;
@@ -53,6 +54,7 @@ namespace _Project.Services
             {
                 if (raycastHit.collider.gameObject == gameObject)
                 {
+                    ActivateWalls(true);
                     RollDice();
                     DetectorsSetActive(true);
                     StartCoroutine(SetIsDiceThrownTrueWithDelay());
@@ -64,12 +66,21 @@ namespace _Project.Services
         {
             _vfx.Play();
             _canPlayerThrow = true;
+            ActivateWalls(false);
         }
 
         public void MakeUnavailable()
         {
             _vfx.Stop();
             _canPlayerThrow = false;
+        }
+
+        private void ActivateWalls(bool isEnable)
+        {
+            foreach (Wall wall in _walls)
+            {
+                wall.gameObject.SetActive(isEnable);
+            }
         }
 
         private void OnDestroy()
@@ -108,7 +119,10 @@ namespace _Project.Services
             float forceY = Random.Range(0, _maxRandomTorqueForce);
             float forceZ = Random.Range(0, _maxRandomTorqueForce);
 
-            _rigidbody.AddForce(Vector3.up * _upForce);
+            float forceRight = Random.Range(-_throwingForce / 2, _throwingForce / 2);
+            float forceForward = Random.Range(-_throwingForce / 2, _throwingForce / 2);
+
+            _rigidbody.AddForce(Vector3.up * _throwingForce + Vector3.right * forceRight + Vector3.forward * forceForward);
             _rigidbody.AddTorque(forceX, forceY, forceZ);
         }
 
