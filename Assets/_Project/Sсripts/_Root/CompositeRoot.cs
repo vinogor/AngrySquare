@@ -61,8 +61,6 @@ namespace _Project._Root
         private ISaver _saver;
         private PopUpTutorialController _popUpTutorialController;
         private YandexLeaderBoard _yandexLeaderBoard;
-
-        // enemy and player characteristics
         private Defence _playerDefence;
         private Health _playerHealth;
         private Damage _playerDamage;
@@ -73,13 +71,26 @@ namespace _Project._Root
         private int _healthValue;
         private Health _enemyHealth;
         private Damage _enemyDamage;
-
         private AvailableSpells _availableSpells;
         private SpellActivator _spellActivator;
-        
-        
         private Advertising _advertising;
         private GameSounds _gameSounds;
+        private FiniteStateMachine _stateMachine;
+        private GameInitializeFsmState _gameInitializeFsmState;
+        private PlayerTurnSpellFsmState _playerTurnSpellFsmState;
+        private PlayerTurnMoveFsmState _playerTurnMoveFsmState;
+        private PlayerWinFsmState _playerWinFsmState;
+        private EnemyTurnFsmState _enemyTurnFsmState;
+        private PlayerDefeatFsmState _playerDefeatFsmState;
+        private SpellBarController _spellBarController;
+        private PopUpNotificationController _popUpPlayerWin;
+        private LevelRestarter _levelRestarter;
+        private PopUpNotificationController _popUpPlayerDefeat;
+        private EnemyTargetController _enemyTargetController;
+        private PopUpChoiceEffectController _choiceEffectController;
+        private PopUpChoiceSpellController _choiceSpellController;
+        private PlayerJumper _playerJumper;
+        private EnemyJumper _enemyJumper;
 
         private async void OnEnable()
         {
@@ -93,6 +104,19 @@ namespace _Project._Root
             InitializePlayersCharacteristics();
             InitializeSpells();
 
+            CellsManager cellsController = new CellsManager(_cells, _cellsSettings);
+            cellsController.FillWithEffects();
+
+            _enemyTargetController = new EnemyTargetController(cellsController, _enemyAims);
+            _enemyTargetController.SetAimToNewRandomTargetCell();
+
+            _playerJumper = new PlayerJumper(_player.transform, _enemyModel.transform, _coefficients);
+            _enemyJumper = new EnemyJumper(_enemyModel.transform, _playerMovement, _coefficients,
+                _enemyTargetController);
+            PlayerPortal playerPortal = new PlayerPortal(_playerJumper, cellsController, _playerMovement);
+
+            _spellBarController = new SpellBarController(_availableSpells, _uiRoot.SpellBarView, _playerMana,
+                _spellActivator, _uiRoot.SpellBarShaker);
             List<EffectName> availableEffectNamesForEffect = new List<EffectName>
                 { EffectName.Swords, EffectName.Health, EffectName.Mana };
             List<SpellName> availableSpellNamesForEffect = new List<SpellName>
@@ -100,70 +124,34 @@ namespace _Project._Root
                 SpellName.FullHealth, SpellName.UpDamage, SpellName.UpDefence, SpellName.UpMaxHealth,
                 SpellName.UpMaxMana
             };
+            _choiceEffectController = new PopUpChoiceEffectController(_uiRoot.PopUpChoiceView,
+                availableEffectNamesForEffect, _playerMovement, _cellsSettings);
+            _choiceSpellController = new PopUpChoiceSpellController(_uiRoot.PopUpChoiceView,
+                availableSpellNamesForEffect, _spellBarController, _spellsSettings);
 
-            // -- разделить 
-            CellsManager cellsController = new CellsManager(_cells, _cellsSettings);
-            cellsController.FillWithEffects();
-            // -------------------------------
+            FillPlayerEffects(_playerJumper, playerPortal, _choiceEffectController, _choiceSpellController);
+            FillEnemyEffects(_enemyJumper, _enemyTargetController);
 
-            // -- нужно для Jumper-ов 
-            EnemyTargetController enemyTargetController = new EnemyTargetController(cellsController, _enemyAims);
-            enemyTargetController.SetAimToNewRandomTargetCell();
-            // ---------------------------- 
-
-            PlayerJumper playerJumper = new PlayerJumper(_player.transform, _enemyModel.transform, _coefficients);
-            EnemyJumper enemyJumper = new EnemyJumper(_enemyModel.transform, _playerMovement, _coefficients,
-                enemyTargetController);
-            PlayerPortal playerPortal = new PlayerPortal(playerJumper, cellsController, _playerMovement);
-
-            // -- контроллеры которые нужны для эффектов 
-            SpellBarController spellBarController =
-                new SpellBarController(_availableSpells, _uiRoot.SpellBarView, _playerMana, _spellActivator,
-                    _uiRoot.SpellBarShaker);
-            PopUpChoiceEffectController choiceEffectController =
-                new PopUpChoiceEffectController(_uiRoot.PopUpChoiceView, availableEffectNamesForEffect, _playerMovement,
-                    _cellsSettings);
-            PopUpChoiceSpellController choiceSpellController =
-                new PopUpChoiceSpellController(_uiRoot.PopUpChoiceView, availableSpellNamesForEffect,
-                    spellBarController, _spellsSettings);
-            // --------------------------------------------
-
-            _playerEffects.Add(EffectName.Swords, new PlayerSwords(playerJumper, _enemyHealth, _playerDamage));
-            _playerEffects.Add(EffectName.Health, new PlayerHealth(_playerHealth, playerJumper, _coefficients));
-            _playerEffects.Add(EffectName.Mana, new PlayerMana(_playerMana, playerJumper, _coefficients));
-            _playerEffects.Add(EffectName.Portal, playerPortal);
-            _playerEffects.Add(EffectName.Question, new PlayerQuestion(playerJumper, choiceEffectController));
-            _playerEffects.Add(EffectName.SpellBook, new PlayerSpellBook(playerJumper, choiceSpellController));
-
-            _playerMovement.Initialize(cellsController, _playerEffects, _coefficients, playerJumper);
-
-            _enemyEffects.Add(EffectName.Swords, new EnemySwords(enemyJumper, _playerHealth, _enemyDamage));
-            _enemyEffects.Add(EffectName.Health,
-                new EnemyHealth(enemyJumper, _enemyHealth, _coefficients, enemyTargetController));
-            _enemyEffects.Add(EffectName.Mana, new EnemyMana(enemyJumper));
-            _enemyEffects.Add(EffectName.Portal, new EnemyPortal(enemyJumper));
-            _enemyEffects.Add(EffectName.Question, new EnemyQuestion(enemyJumper));
-            _enemyEffects.Add(EffectName.SpellBook, new EnemySpellBook(enemyJumper));
-
-            _enemyMovement.Initialize(_enemyEffects, enemyTargetController, enemyJumper, _playerHealth, _enemyDamage,
+            _playerMovement.Initialize(cellsController, _playerEffects, _coefficients, _playerJumper);
+            _enemyMovement.Initialize(_enemyEffects, _enemyTargetController, _enemyJumper, _playerHealth, _enemyDamage,
                 _playerMovement);
 
             // CONTROLLERS
 
             _diceRoller.Initialize();
 
-            PopUpNotificationController popUpPlayerWin = new PopUpNotificationController(_uiRoot.PopUpNotificationView,
+            _popUpPlayerWin = new PopUpNotificationController(_uiRoot.PopUpNotificationView,
                 new PopUpNotificationModel(UiTextKeys.NotificationPlayerWinTitleKey,
                     UiTextKeys.NotificationPlayerWinInfoKey));
-            PopUpNotificationController popUpPlayerDefeat = new PopUpNotificationController(
-                _uiRoot.PopUpNotificationView, new PopUpNotificationModel(UiTextKeys.NotificationPlayerDefeatTitleKey,
+            _popUpPlayerDefeat = new PopUpNotificationController(_uiRoot.PopUpNotificationView,
+                new PopUpNotificationModel(UiTextKeys.NotificationPlayerDefeatTitleKey,
                     UiTextKeys.NotificationPlayerDefeatInfoKey));
             _popUpTutorialController = new PopUpTutorialController(_uiRoot.PopUpTutorialView);
-            
-            LevelRestarter levelRestarter = new LevelRestarter(cellsController, _playerDefence, _playerHealth,
+
+            _levelRestarter = new LevelRestarter(cellsController, _playerDefence, _playerHealth,
                 _playerDamage, _playerMana, _enemyProgression, _enemyDefence, _enemyHealth, _enemyDamage,
                 _availableSpells,
-                _playerMovement, enemyTargetController, _enemyLevel);
+                _playerMovement, _enemyTargetController, _enemyLevel);
 
             // PRESENTATIONS & FRAMEWORKS
 
@@ -178,38 +166,31 @@ namespace _Project._Root
 
             // INFRASTRUCTURE
 
-            FiniteStateMachine stateMachine = new FiniteStateMachine();
-            GameInitializeFsmState gameInitializeFsmState = new GameInitializeFsmState(stateMachine, _advertising);
-            PlayerTurnSpellFsmState playerTurnSpellFsmState =
-                new PlayerTurnSpellFsmState(stateMachine, spellBarController, _popUpTutorialController);
-            PlayerTurnMoveFsmState playerTurnMoveFsmState = new PlayerTurnMoveFsmState(stateMachine, _diceRoller,
-                _playerMovement, _enemyHealth, _popUpTutorialController);
-            PlayerWinFsmState playerWinFsmState =
-                new PlayerWinFsmState(stateMachine, popUpPlayerWin, levelRestarter);
-            EnemyTurnFsmState enemyTurnFsmState = new EnemyTurnFsmState(stateMachine, _enemyMovement, _playerHealth,
-                _popUpTutorialController);
-            PlayerDefeatFsmState playerDefeatFsmState = new PlayerDefeatFsmState(stateMachine, popUpPlayerDefeat,
-                levelRestarter);
-            
-            stateMachine.AddState(gameInitializeFsmState);
-            stateMachine.AddState(playerTurnSpellFsmState);
-            stateMachine.AddState(playerTurnMoveFsmState);
-            stateMachine.AddState(playerWinFsmState);
-            stateMachine.AddState(enemyTurnFsmState);
-            stateMachine.AddState(playerDefeatFsmState);
-
-            InitializeLeaderboard(playerDefeatFsmState);
+            InitializeStateMachine();
+            InitializeLeaderboard();
 
             SaveService saveService = new SaveService(_playerDamage, _playerDefence, _playerHealth, _playerMana,
                 _availableSpells, _playerMovement, _enemyLevel, _enemyDamage, _enemyDefence, _enemyHealth,
-                enemyTargetController, cellsController, stateMachine, _popUpTutorialController, _saver);
-            _saveController.Initialize(saveService, stateMachine);
+                _enemyTargetController, cellsController, _stateMachine, _popUpTutorialController, _saver);
+            _saveController.Initialize(saveService, _stateMachine);
 
             _restartGameController =
-                new RestartGameController(_uiRoot.RestartGameView, levelRestarter, stateMachine, saveService);
+                new RestartGameController(_uiRoot.RestartGameView, _levelRestarter, _stateMachine, saveService);
 
-            // === INIT SOUNDS ===
+            InitializeGameSounds();
 
+            // TODO: сделать отписку
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+            await _yandexLeaderBoard.Fill();
+            _yandexLeaderBoard.GetCurrentPublicName();
+#endif
+
+            StartGame(saveService, _stateMachine);
+        }
+
+        private void InitializeGameSounds()
+        {
             _playerHealth.DamageReceived += _gameSounds.PlaySwordsAttack;
             _playerHealth.Replenished += _gameSounds.PlayHealthReplenish;
             _playerMana.Replenished += _gameSounds.PlayManaReplenish;
@@ -219,15 +200,15 @@ namespace _Project._Root
 
             _spellActivator.SpellCast += _gameSounds.PlaySpellCast;
 
-            choiceEffectController.Showed += _gameSounds.PlayPopUp;
-            choiceEffectController.Clicked += _gameSounds.PlayClickButton;
-            spellBarController.SpellSkipped += _gameSounds.PlayClickButton;
+            _choiceEffectController.Showed += _gameSounds.PlayPopUp;
+            _choiceEffectController.Clicked += _gameSounds.PlayClickButton;
+            _spellBarController.SpellSkipped += _gameSounds.PlayClickButton;
 
-            choiceSpellController.Showed += _gameSounds.PlayPopUp;
-            choiceSpellController.Clicked += _gameSounds.PlayClickButton;
+            _choiceSpellController.Showed += _gameSounds.PlayPopUp;
+            _choiceSpellController.Clicked += _gameSounds.PlayClickButton;
 
-            playerWinFsmState.Win += _gameSounds.PlayPlayerWin;
-            playerDefeatFsmState.Defeat += _gameSounds.PlayPlayerDefeat;
+            _playerWinFsmState.Win += _gameSounds.PlayPlayerWin;
+            _playerDefeatFsmState.Defeat += _gameSounds.PlayPlayerDefeat;
 
             _focusTracking.SwitchSound += value => _gameSounds.SwitchByFocus(value);
             _advertising.SwitchSound += value => _gameSounds.SwitchByAdv(value);
@@ -235,24 +216,59 @@ namespace _Project._Root
 
             _diceRoller.DiceFall += _gameSounds.PlayDiceFall;
 
-            playerJumper.Teleported += _gameSounds.PlayTeleport;
-            playerJumper.MadeStep += _gameSounds.PlayPlayerStep;
+            _playerJumper.Teleported += _gameSounds.PlayTeleport;
+            _playerJumper.MadeStep += _gameSounds.PlayPlayerStep;
 
-            enemyJumper.MadeStep += _gameSounds.PlayEnemyStep;
-
-            // TODO: сделать отписку
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-            await _yandexLeaderBoard.Fill();
-            _yandexLeaderBoard.GetCurrentPublicName();
-#endif
-
-            StartGame(saveService, stateMachine);
+            _enemyJumper.MadeStep += _gameSounds.PlayEnemyStep;
         }
 
-        private void InitializeLeaderboard(PlayerDefeatFsmState playerDefeatFsmState)
+        private void InitializeStateMachine()
         {
-            _yandexLeaderBoard = new YandexLeaderBoard(_enemyLevel, playerDefeatFsmState);
+            _stateMachine = new FiniteStateMachine();
+            _gameInitializeFsmState = new GameInitializeFsmState(_stateMachine, _advertising);
+            _playerTurnSpellFsmState =
+                new PlayerTurnSpellFsmState(_stateMachine, _spellBarController, _popUpTutorialController);
+            _playerTurnMoveFsmState = new PlayerTurnMoveFsmState(_stateMachine, _diceRoller,
+                _playerMovement, _enemyHealth, _popUpTutorialController);
+            _playerWinFsmState = new PlayerWinFsmState(_stateMachine, _popUpPlayerWin, _levelRestarter);
+            _enemyTurnFsmState = new EnemyTurnFsmState(_stateMachine, _enemyMovement, _playerHealth,
+                _popUpTutorialController);
+            _playerDefeatFsmState = new PlayerDefeatFsmState(_stateMachine, _popUpPlayerDefeat,
+                _levelRestarter);
+
+            _stateMachine.AddState(_gameInitializeFsmState);
+            _stateMachine.AddState(_playerTurnSpellFsmState);
+            _stateMachine.AddState(_playerTurnMoveFsmState);
+            _stateMachine.AddState(_playerWinFsmState);
+            _stateMachine.AddState(_enemyTurnFsmState);
+            _stateMachine.AddState(_playerDefeatFsmState);
+        }
+
+        private void FillEnemyEffects(EnemyJumper enemyJumper, EnemyTargetController enemyTargetController)
+        {
+            _enemyEffects.Add(EffectName.Swords, new EnemySwords(enemyJumper, _playerHealth, _enemyDamage));
+            _enemyEffects.Add(EffectName.Health,
+                new EnemyHealth(enemyJumper, _enemyHealth, _coefficients, enemyTargetController));
+            _enemyEffects.Add(EffectName.Mana, new EnemyMana(enemyJumper));
+            _enemyEffects.Add(EffectName.Portal, new EnemyPortal(enemyJumper));
+            _enemyEffects.Add(EffectName.Question, new EnemyQuestion(enemyJumper));
+            _enemyEffects.Add(EffectName.SpellBook, new EnemySpellBook(enemyJumper));
+        }
+
+        private void FillPlayerEffects(PlayerJumper playerJumper, PlayerPortal playerPortal,
+            PopUpChoiceEffectController choiceEffectController, PopUpChoiceSpellController choiceSpellController)
+        {
+            _playerEffects.Add(EffectName.Swords, new PlayerSwords(playerJumper, _enemyHealth, _playerDamage));
+            _playerEffects.Add(EffectName.Health, new PlayerHealth(_playerHealth, playerJumper, _coefficients));
+            _playerEffects.Add(EffectName.Mana, new PlayerMana(_playerMana, playerJumper, _coefficients));
+            _playerEffects.Add(EffectName.Portal, playerPortal);
+            _playerEffects.Add(EffectName.Question, new PlayerQuestion(playerJumper, choiceEffectController));
+            _playerEffects.Add(EffectName.SpellBook, new PlayerSpellBook(playerJumper, choiceSpellController));
+        }
+
+        private void InitializeLeaderboard()
+        {
+            _yandexLeaderBoard = new YandexLeaderBoard(_enemyLevel, _playerDefeatFsmState);
             LeaderboardController leaderboardController = new LeaderboardController(_uiRoot.LeaderboardButtonView,
                 _uiRoot.LeaderboardPopupView, _yandexLeaderBoard, _coefficients);
         }
@@ -341,6 +357,36 @@ namespace _Project._Root
             _restartGameController.Dispose();
             _popUpTutorialController.Dispose();
             _yandexLeaderBoard.Dispose();
+
+            _playerHealth.DamageReceived -= _gameSounds.PlaySwordsAttack;
+            _playerHealth.Replenished -= _gameSounds.PlayHealthReplenish;
+            _playerMana.Replenished -= _gameSounds.PlayManaReplenish;
+
+            _enemyHealth.DamageReceived -= _gameSounds.PlaySwordsAttack;
+            _enemyHealth.Replenished -= _gameSounds.PlayHealthReplenish;
+
+            _spellActivator.SpellCast -= _gameSounds.PlaySpellCast;
+
+            _choiceEffectController.Showed -= _gameSounds.PlayPopUp;
+            _choiceEffectController.Clicked -= _gameSounds.PlayClickButton;
+            _spellBarController.SpellSkipped -= _gameSounds.PlayClickButton;
+
+            _choiceSpellController.Showed -= _gameSounds.PlayPopUp;
+            _choiceSpellController.Clicked -= _gameSounds.PlayClickButton;
+
+            _playerWinFsmState.Win -= _gameSounds.PlayPlayerWin;
+            _playerDefeatFsmState.Defeat -= _gameSounds.PlayPlayerDefeat;
+
+            _focusTracking.SwitchSound -= value => _gameSounds.SwitchByFocus(value);
+            _advertising.SwitchSound -= value => _gameSounds.SwitchByAdv(value);
+            _soundController.SwitchSound -= value => _gameSounds.SwitchByButton(value);
+
+            _diceRoller.DiceFall -= _gameSounds.PlayDiceFall;
+
+            _playerJumper.Teleported -= _gameSounds.PlayTeleport;
+            _playerJumper.MadeStep -= _gameSounds.PlayPlayerStep;
+
+            _enemyJumper.MadeStep -= _gameSounds.PlayEnemyStep;
         }
     }
 }
