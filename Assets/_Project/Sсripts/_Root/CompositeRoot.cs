@@ -179,8 +179,6 @@ namespace _Project._Root
 
             InitializeGameSounds();
 
-            // TODO: сделать отписку
-
 #if UNITY_WEBGL && !UNITY_EDITOR
             await _yandexLeaderBoard.Fill();
             _yandexLeaderBoard.GetCurrentPublicName();
