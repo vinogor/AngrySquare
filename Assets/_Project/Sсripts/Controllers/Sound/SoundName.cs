@@ -2,6 +2,7 @@ namespace Controllers.Sound
 {
     public enum SoundName
     {
+        NotSet,
         PlayerStep,
         EnemyStep,
         DiceDrop,
