@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Controllers.PopupChoice;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Domain.Movement;
 using UnityEngine.Assertions;
@@ -26,13 +27,13 @@ namespace Domain.Effects.Player{
             onComplete.Invoke();
         }
 
-        private async Task Execute()
+        private async UniTask Execute()
         {
             await Jump();
             await _popUpController.ShowSpells();
         }
 
-        private async Task Jump()
+        private async UniTask Jump()
         {
             Sequence sequence = DOTween.Sequence();
             sequence.Append(_playerJumper.JumpInPlace());

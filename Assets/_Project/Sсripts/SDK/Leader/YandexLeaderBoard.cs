@@ -107,7 +107,7 @@ namespace SDK.Leader
                 });
         }
 
-        public async Task Fill()
+        public async UniTask Fill()
         {
             Debug.Log("YandexLeaderBoard - Fill - start...");
             LeaderBoardPlayers.Clear();

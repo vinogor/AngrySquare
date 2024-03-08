@@ -11,14 +11,14 @@ namespace SDK
         private bool _isAdClosed = false;
         public event Action<bool> SwitchSound;
 
-        public async Task ShowAd()
+        public async UniTask ShowAd()
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
             await Show();
 #endif
         }
 
-        private async Task Show()
+        private async UniTask Show()
         {
             Debug.Log("Advertising - Show - start");
             InterstitialAd.Show(OnOpenCallBack, OnCloseCallback);

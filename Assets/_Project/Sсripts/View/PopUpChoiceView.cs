@@ -17,7 +17,6 @@ namespace View{
         {
             Assert.AreEqual(ExpectedTotalAmountItems, _buttons.Length);
             Assert.AreEqual(ExpectedTotalAmountItems, _images.Length);
-            Hide();
         }
 
         public void Show()

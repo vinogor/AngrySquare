@@ -18,6 +18,7 @@ namespace Controllers.PopupChoice
             Assert.IsNotNull(popUpChoiceView);
 
             PopUpChoiceView = popUpChoiceView;
+            PopUpChoiceView.Hide();
         }
 
         protected void HidePopup()

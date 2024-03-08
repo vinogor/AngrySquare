@@ -34,7 +34,7 @@ namespace Controllers.PopupChoice
         public event Action Showed;
         public event Action Clicked;
 
-        public async Task ShowSpells()
+        public async UniTask ShowSpells()
         {
             PrepareSpellButtons();
             Showed?.Invoke();
