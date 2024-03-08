@@ -54,14 +54,16 @@ namespace Controllers
 
         private void Activate()
         {
+            const float offset = 0.03f;
+
             for (var i = 0; i < _targetCells.Count; i++)
             {
-                _enemyAims[i].gameObject.SetActive(true);
-                _enemyAims[i].transform.position = _targetCells[i].Center() + Vector3.up * 0.03f;
+                _enemyAims[i].SetActive(true);
+                _enemyAims[i].SetPosition(_targetCells[i].Center() + Vector3.up * offset);
             }
 
             for (var i = _targetCells.Count; i < _enemyAims.Length; i++)
-                _enemyAims[i].gameObject.SetActive(false);
+                _enemyAims[i].SetActive(false);
         }
     }
 }
