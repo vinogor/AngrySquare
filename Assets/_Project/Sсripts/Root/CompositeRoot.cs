@@ -208,7 +208,7 @@ namespace Root
             _playerWinFsmState.Win += _gameSounds.PlayPlayerWin;
             _playerDefeatFsmState.Defeat += _gameSounds.PlayPlayerDefeat;
 
-            _focusTracking.SwitchSound += value => _gameSounds.SwitchByFocus(value);
+            _focusTracking.FocusSwitched += value => _gameSounds.SwitchByFocus(value);
             _advertising.SwitchSound += value => _gameSounds.SwitchByAdv(value);
             _soundController.SwitchSound += value => _gameSounds.SwitchByButton(value);
 
@@ -375,7 +375,7 @@ namespace Root
             _playerWinFsmState.Win -= _gameSounds.PlayPlayerWin;
             _playerDefeatFsmState.Defeat -= _gameSounds.PlayPlayerDefeat;
 
-            _focusTracking.SwitchSound -= value => _gameSounds.SwitchByFocus(value);
+            _focusTracking.FocusSwitched -= value => _gameSounds.SwitchByFocus(value);
             _advertising.SwitchSound -= value => _gameSounds.SwitchByAdv(value);
             _soundController.SwitchSound -= value => _gameSounds.SwitchByButton(value);
 

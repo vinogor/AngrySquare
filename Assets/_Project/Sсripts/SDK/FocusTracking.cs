@@ -6,7 +6,7 @@ namespace SDK
 {
     public class FocusTracking : MonoBehaviour
     {
-        public event Action<bool> SwitchSound;
+        public event Action<bool> FocusSwitched;
 
         private void OnEnable()
         {
@@ -23,18 +23,13 @@ namespace SDK
         private void OnInBackgroundChangeApp(bool inApp)
         {
             Debug.Log("FocusTracking - OnInBackgroundChangeApp - " + inApp);
-            MuteAudio(inApp);
+            FocusSwitched?.Invoke(inApp);
         }
 
         private void OnInBackgroundChangeWeb(bool inBackground)
         {
             Debug.Log("FocusTracking - OnInBackgroundChangeWeb - " + inBackground);
-            MuteAudio(!inBackground);
-        }
-
-        private void MuteAudio(bool value)
-        {
-            SwitchSound?.Invoke(value);
+            FocusSwitched?.Invoke(!inBackground);
         }
     }
 }
