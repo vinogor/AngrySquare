@@ -15,6 +15,7 @@ namespace View
 
         public void Enable(int amountAvailableSpells)
         {
+            Disable();
             _sequence = DOTween.Sequence();
             _sequence.Join(CreateSequence(_skipButtonTransform));
 
