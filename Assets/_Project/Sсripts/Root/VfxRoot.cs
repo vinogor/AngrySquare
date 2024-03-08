@@ -1,7 +1,7 @@
 using Domain;
 using Domain.Effects.Player;
+using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Assertions;
 using View.Vfx;
 
 namespace Root
@@ -9,25 +9,15 @@ namespace Root
     public class VfxRoot : MonoBehaviour
     {
         [Header("Player")]
-        [SerializeField] private DamageVfx _playerDamageVfx;
-        [SerializeField] private ManaVfx _playerManaVfx;
-        [SerializeField] private TeleportVfx _teleportVfx;
-        [SerializeField] private HealthReplenishVfx _playerHealthReplenishVfx;
+        [SerializeField] [Required] private DamageVfx _playerDamageVfx;
+        [SerializeField] [Required] private ManaVfx _playerManaVfx;
+        [SerializeField] [Required] private TeleportVfx _teleportVfx;
+        [SerializeField] [Required] private HealthReplenishVfx _playerHealthReplenishVfx;
 
         [Space(10)]
         [Header("Enemy")]
-        [SerializeField] private DamageVfx _enemyDamageVfx;
-        [SerializeField] private HealthReplenishVfx _enemyHealthReplenishVfx;
-
-        private void Awake()
-        {
-            Assert.IsNotNull(_playerDamageVfx);
-            Assert.IsNotNull(_playerManaVfx);
-            Assert.IsNotNull(_teleportVfx);
-            Assert.IsNotNull(_playerHealthReplenishVfx);
-
-            Assert.IsNotNull(_enemyDamageVfx);
-        }
+        [SerializeField] [Required] private DamageVfx _enemyDamageVfx;
+        [SerializeField] [Required] private HealthReplenishVfx _enemyHealthReplenishVfx;
 
         public void Initialize(Health playerHealth, Mana playerMana, PlayerPortal playerPortal, Health enemyHealth)
         {
