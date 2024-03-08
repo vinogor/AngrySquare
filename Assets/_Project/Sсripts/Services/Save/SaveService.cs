@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Controllers;
 using Controllers.StateMachine;
 using Domain;
-using Domain.Effects;
 using Domain.Movement;
-using Domain.Spells;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -172,32 +169,6 @@ namespace Services.Save
 
             IsSaveExist = true;
             Debug.Log("SaveService Apply - finish! IsSaveExist = " + IsSaveExist);
-        }
-
-        private class DataRecord
-        {
-            // player 
-            public int PlayerDamageValue;
-            public int PlayerDefenceValue;
-            public int PlayerHealthValue;
-            public int PlayerHealthMaxValue;
-            public int PlayerManaValue;
-            public int PlayerManaMaxValue;
-            public List<SpellName> SpellNames;
-            public int PlayersCellIndex;
-
-            // enemy
-            public int EnemyLevelValue;
-            public int EnemyDamageValue;
-            public int EnemyDefenceValue;
-            public int EnemyHealthValue;
-            public int EnemyHealthMaxValue;
-            public List<int> TargetCellsIndexes;
-
-            // common
-            public Dictionary<int, EffectName> CellIndexesWithEffectNames;
-            public string FsmStateTypeName;
-            public bool IsTutorialEnable;
         }
     }
 }
