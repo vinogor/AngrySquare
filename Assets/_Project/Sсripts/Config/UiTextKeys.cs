@@ -25,7 +25,7 @@ namespace Config
         public const string EnemyLevelKey = "Stats - Enemy level";
         public const string SpellBarCostKey = "SpellBar - Cost";
         
-        private static Dictionary<TutorialStep, PopUpNotificationModel> s_tutorial = new()
+        private static Dictionary<TutorialStep, PopUpNotificationModel> Tutorial = new()
         {
             { TutorialStep.Intro, new PopUpNotificationModel(TutorialIntroTitleKey, TutorialIntroInfoKey) },
             { TutorialStep.SpellCast, new PopUpNotificationModel(TutorialSpellCastTitleKey, TutorialSpellCastInfoKey) },
@@ -36,7 +36,7 @@ namespace Config
 
         public static PopUpNotificationModel Get(TutorialStep tutorialStep)
         {
-            return s_tutorial[tutorialStep];
+            return Tutorial[tutorialStep];
         }
     }
 }

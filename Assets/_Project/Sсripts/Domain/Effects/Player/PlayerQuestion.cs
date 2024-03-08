@@ -25,8 +25,6 @@ namespace Domain.Effects.Player{
             sequence.Append(_playerJumper.JumpInPlace());
             sequence.AppendCallback(_popupController.ShowEffects);
             sequence.Play();
-
-            // onComplete - никуда не передаём, т.к. он будет вызван с выбраннного в попапе эффекта
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Services.Utility
             {
                 if (s_instance == null)
                 {
-                    var gameObject = new GameObject("COROUTINE MANAGER");
+                    var gameObject = new GameObject(nameof(CoroutineHolder));
                     s_instance = gameObject.AddComponent<CoroutineHolder>();
                     DontDestroyOnLoad(gameObject);
                 }

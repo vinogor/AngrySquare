@@ -175,7 +175,7 @@ namespace Root
             _saveController.Initialize(saveService, _stateMachine);
 
             _restartGameController =
-                new RestartGameController(_uiRoot.RestartGameView, _levelRestarter, _stateMachine, saveService);
+                new RestartGameController(_uiRoot.RestartGameView, _levelRestarter, _stateMachine);
 
             InitializeGameSounds();
 

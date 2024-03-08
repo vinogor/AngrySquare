@@ -10,8 +10,8 @@ namespace View
 
         private Sequence _sequence;
 
-        private int _shakingAngle = 3;
-        private float _shakeDuration = 0.2f;
+        private const int ShakingAngle = 3;
+        private const float ShakeDuration = 0.2f;
 
         public void Enable(int amountAvailableSpells)
         {
@@ -32,7 +32,7 @@ namespace View
 
         private void ResetRotation()
         {
-            Quaternion zeroQuaternion = Quaternion.Euler(new Vector3(0, 0, 0));
+            Quaternion zeroQuaternion = Quaternion.Euler(Vector3.zero);
             _skipButtonTransform.localRotation = zeroQuaternion;
 
             foreach (Transform spellsTransform in _spellsTransforms)
@@ -45,11 +45,11 @@ namespace View
         {
             return DOTween.Sequence()
                 .Append(transformToShake
-                    .DORotate(new Vector3(0, 0, -_shakingAngle), _shakeDuration, RotateMode.LocalAxisAdd)
+                    .DORotate(new Vector3(0, 0, -ShakingAngle), ShakeDuration, RotateMode.LocalAxisAdd)
                     .SetEase(Ease.Linear)
                 )
                 .Append(transformToShake
-                    .DORotate(new Vector3(0, 0, _shakingAngle), _shakeDuration, RotateMode.LocalAxisAdd)
+                    .DORotate(new Vector3(0, 0, ShakingAngle), ShakeDuration, RotateMode.LocalAxisAdd)
                     .SetEase(Ease.Linear)
                 )
                 .SetLoops(-1)

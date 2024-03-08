@@ -8,11 +8,12 @@ namespace Config
     [CreateAssetMenu(fileName = "SpellsSettings", menuName = "Gameplay/SpellsSettings")]
     public class SpellsSettings : ScriptableObject
     {
+        private const int ExpectedSpellAmount = 5;
         [field: SerializeField] public SpellInfo[] SpellInfos { get; private set; }
 
         private void Awake()
         {
-            Assert.AreEqual(5, SpellInfos.Length);
+            Assert.AreEqual(ExpectedSpellAmount, SpellInfos.Length);
         }
 
         public Sprite GetSprite(SpellName spellName)

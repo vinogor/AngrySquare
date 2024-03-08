@@ -9,11 +9,14 @@ namespace Config
     [CreateAssetMenu(fileName = "CellsSettings", menuName = "Gameplay/CellsSettings")]
     public class CellsSettings : ScriptableObject
     {
+        private const int ExpectedCellTotalAmount = 16;
+        private const int ExpectedAmountOfCellVarieties = 6;
         [field: SerializeField] public CellInfo[] CellInfos { get; private set; }
 
         private void Awake()
         {
-            Assert.AreEqual(6, CellInfos.Length);
+            
+            Assert.AreEqual(ExpectedAmountOfCellVarieties, CellInfos.Length);
         }
 
         public Sprite GetCellSprite(EffectName effectName)
@@ -26,10 +29,9 @@ namespace Config
         {
             int counter = 0;
             Array.ForEach(CellInfos, cellInfo => counter += cellInfo.Amount);
-            int expectedAmount = 16;
-            Assert.AreEqual(expectedAmount, counter,
-                $"Wrong amount, expected {expectedAmount} cells, actual {counter}");
-            Assert.AreNotEqual(expectedAmount, counter, $"Everything OK!");
+            Assert.AreEqual(ExpectedCellTotalAmount, counter,
+                $"Wrong amount, expected {ExpectedCellTotalAmount} cells, actual {counter}");
+            Assert.AreNotEqual(ExpectedCellTotalAmount, counter, $"Everything OK!");
         }
     }
 }

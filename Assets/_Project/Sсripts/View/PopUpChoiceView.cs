@@ -8,13 +8,15 @@ namespace View{
     {
         [SerializeField] private Button[] _buttons;
         [SerializeField] private Image[] _images;
+        
+        private const int ExpectedTotalAmountItems = 3;
 
         public Button.ButtonClickedEvent[] ButtonsOnClick => _buttons.Select(button => button.onClick).ToArray();
 
         private void Awake()
         {
-            Assert.AreEqual(3, _buttons.Length);
-            Assert.AreEqual(3, _images.Length);
+            Assert.AreEqual(ExpectedTotalAmountItems, _buttons.Length);
+            Assert.AreEqual(ExpectedTotalAmountItems, _images.Length);
             Hide();
         }
 

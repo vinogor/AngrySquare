@@ -2,7 +2,6 @@ using System;
 using Controllers.StateMachine;
 using Controllers.StateMachine.States;
 using Services;
-using Services.Save;
 using View;
 
 namespace Controllers
@@ -12,15 +11,13 @@ namespace Controllers
         private readonly RestartGameView _restartGameView;
         private readonly LevelRestarter _levelRestarter;
         private readonly FiniteStateMachine _finiteStateMachine;
-        private readonly SaveService _saveService;
 
         public RestartGameController(RestartGameView restartGameView, LevelRestarter levelRestarter,
-            FiniteStateMachine finiteStateMachine, SaveService saveService)
+            FiniteStateMachine finiteStateMachine)
         {
             _restartGameView = restartGameView;
             _levelRestarter = levelRestarter;
             _finiteStateMachine = finiteStateMachine;
-            _saveService = saveService;
 
             _restartGameView.ButtonClickedEvent.AddListener(OnClick);
         }

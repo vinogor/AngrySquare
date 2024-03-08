@@ -9,16 +9,16 @@ namespace Controllers
     public class EnemyTargetController
     {
         private readonly CellsManager _cellsManager;
-
         private readonly EnemyAim[] _enemyAims;
         private List<Cell> _targetCells;
-
         private bool _isTripleAim = false;
+
+        private const int ExpectedAimAmount = 3;
 
         public EnemyTargetController(CellsManager cellsManager, EnemyAim[] enemyAims)
         {
             Assert.IsNotNull(cellsManager);
-            Assert.AreEqual(3, enemyAims.Length);
+            Assert.AreEqual(ExpectedAimAmount, enemyAims.Length);
 
             _cellsManager = cellsManager;
             _enemyAims = enemyAims;

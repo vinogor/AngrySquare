@@ -18,10 +18,11 @@ namespace View
         [SerializeField] [Required] private SpellsSettings _spellsSettings;
 
         private AvailableSpells _availableSpells;
+        private const int ExpectedTotalAmountItems = 5;
 
         public void Initialize(AvailableSpells availableSpells)
         {
-            Assert.AreEqual(5, _items.Count);
+            Assert.AreEqual(ExpectedTotalAmountItems, _items.Count);
 
             _availableSpells = availableSpells;
             OnAvailableSpellsUpdated();

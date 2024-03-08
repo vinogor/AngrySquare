@@ -19,7 +19,7 @@ namespace Domain.Movement
         private PlayerJumper _playerJumper;
 
         private readonly int _startingPlayersCellIndex = 0;
-
+        private readonly float _cellLoweringDepth = 0.1f;
         public void Initialize(CellsManager cellsManager, Dictionary<EffectName, Effect> playerEffects,
             Coefficients coefficients, PlayerJumper playerJumper)
         {
@@ -87,7 +87,7 @@ namespace Domain.Movement
 
         private void AnimateCell(Cell nextCell)
         {
-            nextCell.transform.DOMoveY(nextCell.transform.position.y - 0.1f, _coefficients.AnimationCellDuration)
+            nextCell.transform.DOMoveY(nextCell.transform.position.y - _cellLoweringDepth, _coefficients.AnimationCellDuration)
                 .SetLoops(2, LoopType.Yoyo);
         }
 

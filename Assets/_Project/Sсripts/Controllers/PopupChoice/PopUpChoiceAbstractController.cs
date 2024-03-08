@@ -11,7 +11,7 @@ namespace Controllers.PopupChoice
     {
         protected readonly PopUpChoiceView PopUpChoiceView;
 
-        private const int AmountItems = 3;
+        private const int TotalAmountItems = 3;
 
         protected PopUpChoiceAbstractController(PopUpChoiceView popUpChoiceView)
         {
@@ -28,7 +28,7 @@ namespace Controllers.PopupChoice
         
         protected T[] SelectRandomItems<T>(IEnumerable<T> collection)
         {
-            return collection.Shuffle().Take(AmountItems).ToArray();
+            return collection.Shuffle().Take(TotalAmountItems).ToArray();
         }
     }
 }
