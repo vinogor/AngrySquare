@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace _Project.Controllers
+namespace Controllers
 {
     public class EnemyAimRotator : MonoBehaviour
     {

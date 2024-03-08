@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using _Project.Domain.Spells;
+using Domain.Spells;
 
-namespace _Project.Domain
+namespace Domain
 {
     public class AvailableSpells
     {

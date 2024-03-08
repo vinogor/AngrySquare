@@ -1,9 +1,9 @@
-using _Project.Controllers.StateMachine;
-using _Project.Services.Save;
+using Controllers.StateMachine;
 using NaughtyAttributes;
+using Services.Save;
 using UnityEngine;
 
-namespace _Project.Controllers
+namespace Controllers
 {
     public class SaveController : MonoBehaviour
     {

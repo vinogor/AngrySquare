@@ -1,10 +1,10 @@
-using _Project.Config;
-using _Project.Controllers;
-using _Project.Domain;
-using _Project.Domain.Movement;
-using _Project.Domain.Spells;
+using Config;
+using Controllers;
+using Domain;
+using Domain.Movement;
+using Domain.Spells;
 
-namespace _Project.Services
+namespace Services
 {
     public class LevelRestarter
     {

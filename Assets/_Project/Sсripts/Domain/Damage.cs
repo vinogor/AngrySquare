@@ -1,6 +1,6 @@
 using System;
 
-namespace _Project.Domain
+namespace Domain
 {
     public class Damage
     {

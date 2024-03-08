@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace _Project.Services.Save
+namespace Services.Save
 {
     public class LocalSaver : ISaver
     {

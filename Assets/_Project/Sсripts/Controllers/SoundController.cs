@@ -1,7 +1,7 @@
 using System;
-using _Project.View;
+using View;
 
-namespace _Project.Controllers
+namespace Controllers
 {
     public class SoundController : IDisposable
     {

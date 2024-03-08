@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Domain
+namespace Domain
 {
     public class Health
     {

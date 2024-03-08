@@ -2,7 +2,7 @@ using System;
 using Agava.WebUtility;
 using UnityEngine;
 
-namespace _Project.SDK
+namespace SDK
 {
     public class FocusTracking : MonoBehaviour
     {

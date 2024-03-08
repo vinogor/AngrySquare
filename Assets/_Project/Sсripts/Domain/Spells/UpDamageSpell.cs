@@ -1,9 +1,9 @@
 using System;
-using _Project.Config;
-using _Project.Domain.Effects;
+using Config;
+using Domain.Effects;
 using UnityEngine.Assertions;
 
-namespace _Project.Domain.Spells
+namespace Domain.Spells
 {
     public class UpDamageSpell : Effect
     {

@@ -6,7 +6,7 @@ using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using Random = UnityEngine.Random;
 
-namespace _Project.Services
+namespace Services
 {
     public class DiceRoller : MonoBehaviour, IPointerDownHandler
     {

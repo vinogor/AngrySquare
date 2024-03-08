@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace _Project.Services
+namespace Services
 {
     public class Wall : MonoBehaviour
     {

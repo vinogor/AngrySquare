@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace _Project.Config
+namespace Config
 {
     [CreateAssetMenu(fileName = "Coefficients", menuName = "Gameplay/Coefficients")]
     public class Coefficients : ScriptableObject

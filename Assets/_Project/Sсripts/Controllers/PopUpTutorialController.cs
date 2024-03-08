@@ -1,12 +1,12 @@
 using System;
 using System.Threading.Tasks;
-using _Project.Config;
-using _Project.View;
+using Config;
 using Cysharp.Threading.Tasks;
 using Lean.Localization;
 using UnityEngine.Assertions;
+using View;
 
-namespace _Project.Controllers
+namespace Controllers
 {
     public class PopUpTutorialController : IDisposable
     {

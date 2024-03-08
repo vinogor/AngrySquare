@@ -1,4 +1,4 @@
-namespace _Project.Controllers.Sound
+namespace Controllers.Sound
 {
     public enum SoundName
     {

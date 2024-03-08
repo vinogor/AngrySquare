@@ -1,8 +1,8 @@
 using System;
-using _Project.Services;
+using Services;
 using UnityEngine.Assertions;
 
-namespace _Project.Controllers.StateMachine.States
+namespace Controllers.StateMachine.States
 {
     public class PlayerWinFsmState : FsmState
     {

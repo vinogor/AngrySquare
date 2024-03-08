@@ -1,9 +1,9 @@
-using _Project.Domain;
+using Domain;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.View.Vfx
+namespace View.Vfx
 {
     public class ManaVfx : MonoBehaviour
     {

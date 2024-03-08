@@ -1,10 +1,10 @@
 using System;
-using _Project.Config;
+using Config;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Domain.Movement
+namespace Domain.Movement
 {
     public class PlayerJumper
     {

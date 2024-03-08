@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using _Project.Controllers.StateMachine.States;
+using Controllers.StateMachine.States;
 using UnityEngine;
 
-namespace _Project.Controllers.StateMachine
+namespace Controllers.StateMachine
 {
     public class FiniteStateMachine
     {

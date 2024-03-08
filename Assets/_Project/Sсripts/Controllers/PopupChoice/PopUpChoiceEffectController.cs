@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Project.Config;
-using _Project.Domain.Effects;
-using _Project.Domain.Movement;
-using _Project.View;
+using Config;
+using Domain.Effects;
+using Domain.Movement;
 using UnityEngine;
 using UnityEngine.Assertions;
+using View;
 
-namespace _Project.Controllers.PopupChoice
+namespace Controllers.PopupChoice
 {
     public class PopUpChoiceEffectController : PopUpChoiceAbstractController
     {

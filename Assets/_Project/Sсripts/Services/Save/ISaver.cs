@@ -1,6 +1,6 @@
 using System;
 
-namespace _Project.Services.Save
+namespace Services.Save
 {
     public interface ISaver
     {

@@ -1,11 +1,11 @@
 using System;
-using _Project.Controllers.StateMachine;
-using _Project.Controllers.StateMachine.States;
-using _Project.Services;
-using _Project.Services.Save;
-using _Project.View;
+using Controllers.StateMachine;
+using Controllers.StateMachine.States;
+using Services;
+using Services.Save;
+using View;
 
-namespace _Project.Controllers
+namespace Controllers
 {
     public class RestartGameController : IDisposable
     {

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Controllers.StateMachine{
+namespace Controllers.StateMachine{
     public abstract class FsmState
     {
         protected readonly FiniteStateMachine FiniteStateMachine;

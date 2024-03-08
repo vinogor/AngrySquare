@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using _Project.SDK;
+using SDK.Leader;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Project.View
+namespace View
 {
     public class LeaderboardPopupView : MonoBehaviour
     {

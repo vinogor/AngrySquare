@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace _Project.Domain.Spells
+namespace Domain.Spells
 {
     [JsonConverter(typeof(StringEnumConverter))]
     public enum SpellName

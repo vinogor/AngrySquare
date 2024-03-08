@@ -1,7 +1,7 @@
 using Agava.YandexGames;
 using Lean.Localization;
 
-namespace _Project.SDK
+namespace SDK
 {
     public class Localization
     {

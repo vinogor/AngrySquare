@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Project.Config;
-using _Project.Domain;
-using _Project.Domain.Effects;
-using _Project.Services.Utility;
+using Config;
+using Domain;
+using Domain.Effects;
+using Services.Utility;
 using UnityEngine;
 
-namespace _Project.Services
+namespace Services
 {
     public class CellsManager
     {

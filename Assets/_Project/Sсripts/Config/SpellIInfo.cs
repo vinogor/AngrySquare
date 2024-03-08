@@ -1,8 +1,8 @@
 using System;
-using _Project.Domain.Spells;
+using Domain.Spells;
 using UnityEngine;
 
-namespace _Project.Config
+namespace Config
 {
     [Serializable]
     public class SpellInfo

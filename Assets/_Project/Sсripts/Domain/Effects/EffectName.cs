@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace _Project.Domain.Effects
+namespace Domain.Effects
 {
     [JsonConverter(typeof(StringEnumConverter))]
     public enum EffectName

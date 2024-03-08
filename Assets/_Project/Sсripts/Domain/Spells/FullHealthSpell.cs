@@ -1,8 +1,8 @@
 using System;
-using _Project.Domain.Effects;
+using Domain.Effects;
 using UnityEngine.Assertions;
 
-namespace _Project.Domain.Spells
+namespace Domain.Spells
 {
     public class FullHealthSpell : Effect
     {

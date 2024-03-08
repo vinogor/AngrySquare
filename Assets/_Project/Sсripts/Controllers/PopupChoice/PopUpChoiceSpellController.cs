@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using _Project.Config;
-using _Project.Domain.Spells;
-using _Project.View;
+using Config;
 using Cysharp.Threading.Tasks;
+using Domain.Spells;
 using UnityEngine;
 using UnityEngine.Assertions;
+using View;
 
-namespace _Project.Controllers.PopupChoice
+namespace Controllers.PopupChoice
 {
     public class PopUpChoiceSpellController : PopUpChoiceAbstractController
     {

@@ -1,12 +1,12 @@
-using _Project.Config;
-using _Project.Domain;
+using Config;
+using Domain;
 using Lean.Localization;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.View
+namespace View
 {
     public class EnemyLevelTextView : MonoBehaviour
     {

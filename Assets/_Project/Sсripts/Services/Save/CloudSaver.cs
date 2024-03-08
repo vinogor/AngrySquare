@@ -2,7 +2,7 @@ using System;
 using Agava.YandexGames;
 using UnityEngine;
 
-namespace _Project.Services.Save
+namespace Services.Save
 {
     public class CloudSaver : ISaver
     {

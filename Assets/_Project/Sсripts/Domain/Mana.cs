@@ -1,10 +1,10 @@
 using System;
-using _Project.Config;
-using _Project.Domain.Spells;
+using Config;
+using Domain.Spells;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Domain
+namespace Domain
 {
     public class Mana
     {

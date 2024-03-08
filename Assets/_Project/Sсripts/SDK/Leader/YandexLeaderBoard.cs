@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using _Project.Controllers.StateMachine.States;
-using _Project.Domain;
 using Agava.YandexGames;
+using Controllers.StateMachine.States;
 using Cysharp.Threading.Tasks;
+using Domain;
 using UnityEngine;
 
-namespace _Project.SDK.Leader
+namespace SDK.Leader
 {
     public class YandexLeaderBoard : IDisposable
     {

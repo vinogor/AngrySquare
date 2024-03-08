@@ -1,6 +1,6 @@
 using UnityEngine.Assertions;
 
-namespace _Project.Controllers.StateMachine.States
+namespace Controllers.StateMachine.States
 {
     public class PlayerTurnSpellFsmState : FsmState
     {

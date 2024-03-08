@@ -1,9 +1,9 @@
 using System;
-using _Project.SDK;
-using _Project.View;
+using SDK;
 using UnityEngine.Assertions;
+using View;
 
-namespace _Project.Controllers
+namespace Controllers
 {
     public class LanguageController : IDisposable
     {

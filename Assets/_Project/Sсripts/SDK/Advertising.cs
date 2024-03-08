@@ -4,7 +4,7 @@ using Agava.YandexGames;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace _Project.SDK
+namespace SDK
 {
     public class Advertising
     {

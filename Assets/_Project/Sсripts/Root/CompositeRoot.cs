@@ -1,27 +1,27 @@
 using System.Collections.Generic;
-using _Project.Config;
-using _Project.Controllers;
-using _Project.Controllers.PopupChoice;
-using _Project.Controllers.Sound;
-using _Project.Controllers.StateMachine;
-using _Project.Controllers.StateMachine.States;
-using _Project.Domain;
-using _Project.Domain.Effects;
-using _Project.Domain.Effects.Enemy;
-using _Project.Domain.Effects.Player;
-using _Project.Domain.Movement;
-using _Project.Domain.Spells;
-using _Project.SDK;
-using _Project.SDK.Leader;
-using _Project.Services;
-using _Project.Services.Save;
-using _Project.View;
 using Agava.YandexGames;
+using Config;
+using Controllers;
+using Controllers.PopupChoice;
+using Controllers.Sound;
+using Controllers.StateMachine;
+using Controllers.StateMachine.States;
+using Domain;
+using Domain.Effects;
+using Domain.Effects.Enemy;
+using Domain.Effects.Player;
+using Domain.Movement;
+using Domain.Spells;
 using Lean.Localization;
 using NaughtyAttributes;
+using SDK;
+using SDK.Leader;
+using Services;
+using Services.Save;
 using UnityEngine;
+using View;
 
-namespace _Project._Root
+namespace Root
 {
     public class CompositeRoot : MonoBehaviour
     {

@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using _Project.Config;
-using _Project.Controllers;
+using Config;
+using Controllers;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Domain.Movement
+namespace Domain.Movement
 {
     public class EnemyJumper
     {

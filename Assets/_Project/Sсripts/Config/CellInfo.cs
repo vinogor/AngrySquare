@@ -1,8 +1,8 @@
 using System;
-using _Project.Domain.Effects;
+using Domain.Effects;
 using UnityEngine;
 
-namespace _Project.Config
+namespace Config
 {
     [Serializable]
     public class CellInfo

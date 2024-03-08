@@ -1,10 +1,10 @@
 using System;
-using _Project.Config;
-using _Project.Domain.Movement;
+using Config;
 using DG.Tweening;
+using Domain.Movement;
 using UnityEngine.Assertions;
 
-namespace _Project.Domain.Effects.Player
+namespace Domain.Effects.Player
 {
     public class PlayerMana : Effect
     {

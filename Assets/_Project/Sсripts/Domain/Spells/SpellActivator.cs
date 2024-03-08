@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using _Project.Domain.Effects;
+using Domain.Effects;
 
-namespace _Project.Domain.Spells
+namespace Domain.Spells
 {
     public class SpellActivator
     {

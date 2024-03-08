@@ -1,8 +1,8 @@
 using System;
-using _Project.Controllers.Sound;
+using Controllers.Sound;
 using UnityEngine;
 
-namespace _Project.Config
+namespace Config
 {
     [Serializable]
     public class SoundInfo

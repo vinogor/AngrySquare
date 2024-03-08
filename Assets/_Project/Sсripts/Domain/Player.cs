@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace _Project.Domain
+namespace Domain
 {
     public class Player : MonoBehaviour
     {

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using _Project.Domain;
-using _Project.Services;
+using Domain;
+using Services;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Controllers
+namespace Controllers
 {
     public class EnemyTargetController
     {

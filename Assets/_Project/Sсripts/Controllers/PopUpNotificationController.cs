@@ -1,9 +1,9 @@
 using System;
-using _Project.View;
 using Lean.Localization;
 using UnityEngine.Assertions;
+using View;
 
-namespace _Project.Controllers
+namespace Controllers
 {
     public class PopUpNotificationController
     {

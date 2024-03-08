@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace _Project.Config
+namespace Config
 {
     [CreateAssetMenu(fileName = "EnemyProgression", menuName = "Gameplay/EnemyProgression")]
     public class EnemyProgression : ScriptableObject

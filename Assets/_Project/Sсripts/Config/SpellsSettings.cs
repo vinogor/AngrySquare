@@ -1,9 +1,9 @@
 using System;
-using _Project.Domain.Spells;
+using Domain.Spells;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Config
+namespace Config
 {
     [CreateAssetMenu(fileName = "SpellsSettings", menuName = "Gameplay/SpellsSettings")]
     public class SpellsSettings : ScriptableObject

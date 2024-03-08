@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
-using _Project.Domain.Movement;
-using _Project.Services;
-using _Project.Services.Utility;
 using DG.Tweening;
+using Domain.Movement;
+using Services;
+using Services.Utility;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Domain.Effects.Player
+namespace Domain.Effects.Player
 {
     public class PlayerPortal : Effect
     {

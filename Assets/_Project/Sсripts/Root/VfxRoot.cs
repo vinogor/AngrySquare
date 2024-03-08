@@ -1,10 +1,10 @@
-using _Project.Domain;
-using _Project.Domain.Effects.Player;
-using _Project.View.Vfx;
+using Domain;
+using Domain.Effects.Player;
 using UnityEngine;
 using UnityEngine.Assertions;
+using View.Vfx;
 
-namespace _Project._Root
+namespace Root
 {
     public class VfxRoot : MonoBehaviour
     {

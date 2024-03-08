@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using _Project.Config;
-using _Project.Domain.Effects;
-using _Project.Services;
+using Config;
 using DG.Tweening;
+using Domain.Effects;
+using Services;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Domain.Movement
+namespace Domain.Movement
 {
     public class PlayerMovement : MonoBehaviour
     {

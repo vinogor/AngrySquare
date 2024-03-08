@@ -1,11 +1,11 @@
 using System;
-using _Project.Domain;
-using _Project.Domain.Spells;
-using _Project.View;
+using Domain;
+using Domain.Spells;
 using UnityEngine;
 using UnityEngine.Assertions;
+using View;
 
-namespace _Project.Controllers
+namespace Controllers
 {
     public class SpellBarController
     {

@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace _Project.View
+namespace View
 {
     public class SpellBarShaker : MonoBehaviour
     {

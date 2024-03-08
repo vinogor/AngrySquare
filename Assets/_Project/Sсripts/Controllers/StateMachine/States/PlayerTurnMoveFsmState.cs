@@ -1,9 +1,9 @@
-using _Project.Domain;
-using _Project.Domain.Movement;
-using _Project.Services;
+using Domain;
+using Domain.Movement;
+using Services;
 using UnityEngine.Assertions;
 
-namespace _Project.Controllers.StateMachine.States
+namespace Controllers.StateMachine.States
 {
     public class PlayerTurnMoveFsmState : FsmState
     {

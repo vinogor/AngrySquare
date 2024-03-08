@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using _Project.Config;
+using Config;
 using UnityEngine;
 
-namespace _Project.Controllers.Sound
+namespace Controllers.Sound
 {
     public class GameSounds
     {

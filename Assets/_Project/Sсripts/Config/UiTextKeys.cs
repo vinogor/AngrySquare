@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using _Project.Controllers;
+using Controllers;
 
-namespace _Project.Config
+namespace Config
 {
     public static class UiTextKeys
     {

@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using _Project.Controllers.PopupChoice;
-using _Project.Domain.Movement;
+using Controllers.PopupChoice;
 using DG.Tweening;
+using Domain.Movement;
 using UnityEngine.Assertions;
 
-namespace _Project.Domain.Effects.Player{
+namespace Domain.Effects.Player{
     public class PlayerSpellBook : Effect
     {
         private readonly PlayerJumper _playerJumper;

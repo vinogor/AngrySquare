@@ -2,7 +2,7 @@ using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Project.View
+namespace View
 {
     public class LeaderboardButtonView : MonoBehaviour
     {

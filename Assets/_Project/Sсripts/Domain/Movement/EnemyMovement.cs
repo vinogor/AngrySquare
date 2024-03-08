@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using _Project.Controllers;
-using _Project.Domain.Effects;
+using Controllers;
 using DG.Tweening;
+using Domain.Effects;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace _Project.Domain.Movement
+namespace Domain.Movement
 {
     public class EnemyMovement : MonoBehaviour
     {

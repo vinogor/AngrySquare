@@ -1,9 +1,9 @@
 using System;
-using _Project.Domain.Movement;
 using DG.Tweening;
+using Domain.Movement;
 using UnityEngine.Assertions;
 
-namespace _Project.Domain.Effects.Enemy{
+namespace Domain.Effects.Enemy{
     public class EnemySwords : Effect
     {
         private readonly EnemyJumper _enemyJumper;

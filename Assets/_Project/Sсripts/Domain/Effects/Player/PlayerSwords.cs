@@ -1,9 +1,9 @@
 using System;
-using _Project.Domain.Movement;
 using DG.Tweening;
+using Domain.Movement;
 using UnityEngine.Assertions;
 
-namespace _Project.Domain.Effects.Player
+namespace Domain.Effects.Player
 {
     public class PlayerSwords : Effect
     {

@@ -1,4 +1,4 @@
-namespace _Project.Controllers
+namespace Controllers
 {
     public enum TutorialStep
     {

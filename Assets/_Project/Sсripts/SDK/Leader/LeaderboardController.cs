@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Project.Config;
-using _Project.View;
 using Agava.YandexGames;
+using Config;
 using UnityEngine;
 using UnityEngine.Assertions;
+using View;
 
-namespace _Project.SDK.Leader
+namespace SDK.Leader
 {
     public class LeaderboardController : IDisposable
     {

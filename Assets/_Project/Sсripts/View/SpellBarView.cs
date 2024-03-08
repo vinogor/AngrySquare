@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using _Project.Config;
-using _Project.Domain;
-using _Project.Domain.Spells;
+using Config;
+using Domain;
+using Domain.Spells;
 using Lean.Localization;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-namespace _Project.View
+namespace View
 {
     public class SpellBarView : MonoBehaviour
     {

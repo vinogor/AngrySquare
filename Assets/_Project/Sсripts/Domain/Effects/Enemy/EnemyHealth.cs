@@ -1,11 +1,11 @@
 using System;
-using _Project.Config;
-using _Project.Controllers;
-using _Project.Domain.Movement;
+using Config;
+using Controllers;
 using DG.Tweening;
+using Domain.Movement;
 using UnityEngine.Assertions;
 
-namespace _Project.Domain.Effects.Enemy
+namespace Domain.Effects.Enemy
 {
     public class EnemyHealth : Effect
     {
