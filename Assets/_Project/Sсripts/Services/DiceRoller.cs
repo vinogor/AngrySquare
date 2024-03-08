@@ -25,7 +25,8 @@ namespace Services
         public void Initialize()
         {
             _detectors = GetComponentsInChildren<DiceFaceDetector>();
-            Assert.AreEqual(6, _detectors.Length);
+            int expectedDiceFacesAmount = 6;
+            Assert.AreEqual(expectedDiceFacesAmount, _detectors.Length);
 
             foreach (DiceFaceDetector detector in _detectors)
             {

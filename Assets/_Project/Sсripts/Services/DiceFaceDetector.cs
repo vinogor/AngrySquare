@@ -9,8 +9,11 @@ namespace Services
 
         private void OnTriggerEnter(Collider other)
         {
-            int number = int.Parse(name);
-            DiceNumberDetected?.Invoke(number);
+            if (other.gameObject.layer == LayerMask.NameToLayer("FloorForDice"))
+            {
+                int number = int.Parse(name);
+                DiceNumberDetected?.Invoke(number);
+            }  
         }
     }
 }
