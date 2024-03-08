@@ -7,7 +7,7 @@ using UnityEngine.Assertions;
 
 namespace Domain.Effects.Enemy
 {
-    public class EnemyHealth : Effect
+    public class EnemyHealth : EnemyBaseEffect
     {
         private readonly EnemyJumper _enemyJumper;
         private readonly Health _enemyHealth;
@@ -15,7 +15,7 @@ namespace Domain.Effects.Enemy
         private readonly EnemyTargetController _enemyTargetController;
 
         public EnemyHealth(EnemyJumper enemyJumper, Health enemyHealth, Coefficients coefficients,
-            EnemyTargetController enemyTargetController)
+            EnemyTargetController enemyTargetController) : base(enemyJumper)
         {
             Assert.IsNotNull(enemyJumper);
             Assert.IsNotNull(enemyHealth);
