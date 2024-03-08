@@ -17,14 +17,13 @@ namespace Controllers
 
             _popUp = popUp;
             _model = model;
-            
-            LeanLocalization.OnLocalizationChanged += SetContent;
         }
 
         public event Action OnClose;
 
         public void Show()
         {
+            LeanLocalization.OnLocalizationChanged += SetContent;
             SetContent();
             _popUp.Button.onClick.AddListener(Hide);
             _popUp.Show();
