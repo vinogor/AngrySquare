@@ -1,5 +1,5 @@
-using System;
 using Config;
+using Controllers.Sound;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -11,22 +11,23 @@ namespace Domain.Movement
         private readonly Transform _playerTransform;
         private readonly Transform _enemyTransform;
         private readonly Coefficients _coefficients;
+        private readonly GameSoundsPresenter _gameSoundsPresenter;
 
         private Vector3 _playerCellPosition;
 
-        public PlayerJumper(Transform playerTransform, Transform enemyTransform, Coefficients coefficients)
+        public PlayerJumper(Transform playerTransform, Transform enemyTransform, Coefficients coefficients,
+            GameSoundsPresenter gameSoundsPresenter)
         {
             Assert.IsNotNull(playerTransform);
             Assert.IsNotNull(enemyTransform);
             Assert.IsNotNull(coefficients);
+            Assert.IsNotNull(gameSoundsPresenter);
 
             _playerTransform = playerTransform;
             _enemyTransform = enemyTransform;
             _coefficients = coefficients;
+            _gameSoundsPresenter = gameSoundsPresenter;
         }
-
-        public event Action Teleported;
-        public event Action MadeStep;
 
         public Sequence JumpOnEnemy()
         {
@@ -61,10 +62,10 @@ namespace Domain.Movement
             float jumpDuration = _coefficients.JumpDuration;
 
             Sequence sequence = DOTween.Sequence();
-            sequence.AppendCallback(() => Teleported?.Invoke());
+            sequence.AppendCallback(() => _gameSoundsPresenter.PlayTeleport());
             sequence.Append(_playerTransform.DOMoveY(_playerTransform.position.y - lossyScaleY * offset, jumpDuration));
             sequence.Append(_playerTransform.DOMove(cellCenter - Vector3.up * (lossyScaleY * offset), jumpDuration));
-            sequence.AppendCallback(() => Teleported?.Invoke());
+            sequence.AppendCallback(() => _gameSoundsPresenter.PlayTeleport());
             sequence.Append(_playerTransform.DOMove(cellCenter + Vector3.up * lossyScaleY, jumpDuration));
             return sequence;
         }
@@ -73,10 +74,11 @@ namespace Domain.Movement
         {
             Debug.Log($"Player - Jump - from {transform.position} - to {target}");
             float epsilonTime = 0.001f;
+            int jumpsAmount = 1;
             float duration = instantly ? epsilonTime : _coefficients.JumpDuration;
             return transform
-                .DOJump(target, _coefficients.JumpPower, 1, duration)
-                .AppendCallback(() => MadeStep?.Invoke())
+                .DOJump(target, _coefficients.JumpPower, jumpsAmount, duration)
+                .AppendCallback(() => _gameSoundsPresenter.PlayPlayerStep())
                 .SetEase(Ease.Linear);
         }
     }

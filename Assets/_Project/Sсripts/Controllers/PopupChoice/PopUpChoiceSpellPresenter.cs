@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Config;
+using Controllers.Sound;
 using Cysharp.Threading.Tasks;
 using Domain.Spells;
 using UnityEngine;
@@ -11,33 +10,34 @@ using View;
 
 namespace Controllers.PopupChoice
 {
-    public class PopUpChoiceSpellController : PopUpChoiceAbstractController
+    public class PopUpChoiceSpellPresenter : PopUpChoiceAbstractPresenter
     {
         private readonly List<SpellName> _availableSpellNames;
         private readonly SpellBarController _spellBarController;
         private readonly SpellsSettings _spellsSettings;
+        private readonly GameSoundsPresenter _gameSoundsPresenter;
 
         private bool _isSpellSelected;
 
-        public PopUpChoiceSpellController(PopUpChoiceView popUpChoiceView, List<SpellName> availableSpellNames,
-            SpellBarController spellBarController, SpellsSettings spellsSettings) : base(popUpChoiceView)
+        public PopUpChoiceSpellPresenter(PopUpChoiceView popUpChoiceView, List<SpellName> availableSpellNames,
+            SpellBarController spellBarController, SpellsSettings spellsSettings,
+            GameSoundsPresenter gameSoundsPresenter) : base(popUpChoiceView)
         {
             Assert.IsNotNull(availableSpellNames);
             Assert.IsNotNull(spellBarController);
             Assert.IsNotNull(spellsSettings);
+            Assert.IsNotNull(gameSoundsPresenter);
 
             _availableSpellNames = availableSpellNames;
             _spellBarController = spellBarController;
             _spellsSettings = spellsSettings;
+            _gameSoundsPresenter = gameSoundsPresenter;
         }
-
-        public event Action Showed;
-        public event Action Clicked;
 
         public async UniTask ShowSpells()
         {
             PrepareSpellButtons();
-            Showed?.Invoke();
+            _gameSoundsPresenter.PlayPopUpShowed();
             PopUpChoiceView.Show();
 
             await UniTask.WaitUntil(() => _isSpellSelected);
@@ -60,7 +60,7 @@ namespace Controllers.PopupChoice
         private void PushSpellToBar(SpellName spellName)
         {
             HidePopup();
-            Clicked?.Invoke();
+            _gameSoundsPresenter.PlayClickButton();
             _spellBarController.TakeSpell(spellName);
             _isSpellSelected = true;
         }

@@ -1,11 +1,14 @@
+using System;
 using NaughtyAttributes;
 using SDK;
+using Services;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 namespace View
 {
-    public class LanguageView : MonoBehaviour
+    public class LanguageButtonView : MonoBehaviour
     {
         [SerializeField] [Required] private Button _button;
         [SerializeField] [Required] private Image _image;
@@ -13,7 +16,31 @@ namespace View
         [SerializeField] [Required] private Sprite _spriteEn;
         [SerializeField] [Required] private Sprite _spriteTr;
 
-        public Button.ButtonClickedEvent ButtonOnClick => _button.onClick;
+        private IPresenter _presenter;
+
+        public void Initialize(IPresenter presenter)
+        {
+            Assert.IsNotNull(presenter);
+            _presenter = presenter;
+        }
+        public event Action Clicked;
+
+        private void OnEnable()
+        {
+            _presenter.Enable();
+            _button.onClick.AddListener(OnClick);
+        }
+
+        private void OnDisable()
+        {
+            _presenter.Disable();
+            _button.onClick.RemoveListener(OnClick);
+        }
+
+        private void OnClick()
+        {
+            Clicked?.Invoke();
+        }
 
         public void SetSprite(string languageCode)
         {

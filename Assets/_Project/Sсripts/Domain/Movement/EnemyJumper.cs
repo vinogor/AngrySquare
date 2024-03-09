@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Config;
 using Controllers;
+using Controllers.Sound;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -14,24 +15,26 @@ namespace Domain.Movement
         private readonly PlayerMovement _playerMovement;
         private readonly Coefficients _coefficients;
         private readonly EnemyTargetController _enemyTargetController;
+        private readonly GameSoundsPresenter _gameSoundsPresenter;
 
         private Vector3 _baseEnemyPosition;
 
         public EnemyJumper(Transform enemyTransform, PlayerMovement playerMovement, Coefficients coefficients,
-            EnemyTargetController enemyTargetController)
+            EnemyTargetController enemyTargetController, GameSoundsPresenter gameSoundsPresenter)
         {
             Assert.IsNotNull(enemyTransform);
             Assert.IsNotNull(playerMovement);
             Assert.IsNotNull(coefficients);
             Assert.IsNotNull(enemyTargetController);
+            Assert.IsNotNull(gameSoundsPresenter);
 
             _enemyTransform = enemyTransform;
             _playerMovement = playerMovement;
             _coefficients = coefficients;
             _enemyTargetController = enemyTargetController;
+            _gameSoundsPresenter = gameSoundsPresenter;
         }
-
-        public event Action MadeStep;
+        
 
         public Sequence JumpToTargetThreeInRowCells(List<Cell> targetCells, Action attackAction)
         {
@@ -91,7 +94,7 @@ namespace Domain.Movement
             Debug.Log($"Enemy - Jump - from {transform.position} - to {target}");
             const int jumpsAmount = 1;
             return DOTween.Sequence()
-                .AppendCallback(() => MadeStep?.Invoke())
+                .AppendCallback(() => _gameSoundsPresenter.PlayEnemyStep())
                 .Join(transform.DOJump(target, _coefficients.JumpPower, jumpsAmount, _coefficients.JumpDuration))
                 .SetEase(Ease.Linear);
         }

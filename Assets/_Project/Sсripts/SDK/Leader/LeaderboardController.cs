@@ -1,15 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Agava.YandexGames;
 using Config;
+using Services;
 using UnityEngine;
 using UnityEngine.Assertions;
 using View;
 
 namespace SDK.Leader
 {
-    public class LeaderboardController : IDisposable
+    public class LeaderboardController : IPresenter
     {
         private readonly LeaderboardButtonView _leaderboardButtonView;
         private readonly LeaderboardPopupView _leaderboardPopup;
@@ -28,8 +28,16 @@ namespace SDK.Leader
             _leaderboardPopup = leaderboardPopup;
             _yandexLeaderBoard = yandexLeaderBoard;
             _coefficients = coefficients;
+        }
 
-            _leaderboardButtonView.ButtonOnClick.AddListener(OnButtonClick);
+        public void Enable()
+        {
+            _leaderboardButtonView.Clicked += OnButtonClick;
+        }
+
+        public void Disable()
+        {
+            _leaderboardButtonView.Clicked -= OnButtonClick;
         }
 
         private void OnButtonClick()
@@ -85,11 +93,6 @@ namespace SDK.Leader
         {
             return leaderBoardPlayers
                 .Take(Mathf.Min(leaderBoardPlayers.Count, _coefficients.LeaderboardMaxPlayersToShow)).ToList();
-        }
-
-        public void Dispose()
-        {
-            _leaderboardButtonView.ButtonOnClick.AddListener(OnButtonClick);
         }
     }
 }

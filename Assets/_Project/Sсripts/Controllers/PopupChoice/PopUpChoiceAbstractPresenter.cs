@@ -7,16 +7,15 @@ using View;
 
 namespace Controllers.PopupChoice
 {
-    public abstract class PopUpChoiceAbstractController
+    public abstract class PopUpChoiceAbstractPresenter
     {
         protected readonly PopUpChoiceView PopUpChoiceView;
 
         private const int TotalAmountItems = 3;
 
-        protected PopUpChoiceAbstractController(PopUpChoiceView popUpChoiceView)
+        protected PopUpChoiceAbstractPresenter(PopUpChoiceView popUpChoiceView)
         {
             Assert.IsNotNull(popUpChoiceView);
-
             PopUpChoiceView = popUpChoiceView;
             PopUpChoiceView.Hide();
         }

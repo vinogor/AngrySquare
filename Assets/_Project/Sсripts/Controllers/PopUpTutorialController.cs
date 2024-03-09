@@ -1,14 +1,13 @@
-using System;
-using System.Threading.Tasks;
 using Config;
 using Cysharp.Threading.Tasks;
 using Lean.Localization;
+using Services;
 using UnityEngine.Assertions;
 using View;
 
 namespace Controllers
 {
-    public class PopUpTutorialController : IDisposable
+    public class PopUpTutorialController : IPresenter
     {
         private readonly PopUpNotificationView _popUp;
         private bool _isClosed = true;
@@ -17,18 +16,22 @@ namespace Controllers
         public PopUpTutorialController(PopUpNotificationView popUp)
         {
             Assert.IsNotNull(popUp);
-
             _popUp = popUp;
+            Hide();
+        }
+
+        public bool IsEnable { get; private set; }
+
+        public void Enable()
+        {
             IsEnable = true;
             LeanLocalization.OnLocalizationChanged += SetContent;
         }
 
-        public void Dispose()
+        public void Disable()
         {
             LeanLocalization.OnLocalizationChanged -= SetContent;
         }
-
-        public bool IsEnable { get; private set; }
 
         public void Switch(bool isEnabled)
         {
@@ -42,10 +45,10 @@ namespace Controllers
             _isClosed = false;
 
             _model = UiTextKeys.Get(tutorialStep);
-            
+
             SetContent();
 
-            _popUp.Button.onClick.AddListener(Hide);
+            _popUp.Clicked += Hide;
             _popUp.Show();
 
             if (tutorialStep == TutorialStep.LastTip)
@@ -60,7 +63,7 @@ namespace Controllers
         {
             if (_model == null)
                 return;
-            
+
             string title = LeanLocalization.GetTranslationText(_model.Title);
             string info = LeanLocalization.GetTranslationText(_model.Info);
             _popUp.SetContent(title, info);
@@ -68,7 +71,7 @@ namespace Controllers
 
         private void Hide()
         {
-            _popUp.Button.onClick.RemoveListener(Hide);
+            _popUp.Clicked -= Hide;
             _popUp.Hide();
             _isClosed = true;
         }

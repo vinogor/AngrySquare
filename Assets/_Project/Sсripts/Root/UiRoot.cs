@@ -1,5 +1,6 @@
 using Domain;
 using NaughtyAttributes;
+using Services;
 using UnityEngine;
 using View;
 
@@ -11,9 +12,10 @@ namespace Root
         [SerializeField] [Required] private PopUpNotificationView _popUpNotificationView;
         [SerializeField] [Required] private PopUpNotificationView _popUpTutorialView;
         [SerializeField] [Required] private RestartGameView _restartGameView;
-        [SerializeField] [Required] private LanguageView _languageView;
+        [SerializeField] [Required] private LanguageButtonView _languageButtonView;
         [SerializeField] [Required] private LeaderboardButtonView _leaderboardButtonView;
         [SerializeField] [Required] private LeaderboardPopupView _leaderboardPopupView;
+        [SerializeField] [Required] private SoundButtonView _soundButtonView;
 
         [Space(10)]
         [Header("Player")]
@@ -38,13 +40,16 @@ namespace Root
         public PopUpNotificationView PopUpTutorialView => _popUpTutorialView;
         public SpellBarShaker SpellBarShaker => _spellBarShaker;
         public RestartGameView RestartGameView => _restartGameView;
-        public LanguageView LanguageView => _languageView;
+        public LanguageButtonView LanguageButtonView => _languageButtonView;
         public LeaderboardButtonView LeaderboardButtonView => _leaderboardButtonView;
         public LeaderboardPopupView LeaderboardPopupView => _leaderboardPopupView;
+        public SoundButtonView SoundButtonView => _soundButtonView;
 
         public void Initialize(Health playerHealth, Mana playerMana, Health enemyHealth, Damage playerDamage,
             Damage enemyDamage, Defence playerDefence, Defence enemyDefence, AvailableSpells availableSpells,
-            EnemyLevel enemyLevel)
+            EnemyLevel enemyLevel, IPresenter languageController, IPresenter soundButtonPresenter,
+            IPresenter popUpNotificationController, IPresenter popUpTutorialController,
+            IPresenter leaderboardController, IPresenter restartGameController)
         {
             _playerHealthBarView.Initialize(playerHealth);
             _playerManaBarView.Initialize(playerMana);
@@ -55,6 +60,12 @@ namespace Root
             _enemyDefenceTextView.Initialize(enemyDefence);
             _spellBarView.Initialize(availableSpells);
             _enemyLevelTextView.Initialize(enemyLevel);
+            _languageButtonView.Initialize(languageController);
+            _soundButtonView.Initialize(soundButtonPresenter);
+            _popUpNotificationView.Initialize(popUpNotificationController);
+            _popUpTutorialView.Initialize(popUpTutorialController);
+            _leaderboardButtonView.Initialize(leaderboardController);
+            _restartGameView.Initialize(restartGameController);
         }
     }
 }

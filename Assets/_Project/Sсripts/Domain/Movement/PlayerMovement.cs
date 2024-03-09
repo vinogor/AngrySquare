@@ -41,6 +41,28 @@ namespace Domain.Movement
         public int PlayersCellIndex { get; private set; }
         public Cell PlayerStayCell => _cellsManager.Get(PlayersCellIndex);
 
+        public void ActivateEffect(EffectName effectName)
+        {
+            _playerEffects[effectName].Activate(() => TurnCompleted?.Invoke());
+        }
+
+        public void SetNewStayCell(Cell newStayCell)
+        {
+            PlayersCellIndex = _cellsManager.Index(newStayCell);
+        }
+        
+        public void SetNewStayCell(int newStayCellIndex)
+        {
+            PlayersCellIndex = newStayCellIndex;
+            _playerJumper.JumpToNextCell(PlayerStayCell, true);
+        }
+
+        public void SetDefaultStayCell()
+        {
+            PlayersCellIndex = _startingPlayersCellIndex;
+            _playerJumper.JumpToNextCell(PlayerStayCell, true);
+        }
+
         private void Awake()
         {
             _diceRoller.PlayerMoveAmountSet += OnPlayerMoveAmountSet;
@@ -80,32 +102,10 @@ namespace Domain.Movement
             sequence.Play();
         }
 
-        public void ActivateEffect(EffectName effectName)
-        {
-            _playerEffects[effectName].Activate(() => TurnCompleted?.Invoke());
-        }
-
         private void AnimateCell(Cell nextCell)
         {
             nextCell.transform.DOMoveY(nextCell.transform.position.y - _cellLoweringDepth, _coefficients.AnimationCellDuration)
                 .SetLoops(2, LoopType.Yoyo);
-        }
-
-        public void SetNewStayCell(Cell newStayCell)
-        {
-            PlayersCellIndex = _cellsManager.Index(newStayCell);
-        }
-        
-        public void SetNewStayCell(int newStayCellIndex)
-        {
-            PlayersCellIndex = newStayCellIndex;
-            _playerJumper.JumpToNextCell(PlayerStayCell, true);
-        }
-
-        public void SetDefaultStayCell()
-        {
-            PlayersCellIndex = _startingPlayersCellIndex;
-            _playerJumper.JumpToNextCell(PlayerStayCell, true);
         }
     }
 }

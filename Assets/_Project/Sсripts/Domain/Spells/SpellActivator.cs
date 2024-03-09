@@ -1,23 +1,28 @@
 using System;
 using System.Collections.Generic;
+using Controllers.Sound;
 using Domain.Effects;
+using UnityEngine.Assertions;
 
 namespace Domain.Spells
 {
     public class SpellActivator
     {
         private readonly Dictionary<SpellName, Effect> _playerSpells;
+        private readonly GameSoundsPresenter _gameSoundsPresenter;
 
-        public SpellActivator(Dictionary<SpellName, Effect> playerSpells)
+        public SpellActivator(Dictionary<SpellName, Effect> playerSpells, GameSoundsPresenter gameSoundsPresenter)
         {
-            _playerSpells = playerSpells;
-        }
+            Assert.IsNotNull(playerSpells);
+            Assert.IsNotNull(gameSoundsPresenter);
 
-        public event Action SpellCast;
+            _playerSpells = playerSpells;
+            _gameSoundsPresenter = gameSoundsPresenter;
+        }
 
         public void Activate(SpellName spellName, Action onComplete)
         {
-            SpellCast?.Invoke();
+            _gameSoundsPresenter.PlaySpellCast();
             _playerSpells[spellName].Activate(onComplete);
         }
     }

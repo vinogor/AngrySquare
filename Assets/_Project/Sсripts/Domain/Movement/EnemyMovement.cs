@@ -16,7 +16,6 @@ namespace Domain.Movement
         private EnemyJumper _enemyJumper;
         private Health _playerHealth;
         private Damage _enemyDamage;
-        private int TripleAimAmount;
 
         public void Initialize(Dictionary<EffectName, Effect> enemyEffects,
             EnemyTargetController enemyTargetController, EnemyJumper enemyJumper,
@@ -42,9 +41,9 @@ namespace Domain.Movement
         public void Move()
         {
             List<Cell> targetCells = _enemyTargetController.GetCurrentTargetCells();
-            TripleAimAmount = 3;
+            int tripleAimAmount = 3;
 
-            if (targetCells.Count == TripleAimAmount)
+            if (targetCells.Count == tripleAimAmount)
             {
                 _enemyJumper.JumpToTargetThreeInRowCells(targetCells,
                         () => _playerHealth.TakeDoubleDamage(_enemyDamage.Value))

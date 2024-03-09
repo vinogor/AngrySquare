@@ -14,7 +14,7 @@ namespace Controllers.StateMachine.States
             Assert.IsNotNull(finiteStateMachine);
             Assert.IsNotNull(spellBarController);
             Assert.IsNotNull(popUpTutorialController);
-            
+
             _spellBarController = spellBarController;
             _popUpTutorialController = popUpTutorialController;
         }
@@ -26,8 +26,7 @@ namespace Controllers.StateMachine.States
             await _popUpTutorialController.Show(TutorialStep.Intro);
             await _popUpTutorialController.Show(TutorialStep.SpellCast);
 
-            _spellBarController.SpellCompleted += GoToNextState;
-            _spellBarController.Enable();
+            _spellBarController.Enable(onSpellCompleted: GoToNextState);
         }
 
         private void GoToNextState()
@@ -39,7 +38,6 @@ namespace Controllers.StateMachine.States
         public override void Exit()
         {
             base.Exit();
-            _spellBarController.SpellCompleted -= GoToNextState;
         }
     }
 }

@@ -3,12 +3,13 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-namespace View{
+namespace View
+{
     public class PopUpChoiceView : MonoBehaviour
     {
         [SerializeField] private Button[] _buttons;
         [SerializeField] private Image[] _images;
-        
+
         private const int ExpectedTotalAmountItems = 3;
 
         public Button.ButtonClickedEvent[] ButtonsOnClick => _buttons.Select(button => button.onClick).ToArray();

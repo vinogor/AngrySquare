@@ -20,10 +20,7 @@ namespace Controllers
         [Button]
         private void Load()
         {
-            _saveService.Load(() =>
-            {
-                Debug.Log("Loaded");
-            });
+            _saveService.Load(() => { Debug.Log("Loaded"); });
         }
 
         [Button]
@@ -31,11 +28,11 @@ namespace Controllers
         {
             _saveService.Save();
         }
-        
+
         [Button]
-        private void Clean()
+        private void SaveWithTutorialEnable()
         {
-            _saveService.Clean();
+            _saveService.Save(true);
         }
 
         private void OnDestroy()
@@ -56,7 +53,6 @@ namespace Controllers
                 Debug.Log("SaveController - OnApplicationPause - _saveService.Save()");
                 _saveService.Save();
             }
-                
         }
 
         private void OnApplicationQuit()

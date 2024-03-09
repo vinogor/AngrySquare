@@ -1,4 +1,3 @@
-using System;
 using Controllers.StateMachine;
 using Controllers.StateMachine.States;
 using Services;
@@ -6,7 +5,7 @@ using View;
 
 namespace Controllers
 {
-    public class RestartGameController : IDisposable
+    public class RestartGameController : IPresenter
     {
         private readonly RestartGameView _restartGameView;
         private readonly LevelRestarter _levelRestarter;
@@ -18,8 +17,16 @@ namespace Controllers
             _restartGameView = restartGameView;
             _levelRestarter = levelRestarter;
             _finiteStateMachine = finiteStateMachine;
+        }
 
-            _restartGameView.ButtonClickedEvent.AddListener(OnClick);
+        public void Enable()
+        {
+            _restartGameView.Clicked += OnClick;
+        }
+
+        public void Disable()
+        {
+            _restartGameView.Clicked -= OnClick;
         }
 
         private void OnClick()
@@ -27,7 +34,5 @@ namespace Controllers
             _levelRestarter.RestartAfterDefeat();
             _finiteStateMachine.SetState<GameInitializeFsmState>();
         }
-
-        public void Dispose() => _restartGameView.ButtonClickedEvent.RemoveListener(OnClick);
     }
 }

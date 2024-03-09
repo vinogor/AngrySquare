@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Controllers.Sound;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -17,13 +18,17 @@ namespace Services
         [SerializeField] [Required] private ParticleSystem _vfx;
         [SerializeField] private Wall[] _walls;
 
+        private GameSoundsPresenter _gameSoundsPresenter;
         private DiceFaceDetector[] _detectors;
         private bool _canPlayerThrow = false;
         private bool _isDiceThrown = false;
         private int _lastDetectedDiceNumber;
 
-        public void Initialize()
+        public void Initialize(GameSoundsPresenter gameSoundsPresenter)
         {
+            Assert.IsNotNull(gameSoundsPresenter);
+            _gameSoundsPresenter = gameSoundsPresenter;
+
             _detectors = GetComponentsInChildren<DiceFaceDetector>();
             int expectedDiceFacesAmount = 6;
             Assert.AreEqual(expectedDiceFacesAmount, _detectors.Length);
@@ -38,7 +43,6 @@ namespace Services
         }
 
         public event Action<int> PlayerMoveAmountSet;
-        public event Action DiceFall;
 
         public void OnPointerDown(PointerEventData eventData)
         {
@@ -94,7 +98,7 @@ namespace Services
 
         private void OnDiceNumberDetected(int number)
         {
-            DiceFall?.Invoke();
+            _gameSoundsPresenter.PlayDiceFall();
             _lastDetectedDiceNumber = number;
         }
 
@@ -123,7 +127,8 @@ namespace Services
             float forceRight = Random.Range(-_throwingForce / 3, _throwingForce / 3);
             float forceForward = Random.Range(-_throwingForce / 3, _throwingForce / 3);
 
-            _rigidbody.AddForce(Vector3.up * _throwingForce + Vector3.right * forceRight + Vector3.forward * forceForward);
+            _rigidbody.AddForce(Vector3.up * _throwingForce + Vector3.right * forceRight +
+                                Vector3.forward * forceForward);
             _rigidbody.AddTorque(forceX, forceY, forceZ);
         }
 

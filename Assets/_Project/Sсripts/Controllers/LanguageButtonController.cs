@@ -1,29 +1,36 @@
-using System;
 using SDK;
+using Services;
 using UnityEngine.Assertions;
 using View;
 
 namespace Controllers
 {
-    public class LanguageController : IDisposable
+    public class LanguageButtonController : IPresenter
     {
-        private readonly LanguageView _languageView;
+        private readonly LanguageButtonView _languageButtonView;
         private readonly Localization _localization;
+        
         private bool _isEnabled;
 
-        public LanguageController(LanguageView languageView, Localization localization)
+        public LanguageButtonController(LanguageButtonView languageButtonView, Localization localization)
         {
-            Assert.IsNotNull(languageView);
+            Assert.IsNotNull(languageButtonView);
             Assert.IsNotNull(localization);
-            
-            _languageView = languageView;
-            _localization = localization;
 
-            _languageView.SetSprite(_localization.GetCurrent());
-            _languageView.ButtonOnClick.AddListener(OnButtonClick);
+            _languageButtonView = languageButtonView;
+            _localization = localization;
         }
 
-        public void Dispose() => _languageView.ButtonOnClick.RemoveListener(OnButtonClick);
+        public void Enable()
+        {
+            _languageButtonView.SetSprite(_localization.GetCurrent());
+            _languageButtonView.Clicked += OnButtonClick;
+        }
+
+        public void Disable()
+        {
+            _languageButtonView.Clicked -= OnButtonClick;
+        }
 
         private void OnButtonClick()
         {
@@ -33,17 +40,17 @@ namespace Controllers
             {
                 case LanguageCodes.LeanRussianCode:
                     _localization.SetLanguage(LanguageCodes.LeanEnglishCode);
-                    _languageView.SetSprite(LanguageCodes.LeanEnglishCode);
+                    _languageButtonView.SetSprite(LanguageCodes.LeanEnglishCode);
                     break;
 
                 case LanguageCodes.LeanEnglishCode:
                     _localization.SetLanguage(LanguageCodes.LeanTurkishCode);
-                    _languageView.SetSprite(LanguageCodes.LeanTurkishCode);
+                    _languageButtonView.SetSprite(LanguageCodes.LeanTurkishCode);
                     break;
 
                 case LanguageCodes.LeanTurkishCode:
                     _localization.SetLanguage(LanguageCodes.LeanRussianCode);
-                    _languageView.SetSprite(LanguageCodes.LeanRussianCode);
+                    _languageButtonView.SetSprite(LanguageCodes.LeanRussianCode);
                     break;
             }
         }

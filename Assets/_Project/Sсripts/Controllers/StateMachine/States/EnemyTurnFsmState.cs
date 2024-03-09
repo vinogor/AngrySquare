@@ -2,7 +2,8 @@ using Domain;
 using Domain.Movement;
 using UnityEngine.Assertions;
 
-namespace Controllers.StateMachine.States{
+namespace Controllers.StateMachine.States
+{
     public class EnemyTurnFsmState : FsmState
     {
         private readonly EnemyMovement _enemyMovement;
@@ -25,16 +26,15 @@ namespace Controllers.StateMachine.States{
         public override async void Enter()
         {
             base.Enter();
-            
+
             await _popUpTutorialController.Show(TutorialStep.EnemyTurn);
-            
+
             _enemyMovement.Move();
             _enemyMovement.TurnCompleted += GoToNextState;
         }
 
         public override void Exit()
         {
-            
             base.Exit();
             _enemyMovement.TurnCompleted -= GoToNextState;
         }
@@ -42,7 +42,7 @@ namespace Controllers.StateMachine.States{
         private async void GoToNextState()
         {
             await _popUpTutorialController.Show(TutorialStep.LastTip);
-            
+
             if (_playerHealth.IsAlive)
                 FiniteStateMachine.SetState<PlayerTurnSpellFsmState>();
             else

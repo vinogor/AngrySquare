@@ -34,6 +34,25 @@ namespace View
         public event Action<int, SpellName> SpellsActivated;
         public event Action Skipped;
 
+        private void OnDestroy()
+        {
+            _availableSpells.Updated -= OnAvailableSpellsUpdated;
+            _skipButton.onClick.RemoveAllListeners();
+            LeanLocalization.OnLocalizationChanged -= OnAvailableSpellsUpdated;
+        }
+
+        public void Disable()
+        {
+            _skipButton.enabled = false;
+            _items.ForEach(item => item.Disable());
+        }
+
+        public void Enable()
+        {
+            _skipButton.enabled = true;
+            _items.ForEach(item => item.Enable());
+        }
+
         private void OnAvailableSpellsUpdated()
         {
             Clean();
@@ -53,25 +72,6 @@ namespace View
         private void Clean()
         {
             _items.ForEach(item => item.SetEmptyContent());
-        }
-
-        public void Disable()
-        {
-            _skipButton.enabled = false;
-            _items.ForEach(item => item.Disable());
-        }
-
-        public void Enable()
-        {
-            _skipButton.enabled = true;
-            _items.ForEach(item => item.Enable());
-        }
-
-        private void OnDestroy()
-        {
-            _availableSpells.Updated -= OnAvailableSpellsUpdated;
-            _skipButton.onClick.RemoveAllListeners();
-            LeanLocalization.OnLocalizationChanged -= OnAvailableSpellsUpdated;
         }
     }
 }

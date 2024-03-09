@@ -1,12 +1,19 @@
-using System;
 using Agava.WebUtility;
+using Controllers.Sound;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace SDK
 {
     public class FocusTracking : MonoBehaviour
     {
-        public event Action<bool> FocusSwitched;
+        private GameSoundsPresenter _gameSoundsPresenter;
+
+        public void Initialize(GameSoundsPresenter gameSoundsPresenter)
+        {
+            Assert.IsNotNull(gameSoundsPresenter);
+            _gameSoundsPresenter = gameSoundsPresenter;
+        }
 
         private void OnEnable()
         {
@@ -23,13 +30,13 @@ namespace SDK
         private void OnInBackgroundChangeApp(bool inApp)
         {
             Debug.Log("FocusTracking - OnInBackgroundChangeApp - " + inApp);
-            FocusSwitched?.Invoke(inApp);
+            _gameSoundsPresenter.SwitchByFocus(inApp);
         }
 
         private void OnInBackgroundChangeWeb(bool inBackground)
         {
             Debug.Log("FocusTracking - OnInBackgroundChangeWeb - " + inBackground);
-            FocusSwitched?.Invoke(!inBackground);
+            _gameSoundsPresenter.SwitchByFocus(!inBackground);
         }
     }
 }

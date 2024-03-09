@@ -7,9 +7,12 @@ using UnityEngine.UI;
 
 namespace View
 {
-    public class LeaderboardButtonView : MonoBehaviour
+    public class SoundButtonView : MonoBehaviour
     {
         [SerializeField] [Required] private Button _button;
+        [SerializeField] [Required] private Image _image;
+        [SerializeField] [Required] private Sprite _spriteOn;
+        [SerializeField] [Required] private Sprite _spriteOff;
 
         private IPresenter _presenter;
 
@@ -17,8 +20,7 @@ namespace View
         {
             Assert.IsNotNull(presenter);
             _presenter = presenter;
-        }
-
+        }    
         public event Action Clicked;
 
         private void OnEnable()
@@ -36,6 +38,16 @@ namespace View
         private void Click()
         {
             Clicked?.Invoke();
+        }
+
+        public void SetOn()
+        {
+            _image.sprite = _spriteOn;
+        }
+
+        public void SetOff()
+        {
+            _image.sprite = _spriteOff;
         }
     }
 }

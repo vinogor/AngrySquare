@@ -1,4 +1,5 @@
 using System;
+using Controllers.Sound;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -7,17 +8,21 @@ namespace Domain
     public class Health
     {
         private readonly Defence _defence;
+        private readonly GameSoundsPresenter _gameSoundsPresenter;
 
         private readonly int _defaultValue;
         private readonly int _defaultMaxValue;
 
-        public Health(int value, int maxValue, Defence defence)
+        public Health(int value, int maxValue, Defence defence, GameSoundsPresenter gameSoundsPresenter)
         {
             Validate(value, maxValue);
             Assert.IsNotNull(defence);
+            Assert.IsNotNull(gameSoundsPresenter);
+
             Value = value;
             MaxValue = maxValue;
             _defence = defence;
+            _gameSoundsPresenter = gameSoundsPresenter;
             _defaultValue = value;
             _defaultMaxValue = maxValue;
         }
@@ -26,7 +31,6 @@ namespace Domain
         public event Action<int> MaxValueChanged;
         public event Action DamageReceived;
         public event Action Replenished;
-        public event Action Died;
 
         public int Value { get; private set; }
 
@@ -52,10 +56,8 @@ namespace Domain
                 Value = 0;
 
             ValueChanged?.Invoke(Value);
+            _gameSoundsPresenter.PlaySwordsAttack();
             DamageReceived?.Invoke();
-
-            if (Value <= 0)
-                Died?.Invoke();
         }
 
         public void TakeDoubleDamage(int damage)
@@ -72,6 +74,7 @@ namespace Domain
             Value = MaxValue;
 
             Replenished?.Invoke();
+            _gameSoundsPresenter.PlayManaReplenish();
             ValueChanged?.Invoke(Value);
         }
 

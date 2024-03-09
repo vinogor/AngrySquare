@@ -62,7 +62,7 @@ namespace Services.Save
 
         public bool IsSaveExist { get; private set; }
 
-        public void Save()
+        public void Save(bool isTutorialEnable = false)
         {
             DataRecord dataRecord = new DataRecord
             {
@@ -86,7 +86,7 @@ namespace Services.Save
                     .Select(cell => _cellsManager.Index(cell)).ToList(),
 
                 // common
-                IsTutorialEnable = _popUpTutorialController.IsEnable,
+                IsTutorialEnable = isTutorialEnable || _popUpTutorialController.IsEnable,
                 CellIndexesWithEffectNames = _cellsManager.GetCellIndexesWithEffectNames(),
                 FsmStateTypeName = _finiteStateMachine.GetCurrentStateTypeName(),
             };
@@ -137,11 +137,6 @@ namespace Services.Save
             }
 
             Apply(dataRecord);
-        }
-
-        public void Clean()
-        {
-            _saver.Write(string.Empty);
         }
 
         private void Apply(DataRecord dataRecord)

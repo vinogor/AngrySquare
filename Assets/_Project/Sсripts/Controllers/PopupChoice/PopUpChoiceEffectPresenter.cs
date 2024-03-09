@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Config;
+using Controllers.Sound;
 using Domain.Effects;
 using Domain.Movement;
 using UnityEngine;
@@ -10,31 +10,31 @@ using View;
 
 namespace Controllers.PopupChoice
 {
-    public class PopUpChoiceEffectController : PopUpChoiceAbstractController
+    public class PopUpChoiceEffectPresenter : PopUpChoiceAbstractPresenter
     {
         private readonly List<EffectName> _availableEffectNames;
         private readonly PlayerMovement _playerMovement;
         private readonly CellsSettings _cellsSettings;
+        private readonly GameSoundsPresenter _gameSoundsPresenter;
 
-        public PopUpChoiceEffectController(PopUpChoiceView popUpChoiceView, List<EffectName> availableEffectNames,
-            PlayerMovement playerMovement, CellsSettings cellsSettings) : base(popUpChoiceView)
+        public PopUpChoiceEffectPresenter(PopUpChoiceView popUpChoiceView, List<EffectName> availableEffectNames,
+            PlayerMovement playerMovement, CellsSettings cellsSettings, GameSoundsPresenter gameSoundsPresenter) : base(popUpChoiceView)
         {
             Assert.IsNotNull(availableEffectNames);
             Assert.IsNotNull(playerMovement);
             Assert.IsNotNull(cellsSettings);
+            Assert.IsNotNull(gameSoundsPresenter);
 
             _availableEffectNames = availableEffectNames;
             _playerMovement = playerMovement;
             _cellsSettings = cellsSettings;
+            _gameSoundsPresenter = gameSoundsPresenter;
         }
-
-        public event Action Showed;
-        public event Action Clicked;
 
         public void ShowEffects()
         {
             PrepareEffectButtons();
-            Showed?.Invoke();
+            _gameSoundsPresenter.PlayPopUpShowed();
             PopUpChoiceView.Show();
         }
 
@@ -55,7 +55,7 @@ namespace Controllers.PopupChoice
         private void PlayEffect(EffectName effectName)
         {
             HidePopup();
-            Clicked?.Invoke();
+            _gameSoundsPresenter.PlayClickButton();
             _playerMovement.ActivateEffect(effectName);
         }
     }

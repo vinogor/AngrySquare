@@ -25,6 +25,12 @@ namespace View
             SetText();
         }
 
+        private void OnDestroy()
+        {
+            _enemyLevel.Changed -= OnEnemyLevelChanged;
+            LeanLocalization.OnLocalizationChanged -= OnEnemyLevelChanged;
+        }
+
         private void OnEnemyLevelChanged()
         {
             SetText();
@@ -34,12 +40,6 @@ namespace View
         {
             string introText = LeanLocalization.GetTranslationText(UiTextKeys.EnemyLevelKey);
             _textMeshPro.SetText($"{introText}: {_enemyLevel.Value}");
-        }
-
-        private void OnDestroy()
-        {
-            _enemyLevel.Changed -= OnEnemyLevelChanged;
-            LeanLocalization.OnLocalizationChanged -= OnEnemyLevelChanged;
         }
     }
 }

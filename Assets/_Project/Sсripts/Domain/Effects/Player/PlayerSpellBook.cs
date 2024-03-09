@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using Controllers.PopupChoice;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -10,15 +9,15 @@ namespace Domain.Effects.Player{
     public class PlayerSpellBook : Effect
     {
         private readonly PlayerJumper _playerJumper;
-        private readonly PopUpChoiceSpellController _popUpController;
+        private readonly PopUpChoiceSpellPresenter _popUpPresenter;
 
-        public PlayerSpellBook(PlayerJumper playerJumper, PopUpChoiceSpellController popUpController)
+        public PlayerSpellBook(PlayerJumper playerJumper, PopUpChoiceSpellPresenter popUpPresenter)
         {
             Assert.IsNotNull(playerJumper);
-            Assert.IsNotNull(popUpController);
+            Assert.IsNotNull(popUpPresenter);
 
             _playerJumper = playerJumper;
-            _popUpController = popUpController;
+            _popUpPresenter = popUpPresenter;
         }
 
         protected override async void Execute(Action onComplete)
@@ -30,7 +29,7 @@ namespace Domain.Effects.Player{
         private async UniTask Execute()
         {
             await Jump();
-            await _popUpController.ShowSpells();
+            await _popUpPresenter.ShowSpells();
         }
 
         private async UniTask Jump()

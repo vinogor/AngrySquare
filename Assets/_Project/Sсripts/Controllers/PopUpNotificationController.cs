@@ -1,14 +1,17 @@
 using System;
 using Lean.Localization;
+using Services;
 using UnityEngine.Assertions;
 using View;
 
 namespace Controllers
 {
-    public class PopUpNotificationController
+    public class PopUpNotificationController : IPresenter
     {
         private readonly PopUpNotificationView _popUp;
         private readonly PopUpNotificationModel _model;
+
+        private Action _onClose;
 
         public PopUpNotificationController(PopUpNotificationView popUp, PopUpNotificationModel model)
         {
@@ -17,26 +20,35 @@ namespace Controllers
 
             _popUp = popUp;
             _model = model;
+            
+            Hide();
         }
 
-        public event Action OnClose;
-
-        public void Show()
+        public void Enable()
         {
             LeanLocalization.OnLocalizationChanged += SetContent;
+        }
+
+        public void Disable()
+        {
+            LeanLocalization.OnLocalizationChanged -= SetContent;
+        }
+
+        public void Show(Action onClose)
+        {
+            _onClose = onClose;
             SetContent();
-            _popUp.Button.onClick.AddListener(Hide);
+            _popUp.Clicked += Hide;
             _popUp.Show();
         }
 
-        public void Hide()
+        private void Hide()
         {
-            _popUp.Button.onClick.RemoveListener(Hide);
+            _popUp.Clicked -= Hide;
             _popUp.Hide();
-            LeanLocalization.OnLocalizationChanged -= SetContent;
-            OnClose?.Invoke();
+            _onClose?.Invoke();
         }
-        
+
         private void SetContent()
         {
             string title = LeanLocalization.GetTranslationText(_model.Title);

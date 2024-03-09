@@ -5,12 +5,13 @@ namespace Controllers
 {
     public class EnemyAimRotator : MonoBehaviour
     {
+        private readonly Vector3 _targetRotationValue = new(90f, 90f, 0f);
         private const float Duration = 1f;
         private const float Scale = 0.9f;
 
         private void Start()
         {
-            transform.DORotate(new Vector3(90f, 90f, 0f), Duration)
+            transform.DORotate(_targetRotationValue, Duration)
                 .SetLoops(-1, LoopType.Incremental)
                 .SetEase(Ease.Linear);
 

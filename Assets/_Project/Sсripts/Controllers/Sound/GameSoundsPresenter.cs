@@ -2,27 +2,28 @@ using System.Collections.Generic;
 using System.Linq;
 using Config;
 using UnityEngine;
+using UnityEngine.Assertions;
+using View;
 
 namespace Controllers.Sound
 {
-    public class GameSounds
+    public class GameSoundsPresenter
     {
         private readonly Dictionary<SoundName, AudioClip> _sounds;
-        private readonly AudioSource _audioSource;
-        private readonly AudioSource _backgroundAudioSource;
+
+        private readonly SoundsView _soundsView;
 
         private bool _isEnabledByButton = true;
         private bool _isEnabledByAdv = true;
         private bool _isEnabledByFocus = true;
 
-        public GameSounds(SoundSettings soundSettings, AudioSource audioSource, AudioSource backgroundAudioSource)
+        public GameSoundsPresenter(SoundSettings soundSettings, SoundsView soundsView)
         {
-            _sounds = soundSettings.Configs.ToDictionary(key => key.SoundName, value => value.AudioClip);
-            _audioSource = audioSource;
-            _backgroundAudioSource = backgroundAudioSource;
+            Assert.IsNotNull(soundSettings);
+            Assert.IsNotNull(soundsView);
 
-            _backgroundAudioSource.loop = true;
-            _backgroundAudioSource.Play();
+            _sounds = soundSettings.Configs.ToDictionary(key => key.SoundName, value => value.AudioClip);
+            _soundsView = soundsView;
         }
 
         public void SwitchByButton(bool isEnabled)
@@ -70,14 +71,9 @@ namespace Controllers.Sound
         private void Switch(bool isEnabled)
         {
             if (isEnabled == false)
-            {
-                _audioSource.Stop();
-                _backgroundAudioSource.Pause();
-            }
+                _soundsView.StopAll();
             else
-            {
-                _backgroundAudioSource.UnPause();
-            }
+                _soundsView.UnPauseMusic();
         }
 
         public void PlayPlayerStep() => PlayOneShot(SoundName.PlayerStep);
@@ -90,14 +86,14 @@ namespace Controllers.Sound
         public void PlayHealthReplenish() => PlayOneShot(SoundName.HealthReplenish);
         public void PlayManaReplenish() => PlayOneShot(SoundName.ManaReplenish);
         public void PlayTeleport() => PlayOneShot(SoundName.Teleport);
-        public void PlayPopUp() => PlayOneShot(SoundName.PopUp);
+        public void PlayPopUpShowed() => PlayOneShot(SoundName.PopUp);
         public void PlaySpellCast() => PlayOneShot(SoundName.SpellCast);
         public void PlayClickButton() => PlayOneShot(SoundName.ClickButton);
 
         private void PlayOneShot(SoundName soundName)
         {
             if (_isEnabledByButton && _isEnabledByAdv && _isEnabledByFocus)
-                _audioSource.PlayOneShot(_sounds[soundName]);
+                _soundsView.PlayOneShot(_sounds[soundName]);
         }
     }
 }
