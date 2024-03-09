@@ -173,8 +173,8 @@ namespace Root
             _saveController.Initialize(saveService, stateMachine);
 
 #if UNITY_WEBGL && !UNITY_EDITOR
-            await _yandexLeaderBoard.Fill();
-            _yandexLeaderBoard.GetCurrentPublicName();
+            await yandexLeaderBoard.Fill();
+            yandexLeaderBoard.GetCurrentPublicName();
 #endif
 
             StartGame(saveService, stateMachine);
