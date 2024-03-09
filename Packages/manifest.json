@@ -2,6 +2,7 @@
   "dependencies": {
     "com.agava.webutility": "https://github.com/forcepusher/com.agava.webutility.git#3.1.0",
     "com.agava.yandexgames": "https://github.com/forcepusher/com.agava.yandexgames.git#16.0.0",
+    "com.unity.2d.sprite": "1.0.0",
     "com.unity.collab-proxy": "2.2.0",
     "com.unity.feature.development": "1.0.1",
     "com.unity.probuilder": "5.1.1",
@@ -10,6 +11,7 @@
     "com.unity.timeline": "1.7.5",
     "com.unity.ugui": "1.0.0",
     "com.unity.visualscripting": "1.8.0",
+    "jillejr.newtonsoft.json-for-unity": "https://github.com/jilleJr/Newtonsoft.Json-for-Unity.git#upm",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
