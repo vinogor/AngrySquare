@@ -8,7 +8,6 @@ using Controllers.StateMachine;
 using Controllers.StateMachine.States;
 using Domain;
 using Domain.Effects;
-using Domain.Effects.Enemy;
 using Domain.Effects.Player;
 using Domain.Movement;
 using Domain.Spells;
@@ -79,17 +78,8 @@ namespace Root
             AvailableSpells availableSpells = new AvailableSpells();
             availableSpells.Add(SpellName.UpDamage);
 
-            Dictionary<SpellName, Effect> playerSpells = new Dictionary<SpellName, Effect>();
-            FullHealthSpell fullHealthSpell = new FullHealthSpell(playerHealth);
-            UpDamageSpell upDamageSpell = new UpDamageSpell(playerDamage, _coefficients);
-            UpMaxHealthSpell upMaxHealthSpell = new UpMaxHealthSpell(playerHealth, _coefficients);
-            UpDefenceSpell upDefenceSpell = new UpDefenceSpell(playerDefence, _coefficients);
-            UpMaxManaSpell upMaxManaSpell = new UpMaxManaSpell(playerMana, _coefficients);
-            playerSpells.Add(SpellName.FullHealth, fullHealthSpell);
-            playerSpells.Add(SpellName.UpDamage, upDamageSpell);
-            playerSpells.Add(SpellName.UpMaxHealth, upMaxHealthSpell);
-            playerSpells.Add(SpellName.UpDefence, upDefenceSpell);
-            playerSpells.Add(SpellName.UpMaxMana, upMaxManaSpell);
+            Dictionary<SpellName, Effect> playerSpells = EffectsFactory.CreatePlayerSpellsDictionary(
+                playerHealth, playerDamage, _coefficients, playerDefence, playerMana);
 
             SpellActivator spellActivator = new SpellActivator(playerSpells, gameSoundsPresenter);
 
@@ -119,25 +109,12 @@ namespace Root
             PopUpChoiceSpellPresenter choiceSpellPresenter = new PopUpChoiceSpellPresenter(_uiRoot.PopUpChoiceView,
                 availableSpellNamesForEffect, spellBarController, _spellsSettings, gameSoundsPresenter);
 
-            Dictionary<EffectName, Effect> playerEffects = new()
-            {
-                { EffectName.Swords, new PlayerSwords(playerJumper, enemyHealth, playerDamage) },
-                { EffectName.Health, new PlayerHealth(playerHealth, playerJumper, _coefficients) },
-                { EffectName.Mana, new PlayerMana(playerMana, playerJumper, _coefficients) },
-                { EffectName.Portal, playerPortal },
-                { EffectName.Question, new PlayerQuestion(playerJumper, choiceEffectPresenter) },
-                { EffectName.SpellBook, new PlayerSpellBook(playerJumper, choiceSpellPresenter) }
-            };
+            Dictionary<EffectName, Effect> playerEffects = EffectsFactory.CreatePlayerEffectsDictionary(
+                playerHealth, playerDamage, playerMana, playerJumper, enemyHealth, _coefficients, playerPortal,
+                choiceEffectPresenter, choiceSpellPresenter);
 
-            Dictionary<EffectName, Effect> enemyEffects = new()
-            {
-                { EffectName.Swords, new EnemySwords(enemyJumper, playerHealth, enemyDamage) },
-                { EffectName.Health, new EnemyHealth(enemyJumper, enemyHealth, _coefficients, enemyTargetController) },
-                { EffectName.Mana, new EnemyMana(enemyJumper) },
-                { EffectName.Portal, new EnemyPortal(enemyJumper) },
-                { EffectName.Question, new EnemyQuestion(enemyJumper) },
-                { EffectName.SpellBook, new EnemySpellBook(enemyJumper) }
-            };
+            Dictionary<EffectName, Effect> enemyEffects = EffectsFactory.CreateEnemyEffectsDictionary(
+                enemyJumper, playerHealth, enemyDamage, enemyHealth, _coefficients, enemyTargetController);
 
             _playerMovement.Initialize(cellsController, playerEffects, _coefficients, playerJumper);
             _enemyMovement.Initialize(enemyEffects, enemyTargetController, enemyJumper, playerHealth, enemyDamage,
@@ -177,25 +154,11 @@ namespace Root
 
             Advertising advertising = new Advertising(gameSoundsPresenter);
 
-            FiniteStateMachine stateMachine = new FiniteStateMachine();
-            GameInitializeFsmState gameInitializeFsmState = new GameInitializeFsmState(stateMachine, advertising);
-            PlayerTurnSpellFsmState playerTurnSpellFsmState =
-                new PlayerTurnSpellFsmState(stateMachine, spellBarController, popUpTutorialController);
-            PlayerTurnMoveFsmState playerTurnMoveFsmState = new PlayerTurnMoveFsmState(stateMachine, _diceRoller,
-                _playerMovement, enemyHealth, popUpTutorialController);
-            PlayerWinFsmState playerWinFsmState =
-                new PlayerWinFsmState(stateMachine, popUpNotificationController, levelRestarter, gameSoundsPresenter);
-            EnemyTurnFsmState enemyTurnFsmState = new EnemyTurnFsmState(stateMachine, _enemyMovement, playerHealth,
-                popUpTutorialController);
-            PlayerDefeatFsmState playerDefeatFsmState = new PlayerDefeatFsmState(stateMachine, popUpPlayerDefeat,
-                levelRestarter, yandexLeaderBoard, gameSoundsPresenter);
-
-            stateMachine.AddState(gameInitializeFsmState);
-            stateMachine.AddState(playerTurnSpellFsmState);
-            stateMachine.AddState(playerTurnMoveFsmState);
-            stateMachine.AddState(playerWinFsmState);
-            stateMachine.AddState(enemyTurnFsmState);
-            stateMachine.AddState(playerDefeatFsmState);
+            FiniteStateMachine stateMachine = StateMachineFactory.CreateStateMachine(spellBarController,
+                popUpTutorialController, popUpNotificationController, popUpPlayerDefeat, advertising, _diceRoller,
+                _playerMovement, playerHealth, enemyHealth, levelRestarter, gameSoundsPresenter, _enemyMovement,
+                yandexLeaderBoard
+            );
 
             RestartGameController restartGameController =
                 new RestartGameController(_uiRoot.RestartGameView, levelRestarter, stateMachine);
