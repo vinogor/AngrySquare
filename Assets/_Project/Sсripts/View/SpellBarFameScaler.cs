@@ -1,6 +1,4 @@
 using DG.Tweening;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
 namespace View
@@ -11,18 +9,25 @@ namespace View
 
         private const float Scale = 1.04f;
         private const float ScalingDuration = 0.5f;
-        private TweenerCore<Vector3, Vector3, VectorOptions> _frameTweener;
+        private Sequence _sequence;
 
         public void Enable()
         {
+            Disable();
+            _sequence = DOTween.Sequence()
+                .Append(_frameTransform.DOScale(new Vector3(Scale, Scale, Scale), ScalingDuration)
+                    .SetLoops(-1, LoopType.Yoyo)
+                    .SetEase(Ease.InOutSine)
+                )
+                .Play();
+
             _frameTransform.gameObject.SetActive(true);
-            _frameTransform.DOScale(new Vector3(Scale, Scale, Scale), ScalingDuration)
-                .SetLoops(-1, LoopType.Yoyo)
-                .SetEase(Ease.InOutSine);
         }
 
         public void Disable()
         {
+            _sequence.Kill();
+            _frameTransform.localScale = Vector3.one;
             _frameTransform.gameObject.SetActive(false);
         }
     }
