@@ -5,7 +5,8 @@ using DG.Tweening;
 using Domain.Movement;
 using UnityEngine.Assertions;
 
-namespace Domain.Effects.Player{
+namespace Domain.Effects.Player
+{
     public class PlayerSpellBook : Effect
     {
         private readonly PlayerJumper _playerJumper;
@@ -34,9 +35,9 @@ namespace Domain.Effects.Player{
 
         private async UniTask Jump()
         {
-            Sequence sequence = DOTween.Sequence();
-            sequence.Append(_playerJumper.JumpInPlace());
-            await sequence.AsyncWaitForCompletion();
+            Sequence = DOTween.Sequence()
+                .Append(_playerJumper.JumpInPlace());
+            await Sequence.AsyncWaitForCompletion();
         }
     }
 }

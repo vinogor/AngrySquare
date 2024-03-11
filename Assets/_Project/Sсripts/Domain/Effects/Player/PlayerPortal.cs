@@ -20,7 +20,7 @@ namespace Domain.Effects.Player
             Assert.IsNotNull(playerJumper);
             Assert.IsNotNull(cellsManager);
             Assert.IsNotNull(playerMovement);
-            
+
             _playerJumper = playerJumper;
             _cellsManager = cellsManager;
             _playerMovement = playerMovement;
@@ -37,18 +37,20 @@ namespace Domain.Effects.Player
             Cell[] portalCells = _cellsManager.Find(EffectName.Portal);
             Cell targetCell = portalCells.Where(cell => cell != currentCell).ToList().Shuffle().First();
 
-            Debug.Log($"PlayerPortal - Execute - currentCell: index={_cellsManager.Index(currentCell)}, effectName={currentCell.EffectName}");
-            Debug.Log($"PlayerPortal - Execute - targetCell: index={_cellsManager.Index(targetCell)}, effectName={targetCell.EffectName}");
+            Debug.Log(
+                $"PlayerPortal - Execute - currentCell: index={_cellsManager.Index(currentCell)}, effectName={currentCell.EffectName}");
+            Debug.Log(
+                $"PlayerPortal - Execute - targetCell: index={_cellsManager.Index(targetCell)}, effectName={targetCell.EffectName}");
 
-            Sequence sequence = DOTween.Sequence();
-            sequence.Append(_playerJumper.JumpInPlace());
-            sequence.Append(_playerJumper.Teleport(targetCell));
-            sequence.AppendCallback(() =>
-            {
-                _playerMovement.SetNewStayCell(targetCell);
-                onComplete.Invoke();
-            });
-            sequence.Play();
+            Sequence = DOTween.Sequence()
+                .Append(_playerJumper.JumpInPlace())
+                .Append(_playerJumper.Teleport(targetCell))
+                .AppendCallback(() =>
+                {
+                    _playerMovement.SetNewStayCell(targetCell);
+                    onComplete.Invoke();
+                })
+                .Play();
         }
     }
 }

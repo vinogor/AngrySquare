@@ -18,6 +18,8 @@ namespace Domain.Movement
         private Coefficients _coefficients;
         private PlayerJumper _playerJumper;
 
+        private Sequence _current;
+
         private readonly int _startingPlayersCellIndex = 0;
         private readonly float _cellLoweringDepth = 0.1f;
 
@@ -64,6 +66,17 @@ namespace Domain.Movement
             _playerJumper.JumpToNextCell(PlayerStayCell, true);
         }
 
+        public void ForceStop()
+        {
+            _current.Kill();
+            _playerJumper.ForceStop();
+
+            foreach (Effect effect in _playerEffects.Values)
+            {
+                effect.ForceStop();
+            }
+        }
+
         private void Awake()
         {
             _diceRoller.PlayerMoveAmountSet += OnPlayerMoveAmountSet;
@@ -93,14 +106,14 @@ namespace Domain.Movement
             PlayersCellIndex = ++PlayersCellIndex % _cellsManager.Length;
             Cell nextCell = _cellsManager.Get(PlayersCellIndex);
 
-            Sequence sequence = DOTween.Sequence();
-            sequence.Append(_playerJumper.JumpToNextCell(nextCell));
-            sequence.AppendCallback(() =>
-            {
-                AnimateCell(nextCell);
-                Move(--amountMoves);
-            });
-            sequence.Play();
+            _current = DOTween.Sequence()
+                .Append(_playerJumper.JumpToNextCell(nextCell))
+                .AppendCallback(() =>
+                {
+                    AnimateCell(nextCell);
+                    Move(--amountMoves);
+                })
+                .Play();
         }
 
         private void AnimateCell(Cell nextCell)

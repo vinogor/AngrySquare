@@ -14,6 +14,7 @@ namespace Domain.Movement
         private readonly GameSoundsPresenter _gameSoundsPresenter;
 
         private Vector3 _playerCellPosition;
+        private Sequence _currentSequence;
 
         public PlayerJumper(Transform playerTransform, Transform enemyTransform, Coefficients coefficients,
             GameSoundsPresenter gameSoundsPresenter)
@@ -61,13 +62,19 @@ namespace Domain.Movement
             Vector3 cellCenter = targetCell.Center();
             float jumpDuration = _coefficients.JumpDuration;
 
-            Sequence sequence = DOTween.Sequence();
-            sequence.AppendCallback(() => _gameSoundsPresenter.PlayTeleport());
-            sequence.Append(_playerTransform.DOMoveY(_playerTransform.position.y - lossyScaleY * offset, jumpDuration));
-            sequence.Append(_playerTransform.DOMove(cellCenter - Vector3.up * (lossyScaleY * offset), jumpDuration));
-            sequence.AppendCallback(() => _gameSoundsPresenter.PlayTeleport());
-            sequence.Append(_playerTransform.DOMove(cellCenter + Vector3.up * lossyScaleY, jumpDuration));
-            return sequence;
+            _currentSequence = DOTween.Sequence()
+            .AppendCallback(() => _gameSoundsPresenter.PlayTeleport())
+            .Append(_playerTransform.DOMoveY(_playerTransform.position.y - lossyScaleY * offset, jumpDuration))
+            .Append(_playerTransform.DOMove(cellCenter - Vector3.up * (lossyScaleY * offset), jumpDuration))
+            .AppendCallback(() => _gameSoundsPresenter.PlayTeleport())
+            .Append(_playerTransform.DOMove(cellCenter + Vector3.up * lossyScaleY, jumpDuration));
+            
+            return _currentSequence;
+        }
+
+        public void ForceStop()
+        {
+            _currentSequence.Kill();
         }
 
         private Sequence Jump(Transform transform, Vector3 target, bool instantly = false)
@@ -76,10 +83,11 @@ namespace Domain.Movement
             float epsilonTime = 0.001f;
             int jumpsAmount = 1;
             float duration = instantly ? epsilonTime : _coefficients.JumpDuration;
-            return transform
+            _currentSequence = transform
                 .DOJump(target, _coefficients.JumpPower, jumpsAmount, duration)
                 .AppendCallback(() => _gameSoundsPresenter.PlayPlayerStep())
                 .SetEase(Ease.Linear);
+            return _currentSequence;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Controllers.PopupChoice
             PopUpChoiceView.Hide();
         }
 
-        protected void HidePopup()
+        public void HidePopup()
         {
             Array.ForEach(PopUpChoiceView.ButtonsOnClick, onClick => onClick.RemoveAllListeners());
             PopUpChoiceView.Hide();

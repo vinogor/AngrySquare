@@ -21,7 +21,7 @@ namespace Domain.Effects.Enemy
             Assert.IsNotNull(enemyHealth);
             Assert.IsNotNull(coefficients);
             Assert.IsNotNull(enemyTargetController);
-            
+
             _enemyJumper = enemyJumper;
             _enemyHealth = enemyHealth;
             _coefficients = coefficients;
@@ -30,18 +30,19 @@ namespace Domain.Effects.Enemy
 
         protected override void Execute(Action onComplete)
         {
-            Sequence sequence = DOTween.Sequence();
-            sequence.Append(_enemyJumper.JumpToTargetCell());
+            Sequence = DOTween.Sequence()
+                .Append(_enemyJumper.JumpToTargetCell());
 
             if (_enemyHealth.Value != _enemyHealth.MaxValue)
             {
-                sequence.AppendCallback(() => _enemyHealth.ReplenishToMax());
-                sequence.AppendInterval(_coefficients.DelayAfterVfxSeconds);
+                Sequence.AppendCallback(() => _enemyHealth.ReplenishToMax());
+                Sequence.AppendInterval(_coefficients.DelayAfterVfxSeconds);
             }
-            sequence.AppendCallback(() => _enemyTargetController.NextTurnTripleTarget());
-            sequence.Append(_enemyJumper.JumpBackToBase());
-            sequence.AppendCallback(onComplete.Invoke);
-            sequence.Play();
+
+            Sequence.AppendCallback(() => _enemyTargetController.NextTurnTripleTarget())
+                .Append(_enemyJumper.JumpBackToBase())
+                .AppendCallback(onComplete.Invoke)
+                .Play();
         }
     }
 }

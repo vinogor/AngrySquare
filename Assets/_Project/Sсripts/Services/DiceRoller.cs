@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Controllers.Sound;
+using Domain;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -16,6 +17,7 @@ namespace Services
         [SerializeField] [Required] private Camera _camera;
         [SerializeField] [Required] private Rigidbody _rigidbody;
         [SerializeField] [Required] private ParticleSystem _vfx;
+        [SerializeField] [Required] private DiceBase _diceBase;
         [SerializeField] private Wall[] _walls;
 
         private GameSoundsPresenter _gameSoundsPresenter;
@@ -78,6 +80,14 @@ namespace Services
         {
             _vfx.Stop();
             _canPlayerThrow = false;
+            _isDiceThrown = false;
+        }
+
+        public void SetToBasePosition()
+        {
+            Transform diceBaseTransform = _diceBase.transform;
+            transform.position = diceBaseTransform.position;
+            transform.rotation = diceBaseTransform.rotation;
         }
 
         private void ActivateWalls(bool isEnable)
@@ -107,6 +117,7 @@ namespace Services
             if (_isDiceThrown && _rigidbody.velocity == Vector3.zero)
             {
                 DetectorsSetActive(false);
+                Debug.Log($"DiceRoller: _isDiceThrown = {_isDiceThrown}, _lastDetectedDiceNumber = " + _lastDetectedDiceNumber);
                 PlayerMoveAmountSet?.Invoke(_lastDetectedDiceNumber);
                 _isDiceThrown = false;
             }
@@ -114,7 +125,7 @@ namespace Services
 
         private IEnumerator SetIsDiceThrownTrueWithDelay()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.3f);
             _isDiceThrown = true;
         }
 

@@ -48,6 +48,7 @@ namespace Root
         [Header("Enemy")]
         [SerializeField] [Required] private EnemyModel _enemyModel;
         [SerializeField] [Required] private EnemyMovement _enemyMovement;
+        [SerializeField] [Required] private EnemyBase _enemyBase;
         [SerializeField] private EnemyAim[] _enemyAims;
 
         private async void OnEnable()
@@ -92,7 +93,7 @@ namespace Root
             PlayerJumper playerJumper = new PlayerJumper(_player.transform, _enemyModel.transform, _coefficients,
                 gameSoundsPresenter);
             EnemyJumper enemyJumper = new EnemyJumper(_enemyModel.transform, _playerMovement, _coefficients,
-                enemyTargetController, gameSoundsPresenter);
+                enemyTargetController, gameSoundsPresenter, _enemyBase.transform.position);
             PlayerPortal playerPortal = new PlayerPortal(playerJumper, cellsController, _playerMovement);
 
             SpellBarController spellBarController = new SpellBarController(availableSpells, _uiRoot.SpellBarView,
@@ -134,8 +135,8 @@ namespace Root
 
             LevelRestarter levelRestarter = new LevelRestarter(cellsController, playerDefence, playerHealth,
                 playerDamage, playerMana, _enemyProgression, enemyDefence, enemyHealth, enemyDamage,
-                availableSpells,
-                _playerMovement, enemyTargetController, enemyLevel);
+                availableSpells, _playerMovement, enemyTargetController, enemyLevel, _enemyMovement,
+                choiceEffectPresenter, choiceSpellPresenter, _diceRoller);
 
             Localization localization = new Localization(_leanLocalization);
             localization.SetLanguageFromYandex();

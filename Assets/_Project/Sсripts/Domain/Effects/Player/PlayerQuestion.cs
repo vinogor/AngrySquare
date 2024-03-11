@@ -4,7 +4,8 @@ using DG.Tweening;
 using Domain.Movement;
 using UnityEngine.Assertions;
 
-namespace Domain.Effects.Player{
+namespace Domain.Effects.Player
+{
     public class PlayerQuestion : Effect
     {
         private readonly PlayerJumper _playerJumper;
@@ -21,10 +22,10 @@ namespace Domain.Effects.Player{
 
         protected override void Execute(Action onComplete)
         {
-            Sequence sequence = DOTween.Sequence();
-            sequence.Append(_playerJumper.JumpInPlace());
-            sequence.AppendCallback(_popupPresenter.ShowEffects);
-            sequence.Play();
+            Sequence = DOTween.Sequence()
+                .Append(_playerJumper.JumpInPlace())
+                .AppendCallback(_popupPresenter.ShowEffects)
+                .Play();
         }
     }
 }

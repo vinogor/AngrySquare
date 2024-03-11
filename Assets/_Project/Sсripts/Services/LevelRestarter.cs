@@ -1,5 +1,6 @@
 using Config;
 using Controllers;
+using Controllers.PopupChoice;
 using Domain;
 using Domain.Movement;
 using Domain.Spells;
@@ -20,15 +21,23 @@ namespace Services
         private readonly Health _enemyHealth;
         private readonly Damage _enemyDamage;
         private readonly EnemyLevel _enemyLevel;
+        private readonly EnemyMovement _enemyMovement;
 
         private readonly AvailableSpells _availableSpells;
         private readonly PlayerMovement _playerMovement;
         private readonly EnemyTargetController _enemyTargetController;
 
+        private readonly PopUpChoiceEffectPresenter _popUpChoiceEffectPresenter;
+        private readonly PopUpChoiceSpellPresenter _popUpChoiceSpellPresenter;
+        private readonly DiceRoller _diceRoller;
+
         public LevelRestarter(CellsManager cellsManager, Defence playerDefence, Health playerHealth,
             Damage playerDamage, Mana playerMana, EnemyProgression enemyProgression, Defence enemyDefence,
             Health enemyHealth, Damage enemyDamage, AvailableSpells availableSpells, PlayerMovement playerMovement,
-            EnemyTargetController enemyTargetController, EnemyLevel enemyLevel)
+            EnemyTargetController enemyTargetController, EnemyLevel enemyLevel, EnemyMovement enemyMovement,
+            PopUpChoiceEffectPresenter popUpChoiceEffectPresenter, PopUpChoiceSpellPresenter popUpChoiceSpellPresenter,
+            DiceRoller diceRoller
+        )
         {
             _cellsManager = cellsManager;
 
@@ -42,10 +51,15 @@ namespace Services
             _enemyHealth = enemyHealth;
             _enemyDamage = enemyDamage;
             _enemyLevel = enemyLevel;
+            _enemyMovement = enemyMovement;
 
             _availableSpells = availableSpells;
             _playerMovement = playerMovement;
             _enemyTargetController = enemyTargetController;
+
+            _popUpChoiceEffectPresenter = popUpChoiceEffectPresenter;
+            _popUpChoiceSpellPresenter = popUpChoiceSpellPresenter;
+            _diceRoller = diceRoller;
         }
 
         public void RestartAfterDefeat()
@@ -59,14 +73,23 @@ namespace Services
             _playerMana.SetToDefault();
             _availableSpells.Clear();
             _availableSpells.Add(SpellName.UpDamage);
+
+            _playerMovement.ForceStop();
             _playerMovement.SetDefaultStayCell();
 
             _enemyDefence.SetToDefault();
             _enemyHealth.SetToDefault();
             _enemyDamage.SetToDefault();
             _enemyLevel.SetToDefault();
+            _enemyMovement.ForceStop();
+            _enemyMovement.SetDefaultPosition();
 
             _enemyTargetController.SetAimToNewRandomTargetCell();
+
+            _popUpChoiceEffectPresenter.HidePopup();
+            _popUpChoiceSpellPresenter.HidePopup();
+            _diceRoller.MakeUnavailable();
+            _diceRoller.SetToBasePosition();
         }
 
         public void RestartAfterWin()

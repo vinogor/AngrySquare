@@ -17,7 +17,7 @@ namespace Domain.Effects.Player
             Assert.IsNotNull(playerHealth);
             Assert.IsNotNull(playerJumper);
             Assert.IsNotNull(coefficients);
-            
+
             _playerHealth = playerHealth;
             _playerJumper = playerJumper;
             _coefficients = coefficients;
@@ -25,17 +25,17 @@ namespace Domain.Effects.Player
 
         protected override void Execute(Action onComplete)
         {
-            Sequence sequence = DOTween.Sequence();
-            sequence.Append(_playerJumper.JumpInPlace());
+            Sequence = DOTween.Sequence()
+                .Append(_playerJumper.JumpInPlace());
 
             if (_playerHealth.Value != _playerHealth.MaxValue)
             {
-                sequence.AppendCallback(() => _playerHealth.ReplenishToMax());
-                sequence.AppendInterval(_coefficients.DelayAfterVfxSeconds);
+                Sequence.AppendCallback(() => _playerHealth.ReplenishToMax());
+                Sequence.AppendInterval(_coefficients.DelayAfterVfxSeconds);
             }
-            
-            sequence.AppendCallback(onComplete.Invoke);
-            sequence.Play();
+
+            Sequence.AppendCallback(onComplete.Invoke);
+            Sequence.Play();
         }
     }
 }

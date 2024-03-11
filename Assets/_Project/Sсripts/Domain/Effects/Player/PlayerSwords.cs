@@ -16,7 +16,7 @@ namespace Domain.Effects.Player
             Assert.IsNotNull(playerJumper);
             Assert.IsNotNull(enemyHealth);
             Assert.IsNotNull(playerDamage);
-            
+
             _playerJumper = playerJumper;
             _enemyHealth = enemyHealth;
             _playerDamage = playerDamage;
@@ -24,12 +24,12 @@ namespace Domain.Effects.Player
 
         protected override void Execute(Action onComplete)
         {
-            Sequence sequence = DOTween.Sequence();
-            sequence.Append(_playerJumper.JumpOnEnemy());
-            sequence.AppendCallback(() => _enemyHealth.TakeDamage(_playerDamage.Value));
-            sequence.Append(_playerJumper.JumpBackToCell());
-            sequence.AppendCallback(onComplete.Invoke);
-            sequence.Play();
+            Sequence = DOTween.Sequence()
+                .Append(_playerJumper.JumpOnEnemy())
+                .AppendCallback(() => _enemyHealth.TakeDamage(_playerDamage.Value))
+                .Append(_playerJumper.JumpBackToCell())
+                .AppendCallback(onComplete.Invoke)
+                .Play();
         }
     }
 }

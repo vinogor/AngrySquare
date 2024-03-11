@@ -73,5 +73,21 @@ namespace Domain.Movement
                 });
             }
         }
+
+        public void ForceStop()
+        {
+            _enemyJumper.ForceStop();
+            
+            foreach (Effect effect in _enemyEffects.Values)
+            {
+                effect.ForceStop();
+            }
+            _enemyTargetController.NextTurnOneTarget();
+        }
+
+        public void SetDefaultPosition()
+        {
+            _enemyJumper.JumpBackToBase(true);
+        }
     }
 }
