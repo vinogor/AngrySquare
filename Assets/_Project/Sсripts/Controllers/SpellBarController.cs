@@ -14,29 +14,30 @@ namespace Controllers
         private readonly SpellBarView _spellBarView;
         private readonly Mana _mana;
         private readonly SpellActivator _spellActivator;
-        private readonly SpellBarShaker _spellBarShaker;
+        private readonly SpellBarFameScaler _spellBarFameScaler;
         private readonly GameSoundsPresenter _gameSoundsPresenter;
 
         private Action _onSpellCompleted;
 
         public SpellBarController(AvailableSpells availableSpells, SpellBarView spellBarView, Mana mana,
-            SpellActivator spellActivator, SpellBarShaker spellBarShaker, GameSoundsPresenter gameSoundsPresenter)
+            SpellActivator spellActivator, SpellBarFameScaler spellBarFameScaler, GameSoundsPresenter gameSoundsPresenter)
         {
             Assert.IsNotNull(availableSpells);
             Assert.IsNotNull(spellBarView);
             Assert.IsNotNull(mana);
             Assert.IsNotNull(spellActivator);
-            Assert.IsNotNull(spellBarShaker);
+            Assert.IsNotNull(spellBarFameScaler);
             Assert.IsNotNull(gameSoundsPresenter);
 
             _availableSpells = availableSpells;
             _spellBarView = spellBarView;
             _mana = mana;
             _spellActivator = spellActivator;
-            _spellBarShaker = spellBarShaker;
+            _spellBarFameScaler = spellBarFameScaler;
             _gameSoundsPresenter = gameSoundsPresenter;
 
             _spellBarView.Disable();
+            _spellBarFameScaler.Disable();
         }
 
         public void TakeSpell(SpellName spellName)
@@ -64,7 +65,7 @@ namespace Controllers
                 return;
             }
 
-            _spellBarShaker.Enable(_availableSpells.SpellNames.Count);
+            _spellBarFameScaler.Enable();
             _spellBarView.SpellsActivated += OnSpellActivated;
             _spellBarView.Skipped += OnSpellSkipped;
             _spellBarView.Enable();
@@ -72,7 +73,7 @@ namespace Controllers
 
         public void Disable()
         {
-            _spellBarShaker.Disable();
+            _spellBarFameScaler.Disable();
             _spellBarView.SpellsActivated -= OnSpellActivated;
             _spellBarView.Skipped -= OnSpellSkipped;
             _spellBarView.Disable();

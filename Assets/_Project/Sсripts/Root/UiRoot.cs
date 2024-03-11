@@ -25,7 +25,7 @@ namespace Root
         [SerializeField] [Required] private DefenceTextView _playerDefenceTextView;
         [SerializeField] [Required] private PopUpChoiceView _popUpChoiceView;
         [SerializeField] [Required] private SpellBarView _spellBarView;
-        [SerializeField] [Required] private SpellBarShaker _spellBarShaker;
+        [SerializeField] [Required] private SpellBarFameScaler _spellBarFameScaler;
 
         [Space(10)]
         [Header("Enemy")]
@@ -38,7 +38,7 @@ namespace Root
         public SpellBarView SpellBarView => _spellBarView;
         public PopUpNotificationView PopUpNotificationView => _popUpNotificationView;
         public PopUpNotificationView PopUpTutorialView => _popUpTutorialView;
-        public SpellBarShaker SpellBarShaker => _spellBarShaker;
+        public SpellBarFameScaler SpellBarFameScaler => _spellBarFameScaler;
         public RestartGameView RestartGameView => _restartGameView;
         public LanguageButtonView LanguageButtonView => _languageButtonView;
         public LeaderboardButtonView LeaderboardButtonView => _leaderboardButtonView;

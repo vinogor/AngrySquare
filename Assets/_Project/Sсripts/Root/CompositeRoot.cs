@@ -96,7 +96,7 @@ namespace Root
             PlayerPortal playerPortal = new PlayerPortal(playerJumper, cellsController, _playerMovement);
 
             SpellBarController spellBarController = new SpellBarController(availableSpells, _uiRoot.SpellBarView,
-                playerMana, spellActivator, _uiRoot.SpellBarShaker, gameSoundsPresenter);
+                playerMana, spellActivator, _uiRoot.SpellBarFameScaler, gameSoundsPresenter);
             List<EffectName> availableEffectNamesForEffect = new List<EffectName>
                 { EffectName.Swords, EffectName.Health, EffectName.Mana };
             List<SpellName> availableSpellNamesForEffect = new List<SpellName>

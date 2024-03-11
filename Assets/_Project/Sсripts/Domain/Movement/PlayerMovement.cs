@@ -20,6 +20,7 @@ namespace Domain.Movement
 
         private readonly int _startingPlayersCellIndex = 0;
         private readonly float _cellLoweringDepth = 0.1f;
+
         public void Initialize(CellsManager cellsManager, Dictionary<EffectName, Effect> playerEffects,
             Coefficients coefficients, PlayerJumper playerJumper)
         {
@@ -50,7 +51,7 @@ namespace Domain.Movement
         {
             PlayersCellIndex = _cellsManager.Index(newStayCell);
         }
-        
+
         public void SetNewStayCell(int newStayCellIndex)
         {
             PlayersCellIndex = newStayCellIndex;
@@ -104,7 +105,8 @@ namespace Domain.Movement
 
         private void AnimateCell(Cell nextCell)
         {
-            nextCell.transform.DOMoveY(nextCell.transform.position.y - _cellLoweringDepth, _coefficients.AnimationCellDuration)
+            nextCell.transform.DOMoveY(nextCell.transform.position.y - _cellLoweringDepth,
+                    _coefficients.AnimationCellDuration)
                 .SetLoops(2, LoopType.Yoyo);
         }
     }
