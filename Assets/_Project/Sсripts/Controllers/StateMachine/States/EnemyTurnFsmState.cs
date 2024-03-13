@@ -8,26 +8,26 @@ namespace Controllers.StateMachine.States
     {
         private readonly EnemyMovement _enemyMovement;
         private readonly Health _playerHealth;
-        private readonly PopUpTutorialController _popUpTutorialController;
+        private readonly TutorialController _tutorialController;
 
         public EnemyTurnFsmState(FiniteStateMachine finiteStateMachine, EnemyMovement enemyMovement,
-            Health playerHealth, PopUpTutorialController popUpTutorialController) : base(
+            Health playerHealth, TutorialController tutorialController) : base(
             finiteStateMachine)
         {
             Assert.IsNotNull(finiteStateMachine);
             Assert.IsNotNull(enemyMovement);
             Assert.IsNotNull(playerHealth);
-            Assert.IsNotNull(popUpTutorialController);
+            Assert.IsNotNull(tutorialController);
             _enemyMovement = enemyMovement;
             _playerHealth = playerHealth;
-            _popUpTutorialController = popUpTutorialController;
+            _tutorialController = tutorialController;
         }
 
         public override async void Enter()
         {
             base.Enter();
 
-            await _popUpTutorialController.Show(TutorialStep.EnemyTurn);
+            await _tutorialController.Show(TutorialStep.EnemyTurn);
 
             _enemyMovement.Move();
             _enemyMovement.TurnCompleted += GoToNextState;
@@ -41,7 +41,7 @@ namespace Controllers.StateMachine.States
 
         private async void GoToNextState()
         {
-            await _popUpTutorialController.Show(TutorialStep.LastTip);
+            await _tutorialController.Show(TutorialStep.LastTip);
 
             if (_playerHealth.IsAlive)
                 FiniteStateMachine.SetState<PlayerTurnSpellFsmState>();

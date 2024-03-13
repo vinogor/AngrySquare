@@ -1,16 +1,16 @@
 using System;
 using NaughtyAttributes;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace View
 {
-    public class PopUpNotificationView : MonoBehaviour
+    public class TutorialButtonView : MonoBehaviour
     {
         [SerializeField] [Required] private Button _button;
-        [SerializeField] [Required] private TextMeshProUGUI _title;
-        [SerializeField] [Required] private TextMeshProUGUI _info;
+        [SerializeField] [Required] private Image _image;
+        [SerializeField] [Required] private Sprite _spriteOn;
+        [SerializeField] [Required] private Sprite _spriteOff;
 
         public event Action Clicked;
 
@@ -29,20 +29,14 @@ namespace View
             Clicked?.Invoke();
         }
 
-        public void Show()
+        public void SetOn()
         {
-            gameObject.SetActive(true);
+            _image.sprite = _spriteOn;
         }
 
-        public void Hide()
+        public void SetOff()
         {
-            gameObject.SetActive(false);
-        }
-
-        public void SetContent(string title, string info)
-        {
-            _title.SetText(title);
-            _info.SetText(info);
+            _image.sprite = _spriteOff;
         }
     }
 }

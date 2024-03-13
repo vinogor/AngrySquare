@@ -16,6 +16,7 @@ namespace Root
         [SerializeField] [Required] private LeaderboardButtonView _leaderboardButtonView;
         [SerializeField] [Required] private LeaderboardPopupView _leaderboardPopupView;
         [SerializeField] [Required] private SoundButtonView _soundButtonView;
+        [SerializeField] [Required] private TutorialButtonView _tutorialButtonView;
 
         [Space(10)]
         [Header("Player")]
@@ -44,11 +45,11 @@ namespace Root
         public LeaderboardButtonView LeaderboardButtonView => _leaderboardButtonView;
         public LeaderboardPopupView LeaderboardPopupView => _leaderboardPopupView;
         public SoundButtonView SoundButtonView => _soundButtonView;
+        public TutorialButtonView TutorialButtonView => _tutorialButtonView;
 
         public void Initialize(Health playerHealth, Mana playerMana, Health enemyHealth, Damage playerDamage,
             Damage enemyDamage, Defence playerDefence, Defence enemyDefence, AvailableSpells availableSpells,
             EnemyLevel enemyLevel, IPresenter languageController, IPresenter soundButtonPresenter,
-            IPresenter popUpNotificationController, IPresenter popUpTutorialController,
             IPresenter leaderboardController, IPresenter restartGameController)
         {
             _playerHealthBarView.Initialize(playerHealth);
@@ -62,8 +63,6 @@ namespace Root
             _enemyLevelTextView.Initialize(enemyLevel);
             _languageButtonView.Initialize(languageController);
             _soundButtonView.Initialize(soundButtonPresenter);
-            _popUpNotificationView.Initialize(popUpNotificationController);
-            _popUpTutorialView.Initialize(popUpTutorialController);
             _leaderboardButtonView.Initialize(leaderboardController);
             _restartGameView.Initialize(restartGameController);
         }

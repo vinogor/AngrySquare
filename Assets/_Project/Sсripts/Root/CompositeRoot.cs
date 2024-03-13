@@ -131,7 +131,8 @@ namespace Root
                 _uiRoot.PopUpNotificationView,
                 new PopUpNotificationModel(UiTextKeys.NotificationPlayerDefeatTitleKey,
                     UiTextKeys.NotificationPlayerDefeatInfoKey));
-            PopUpTutorialController popUpTutorialController = new PopUpTutorialController(_uiRoot.PopUpTutorialView);
+            TutorialController tutorialController =
+                new TutorialController(_uiRoot.PopUpTutorialView, _uiRoot.TutorialButtonView);
 
             LevelRestarter levelRestarter = new LevelRestarter(cellsController, playerDefence, playerHealth,
                 playerDamage, playerMana, _enemyProgression, enemyDefence, enemyHealth, enemyDamage,
@@ -156,7 +157,7 @@ namespace Root
             Advertising advertising = new Advertising(gameSoundsPresenter);
 
             FiniteStateMachine stateMachine = StateMachineFactory.CreateStateMachine(spellBarController,
-                popUpTutorialController, popUpNotificationController, popUpPlayerDefeat, advertising, _diceRoller,
+                tutorialController, popUpNotificationController, popUpPlayerDefeat, advertising, _diceRoller,
                 _playerMovement, playerHealth, enemyHealth, levelRestarter, gameSoundsPresenter, _enemyMovement,
                 yandexLeaderBoard
             );
@@ -166,11 +167,11 @@ namespace Root
 
             _uiRoot.Initialize(playerHealth, playerMana, enemyHealth, playerDamage, enemyDamage, playerDefence,
                 enemyDefence, availableSpells, enemyLevel, languageButtonController, soundButtonPresenter,
-                popUpNotificationController, popUpTutorialController, leaderboardController, restartGameController);
+                leaderboardController, restartGameController);
 
             SaveService saveService = new SaveService(playerDamage, playerDefence, playerHealth, playerMana,
                 availableSpells, _playerMovement, enemyLevel, enemyDamage, enemyDefence, enemyHealth,
-                enemyTargetController, cellsController, stateMachine, popUpTutorialController, saver);
+                enemyTargetController, cellsController, stateMachine, tutorialController, saver);
             _saveController.Initialize(saveService, stateMachine);
 
 #if UNITY_WEBGL && !UNITY_EDITOR

@@ -1,12 +1,11 @@
 using System;
 using Lean.Localization;
-using Services;
 using UnityEngine.Assertions;
 using View;
 
 namespace Controllers
 {
-    public class PopUpNotificationController : IPresenter
+    public class PopUpNotificationController : IDisposable
     {
         private readonly PopUpNotificationView _popUp;
         private readonly PopUpNotificationModel _model;
@@ -20,16 +19,13 @@ namespace Controllers
 
             _popUp = popUp;
             _model = model;
-            
-            Hide();
-        }
 
-        public void Enable()
-        {
+            Hide();
+
             LeanLocalization.OnLocalizationChanged += SetContent;
         }
 
-        public void Disable()
+        public void Dispose()
         {
             LeanLocalization.OnLocalizationChanged -= SetContent;
         }

@@ -11,7 +11,7 @@ namespace Controllers.StateMachine
     public static class StateMachineFactory
     {
         public static FiniteStateMachine CreateStateMachine(SpellBarController spellBarController,
-            PopUpTutorialController popUpTutorialController, PopUpNotificationController popUpNotificationController,
+            TutorialController tutorialController, PopUpNotificationController popUpNotificationController,
             PopUpNotificationController popUpPlayerDefeat, Advertising advertising, DiceRoller diceRoller,
             PlayerMovement playerMovement, Health playerHealth, Health enemyHealth, LevelRestarter levelRestarter,
             GameSoundsPresenter gameSoundsPresenter, EnemyMovement enemyMovement, YandexLeaderBoard yandexLeaderBoard)
@@ -19,13 +19,13 @@ namespace Controllers.StateMachine
             FiniteStateMachine stateMachine = new FiniteStateMachine();
             GameInitializeFsmState gameInitializeFsmState = new GameInitializeFsmState(stateMachine, advertising);
             PlayerTurnSpellFsmState playerTurnSpellFsmState =
-                new PlayerTurnSpellFsmState(stateMachine, spellBarController, popUpTutorialController);
+                new PlayerTurnSpellFsmState(stateMachine, spellBarController, tutorialController);
             PlayerTurnMoveFsmState playerTurnMoveFsmState = new PlayerTurnMoveFsmState(stateMachine, diceRoller,
-                playerMovement, enemyHealth, popUpTutorialController);
+                playerMovement, enemyHealth, tutorialController);
             PlayerWinFsmState playerWinFsmState =
                 new PlayerWinFsmState(stateMachine, popUpNotificationController, levelRestarter, gameSoundsPresenter);
             EnemyTurnFsmState enemyTurnFsmState = new EnemyTurnFsmState(stateMachine, enemyMovement, playerHealth,
-                popUpTutorialController);
+                tutorialController);
             PlayerDefeatFsmState playerDefeatFsmState = new PlayerDefeatFsmState(stateMachine, popUpPlayerDefeat,
                 levelRestarter, yandexLeaderBoard, gameSoundsPresenter);
 

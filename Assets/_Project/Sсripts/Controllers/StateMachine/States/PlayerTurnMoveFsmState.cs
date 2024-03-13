@@ -10,29 +10,29 @@ namespace Controllers.StateMachine.States
         private readonly DiceRoller _diceRoller;
         private readonly PlayerMovement _playerMovement;
         private readonly Health _enemyHealth;
-        private readonly PopUpTutorialController _popUpTutorialController;
+        private readonly TutorialController _tutorialController;
 
         public PlayerTurnMoveFsmState(FiniteStateMachine finiteStateMachine, DiceRoller diceRoller,
-            PlayerMovement playerMovement, Health enemyHealth, PopUpTutorialController popUpTutorialController)
+            PlayerMovement playerMovement, Health enemyHealth, TutorialController tutorialController)
             : base(finiteStateMachine)
         {
             Assert.IsNotNull(finiteStateMachine);
             Assert.IsNotNull(diceRoller);
             Assert.IsNotNull(playerMovement);
             Assert.IsNotNull(enemyHealth);
-            Assert.IsNotNull(popUpTutorialController);
+            Assert.IsNotNull(tutorialController);
 
             _diceRoller = diceRoller;
             _playerMovement = playerMovement;
             _enemyHealth = enemyHealth;
-            _popUpTutorialController = popUpTutorialController;
+            _tutorialController = tutorialController;
         }
 
         public override async void Enter()
         {
             base.Enter();
             
-            await _popUpTutorialController.Show(TutorialStep.RollDice);
+            await _tutorialController.Show(TutorialStep.RollDice);
             
             _diceRoller.MakeAvailable();
             _playerMovement.TurnCompleted += GoToNextState;

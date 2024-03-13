@@ -30,7 +30,7 @@ namespace Services.Save
         // common
         private readonly CellsManager _cellsManager;
         private readonly FiniteStateMachine _finiteStateMachine;
-        private readonly PopUpTutorialController _popUpTutorialController;
+        private readonly TutorialController _tutorialController;
 
         private readonly ISaver _saver;
 
@@ -38,7 +38,7 @@ namespace Services.Save
             AvailableSpells availableSpells, PlayerMovement playerMovement, EnemyLevel enemyLevel, Damage enemyDamage,
             Defence enemyDefence, Health enemyHealth, EnemyTargetController enemyTargetController,
             CellsManager cellsManager, FiniteStateMachine finiteStateMachine,
-            PopUpTutorialController popUpTutorialController, ISaver saver)
+            TutorialController tutorialController, ISaver saver)
         {
             _playerDamage = playerDamage;
             _playerDefence = playerDefence;
@@ -55,7 +55,7 @@ namespace Services.Save
 
             _cellsManager = cellsManager;
             _finiteStateMachine = finiteStateMachine;
-            _popUpTutorialController = popUpTutorialController;
+            _tutorialController = tutorialController;
 
             _saver = saver;
         }
@@ -86,7 +86,7 @@ namespace Services.Save
                     .Select(cell => _cellsManager.Index(cell)).ToList(),
 
                 // common
-                IsTutorialEnable = isTutorialEnable || _popUpTutorialController.IsEnable,
+                IsTutorialEnable = isTutorialEnable || _tutorialController.IsEnable,
                 CellIndexesWithEffectNames = _cellsManager.GetCellIndexesWithEffectNames(),
                 FsmStateTypeName = _finiteStateMachine.GetCurrentStateTypeName(),
             };
@@ -157,7 +157,7 @@ namespace Services.Save
             _enemyTargetController.SetNewTargetCells(dataRecord.TargetCellsIndexes);
 
             _cellsManager.SetCellsEffects(dataRecord.CellIndexesWithEffectNames);
-            _popUpTutorialController.Switch(dataRecord.IsTutorialEnable);
+            _tutorialController.Switch(dataRecord.IsTutorialEnable);
             Type type = Type.GetType(dataRecord.FsmStateTypeName);
             Debug.Log("SaveService Apply - type = " + type);
             _finiteStateMachine.SetState(type);
