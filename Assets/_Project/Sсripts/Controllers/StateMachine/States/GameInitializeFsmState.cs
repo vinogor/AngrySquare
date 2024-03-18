@@ -19,7 +19,7 @@ namespace Controllers.StateMachine.States
         {
             base.Enter();
 
-            await _advertising.ShowAd();
+            await _advertising.ShowInterstitialAd();
 
             GoToNextState();
         }

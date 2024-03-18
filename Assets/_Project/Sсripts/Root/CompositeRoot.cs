@@ -97,7 +97,7 @@ namespace Root
             PlayerPortal playerPortal = new PlayerPortal(playerJumper, cellsController, _playerMovement);
 
             SpellBarController spellBarController = new SpellBarController(availableSpells, _uiRoot.SpellBarView,
-                playerMana, spellActivator, _uiRoot.SpellBarFameScaler, gameSoundsPresenter);
+                playerMana, spellActivator, _uiRoot.SpellBarFrameScaler, gameSoundsPresenter);
             List<EffectName> availableEffectNamesForEffect = new List<EffectName>
                 { EffectName.Swords, EffectName.Health, EffectName.Mana };
             List<SpellName> availableSpellNamesForEffect = new List<SpellName>
@@ -123,7 +123,7 @@ namespace Root
 
             _diceRoller.Initialize(gameSoundsPresenter);
 
-            PopUpNotificationController popUpNotificationController = new PopUpNotificationController(
+            PopUpNotificationController popUpPlayerWin = new PopUpNotificationController(
                 _uiRoot.PopUpNotificationView,
                 new PopUpNotificationModel(UiTextKeys.NotificationPlayerWinTitleKey,
                     UiTextKeys.NotificationPlayerWinInfoKey));
@@ -157,10 +157,13 @@ namespace Root
             Advertising advertising = new Advertising(gameSoundsPresenter);
 
             FiniteStateMachine stateMachine = StateMachineFactory.CreateStateMachine(spellBarController,
-                tutorialController, popUpNotificationController, popUpPlayerDefeat, advertising, _diceRoller,
+                tutorialController, popUpPlayerWin, popUpPlayerDefeat, advertising, _diceRoller,
                 _playerMovement, playerHealth, enemyHealth, levelRestarter, gameSoundsPresenter, _enemyMovement,
                 yandexLeaderBoard
             );
+
+            RewardAdController rewardAdController =
+                new RewardAdController(_uiRoot.RewardAdView, advertising, playerMana, _uiRoot.AdButtonFrameScaler);
 
             RestartGameController restartGameController =
                 new RestartGameController(_uiRoot.RestartGameView, levelRestarter, stateMachine);

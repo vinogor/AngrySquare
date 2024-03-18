@@ -18,24 +18,50 @@ namespace SDK
             _gameSoundsPresenter = gameSoundsPresenter;
         }
 
-        public async UniTask ShowAd()
+        public async UniTask ShowInterstitialAd()
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
-            await Show();
+            await ShowInterstitial();
 #endif
         }
 
-        private async UniTask Show()
+        public async UniTask<bool> ShowRewardedAd()
         {
-            Debug.Log("Advertising - Show - start");
+#if UNITY_WEBGL && !UNITY_EDITOR
+            return await ShowRewarded();
+#endif
+            return true;
+        }
+
+        private async UniTask ShowInterstitial()
+        {
+            Debug.Log("Interstitial Advertising - Show - start");
             InterstitialAd.Show(OnOpenCallBack, OnCloseCallback);
-            Debug.Log("Advertising - Show - end");
+            Debug.Log("Interstitial Advertising - Show - end");
             await UniTask.WaitUntil(() => _isAdClosed);
+            _isAdClosed = false;
+        }
+
+        private async UniTask<bool> ShowRewarded()
+        {
+            Debug.Log("Rewarded Advertising - ShowRewarded - start");
+            bool isRewarded = false;
+            VideoAd.Show(OnOpenCallBack, () => isRewarded = true, OnCloseCallback);
+            Debug.Log("Rewarded Advertising - ShowRewarded - end");
+            await UniTask.WaitUntil(() => _isAdClosed);
+            Debug.Log("Rewarded Advertising - ShowRewarded - after WaitUntil, isRewarded = " + isRewarded);
+            _isAdClosed = false;
+            return isRewarded;
         }
 
         private void OnCloseCallback(bool flag)
         {
-            Debug.Log("Advertising - OnCloseCallback - " + flag);
+            OnCloseCallback();
+        }
+
+        private void OnCloseCallback()
+        {
+            Debug.Log("Advertising - OnCloseCallback");
 
             _gameSoundsPresenter.SwitchByAdv(true);
             _isAdClosed = true;

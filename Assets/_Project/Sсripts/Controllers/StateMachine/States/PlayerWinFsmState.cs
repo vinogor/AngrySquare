@@ -6,20 +6,20 @@ namespace Controllers.StateMachine.States
 {
     public class PlayerWinFsmState : FsmState
     {
-        private readonly PopUpNotificationController _popUpController;
+        private readonly PopUpNotificationController _popUpPlayerWin;
         private readonly LevelRestarter _levelRestarter;
         private readonly GameSoundsPresenter _gameSoundsPresenter;
 
         public PlayerWinFsmState(FiniteStateMachine finiteStateMachine,
-            PopUpNotificationController popUpController, LevelRestarter levelRestarter,
+            PopUpNotificationController popUpPlayerWin, LevelRestarter levelRestarter,
             GameSoundsPresenter gameSoundsPresenter) : base(finiteStateMachine)
         {
             Assert.IsNotNull(finiteStateMachine);
-            Assert.IsNotNull(popUpController);
+            Assert.IsNotNull(popUpPlayerWin);
             Assert.IsNotNull(levelRestarter);
             Assert.IsNotNull(gameSoundsPresenter);
 
-            _popUpController = popUpController;
+            _popUpPlayerWin = popUpPlayerWin;
             _levelRestarter = levelRestarter;
             _gameSoundsPresenter = gameSoundsPresenter;
         }
@@ -28,7 +28,7 @@ namespace Controllers.StateMachine.States
         {
             base.Enter();
             _gameSoundsPresenter.PlayPlayerWin();
-            _popUpController.Show(Handle);
+            _popUpPlayerWin.Show(Handle);
         }
 
         private void Handle()

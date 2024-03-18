@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace View
 {
-    public class SpellBarFameScaler : MonoBehaviour
+    public class FrameScaler : MonoBehaviour
     {
         [SerializeField] private Transform _frameTransform;
 

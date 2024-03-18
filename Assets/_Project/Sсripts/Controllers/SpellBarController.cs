@@ -14,30 +14,30 @@ namespace Controllers
         private readonly SpellBarView _spellBarView;
         private readonly Mana _mana;
         private readonly SpellActivator _spellActivator;
-        private readonly SpellBarFameScaler _spellBarFameScaler;
+        private readonly FrameScaler _frameScaler;
         private readonly GameSoundsPresenter _gameSoundsPresenter;
 
         private Action _onSpellCompleted;
 
         public SpellBarController(AvailableSpells availableSpells, SpellBarView spellBarView, Mana mana,
-            SpellActivator spellActivator, SpellBarFameScaler spellBarFameScaler, GameSoundsPresenter gameSoundsPresenter)
+            SpellActivator spellActivator, FrameScaler frameScaler, GameSoundsPresenter gameSoundsPresenter)
         {
             Assert.IsNotNull(availableSpells);
             Assert.IsNotNull(spellBarView);
             Assert.IsNotNull(mana);
             Assert.IsNotNull(spellActivator);
-            Assert.IsNotNull(spellBarFameScaler);
+            Assert.IsNotNull(frameScaler);
             Assert.IsNotNull(gameSoundsPresenter);
 
             _availableSpells = availableSpells;
             _spellBarView = spellBarView;
             _mana = mana;
             _spellActivator = spellActivator;
-            _spellBarFameScaler = spellBarFameScaler;
+            _frameScaler = frameScaler;
             _gameSoundsPresenter = gameSoundsPresenter;
 
             _spellBarView.Disable();
-            _spellBarFameScaler.Disable();
+            _frameScaler.Disable();
         }
 
         public void TakeSpell(SpellName spellName)
@@ -65,7 +65,7 @@ namespace Controllers
                 return;
             }
 
-            _spellBarFameScaler.Enable();
+            _frameScaler.Enable();
             _spellBarView.SpellsActivated += OnSpellActivated;
             _spellBarView.Skipped += OnSpellSkipped;
             _spellBarView.Enable();
@@ -73,7 +73,7 @@ namespace Controllers
 
         public void Disable()
         {
-            _spellBarFameScaler.Disable();
+            _frameScaler.Disable();
             _spellBarView.SpellsActivated -= OnSpellActivated;
             _spellBarView.Skipped -= OnSpellSkipped;
             _spellBarView.Disable();
