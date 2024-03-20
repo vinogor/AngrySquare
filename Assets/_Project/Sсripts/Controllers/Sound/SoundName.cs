@@ -14,6 +14,7 @@ namespace Controllers.Sound
         Teleport,
         PopUp,
         SpellCast,
-        ClickButton
+        ClickButton,
+        SwordsAttackBlocked,
     }
 }

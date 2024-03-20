@@ -16,18 +16,15 @@ MonoBehaviour:
   JumpDuration: 0.5
   AnimationCellDuration: 0.2
   EnemyHeight: 0.2
+  DelayAfterVfxSeconds: 1.5
+  LeaderboardMaxPlayersToShow: 20
   PlayerStartHealth: 8
   PlayerMaxHealth: 8
   PlayerStartMana: 5
   PlayerMaxMana: 10
   PlayerStartDamage: 2
-  PlayerStartDefence: 0
+  PlayerStartDefence: 1
   DamageIncreaseValue: 1
   DefenceIncreaseValue: 1
   MaxHealthIncreaseValue: 1
   MaxManaIncreaseValue: 1
-  DelayAfterVfxSeconds: 1.5
-  EnemyStartHealth: 8
-  EnemyMaxHealth: 8
-  EnemyStartDamage: 1
-  EnemyStartDefence: 0

@@ -83,6 +83,7 @@ namespace Controllers.Sound
         public void PlayPlayerWin() => PlayOneShot(SoundName.PlayerWin);
         public void PlayPlayerDefeat() => PlayOneShot(SoundName.PlayerDefeat);
         public void PlaySwordsAttack() => PlayOneShot(SoundName.SwordsAttack);
+        public void PlaySwordsAttackBlocked() => PlayOneShot(SoundName.SwordsAttackBlocked);
         public void PlayHealthReplenish() => PlayOneShot(SoundName.HealthReplenish);
         public void PlayManaReplenish() => PlayOneShot(SoundName.ManaReplenish);
         public void PlayTeleport() => PlayOneShot(SoundName.Teleport);

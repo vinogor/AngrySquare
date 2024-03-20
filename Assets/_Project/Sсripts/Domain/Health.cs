@@ -30,6 +30,7 @@ namespace Domain
         public event Action<int> ValueChanged;
         public event Action<int> MaxValueChanged;
         public event Action DamageReceived;
+        public event Action DamageBlocked;
         public event Action Replenished;
 
         public int Value { get; private set; }
@@ -48,7 +49,11 @@ namespace Domain
             int passedDamage = damage - _defence.Value;
 
             if (passedDamage <= 0)
+            {
+                _gameSoundsPresenter.PlaySwordsAttackBlocked();
+                DamageBlocked?.Invoke();
                 return;
+            }
 
             Value -= passedDamage;
 
@@ -74,7 +79,7 @@ namespace Domain
             Value = MaxValue;
 
             Replenished?.Invoke();
-            _gameSoundsPresenter.PlayManaReplenish();
+            _gameSoundsPresenter.PlayHealthReplenish();
             ValueChanged?.Invoke(Value);
         }
 
