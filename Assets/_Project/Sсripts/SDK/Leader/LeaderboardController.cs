@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Agava.YandexGames;
 using Config;
+using Controllers;
+using Cysharp.Threading.Tasks;
 using Services;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -14,19 +16,22 @@ namespace SDK.Leader
         private readonly LeaderboardButtonView _leaderboardButtonView;
         private readonly LeaderboardPopupView _leaderboardPopup;
         private readonly YandexLeaderBoard _yandexLeaderBoard;
+        private readonly PopUpAuthController _popUpAuthController;
         private readonly Coefficients _coefficients;
 
         public LeaderboardController(LeaderboardButtonView leaderboardButtonView, LeaderboardPopupView leaderboardPopup,
-            YandexLeaderBoard yandexLeaderBoard, Coefficients coefficients)
+            YandexLeaderBoard yandexLeaderBoard, PopUpAuthController popUpAuthController, Coefficients coefficients)
         {
             Assert.IsNotNull(leaderboardButtonView);
             Assert.IsNotNull(leaderboardPopup);
             Assert.IsNotNull(yandexLeaderBoard);
+            Assert.IsNotNull(popUpAuthController);
             Assert.IsNotNull(coefficients);
 
             _leaderboardButtonView = leaderboardButtonView;
             _leaderboardPopup = leaderboardPopup;
             _yandexLeaderBoard = yandexLeaderBoard;
+            _popUpAuthController = popUpAuthController;
             _coefficients = coefficients;
         }
 
@@ -62,20 +67,41 @@ namespace SDK.Leader
             _leaderboardPopup.ConstructLeaderboard(limitedPlayers);
         }
 
-        private void Open()
+        // TODO: локализация для попапа 
+
+        private async void Open()
         {
-            Debug.Log("PlayerAccount.Authorize() - STARTED");
-            PlayerAccount.Authorize();
+            Debug.Log("PlayerAccount - Open - STARTED");
 
             if (PlayerAccount.IsAuthorized)
             {
-                Debug.Log("PlayerAccount.RequestPersonalProfileDataPermission() - STARTED");
+                Debug.Log("PlayerAccount - 1 - IsAuthorized == true");
+
+                Debug.Log("PlayerAccount.RequestPersonalProfileDataPermission()");
                 PlayerAccount.RequestPersonalProfileDataPermission();
             }
 
             if (PlayerAccount.IsAuthorized == false)
             {
-                Debug.Log("PlayerAccount.IsAuthorized == false");
+                Debug.Log("PlayerAccount - IsAuthorized == false, show popUp");
+
+                UniTask<bool> task = _popUpAuthController.Show();
+                await task;
+
+                bool isReadyToAuthorize = task.GetAwaiter().GetResult();
+
+                Debug.Log("PlayerAccount - popup - isReadyToAuthorize == " + isReadyToAuthorize);
+
+                if (isReadyToAuthorize)
+                {
+                    Debug.Log("PlayerAccount - try to auth");
+                    PlayerAccount.Authorize();
+                }
+                else
+                {
+                    Debug.Log("PlayerAccount - popup - return ");
+                }
+                
                 return;
             }
 

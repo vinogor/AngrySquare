@@ -18,8 +18,9 @@ namespace Root
         [SerializeField] [Required] private SoundButtonView _soundButtonView;
         [SerializeField] [Required] private TutorialButtonView _tutorialButtonView;
         [SerializeField] [Required] private RewardAdView _rewardAdView;
+        [SerializeField] [Required] private PopUpAuthView _popUpAuthView;
 
-        [Space(10)]
+        [Space(10)] 
         [Header("Player")]
         [SerializeField] [Required] private HealthBarView _playerHealthBarView;
         [SerializeField] [Required] private ManaBarView _playerManaBarView;
@@ -50,6 +51,7 @@ namespace Root
         public SoundButtonView SoundButtonView => _soundButtonView;
         public TutorialButtonView TutorialButtonView => _tutorialButtonView;
         public RewardAdView RewardAdView => _rewardAdView;
+        public PopUpAuthView PopUpAuthView => _popUpAuthView;
 
         public void Initialize(Health playerHealth, Mana playerMana, Health enemyHealth, Damage playerDamage,
             Damage enemyDamage, Defence playerDefence, Defence enemyDefence, AvailableSpells availableSpells,

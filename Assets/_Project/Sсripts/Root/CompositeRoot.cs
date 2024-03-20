@@ -147,9 +147,11 @@ namespace Root
             SoundButtonPresenter soundButtonPresenter =
                 new SoundButtonPresenter(_uiRoot.SoundButtonView, gameSoundsPresenter);
 
+            PopUpAuthController popUpAuthController = new PopUpAuthController(_uiRoot.PopUpAuthView);
+
             YandexLeaderBoard yandexLeaderBoard = new YandexLeaderBoard(enemyLevel);
             LeaderboardController leaderboardController = new LeaderboardController(_uiRoot.LeaderboardButtonView,
-                _uiRoot.LeaderboardPopupView, yandexLeaderBoard, _coefficients);
+                _uiRoot.LeaderboardPopupView, yandexLeaderBoard, popUpAuthController, _coefficients);
 
             _enemyModel.Initialize(enemyLevel);
             _vfxRoot.Initialize(playerHealth, playerMana, playerPortal, enemyHealth);
