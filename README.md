@@ -8,4 +8,7 @@
 - для удобной балансировки геймплея коэффициенты вынесены в ScriptableObject-ы, рост сложности реализован через кривые Безье
 - доп. пакеты: UniTask, Newtonsoft.Json, NaughtyAttributes
 
+Видео геймплея https://www.youtube.com/watch?v=O2BvYd4GaUk
+
 ![скрин-мобил---1](https://github.com/vinogor/AngrySquare/assets/26894674/aa11a81d-e07b-4d2f-b600-212e6e33e8b8)
+
