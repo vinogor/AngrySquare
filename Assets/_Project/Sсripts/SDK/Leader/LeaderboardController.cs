@@ -67,8 +67,6 @@ namespace SDK.Leader
             _leaderboardPopup.ConstructLeaderboard(limitedPlayers);
         }
 
-        // TODO: локализация для попапа 
-
         private async void Open()
         {
             Debug.Log("PlayerAccount - Open - STARTED");
